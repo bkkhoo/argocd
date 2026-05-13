@@ -1,0 +1,52 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-config
+  namespace: openshift-gitops
+  labels:
+    applications: cluster-config
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
+  generators:
+    - clusters: {}     # all clusters
+  template:
+    metadata:
+      name: "{{ name }}-cluster-config"
+      labels:
+        applications: cluster-config
+    spec:
+      project: iac-gitops
+      # ignoreDifferences:
+      #   - group: samples.operator.openshift.io
+      #     kind: Config
+      #     name: cluster
+      #     jsonPointers:
+      #       - /metadata/annotations
+      sources:
+        # configure operator hub
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: kustomize-deployments/operator-hub/base
+        # disable self provisioner
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: kustomize-deployments/self-provisioner/base
+        # disable openshift insights and telemetry services
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: kustomize-deployments/openshift-insights/base
+        # configure managementState to Removed
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: kustomize-deployments/openshift-samples/base
+      destination:
+        server: "{{ server }}"
+      syncPolicy:
+        automated:
+          prune: false       # the config here modify pre-existing resources that are part of openshift
+          selfHeal: true     # do not delete the resources when they are no longer defined in git
+        syncOptions:
+          - CreateNamespace=true
+...

@@ -1,0 +1,20 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Delete=false
+    # at each start-up, the api server updates default cluster roles with any missing permissions, and
+    # updates default cluster role bindings with any missing subjects
+    # set to false to opt out of this reconciliation
+    rbac.authorization.kubernetes.io/autoupdate: "false"
+  name: self-provisioners
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: self-provisioner
+subjects:
+# - apiGroup: rbac.authorization.k8s.io
+#   kind: Group
+#   name: system:authenticated:oauth
+...

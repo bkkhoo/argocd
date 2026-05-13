@@ -1,0 +1,19 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-rbac-ca
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin         # grant cluster-admin to allow argocd to deploy any resource kind
+subjects:
+  # this is for the argocd instance (name: argocd)
+  - kind: ServiceAccount
+    name: argocd-argocd-application-controller
+    namespace: openshift-gitops
+  # just in case; this is for the default auto-create argocd instance (name: openshift-gitops), the default instance is disabled
+  - kind: ServiceAccount
+    name: openshift-gitops-argocd-application-controller
+    namespace: openshift-gitops
+...

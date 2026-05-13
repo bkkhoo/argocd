@@ -1,0 +1,45 @@
+---
+# the web-terminal operator will deploy devworkspace-operator operator if it des not exist
+# this make sure proper placement of workloads for devworkspace-operator
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: devworkspace-operator-fast-redhat-operators-openshift-marketplace
+spec:
+  channel: fast
+  installPlanApproval: Automatic
+  name: devworkspace-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  # config:
+  #   nodeSelector:
+  #     node-role.kubernetes.io/infra: ""
+  #   tolerations:
+  #     - effect: NoSchedule
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+  #     - effect: NoExecute
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: web-terminal
+spec:
+  channel: fast
+  installPlanApproval: Automatic
+  name: web-terminal
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  # config:
+  #   nodeSelector:
+  #     node-role.kubernetes.io/infra: ""
+  #   tolerations:
+  #     - effect: NoSchedule
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+  #     - effect: NoExecute
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+...

@@ -1,0 +1,30 @@
+---
+server:
+  autoscale:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+
+rbac:
+  defaultPolicy: ""
+
+repo:
+  replicas: 3
+
+ha:
+  enabled: true
+
+tls:
+  customCA: "custom-ca.crt"
+
+controller:
+  sharding:
+    enabled: true
+    replicas: 3
+    # legacy: default method, which uses a simple modulo operation based on the cluster's index in a sorted list; this approach can cause significant cluster reassignment when clusters are added or removed.
+    # round-robin: distributes clusters sequentially across shards in order; this provides a more even distribution by count but remains sensitive to changes in the cluster list order.
+    # consistent-hashing: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
+    algorithm: consistent-hashing
+
+disableAdmin: true
+...

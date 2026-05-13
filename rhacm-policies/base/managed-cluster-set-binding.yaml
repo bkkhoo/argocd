@@ -1,0 +1,17 @@
+---
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: gitops-clusters
+  namespace: rhacm-policies
+spec:
+  clusterSet: gitops-clusters
+---
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: default
+  namespace: rhacm-policies
+spec:
+  clusterSet: default
+...

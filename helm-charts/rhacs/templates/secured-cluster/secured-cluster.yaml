@@ -1,0 +1,19 @@
+{{- if eq .Values.deploymentType "secured-cluster" }}
+---
+apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  name: stackrox-secured-cluster-services
+  namespace: {{ .Values.namespace.securedCluster }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+    # argocd dry-run may fail because the crd is not registered yet
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  clusterName: {{ .Values.clusterName }}
+  # centralEndpoint is not set, to be set by rhacm governance policy
+  admissionControl:
+    enforcement: Enabled
+    bypass: Disabled
+...
+{{- end }}

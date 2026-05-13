@@ -1,0 +1,32 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: post-sync-hook
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: disable-insights-operator
+          image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - /script/disable-insight-services.sh
+          volumeMounts:
+            - name: script
+              mountPath: /script
+      volumes:
+        - name: script
+          configMap:
+            name: disable-insights-operator
+            defaultMode: 0755
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: post-sync-hook
+      terminationGracePeriodSeconds: 30
+...

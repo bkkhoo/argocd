@@ -1,0 +1,89 @@
+{{- if eq .Values.deploymentType "central" }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: post-sync-hook
+  namespace: {{ .Values.namespace.central }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - create
+      - patch
+      - update
+  - apiGroups:
+      - route.openshift.io
+    resources:
+      - routes
+    verbs:
+      - get
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: post-sync-hook
+  namespace: {{ .Values.namespace.rhacmPolicies }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - configmaps
+    verbs:
+      - get
+      - list
+      - create
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: post-sync-hook
+  namespace: {{ .Values.namespace.central }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: post-sync-hook
+subjects:
+  - kind: ServiceAccount
+    name: post-sync-hook
+    namespace: {{ .Values.namespace.central }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: post-sync-hook
+  namespace: {{ .Values.namespace.rhacmPolicies }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: post-sync-hook
+subjects:
+  - kind: ServiceAccount
+    name: post-sync-hook
+    namespace: {{ .Values.namespace.central }}
+...
+{{- end }}

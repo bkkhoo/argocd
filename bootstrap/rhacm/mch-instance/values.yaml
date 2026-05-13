@@ -1,0 +1,2 @@
+policyNamespace: rhacm-policies
+availabilityConfig: High        # Basic or High

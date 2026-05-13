@@ -1,0 +1,24 @@
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: compliance-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: compliance-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  # config:
+  #   nodeSelector:
+  #     node-role.kubernetes.io/infra: ""
+  #   tolerations:
+  #     - effect: NoSchedule
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+  #     - effect: NoExecute
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+...

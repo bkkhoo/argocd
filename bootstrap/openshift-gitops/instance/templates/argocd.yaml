@@ -1,0 +1,167 @@
+---
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: openshift-gitops
+  namespace: openshift-gitops
+spec:
+  networkPolicy:
+    enabled: true
+  # nodePlacement:
+  #   nodeSelector:
+  #     node-role.kubernetes.io/infra: ""
+  #   tolerations:      # make sure this match what is configure in gitops-service.yaml
+  #     - effect: NoSchedule
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+  #     - effect: NoExecute
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+  server:
+    enabled: true
+    autoscale:
+      enabled: {{ .Values.server.autoscale.enabled }}
+      {{- if .Values.server.autoscale.enabled }}
+      hpa:
+        minReplicas: {{ .Values.server.autoscale.minReplicas }}
+        maxReplicas: {{ .Values.server.autoscale.maxReplicas }}
+        scaleTargetRef:
+          apiVersion: apps/v1
+          kind: Deployment
+          name: openshift-gitops-server
+      {{- end }}
+    route:
+      enabled: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 125m
+        memory: 128Mi
+  grafana:
+    enabled: false
+  monitoring:
+    enabled: false
+  notifications:
+    enabled: false
+  prometheus:
+    enabled: false
+  initialSSHKnownHosts: {}
+  imageUpdater:
+    enabled: false
+  sso:
+    dex:
+      openShiftOAuth: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 128Mi
+    provider: dex
+  applicationSet:
+    enabled: true
+    resources:
+      limits:
+        cpu: "2"
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+    webhookServer:
+      ingress:
+        enabled: false
+      route:
+        enabled: false
+  rbac:
+    defaultPolicy: "{{ .Values.rbac.defaultPolicy }}"
+    policy: |
+      g, system:cluster-admins, role:admin
+      g, cluster-admins, role:admin
+    scopes: "[groups]"
+  repo:
+    enabled: true
+    replicas: {{ .Values.repo.replicas }}
+    env:
+      - name: KUSTOMIZE_PLUGIN_HOME
+        value: /etc/kustomize/plugin
+    initContainers:
+      - name: policy-generator-install
+        # there are two multicluster-operators-subscription container image:
+        #   - multicluster-operators-subscription-rhel8
+        #   - multicluster-operators-subscription-rhel9
+        # using the rhel8 based image as the repo server container is based on rhel8
+        # multicluster-operators-subscription-rhel8 does not have v2.10 tag
+        # image: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel8:v2.9
+        # image: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.10
+        image: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
+        command:
+          - /bin/bash
+          - -c
+        args:
+          - cp /etc/kustomize/plugin/policy.open-cluster-management.io/v1/policygenerator/PolicyGenerator /policy-generator/PolicyGenerator
+        volumeMounts:
+          - mountPath: /policy-generator
+            name: policy-generator
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    volumeMounts:
+      - mountPath: /etc/kustomize/plugin/policy.open-cluster-management.io/v1/policygenerator
+        name: policy-generator
+    volumes:
+      - emptyDir: {}
+        name: policy-generator
+  ha:
+    enabled: {{ .Values.ha.enabled }}
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  tls:
+    {{- if .Values.tls.customCA }}
+    ca:
+      configMapName: tls-custom-ca
+    {{- else }}
+    ca: {}
+    {{- end }}
+  redis:
+    enabled: true
+    autotls: openshift
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  controller:
+    enabled: true
+    {{- if .Values.controller.sharding.enabled }}
+    sharding:
+      enabled: {{ .Values.controller.sharding.enabled }}
+      replicas: {{ .Values.controller.sharding.replicas }}
+    env:
+      - name: ARGOCD_CONTROLLER_SHARDING_ALGORITHM
+        value: {{ .Values.controller.sharding.algorithm }}
+    {{- end }}
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2048Mi
+      requests:
+        cpu: 250m
+        memory: 1024Mi
+  disableAdmin: {{ .Values.disableAdmin }}
+  kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
+{{ .Files.Get "files/resource-exclusion.yaml" | indent 2 }}
+...

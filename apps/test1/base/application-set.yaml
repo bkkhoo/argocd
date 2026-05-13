@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: web-app-set
+  namespace: openshift-gitops
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+  template:
+    metadata:
+      name: "{{ name }}-web"
+      labels:
+        applications: web-app-set
+    spec:
+      project: iac-gitops
+      source:
+        repoURL: https://github.com/bkkhoo/argocd.git
+        targetRevision: main
+        path: kustomize-deployments/test1/dev/
+      destination:
+        server: "{{ server }}"
+        namespace: test-dev
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+...

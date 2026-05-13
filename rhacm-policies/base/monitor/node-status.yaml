@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Node
+status:
+  conditions:
+    - type: MemoryPressure
+      status: "True"
+---
+apiVersion: v1
+kind: Node
+status:
+  conditions:
+    - type: DiskPressure
+      status: "True"
+---
+apiVersion: v1
+kind: Node
+status:
+  conditions:
+    - type: PIDPressure
+      status: "True"
+---
+apiVersion: v1
+kind: Node
+status:
+  conditions:
+    - type: Ready
+      status: "False"
+...

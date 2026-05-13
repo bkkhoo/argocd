@@ -1,0 +1,53 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: rhacs-secured-cluster
+  namespace: openshift-gitops
+  labels:
+    applications: rhacs-secured-cluster
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+  template:
+    metadata:
+      name: "{{ name }}-rhacs-secured-cluster"
+      labels:
+        applications: rhacs-secured-cluster
+    spec:
+      project: iac-gitops
+      source:
+        repoURL: https://github.com/bkkhoo/argocd.git
+        targetRevision: main
+        path: helm-charts/rhacs
+        helm:
+          parameters:
+            - name: deploymentType
+              value: secured-cluster
+            - name: clusterName
+              value: "{{ name }}"
+      destination:
+        server: "{{ server }}"
+        namespace: stackrox
+      ignoreDifferences:
+        - group: platform.stackrox.io        # rhacm governance policy will set the centralEndpoint
+          kind: SecuredCluster
+          name: stackrox-secured-cluster-services
+          namespace: stackrox
+          jsonPointers:
+            - /spec/centralEndpoint
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+...

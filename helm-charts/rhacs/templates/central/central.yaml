@@ -1,0 +1,38 @@
+{{- if eq .Values.deploymentType "central" }}
+---
+apiVersion: platform.stackrox.io/v1alpha1
+kind: Central
+metadata:
+  name: stackrox-central-services
+  namespace: {{ .Values.namespace.central }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    # argocd dry-run may fail because the crd is not registered yet
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  central:
+    db:
+      resources:
+        limits:
+          cpu: {{ .Values.centralDB.resources.limits.cpu }}
+          memory: {{ .Values.centralDB.resources.limits.memory }}
+        requests:
+          cpu: {{ .Values.centralDB.resources.requests.cpu }}
+          memory: {{ .Values.centralDB.resources.requests.memory }}
+    exposure:
+      route:
+        enabled: true
+    resources:
+      limits:
+        cpu: {{ .Values.central.resources.limits.cpu }}
+        memory: {{ .Values.central.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.central.resources.requests.cpu }}
+        memory: {{ .Values.central.resources.requests.memory }}
+    declarativeConfiguration:
+      secrets:
+        - name: declarative-auth-provider
+  scannerV4:
+    scannerComponent: Enabled
+...
+{{- end }}

@@ -1,0 +1,46 @@
+{{- if eq .Values.deploymentType "central" }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-crs
+  namespace: {{ .Values.namespace.central }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: create-crs
+          image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - /scripts/create-crs.sh
+          env:
+            - name: RHACS_CENTRAL_NAMESPACE
+              value: {{ .Values.namespace.central }}
+            - name: RHACM_POLICIES_NAMESPACE
+              value: {{ .Values.namespace.rhacmPolicies }}
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: rhacs-admin-password
+              mountPath: /var/run/secrets/rhacs
+      volumes:
+        - name: scripts
+          configMap:
+            name: post-sync-hook
+            defaultMode: 0755
+        - name: rhacs-admin-password
+          secret:
+            secretName: central-htpasswd
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: post-sync-hook
+      terminationGracePeriodSeconds: 30
+...
+{{- end }}

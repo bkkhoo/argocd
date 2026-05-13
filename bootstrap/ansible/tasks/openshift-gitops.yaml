@@ -1,0 +1,50 @@
+---
+- name: ensure openshift gitops operator is deployed
+  ansible.builtin.shell:
+    cmd: "helm template {{ playbook_dir }}/../openshift-gitops/operator/ | oc apply -f -"
+
+- name: ensure openshift-gitops operator is Succeeded
+  register: csv_result
+  until:
+    - "'openshift-gitops' in csv_result.stdout"
+    - "'Succeeded' in csv_result.stdout"
+  delay: 5
+  retries: 30
+  ansible.builtin.command:
+    cmd: oc -n openshift-gitops get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+
+- name: check console plugins
+  register: console_plugins
+  ansible.builtin.command:
+    cmd: oc get consoles.operator.openshift.io cluster -o jsonpath="{.spec.plugins}"
+
+- name: ensure gitops console plungin is enabled
+  when: "'gitops-plugin' not in console_plugins.stdout"
+  ansible.builtin.command:
+    # > converts line breaks into space; - removes the trailing newline at the end of the block
+    cmd: >-
+      oc patch consoles.operator.openshift.io cluster --type=json
+      --patch='[{"op": "add", "path": "/spec/plugins/-", "value": "gitops-plugin"}]'
+
+# the argocd instance is automatically created when the openshift-gitops operator is created
+- name: ensure argocd instance is created
+  register: argocd_result
+  until: "'openshift-gitops' in argocd_result.stdout"
+  delay: 5
+  retries: 30
+  ansible.builtin.command:
+    cmd: oc -n openshift-gitops get argocds.argoproj.io -o name
+
+# the auto create argocd instance does not have the desired config; this task ensures desired config
+- name: ensure argocd instance is configured
+  ansible.builtin.shell:
+    cmd: "helm template {{ playbook_dir }}/../openshift-gitops/instance/ --values {{ values_file }} | oc apply -f -"
+
+- name: wait for argocd instance to reach Available phase
+  register: argocd_result
+  until: "'Available' in argocd_result.stdout"
+  delay: 5
+  retries: 60
+  ansible.builtin.command:
+    cmd: oc -n openshift-gitops get argocd openshift-gitops -o jsonpath="{.status.phase}"
+...

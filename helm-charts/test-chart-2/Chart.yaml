@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: webhook-backend-2
+description: Helm Chart to deplo generic webhook backend
+type: application
+version: 1.0
+appVersion: 2.0
+...

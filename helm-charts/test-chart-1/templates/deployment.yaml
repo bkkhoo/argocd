@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-backend-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "test-chart-1.setLabels" .Values.labels | indent 4 }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      {{- include "test-chart-1.setLabels" .Values.labels | indent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: webhook-backend
+      labels:
+        {{- include "test-chart-1.setLabels" .Values.labels | indent 8 }}
+    spec:
+      containers:
+      - name: webhook-backend
+        image: quay.io/bkhoo/python3-async:2.0
+        command:
+          - "python"
+          - "-m"
+          - "http.server"
+          - "8080"
+        env:
+          - name: HOME
+            value: {{ .Values.env.HOME }}
+          - name: CONFIG_FILE
+            value: {{ .Values.env.CONFIG_FILE }}
+      serviceAccountName: {{ .Values.serviceAccount }}
+...

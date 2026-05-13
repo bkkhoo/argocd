@@ -1,0 +1,11 @@
+---
+serviceAccount: webhook-backend-2
+
+labels:
+  app: webhook-backend-2
+  env: lab
+
+env:
+  HOME: /opt
+  CONFIG_FILE: "/opt/config.yaml"
+...

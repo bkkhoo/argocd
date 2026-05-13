@@ -1,0 +1,37 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rhacs-central
+  namespace: openshift-gitops
+  labels:
+    applications: rhacs-central
+spec:
+  project: iac-gitops
+  sources:
+    - repoURL: https://github.com/bkkhoo/argocd.git
+      targetRevision: main
+      path: helm-charts/rhacs
+      helm:
+        parameters:
+          - name: deploymentType
+            value: central
+    - repoURL: https://github.com/bkkhoo/argocd.git
+      targetRevision: main
+      path: helm-charts/rhacs
+      helm:
+        parameters:
+          - name: deploymentType
+            value: secured-cluster
+          - name: clusterName
+            value: local-cluster
+  destination:
+    name: in-cluster
+    namespace: stackrox
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+...

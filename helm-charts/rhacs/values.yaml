@@ -1,0 +1,31 @@
+---
+deploymentType: central   # central or secure-cluster
+
+namespace:
+  operator: rhacs-operator
+  central: stackrox
+  securedCluster: stackrox
+  rhacmPolicies: rhacm-policies
+
+clusterName: DUMMY        # set by argocd using helm values
+
+centralDB:
+  resources:
+    limits:
+      cpu: "8"
+      memory: 16Gi
+    requests:
+      cpu: "4"
+      memory: 8Gi
+
+central:
+  resources:
+    limits:
+      cpu: "4"
+      memory: 8Gi
+    requests:
+      cpu: 1500m
+      memory: 4Gi
+
+minimumAccessRole: Analyst
+...
