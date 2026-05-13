@@ -1,8 +1,9 @@
+{{- range .Values.appProjects }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: iac-gitops
+  name: {{ .name }}
   namespace: openshift-gitops
 spec:
   clusterResourceWhitelist:
@@ -12,5 +13,8 @@ spec:
     - namespace: "*"
       server: "*"
   sourceRepos:
-    - "https://github.com/bkkhoo/*"
+    {{- range .sourceRepos }}
+    - {{ . }}
+    {{- end }}
+{{- end }}
 ...

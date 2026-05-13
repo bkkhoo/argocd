@@ -1,4 +1,11 @@
 ---
+# rhacm settings
+policyNamespace: rhacm-policies
+availabilityConfig: Basic        # Basic or High
+
+################
+
+# openshift-gitops settings
 server:
   autoscale:
     enabled: false
@@ -27,4 +34,9 @@ controller:
     algorithm: consistent-hashing
 
 disableAdmin: false
+
+appProjects:
+  - name: iac-gitops
+    sourceRepos:
+      - "https://github.com/bkkhoo/*"
 ...

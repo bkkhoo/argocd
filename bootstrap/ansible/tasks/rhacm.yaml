@@ -15,7 +15,7 @@
 
 - name: ensure multiClusterHub instance is created
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../rhacm/mch-instance/ | oc apply -f -"
+    cmd: "helm template {{ playbook_dir }}/../rhacm/mch-instance/ --values {{ values_file }} | oc apply -f -"
 
 - name: wait for multiClusterHub instance to reach Running phase
   register: mch_result

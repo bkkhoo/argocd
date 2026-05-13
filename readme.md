@@ -37,11 +37,11 @@ oc apply -k app-of-apps/dev
 
 ## Notes
 
+1. The RHACM PolicyGenerator does not come preinstalled in the OpenShift GitOps container image, use init container to copy PolicyGenerator binary from RHACM application subscription container image. See https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html-single/gitops/index#integrate-pol-gen-ocp-gitops for more details.
+
 1. ArgoCD disabled external plugins by default for security reasons, preventing external plugins from loading:
    - To use Helm charts within an ArgoCD Application that utilizes Kustomize, the `--enable-helm` flag must be enabled. For OpenShift GitOps, this is configured via by adding `kustomizeBuildOptions: --enable-helm` to `argocds.argoproj.io/openshift-gitops` resource.
    - To use RHACM PolicyGenerator within an ArgoCD Application that utilizes Kustomize, the `--enable-alpha-plugins` flag must be enabled. For OpenShift GitOps, this is configured via by adding `kustomizeBuildOptions: --enable-helm` to `argocds.argoproj.io/openshift-gitops` resource.
-
-1. All RHACM ManagedClusters, except the `local-cluster`, should be added to the `gitops-clusters` ClusterSet.
 
 1. The default configuration of the ArgoCD server does not grant any privileges to user login via external identity provider (such as OpenShift); RBAC is configured by changing the `rbac` of `argocds.argoproj.io/openshift-gitops` resource. See https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/ for more details.
 
@@ -58,6 +58,8 @@ oc apply -k app-of-apps/dev
 
    **Notes**:
    - For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` ServiceAccount in `kube-system` namespace) when appliying resources on those clusters, the token has `cluster-admin` privileges.
+
+1. All RHACM ManagedClusters, except the `local-cluster`, should be added to the `gitops-clusters` ClusterSet.
 
 ## Issues
 

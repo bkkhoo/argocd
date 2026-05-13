@@ -27,4 +27,9 @@ controller:
     algorithm: consistent-hashing
 
 disableAdmin: false
+
+appProjects:
+  - name: iac-gitops
+    sourceRepos:
+      - "https://github.com/bkkhoo/*"
 ...
