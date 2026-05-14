@@ -18,15 +18,15 @@ policyDefaults:
   remediationAction: enforce
   severity: medium
   placement:
-    name: placement-configure    # consolidate multiple policies under a single Placement
+    # name: placement-configure    # consolidate multiple policies under a single Placement
     labelSelector:
       matchExpressions:
         - key: vendor
           operator: In
           values:
             - OpenShift
-placementBindingDefaults:
-  name: binding-configure        # consolidates multiple policies into a single PlacementBinding
+# placementBindingDefaults:
+#   name: binding-configure        # consolidates multiple policies into a single PlacementBinding
 
 policies:
   - name: config-remove-kubeadmin

@@ -18,15 +18,15 @@ policyDefaults:
   remediationAction: inform
   severity: medium
   placement:
-    name: placement-monitor    # consolidate multiple policies under a single Placement
+    # name: placement-monitor    # consolidate multiple policies under a single Placement
     labelSelector:
       matchExpressions:
         - key: vendor
           operator: In
           values:
             - OpenShift
-placementBindingDefaults:
-  name: binding-monitor        # consolidates multiple policies into a single PlacementBinding
+# placementBindingDefaults:
+#   name: binding-monitor        # consolidates multiple policies into a single PlacementBinding
 
 policies:
   - name: monitor-cluster-operators
