@@ -1,3 +1,4 @@
+{{- if eq .Values.deploymentType "central" }}
 ---
 kind: SecurityPolicy
 apiVersion: config.stackrox.io/v1alpha1
@@ -43,3 +44,4 @@ spec:
           values:
             - value: openshift
 ...
+{{- end }}

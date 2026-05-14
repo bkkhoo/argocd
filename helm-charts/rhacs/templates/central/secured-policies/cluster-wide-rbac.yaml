@@ -1,3 +1,4 @@
+{{- if eq .Values.deploymentType "central" }}
 ---
 kind: SecurityPolicy
 apiVersion: config.stackrox.io/v1alpha1
@@ -21,7 +22,7 @@ spec:
   lifecycleStages:
     - DEPLOY
   eventSource: NOT_APPLICABLE
-  exclusions: []
+  exclusions:
     - name: "openshift system namespaces"
       deployment:
         name: ""
@@ -67,3 +68,4 @@ spec:
           values:
             - value: ELEVATED_CLUSTER_WIDE
 ...
+{{- end }}
