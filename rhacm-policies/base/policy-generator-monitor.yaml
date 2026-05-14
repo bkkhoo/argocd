@@ -5,123 +5,79 @@ metadata:
   name: pg-monitoring
 policyDefaults:
   namespace: rhacm-policies
-  # policyAnnotations:
-  #   argocd.argoproj.io/sync-wave: "3"
-  #   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  policyAnnotations:
+    generated-by: policy-generator
+    # argocd.argoproj.io/sync-wave: "3"
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  standards:
+    - NIST SP 800-53
+  categories:
+    - CA Assessment Authorization and Monitoring
+  controls:
+    - CA-07 Continuous Monitoring
+  remediationAction: inform
+  severity: medium
   placement:
-    name: placement-monitoring    # consolidate multiple policies under a single Placement
+    name: placement-monitor    # consolidate multiple policies under a single Placement
     labelSelector:
-      vendor: OpenShift
+      matchExpressions:
+        - key: vendor
+          operator: In
+          values:
+            - OpenShift
 placementBindingDefaults:
-  name: binding-monitoring        # consolidates multiple policies into a single PlacementBinding
+  name: binding-monitor        # consolidates multiple policies into a single PlacementBinding
 
 policies:
-  # this policy target all clusters with vendor=OpenShift label
   - name: monitor-cluster-operators
-    standards:
-      - NIST-CSF
-    categories:
-      - PR.IP Information Protection Processes and Procedures
-    controls:
-      - PR.IP-1 Baseline Configuration
     complianceType: mustnothave
-    remediationAction: inform
-    severity: medium
     manifests:
       - path: monitor/cluster-operator-status.yaml
 
-  # this policy target all clusters with vendor=OpenShift label
   - name: monitor-terminating-namespaces
-    standards:
-      - NIST-CSF
-    categories:
-      - CM Configuration Management
-    controls:
-      - CM-2 Baseline Configuration
     complianceType: mustnothave
-    remediationAction: inform
-    severity: medium
     manifests:
       - path: monitor/namespace-status.yaml
 
-  # this policy target all clusters with vendor=OpenShift label
   - name: monitor-install-plans
-    standards:
-      - NIST-CSF
-    categories:
-      - CM Configuration Management
-    controls:
-      - CM-2 Baseline Configuration
     complianceType: mustnothave
-    remediationAction: inform
-    severity: medium
     namespaceSelector:
       include:
         - "*"
     manifests:
       - path: monitor/install-plan-status.yaml
 
-  # this policy target all clusters with vendor=OpenShift label
   - name: monitor-nodes
-    standards:
-      - NIST-CSF
-    categories:
-      - CM Configuration Management
-    controls:
-      - CM-2 Baseline Configuration
     complianceType: mustnothave
-    remediationAction: inform
-    severity: medium
     manifests:
       - path: monitor/node-status.yaml
 
-  # this policy target only the local-cluster
   - name: monitor-managed-clusters
-    standards:
-      - NIST-CSF
-    categories:
-      - CM Configuration Management
-    controls:
-      - CM-2 Baseline Configuration
     complianceType: musthave
-    remediationAction: inform
-    severity: medium
     placement:         # override policyDefaults.placement
-      name: placement-managed-clusters
       labelSelector:
-        name: local-cluster
+        matchExpressions:
+          - key: name
+            operator: In
+            values:
+              - local-cluster
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
-  # this policy target only the local-cluster
   - name: monitor-rhacs-central
-    standards:
-      - NIST-CSF
-    categories:
-      - CM Configuration Management
-    controls:
-      - CM-2 Baseline Configuration
     complianceType: musthave
-    remediationAction: inform
-    severity: medium
     placement:         # override policyDefaults.placement
-      name: placement-rhacs-central
       labelSelector:
-        name: local-cluster
+        matchExpressions:
+          - key: name
+            operator: In
+            values:
+              - local-cluster
     manifests:
       - path: monitor/rhacs-central-status.yaml
 
-  # this policy target all clusters with vendor=OpenShift label
   - name: monitor-rhacs-secured-clusters
-    standards:
-      - NIST-CSF
-    categories:
-      - CM Configuration Management
-    controls:
-      - CM-2 Baseline Configuration
     complianceType: musthave
-    remediationAction: inform
-    severity: medium
     namespaceSelector:
       include:
         - "stackrox"
