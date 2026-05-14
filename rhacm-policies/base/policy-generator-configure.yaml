@@ -16,17 +16,28 @@ policyDefaults:
   controls:
     - CM-02 Baseline Configuration
   remediationAction: enforce
+  policySets:
+    - config-all-clusters
   severity: medium
-  placement:
-    # name: placement-configure    # consolidate multiple policies under a single Placement
-    labelSelector:
-      matchExpressions:
-        - key: vendor
-          operator: In
-          values:
-            - OpenShift
-# placementBindingDefaults:
-#   name: binding-configure        # consolidates multiple policies into a single PlacementBinding
+  # placement:
+  #   name: placement-config    # consolidate multiple policies under a single Placement
+  #   labelSelector:
+  #     matchExpressions:
+  #       - key: vendor
+  #         operator: In
+  #         values:
+  #           - OpenShift
+policySets:
+  - name: config-all-clusters
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+placementBindingDefaults:
+  name: binding-config
 
 policies:
   - name: config-remove-kubeadmin
@@ -36,6 +47,7 @@ policies:
 
   - name: config-rhacs-secured-cluster
     complianceType: musthave
+    policySets: []
     placement:         # override policyDefaults.placement
       labelSelector:
         matchExpressions:

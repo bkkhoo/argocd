@@ -17,16 +17,35 @@ policyDefaults:
     - CA-07 Continuous Monitoring
   remediationAction: inform
   severity: medium
-  placement:
-    # name: placement-monitor    # consolidate multiple policies under a single Placement
-    labelSelector:
-      matchExpressions:
-        - key: vendor
-          operator: In
-          values:
-            - OpenShift
-# placementBindingDefaults:
-#   name: binding-monitor        # consolidates multiple policies into a single PlacementBinding
+  policySets:
+    - monitor-all-clusters
+  # placement:
+  #   name: placement-monitor    # consolidate multiple policies under a single Placement
+  #   labelSelector:
+  #     matchExpressions:
+  #       - key: vendor
+  #         operator: In
+  #         values:
+  #           - OpenShift
+policySets:
+  - name: monitor-all-clusters
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+  - name: monitor-local-cluster
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: name
+            operator: In
+            values:
+              - local-cluster
+placementBindingDefaults:
+  name: binding-monitor
 
 policies:
   - name: monitor-cluster-operators
@@ -54,25 +73,29 @@ policies:
 
   - name: monitor-managed-clusters
     complianceType: musthave
-    placement:         # override policyDefaults.placement
-      labelSelector:
-        matchExpressions:
-          - key: name
-            operator: In
-            values:
-              - local-cluster
+    policySets:
+      - monitor-local-cluster
+    # placement:         # override policyDefaults.placement
+    #   labelSelector:
+    #     matchExpressions:
+    #       - key: name
+    #         operator: In
+    #         values:
+    #           - local-cluster
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
   - name: monitor-rhacs-central
     complianceType: musthave
-    placement:         # override policyDefaults.placement
-      labelSelector:
-        matchExpressions:
-          - key: name
-            operator: In
-            values:
-              - local-cluster
+    policySets:
+      - monitor-local-cluster
+    # placement:         # override policyDefaults.placement
+    #   labelSelector:
+    #     matchExpressions:
+    #       - key: name
+    #         operator: In
+    #         values:
+    #           - local-cluster
     manifests:
       - path: monitor/rhacs-central-status.yaml
 
