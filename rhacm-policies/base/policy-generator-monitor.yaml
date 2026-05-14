@@ -19,14 +19,6 @@ policyDefaults:
   severity: medium
   policySets:
     - monitor-all-clusters
-  # placement:
-  #   name: placement-monitor    # consolidate multiple policies under a single Placement
-  #   labelSelector:
-  #     matchExpressions:
-  #       - key: vendor
-  #         operator: In
-  #         values:
-  #           - OpenShift
 policySets:
   - name: monitor-all-clusters
     placement:
@@ -73,29 +65,15 @@ policies:
 
   - name: monitor-managed-clusters
     complianceType: musthave
-    policySets:
+    policySets:           # override policyDefaults.policySets
       - monitor-local-cluster
-    # placement:         # override policyDefaults.placement
-    #   labelSelector:
-    #     matchExpressions:
-    #       - key: name
-    #         operator: In
-    #         values:
-    #           - local-cluster
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
   - name: monitor-rhacs-central
     complianceType: musthave
-    policySets:
+    policySets:           # override policyDefaults.policySets
       - monitor-local-cluster
-    # placement:         # override policyDefaults.placement
-    #   labelSelector:
-    #     matchExpressions:
-    #       - key: name
-    #         operator: In
-    #         values:
-    #           - local-cluster
     manifests:
       - path: monitor/rhacs-central-status.yaml
 

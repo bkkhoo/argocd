@@ -19,14 +19,6 @@ policyDefaults:
   policySets:
     - config-all-clusters
   severity: medium
-  # placement:
-  #   name: placement-config    # consolidate multiple policies under a single Placement
-  #   labelSelector:
-  #     matchExpressions:
-  #       - key: vendor
-  #         operator: In
-  #         values:
-  #           - OpenShift
 policySets:
   - name: config-all-clusters
     placement:
@@ -47,8 +39,8 @@ policies:
 
   - name: config-rhacs-secured-cluster
     complianceType: musthave
-    policySets: []
-    placement:         # override policyDefaults.placement
+    policySets: []        # override policyDefaults.policySets
+    placement:            # specify placement for this policy
       labelSelector:
         matchExpressions:
           - key: vendor

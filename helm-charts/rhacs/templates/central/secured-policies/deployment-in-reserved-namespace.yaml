@@ -1,0 +1,45 @@
+---
+kind: SecurityPolicy
+apiVersion: config.stackrox.io/v1alpha1
+metadata:
+  name: deployment-in-reserved-namespace
+  namespace: {{ .Values.namespace.central }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+    # argocd dry-run may fail because the crd is not registered yet
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  policyName: deployment in reserved namespace
+  description: no workload should run in default and openshift namespaces
+  rationale: The default and openshift namespaces come out-of-the-box with OpenShift, deploying workload on these namespaces can result in accidental disruption with other services.
+  remediation: Change the namespace/project for the deployment, do not deploy workloads to default and openshift namespaces.
+  disabled: false
+  categories:
+    - DevOps Best Practices
+    - Security Best Practices
+  lifecycleStages:
+    - DEPLOY
+  eventSource: NOT_APPLICABLE
+  exclusions: []
+  scope: []
+  severity: MEDIUM_SEVERITY
+  enforcementActions:
+    - SCALE_TO_ZERO_ENFORCEMENT
+    - UNSATISFIABLE_NODE_CONSTRAINT_ENFORCEMENT
+  notifiers: []
+  policySections:
+    - sectionName: deployment in default namespace
+      policyGroups:
+        - fieldName: Namespace
+          booleanOperator: OR
+          negate: false
+          values:
+            - value: default
+    - sectionName: deployment in openshift namespace
+      policyGroups:
+        - fieldName: Namespace
+          booleanOperator: OR
+          negate: false
+          values:
+            - value: openshift
+...

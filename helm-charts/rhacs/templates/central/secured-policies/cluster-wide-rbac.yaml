@@ -1,0 +1,69 @@
+---
+kind: SecurityPolicy
+apiVersion: config.stackrox.io/v1alpha1
+metadata:
+  name: cluster-wide-rbac
+  namespace: {{ .Values.namespace.central }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+    # argocd dry-run may fail because the crd is not registered yet
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  policyName: cluster wide RBAC
+  description: cluster wide RBAC
+  rationale: Granting cluster wide access to resources is a security risk.
+  remediation: Do not grant cluster wide access to resources to service account; use roleBinding (oc adm policy add-role-to-user) instead of clusterRoleBinding (oc adm policy add-cluster-role-to-user) .
+  disabled: false
+  categories:
+    - DevOps Best Practices
+    - Security Best Practices
+    - Privileges
+  lifecycleStages:
+    - DEPLOY
+  eventSource: NOT_APPLICABLE
+  exclusions: []
+    - name: "openshift system namespaces"
+      deployment:
+        name: ""
+        scope:
+          cluster: ""
+          namespace: "^(kube-.*|openshift-.*|openshift)$"
+          label:
+    - name: "rhacs namespaces"
+      deployment:
+        name: ""
+        scope:
+          cluster: ""
+          namespace: "^(rhacs-operator|stackrox)$"
+          label:
+    - name: "rhacm namespaces"
+      deployment:
+        name: ""
+        scope:
+          cluster: ""
+          namespace: "^(open-cluster-management.*|hive|multicluster-engine|hypershift)$"
+          label:
+    - name: "operator deployments created by olm"
+      deployment:
+        name: ""
+        scope:
+          cluster: ""
+          namespace: ""
+          label:
+            key: "olm.owner.kind"
+            value: "ClusterServiceVersion"
+  scope: []
+  severity: MEDIUM_SEVERITY
+  enforcementActions:
+    - SCALE_TO_ZERO_ENFORCEMENT
+    - UNSATISFIABLE_NODE_CONSTRAINT_ENFORCEMENT
+  notifiers: []
+  policySections:
+    - sectionName: pod has cluster wide permission
+      policyGroups:
+        - fieldName: Minimum RBAC Permissions
+          booleanOperator: OR
+          negate: false
+          values:
+            - value: ELEVATED_CLUSTER_WIDE
+...
