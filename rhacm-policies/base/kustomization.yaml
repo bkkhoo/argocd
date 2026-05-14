@@ -13,13 +13,13 @@ generators:
   - policy-generator-monitor.yaml
   - policy-generator-configure.yaml
 
-# patches:
-#   - target:
-#       kind: Placement
-#     patch: |
-#       - op: add
-#         path: "/spec/clusterSets"
-#         value:
-#           - gitops-clusters
-#           - default
+patches:
+  - target:
+      kind: Placement
+    patch: |
+      - op: add
+        path: "/spec/clusterSets"
+        value:
+          - gitops-clusters
+          - default
 ...
