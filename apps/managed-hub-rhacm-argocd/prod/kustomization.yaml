@@ -10,9 +10,10 @@ patches:
       version: v1alpha1
       kind: ApplicationSet
       name: managed-hub-rhacm-argocd
+    # source index 0 is rhacm, source index 1 is openshift-gitops
     patch: |
       - op: add
-        path: /spec/template/spec/sources/1/helm
+        path: /spec/template/spec/sources/0/helm
         value:
           valuesObject:
             availabilityConfig: High
