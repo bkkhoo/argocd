@@ -10,7 +10,7 @@ metadata:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 data:
-  add-plugin-to-console-operator.sh: |
+  enable-gitops-console-plugin.sh: |
 {{ .Files.Get "files/enable-gitops-console-plugin.sh" | indent 4 }}
 ...
 {{- end }}
