@@ -1,3 +1,4 @@
+{{- if has .Values.deploymentType (list "operator" "all") }}
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
@@ -11,3 +12,4 @@ spec:
   targetNamespaces:
     - open-cluster-management
 ...
+{{- end }}

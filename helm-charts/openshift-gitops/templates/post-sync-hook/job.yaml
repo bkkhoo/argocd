@@ -1,3 +1,4 @@
+{{- if has .Values.deploymentType (list "operator" "all") }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -18,7 +19,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - /scripts/add-plugin-to-console-operator.sh
+            - /scripts/enable-gitops-console-plugin.sh
           volumeMounts:
             - name: scripts
               mountPath: /scripts
@@ -32,3 +33,4 @@ spec:
       serviceAccountName: post-sync-hook
       terminationGracePeriodSeconds: 30
 ...
+{{- end }}

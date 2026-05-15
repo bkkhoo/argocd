@@ -1,3 +1,4 @@
+{{- if has .Values.deploymentType (list "operator" "all") }}
 ---
 apiVersion: console.openshift.io/v1
 kind: ConsolePlugin
@@ -18,3 +19,4 @@ spec:
   i18n:
     loadType: Preload
 ...
+{{- end }}

@@ -22,6 +22,7 @@ patches:
         path: /spec/template/spec/sources/1/helm
         value:
           valuesObject:
+            deploymentType: all
             server:
               autoscale:
                 enabled: false

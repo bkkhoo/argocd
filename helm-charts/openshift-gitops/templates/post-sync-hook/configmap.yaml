@@ -1,3 +1,4 @@
+{{- if has .Values.deploymentType (list "operator" "all") }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -10,5 +11,6 @@ metadata:
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 data:
   add-plugin-to-console-operator.sh: |
-{{ .Files.Get "files/add-plugin-to-console-operator.sh" | indent 4 }}
+{{ .Files.Get "files/enable-gitops-console-plugin.sh" | indent 4 }}
 ...
+{{- end }}

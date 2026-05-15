@@ -16,6 +16,13 @@ patches:
         path: /spec/template/spec/sources/0/helm
         value:
           valuesObject:
+            deploymentType: all
             availabilityConfig: High
             disableHubSelfManagement: true
+    patch: |
+      - op: add
+        path: /spec/template/spec/sources/1/helm
+        value:
+          valuesObject:
+            deploymentType: all
 ...

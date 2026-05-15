@@ -1,3 +1,4 @@
+{{- if has .Values.deploymentType (list "multicluster-hub" "all") }}
 ---
 apiVersion: v1
 kind: Namespace
@@ -7,3 +8,4 @@ metadata:
      argocd.argoproj.io/managed-by: openshift-gitops
 spec: {}
 ...
+{{- end }}

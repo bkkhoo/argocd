@@ -1,4 +1,5 @@
-{{- if .Values.tls.customCA }}
+{{- if has .Values.deploymentType (list "argocd" "all") }}
+  {{- if .Values.tls.customCA }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -9,4 +10,5 @@ data:
   ca.crt: |
 {{ .Files.Get (printf "files/%s" .Values.tls.customCA) | indent 4 }}
 ...
+  {{- end }}
 {{- end }}

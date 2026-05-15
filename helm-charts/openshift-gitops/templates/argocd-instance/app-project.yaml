@@ -1,5 +1,6 @@
-{{- $namespace := .Values.namespace.argocd }}
-{{- range .Values.appProjects }}
+{{- if has .Values.deploymentType (list "argocd" "all") }}
+  {{- $namespace := .Values.namespace.argocd }}
+  {{- range .Values.appProjects }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
@@ -20,5 +21,6 @@ spec:
     {{- range .sourceRepos }}
     - {{ . }}
     {{- end }}
-{{- end }}
+  {{- end }}
 ...
+{{- end }}

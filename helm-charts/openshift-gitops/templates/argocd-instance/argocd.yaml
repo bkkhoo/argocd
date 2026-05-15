@@ -1,3 +1,4 @@
+{{- if has .Values.deploymentType (list "argocd" "all") }}
 ---
 apiVersion: argoproj.io/v1beta1
 kind: ArgoCD
@@ -172,3 +173,4 @@ spec:
   kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
 {{ .Files.Get "files/resource-exclusion.yaml" | indent 2 }}
 ...
+{{- end }}

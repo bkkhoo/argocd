@@ -1,9 +1,9 @@
-{{- if has .Values.deploymentType (list "operator" "all") }}
+{{- if has .Values.deploymentType (list "argocd" "all") }}
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.rhacmNamespace }}
+  name: {{ .Values.namespace.argocd }}
   labels:
      argocd.argoproj.io/managed-by: openshift-gitops
 spec: {}

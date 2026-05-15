@@ -1,4 +1,6 @@
 ---
+deploymentType: all         # operator, argocd, all
+
 namespace:
   operator: openshift-gitops-operator
   argocd: openshift-gitops

@@ -1,3 +1,5 @@
+deploymentType: all         # operator, multicluster-hub, all
+
 rhacmNamespace: open-cluster-management
 policyNamespace: rhacm-policies
 availabilityConfig: High        # Basic or High

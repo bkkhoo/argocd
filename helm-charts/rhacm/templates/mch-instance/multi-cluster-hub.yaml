@@ -1,3 +1,4 @@
+{{- if has .Values.deploymentType (list "multicluster-hub" "all") }}
 ---
 apiVersion: operator.open-cluster-management.io/v1
 kind: MultiClusterHub
@@ -14,3 +15,4 @@ spec:
   disableHubSelfManagement: {{ .Values.disableHubSelfManagement }}
   {{- end }}
 ...
+{{- end }}
