@@ -1,0 +1,44 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: managed-hub-rhacm-argocd
+  namespace: openshift-gitops
+  labels:
+    applications: managed-hub-rhacm-argocd
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: managed-hub
+              operator: Exists
+  template:
+    metadata:
+      name: "{{ name }}-managed-hub-rhacm-argocd"
+      labels:
+        applications: managed-hub-rhacm-argocd
+    spec:
+      project: iac-gitops
+      sources:
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/rhacm
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/openshift-gitops
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/rhacm-openshift-gitops-integration
+      destination:
+        server: "{{ server }}"
+        namespace: default     # objects deployed to multiple namespaces
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+...

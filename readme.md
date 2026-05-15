@@ -22,7 +22,7 @@ The repository folders
 ### Bootstrap Operators (RHACM, OpenShift GitOps)
 
 ```
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap-operators.yaml -e values_file=values-dev.yaml
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e values_file=values-dev.yaml
 ```
 
 **Notes**:

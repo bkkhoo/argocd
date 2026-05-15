@@ -5,7 +5,7 @@ metadata:
   name: gitops-clusters
   namespace: openshift-gitops
   annotations:
-    argocd.argoproj.io/sync-wave: "200"
+    argocd.argoproj.io/sync-wave: "400"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   argoServer:

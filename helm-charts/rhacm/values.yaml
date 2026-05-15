@@ -1,3 +1,4 @@
+rhacmNamespace: open-cluster-management
 policyNamespace: rhacm-policies
 availabilityConfig: High        # Basic or High
-disableHubSelfManagement false
+disableHubSelfManagement: false

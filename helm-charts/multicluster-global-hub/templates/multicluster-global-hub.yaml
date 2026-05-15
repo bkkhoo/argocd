@@ -1,0 +1,22 @@
+---
+apiVersion: operator.open-cluster-management.io/v1alpha4
+kind: MulticlusterGlobalHub
+metadata:
+  name: multiclusterglobalhub
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  availabilityConfig: Basic
+  dataLayer:
+    kafka:
+      topics:
+        specTopic: gh-spec
+        statusTopic: gh-status.*
+    postgres:
+      retention: {{ .Values.postgresRetention }}
+  enableMetrics: true
+  imagePullPolicy: IfNotPresent
+  installAgentOnLocal: true
+...

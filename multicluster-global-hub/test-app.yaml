@@ -1,0 +1,43 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-app
+  namespace: openshift-gitops
+spec:
+  project: iac-gitops
+  source:
+    repoURL: https://github.com/bkkhoo/argocd.git
+    targetRevision: main
+    path: apps/openshift-web-terminal/base/
+  destination:
+    name: managed-hub01
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rhacm-policies
+  namespace: openshift-gitops
+spec:
+  project: iac-gitops
+  source:
+    repoURL: https://github.com/bkkhoo/argocd.git
+    targetRevision: main
+    path: apps/rhacm-policies/base/
+  destination:
+    name: managed-hub01
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+...

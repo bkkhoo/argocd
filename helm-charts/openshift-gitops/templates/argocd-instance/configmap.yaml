@@ -1,0 +1,12 @@
+{{- if .Values.tls.customCA }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tls-custom-ca
+  namespace: {{ .Values.namespace.argocd }}
+data:
+  ca.crt: |
+{{ .Files.Get (printf "files/%s" .Values.tls.customCA) | indent 4 }}
+...
+{{- end }}

@@ -2,14 +2,14 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: advanced-cluster-management
-  namespace: open-cluster-management
+  name: multicluster-global-hub-operator-rh
+  namespace: {{ .Values.namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "5"
 spec:
-  channel: release-2.16
+  channel: release-1.7
   installPlanApproval: Automatic
-  name: advanced-cluster-management
+  name: multicluster-global-hub-operator-rh
   source: redhat-operators
   sourceNamespace: openshift-marketplace
   # config:

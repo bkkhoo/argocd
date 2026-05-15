@@ -1,0 +1,5 @@
+clusterName: DUMMY
+clusterURL: DUMMY
+clusterAuthToken: DUMMY
+
+clusterSet: gitops-clusters

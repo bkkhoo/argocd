@@ -1,0 +1,44 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: supplementary-rbac-argocd-application-controller
+rules:
+  - apiGroups:
+      - samples.operator.openshift.io
+    resources:
+      - configs
+    verbs:        # do not grant create/delete, since argocd only need to update/patch
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  - apiGroups:
+      - cluster.open-cluster-management.io
+    resources:
+      - managedclustersets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - cluster.open-cluster-management.io
+    resources:
+      - managedclustersets/bind
+    verbs:
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: supplementary-rbac-argocd-application-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: supplementary-rbac-argocd-application-controller
+subjects:
+  - kind: ServiceAccount
+    name: openshift-gitops-argocd-application-controller
+    namespace: {{ .Values.namespace.argocd }}
+...

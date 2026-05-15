@@ -5,6 +5,8 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: devworkspace-operator-fast-redhat-operators-openshift-marketplace
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   channel: fast
   installPlanApproval: Automatic
@@ -26,6 +28,8 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: web-terminal
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   channel: fast
   installPlanApproval: Automatic
