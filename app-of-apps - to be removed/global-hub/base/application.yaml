@@ -10,7 +10,7 @@ spec:
   project: iac-gitops
   source:
     repoURL: https://github.com/bkkhoo/argocd.git
-    path: root-app/global-hub/dev
+    path: root-app/global-hub/base
     targetRevision: main
   destination:
     name: in-cluster

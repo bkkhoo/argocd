@@ -10,7 +10,7 @@ The repository folders
 | Folder | Description |
 |--------|-------------|
 | bootstrap | Ansible playbook to deploy and configure OpenShift GitOps, RHACM, etc |
-| app-of-apps | ArgoCD app-of-apps application which deploy other applications/applicationSets specified in `root-app` |
+| ****** app-of-apps | ArgoCD app-of-apps application which deploy other applications/applicationSets specified in `root-app` |
 | root-app | kustomize deployments for dev/uat/prod environment listing the applications/applicationSets to deploy |
 | apps | ArgoCD applications/applicationSets |
 | helm-charts | applications packaged as Helm Charts |
@@ -31,8 +31,14 @@ ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e values_file=v
 
 ### Deploy App of Apps
 
+For MultiCluster Global Hub use case:
 ```
-oc apply -k app-of-apps/dev
+oc apply -k apps/0-global-buh-app-of-apps/base
+```
+
+For regular RHACM use case:
+```
+oc apply -k apps/0-managed-hub-app-of-apps/dev
 ```
 
 ## Notes

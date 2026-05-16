@@ -9,7 +9,7 @@ patches:
       group: argoproj.io
       version: v1alpha1
       kind: ApplicationSet
-      name: managed-hub-rhacm-argocd
+      name: managed-hub-bootstrap
     # /spec/template/spec/sources:
     #   index 0 - rhacm
     #   index 1 - openshift-gitops
@@ -33,5 +33,5 @@ patches:
             deploymentType: all
       - op: replace
         path: /spec/template/spec/sources/3/path
-        value: app-of-apps/managed-hub/prod
+        value: apps/0-managed-hub-app-of-apps/prod
 ...
