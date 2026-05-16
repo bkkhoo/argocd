@@ -4,5 +4,5 @@ name: openshift-gitops
 description: Red Hat OpenShift GitOps
 type: application
 version: 1.0
-appVersion: 1.20
+appVersion: 1.20    # The OpenShift GitOps version depends on catalog source, need not necessary match what is specified here
 ...

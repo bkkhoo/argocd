@@ -8,11 +8,11 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
-  channel: release-2.16
-  installPlanApproval: Automatic
   name: advanced-cluster-management
   source: redhat-operators
   sourceNamespace: openshift-marketplace
+  channel: release-2.16
+  installPlanApproval: Automatic
   # config:
   #   nodeSelector:
   #     node-role.kubernetes.io/infra: ""

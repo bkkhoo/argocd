@@ -4,5 +4,5 @@ name: rhacs
 description: Red Hat Advanced Cluster Security for Kubernetes
 type: application
 version: 1.0
-appVersion: 4.10
+appVersion: 4.10    # The OpenShift GitOps version depends on catalog source, need not necessary match what is specified here
 ...
