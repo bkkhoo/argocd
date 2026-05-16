@@ -12,5 +12,5 @@ patches:
     patch: |
       - op: replace
         path: /spec/source/path
-        value: root-app/prod
+        value: root-app/managed-cluster/prod
 ...

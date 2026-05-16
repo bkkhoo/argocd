@@ -8,7 +8,7 @@ spec:
   project: iac-gitops
   source:
     repoURL: https://github.com/bkkhoo/argocd.git
-    path: root-app/dev
+    path: root-app/managed-cluster/dev
     targetRevision: main
   destination:
     name: in-cluster
