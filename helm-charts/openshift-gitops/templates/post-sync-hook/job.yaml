@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: add-plugin-to-console-operator
+  name: enable-gitops-console-plugin
   namespace: {{ .Values.namespace.operator }}
   annotations:
     argocd.argoproj.io/sync-wave: "300"
