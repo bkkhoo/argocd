@@ -2,13 +2,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 00-managed-hub-app-of-apps            # prefix Application name with 00 for sorting purpose
+  name: 00-global-hub-app-of-apps            # prefix Application name with 00 for sorting purpose
   namespace: openshift-gitops
+  labels:
+    applications: global-hub-app-of-apps
 spec:
   project: iac-gitops
   source:
     repoURL: https://github.com/bkkhoo/argocd.git
-    path: root-app/managed-app/dev
+    path: root-app/global-hub/dev
     targetRevision: main
   destination:
     name: in-cluster

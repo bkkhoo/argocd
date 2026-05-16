@@ -8,9 +8,9 @@ patches:
       group: argoproj.io
       version: v1alpha1
       kind: Application
-      name: app-of-apps
+      name: 00-global-hub-app-of-apps
     patch: |
       - op: replace
         path: /spec/source/path
-        value: root-app/managed-cluster/prod
+        value: root-app/global-hub/prod
 ...

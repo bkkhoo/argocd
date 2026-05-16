@@ -7,10 +7,10 @@ patches:
   - target:
       group: argoproj.io
       version: v1alpha1
-      kind: Application
+      kind: ApplicationSet
       name: 00-managed-hub-app-of-apps
     patch: |
       - op: replace
         path: /spec/source/path
-        value: root-app/managed-app/prod
+        value: root-app/managed-cluster/prod
 ...
