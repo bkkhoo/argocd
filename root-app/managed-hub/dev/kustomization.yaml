@@ -2,10 +2,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ../../../apps/cluster-config/base
   # - ../../apps/rhacm-policies/base
-  # - ../../apps/cluster-config/base
   # - ../../apps/openshift-compliance/base
-  - ../../apps/openshift-web-terminal/base
+  - ../../../apps/openshift-web-terminal/base
   # - ../../apps/rhacs-central/dev
   # - ../../apps/rhacs-secured-cluster/dev
   # - ../../apps/test1/dev

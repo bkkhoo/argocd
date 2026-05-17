@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: managed-hub-bootstrap
+  name: dev-managed-hub-bootstrap
   namespace: openshift-gitops
   labels:
     applications: managed-hub-bootstrap
@@ -28,15 +28,36 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm
+          helm:
+            valuesObject:
+              deploymentType: all
+              availabilityConfig: Basic
+              disableHubSelfManagement: true
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-gitops
+          helm:
+            valuesObject:
+              deploymentType: all
+              server:
+                autoscale:
+                  enabled: false
+              rbac:
+                defaultPolicy: "role:admin"
+              repo:
+                replicas: 1
+              ha:
+                enabled: false
+              controller:
+                sharding:
+                  enabled: false
+              disableAdmin: false
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
-          path: apps/0-managed-hub-app-of-apps/dev
+          path: apps/0-managed-hub-app=of-apps/dev
       destination:
         server: "{{ server }}"
         namespace: default     # objects deployed to multiple namespaces
