@@ -46,7 +46,7 @@ spec:
           path: helm-charts/rhacm-openshift-gitops-integration
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
-          path: apps/0-managed-hub-app=of-apps/prod
+          path: apps/0-managed-hub-app-of-apps/prod
       destination:
         server: "{{ server }}"
         namespace: default     # objects deployed to multiple namespaces
