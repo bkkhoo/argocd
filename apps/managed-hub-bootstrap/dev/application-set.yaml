@@ -16,7 +16,9 @@ spec:
             - key: managed-hub
               operator: Exists
             - key: env
-              value: dev
+              operator: In
+              value:
+                - dev
   template:
     metadata:
       name: "{{ name }}-managed-hub-bootstrap"
