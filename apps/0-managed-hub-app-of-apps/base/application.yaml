@@ -16,7 +16,8 @@ spec:
     path: root-app/managed-hub/dev
     targetRevision: main
   destination:
-    server: "{{ server }}"
+    server: in-cluster
+    namespace: openshift-gitops
   syncPolicy:
     automated:
       prune: false       # the config here modify pre-existing resources that are part of openshift
