@@ -16,7 +16,7 @@ spec:
     path: root-app/managed-hub/dev
     targetRevision: main
   destination:
-    server: in-cluster
+    name: in-cluster
     namespace: openshift-gitops
   syncPolicy:
     automated:
