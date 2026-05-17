@@ -17,7 +17,7 @@ spec:
               operator: Exists
             - key: env
               operator: In
-              value:
+              values:
                 - dev
   template:
     metadata:
