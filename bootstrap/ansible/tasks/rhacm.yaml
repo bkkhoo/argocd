@@ -1,9 +1,9 @@
 ---
-- name: ensure rhacm operator is deployed
+- name: ensure RHACM operator is deployed
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../rhacm/operator/ | oc apply -f -"
+    cmd: "helm template {{ playbook_dir }}/../../helm-charts/rhacm --set deploymentType=operator | oc apply -f -"
 
-- name: ensure rhacm operator is Succeeded
+- name: ensure RHACM operator is Succeeded
   register: csv_result
   until:
     - "'advanced-cluster-management' in csv_result.stdout"
@@ -13,17 +13,17 @@
   ansible.builtin.command:
     cmd: oc -n open-cluster-management get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
-- name: ensure multiClusterHub instance is created
+- name: ensure MultiClusterHub instance is created
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../rhacm/mch-instance/ --values {{ values_file }} | oc apply -f -"
+    cmd: "helm template {{ playbook_dir }}/../../helm-charts/rhacm --set deploymentType=multicluster-hub --values {{ values_file }} | oc apply -f -"
 
-- name: wait for multiClusterHub instance to reach Running phase
+- name: wait for MultiClusterHub instance to reach Running phase
   register: mch_result
   until: "'Running' in mch_result.stdout"
   delay: 5
   retries: 88
   ansible.builtin.command:
-    cmd: oc -n open-cluster-management get mch multiclusterhub -o jsonpath="{.status.phase}"
+    cmd: oc -n open-cluster-management get multiclusterhubs.operator.open-cluster-management.io multiclusterhub -o jsonpath="{.status.phase}"
 
 - name: wait for MultiClusterEngine instance to reach Available phase
   register: mce_result

@@ -1,0 +1,31 @@
+---
+- name: "bootstrap operators (rhacm, openshift gitops)"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    values_file: "values-dev.yaml"
+  tasks:
+    - name: check if values file exists
+      register: file_check
+      ansible.builtin.stat:
+        path: "{{ values_file }}"
+
+    - name: fail if values file is missing
+      ansible.builtin.fail:
+        msg: "Values file {{ values_file }} does not exist."
+      when: not file_check.stat.exists
+
+    - name: deploy and configure rhacm
+      ansible.builtin.import_tasks: tasks/rhacm.yaml
+
+    - name: deploy and configure openshift gitops
+      ansible.builtin.import_tasks: tasks/openshift-gitops.yaml
+
+    - name: ensure rhacm openshift-gitops integration is configured
+      ansible.builtin.shell:
+        cmd: "helm template {{ playbook_dir }}/../rhacm/openshift-gitops-integration/ | oc apply -f -"
+
+    - name: deploy and configure multicluster global hub
+      ansible.builtin.import_tasks: tasks/multicluster-global-hub.yaml
+...

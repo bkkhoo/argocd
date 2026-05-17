@@ -1,0 +1,27 @@
+---
+- name: ensure multicluster-global-hub operator is deployed
+  ansible.builtin.shell:
+    cmd: "helm template {{ playbook_dir }}/../../helm-charts/multicluster-global-hub --set deploymentType=operator | oc apply -f -"
+
+- name: ensure multicluster-global-hub operator is Succeeded
+  register: csv_result
+  until:
+    - "'multicluster-global-hub' in csv_result.stdout"
+    - "'Succeeded' in csv_result.stdout"
+  delay: 5
+  retries: 30
+  ansible.builtin.command:
+    cmd: oc -n multicluster-global-hub get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+
+- name: ensure multiClusterHub instance is created
+  ansible.builtin.shell:
+    cmd: "helm template {{ playbook_dir }}/../../helm-charts/multicluster-global-hub --set deploymentType=global-hub --set availabilityConfig=Basic --set postgresRetention=6m | oc apply -f -"
+
+- name: wait for MulticlusterGlobalHub instance to reach Running phase
+  register: mcgh_result
+  until: "'Running' in mcgh_result.stdout"
+  delay: 5
+  retries: 30
+  ansible.builtin.command:
+    cmd: oc -n multicluster-global-hub get multiclusterglobalhubs multiclusterglobalhub -o jsonpath="{.status.phase}"
+...

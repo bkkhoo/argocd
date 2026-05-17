@@ -1,3 +1,5 @@
+deploymentType: all         # operator, global-hub, all
+
 namespace: multicluster-global-hub
 availabilityConfig: High        # Basic or High
 postgresRetention: 18m         # 18 months; valid time units are "m" and "y"
