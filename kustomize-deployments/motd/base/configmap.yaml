@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: motd
+  annotations:
+    argocd.argoproj.io/sync-options: Delete=false
+data:
+  message: |
+    ***** Authorized users and purposes only - No expectation of privacy. *****
+
+    Access to this and use of system are restricted to authorized users and
+    designated purposes. Unauthorized access or access attempts to this system,
+    as well as use of this system for prohibited purposes are a crime. Criminal
+    trespass to this system will be prosecuted.
+
+    To maintain proper system operation and detect/deter unauthorized use, system
+    administrators may monitor this system. All user activities may be observed,
+    recorded, and/or subject to automated logging.
+...

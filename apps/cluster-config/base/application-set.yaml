@@ -18,12 +18,6 @@ spec:
         applications: cluster-config
     spec:
       project: iac-gitops
-      # ignoreDifferences:
-      #   - group: samples.operator.openshift.io
-      #     kind: Config
-      #     name: cluster
-      #     jsonPointers:
-      #       - /metadata/annotations
       sources:
         # configure operator hub
         - repoURL: https://github.com/bkkhoo/argocd.git
@@ -41,6 +35,10 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: kustomize-deployments/openshift-samples/base
+        # configure motd
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: kustomize-deployments/motd/base
       destination:
         server: "{{ server }}"
       syncPolicy:
