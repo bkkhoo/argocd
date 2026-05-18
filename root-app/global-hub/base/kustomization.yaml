@@ -8,7 +8,7 @@ resources:
 
 patches:
   # apps/cluster-config is set to deploy to all clusters, it is meant for managed-hubs
-  # patch the app so that it targets managedClusters attached to global-hub that are not managed-hubs
+  # patch the app so that it targets only in-cluster of global-hub
   - target:
       group: argoproj.io
       version: v1alpha1
@@ -16,10 +16,10 @@ patches:
       name: cluster-config
     patch: |
       - op: replace
-        path: /spec/generators/0/clusters
+        path: /spec/generators/0
         value:
-          selector:
-            matchExpressions:
-              - key: managed-hub
-                operator: DoesNotExist
+          list:
+            elements:
+              - name: in-cluster
+                server: https://kubernetes.default.svc
 ...
