@@ -4,8 +4,8 @@ kind: Kustomization
 resources:
   - ../../../apps/cluster-config/base
   # - ../../../apps/rhacm-policies/base
-  # - ../../../apps/openshift-compliance/base
   # - ../../../apps/openshift-web-terminal/base
+  # - ../../../apps/openshift-compliance/base
   # - ../../../apps/rhacs-central/dev
   # - ../../../apps/rhacs-secured-cluster/dev
   - ../../../apps/test1/prod

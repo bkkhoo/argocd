@@ -1,0 +1,31 @@
+{{- $randomMinute := mod (randNumeric 2 | atoi) 59 }}
+{{- $randomHour := substr 0 1 (seq (int .Values.schedule.minHour) (int .Values.schedule.maxHour) | nospace | shuffle) }}
+---
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ScanSetting
+metadata:
+  name: raw-result-on-worker
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+timeout: 30m
+strictNodeScan: true
+showNotApplicable: false
+rawResultStorage:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""   # store raw result on worker node; the default scanSetting store on master nodes
+  pvAccessModes:
+    - ReadWriteOnce
+  rotation: 3
+  size: 1Gi
+  tolerations:                           # tolerates all taints
+    - operator: Exists
+schedule: "{{ $randomMinute }} {{ $randomHour }} * * *"
+roles:
+  - master
+  - worker
+maxRetryOnTimeout: 3
+scanTolerations:
+  - operator: Exists
+...

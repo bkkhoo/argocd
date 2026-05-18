@@ -1,0 +1,6 @@
+---
+namespace: openshift-compliance
+schedule:
+  minHour: 1
+  maxHour: 3
+...

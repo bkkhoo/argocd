@@ -21,7 +21,7 @@ spec:
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: kustomize-deployments/openshift-compliance/base/
+        path: helm-charts/openshift-compliance/
       destination:
         server: "{{ server }}"
         namespace: openshift-compliance

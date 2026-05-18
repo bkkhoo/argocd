@@ -10,6 +10,7 @@ resources:
   - ../../../apps/cluster-config/base            # this app set deploys to all cluster
   - ../../../apps/rhacm-policies/base
   - ../../../apps/openshift-web-terminal/base    # this app set deploys to all cluster
+  - ../../../apps/openshift-compliance/base      # this app set deploys to all cluster
 
 patches:
   # apps/cluster-config is set to deploy to all clusters, it is meant for managed-hubs
@@ -41,6 +42,24 @@ patches:
       - op: replace
         path: /spec/template/metadata/name
         value: "01-openshift-web-terminal"
+      - op: replace
+        path: /spec/generators/0
+        value:
+          list:
+            elements:
+              - name: in-cluster
+                server: https://kubernetes.default.svc
+  # apps/openshift-compliance is set to deploy to all clusters, it is meant for managed-hubs
+  # patch the app so that it targets only in-cluster of global-hub
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: ApplicationSet
+      name: openshift-compliance
+    patch: |
+      - op: replace
+        path: /spec/template/metadata/name
+        value: "01-openshift-compliance"
       - op: replace
         path: /spec/generators/0
         value:
