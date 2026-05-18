@@ -22,6 +22,4 @@ patches:
             matchExpressions:
               - key: managed-hub
                 operator: DoesNotExist
-              - key: name
-                operator: DoesNotExist
 ...

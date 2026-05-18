@@ -37,7 +37,7 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: kustomize-deployments/openshift-insights/base
-        # configure managementState to Removed
+        # configure managementState to Removed for openshift samples operator
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: kustomize-deployments/openshift-samples/base
