@@ -1,8 +1,0 @@
----
-apiVersion: v2
-name: rhacm-managed-cluster
-description: Advanced Cluster Management for Kubernetes - Managed Cluster
-type: application
-version: 1.0
-appVersion: 2.16
-...

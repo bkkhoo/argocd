@@ -1,7 +1,10 @@
 ---
 - name: ensure multicluster-global-hub operator is deployed
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../../helm-charts/multicluster-global-hub --set deploymentType=operator | oc apply -f -"
+    cmd: >
+      helm template {{ playbook_dir }}/../../helm-charts/multicluster-global-hub
+      --set deploymentType=operator
+      | oc apply -f -
 
 - name: ensure multicluster-global-hub operator is Succeeded
   register: csv_result
@@ -15,7 +18,12 @@
 
 - name: ensure multiClusterHub instance is created
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../../helm-charts/multicluster-global-hub --set deploymentType=global-hub --set availabilityConfig=Basic --set postgresRetention=6m | oc apply -f -"
+    cmd: >
+      helm template {{ playbook_dir }}/../../helm-charts/multicluster-global-hub
+      --set deploymentType=global-hub
+      --set availabilityConfig="{{ _context[config]['availabilityConfig'] }}"
+      --set postgresRetention="{{ _context[config]['postgresRetention'] }}"
+      | oc apply -f -
 
 - name: wait for MulticlusterGlobalHub instance to reach Running phase
   register: mcgh_result

@@ -11,7 +11,7 @@ metadata:
 spec:
   localClusterName: local-cluster
   availabilityConfig: {{ .Values.availabilityConfig }}
-  {{- if hasKey .Values "disableHubSelfManagement" }}
+  {{- if .Values.disableHubSelfManagement }}
   disableHubSelfManagement: {{ .Values.disableHubSelfManagement }}
   {{- end }}
 ...

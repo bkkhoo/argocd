@@ -1,7 +1,10 @@
 ---
 - name: ensure openshift gitops operator is deployed
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops --set deploymentType=operator | oc apply -f -"
+    cmd: >
+      helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops
+      --set deploymentType=operator
+      | oc apply -f -
 
 - name: ensure openshift-gitops operator is Succeeded
   register: csv_result
@@ -22,7 +25,7 @@
   when: "'gitops-plugin' not in console_plugins.stdout"
   ansible.builtin.command:
     # > converts line breaks into space; - removes the trailing newline at the end of the block
-    cmd: >-
+    cmd: >
       oc patch consoles.operator.openshift.io cluster --type=json
       --patch='[{"op": "add", "path": "/spec/plugins/-", "value": "gitops-plugin"}]'
 
@@ -38,7 +41,11 @@
 # the auto create argocd instance does not have the desired config; this task ensures desired config
 - name: ensure argocd instance is configured
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops --set deploymentType=argocd --values {{ values_file }} | oc apply -f -"
+    cmd: >
+      helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops
+      --set deploymentType=argocd
+      --values "{{ _context[config]['gitOpsValuesFile']}}"
+      | oc apply -f -
 
 - name: wait for argocd instance to reach Available phase
   register: argocd_result

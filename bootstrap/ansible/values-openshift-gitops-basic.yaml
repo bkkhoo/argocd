@@ -1,39 +1,32 @@
 ---
-# rhacm settings
-policyNamespace: rhacm-policies
-availabilityConfig: High        # Basic or High
-
-################
-
-# openshift-gitops settings
 server:
   autoscale:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 5
+    enabled: false
+    minReplicas: 2      # not use when server.autoscale.enabled=false
+    maxReplicas: 5      # not use when server.autoscale.enabled=false
 
 rbac:
-  defaultPolicy: ""
+  defaultPolicy: "role:admin"
 
 repo:
-  replicas: 3
+  replicas: 1
 
 ha:
-  enabled: true
+  enabled: false
 
 tls:
   customCA: "custom-ca.crt"
 
 controller:
   sharding:
-    enabled: true
-    replicas: 3
+    enabled: false
+    replicas: 1         # not use when controller.sharding.enabled=false
     # legacy: default method, which uses a simple modulo operation based on the cluster's index in a sorted list; this approach can cause significant cluster reassignment when clusters are added or removed.
     # round-robin: distributes clusters sequentially across shards in order; this provides a more even distribution by count but remains sensitive to changes in the cluster list order.
     # consistent-hashing: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
     algorithm: consistent-hashing
 
-disableAdmin: true
+disableAdmin: false
 
 appProjects:
   - name: iac-gitops

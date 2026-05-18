@@ -1,5 +1,5 @@
 ---
-- name: bootstrap global hub
+- name: bootstrap regular rhacm hub
   hosts: localhost
   connection: local
   gather_facts: false
@@ -30,7 +30,4 @@
     - name: ensure rhacm openshift-gitops integration is configured
       ansible.builtin.shell:
         cmd: "helm template {{ playbook_dir }}/../..//helm-charts/rhacm-openshift-gitops-integration | oc apply -f -"
-
-    - name: deploy and configure multicluster global hub
-      ansible.builtin.import_tasks: tasks/multicluster-global-hub.yaml
 ...

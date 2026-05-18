@@ -22,7 +22,7 @@ The repository folders
 ### Bootstrap Operators (RHACM, OpenShift GitOps)
 
 ```
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap-global-hub.yaml -e values_file=values-dev.yaml
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap-global-hub.yaml -e config=basic
 ```
 
 **Notes**:
@@ -33,7 +33,7 @@ ansible-playbook -i localhost, bootstrap/ansible/bootstrap-global-hub.yaml -e va
 
 For MultiCluster Global Hub use case:
 ```
-oc apply -k apps/00-global-buh-app-of-apps/base
+oc apply -k apps/00-global-hub-app-of-apps/base
 ```
 
 For regular RHACM use case:

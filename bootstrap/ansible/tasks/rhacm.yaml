@@ -1,7 +1,10 @@
 ---
 - name: ensure RHACM operator is deployed
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../../helm-charts/rhacm --set deploymentType=operator | oc apply -f -"
+    cmd: >
+      helm template {{ playbook_dir }}/../../helm-charts/rhacm
+      --set deploymentType=operator
+      | oc apply -f -
 
 - name: ensure RHACM operator is Succeeded
   register: csv_result
@@ -15,7 +18,12 @@
 
 - name: ensure MultiClusterHub instance is created
   ansible.builtin.shell:
-    cmd: "helm template {{ playbook_dir }}/../../helm-charts/rhacm --set deploymentType=multicluster-hub --values {{ values_file }} | oc apply -f -"
+    cmd: >
+      helm template {{ playbook_dir }}/../../helm-charts/rhacm
+      --set deploymentType=multicluster-hub
+      --set availabilityConfig="{{ _context[config]['availabilityConfig'] }}"
+      --set disableHubSelfManagement=false
+      | oc apply -f -
 
 - name: wait for MultiClusterHub instance to reach Running phase
   register: mch_result
