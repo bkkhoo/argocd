@@ -22,7 +22,7 @@ patches:
     patch: |
       - op: replace
         path: /spec/template/metadata/name
-        value: "0-cluster-config"
+        value: "01-cluster-config"
       - op: replace
         path: /spec/generators/0
         value:
@@ -30,6 +30,8 @@ patches:
             elements:
               - name: in-cluster
                 server: https://kubernetes.default.svc
+  # apps/openshift-web-terminal is set to deploy to all clusters, it is meant for managed-hubs
+  # patch the app so that it targets only in-cluster of global-hub
   - target:
       group: argoproj.io
       version: v1alpha1
@@ -38,7 +40,7 @@ patches:
     patch: |
       - op: replace
         path: /spec/template/metadata/name
-        value: "0-openshift-web-terminal"
+        value: "01-openshift-web-terminal"
       - op: replace
         path: /spec/generators/0
         value:
