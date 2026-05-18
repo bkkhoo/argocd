@@ -10,8 +10,8 @@ metadata:
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
-  generators:
-    - list:                            # list of 1 element
+  generators:                          # make sure only one element in the list
+    - list:
         elements:
           - name: in-cluster
             server: https://kubernetes.default.svc

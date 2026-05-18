@@ -9,8 +9,8 @@ metadata:
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
-  generators:
-    - clusters: {}     # all clusters
+  generators:                          # make sure only one element in the list
+    - clusters: {}                     # all clusters
   template:
     metadata:
       name: "{{ name }}-cluster-config"
