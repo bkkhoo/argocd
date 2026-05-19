@@ -71,4 +71,13 @@ patches:
             elements:
               - name: in-cluster
                 server: https://kubernetes.default.svc
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: Application
+      name: 01-rhacs-central
+    patch: |
+      - op: replace
+        path: /spec/template/metadata/name
+        value: rhacs-central
 ...
