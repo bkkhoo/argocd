@@ -45,12 +45,14 @@ policies:
         matchExpressions:
           - key: vendor
             operator: In
-            values: ["OpenShift"]
+            values:
+              - OpenShift
           - key: name
             operator: NotIn
-            values: ["local-cluster"]
+            values:
+              - local-cluster
           - key: managed-hub
-            operator: DoesNotExists
+            operator: DoesNotExist
     manifests:
       - path: config/rhacs/secured-cluster.yaml
       - path: config/rhacs/secret.yaml

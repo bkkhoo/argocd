@@ -18,7 +18,7 @@ spec:
               values:
                 - OpenShift
             - key: managed-hub
-              operator: DoesNotExists
+              operator: DoesNotExist
   template:
     metadata:
       name: "{{ name }}-rhacs-secured-cluster"
