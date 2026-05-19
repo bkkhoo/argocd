@@ -20,9 +20,17 @@ This Helm chart imports/attaches managed cluster to RHACM hub. The chart expects
    clusterSet: gitops-clusters
    clusterLabels:
      env: dev
-     managed-hub: yes
+     managed-hub: "yes"
    EOF
    ```
+
+   **Notes**:
+   - The label selector uses the `Exists` or `DoesNotExist` operator on `clusterLabels.managed-hub` label, which verifies the label's presence regardless of its value.
+   - If the value of the `clusterLabels.managed-hub` label is a boolean, it must be quoted. Unquoted boolean values will result in the following error:
+     ```
+     unable to decode "STDIN": json: cannot unmarshal bool into Go struct field ObjectMeta.metadata.labels of type string
+     Error from server (Invalid): error when creating "STDIN": KlusterletAddonConfig.agent.open-cluster-management.io "dev-hub01" is invalid: spec.clusterLabels.managed-hub: Invalid value: "boolean": spec.clusterLabels.managed-hub in body must be of type string: "boolean"
+     ```
 
 1. Apply the Helm chart:
    ```

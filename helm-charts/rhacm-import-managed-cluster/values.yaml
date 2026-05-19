@@ -5,5 +5,5 @@
 # clusterAuthToken: DUMMY
 # clusterLabels:
 #   env: dev
-#   managed-hub: yes
+#   managed-hub: "yes"
 # clusterSet: gitops-clusters

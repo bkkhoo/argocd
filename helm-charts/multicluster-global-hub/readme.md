@@ -3,6 +3,6 @@ The `deploymentType` helm value is introduced to allow more flexible use of the 
 - ArgoCD usage: the sync-waves annotation in the YAML templates ensure resources are deployed in orderly manner.
 
 The `deploymentType` accepts:
-- `operator`: deploys OpenShift GitOps operator only.
-- `argocd`: deploys MultiClusterHub instance.
-- `all`: default, deploys both operator and MultiClusterHub instance.
+- `operator`: deploys Multicluster Global Hub operator only.
+- `global-hub`: deploys MulticlusterGlobalHub instance.
+- `all`: default, deploys both operator and MulticlusterGlobalHub instance.
