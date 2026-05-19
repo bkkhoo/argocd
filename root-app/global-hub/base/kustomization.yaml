@@ -75,9 +75,9 @@ patches:
       group: argoproj.io
       version: v1alpha1
       kind: Application
-      name: 01-rhacs-central
+      name: rhacs-central
     patch: |
       - op: replace
-        path: /spec/template/metadata/name
-        value: rhacs-central
+        path: /metadata/name
+        value: 01-rhacs-central
 ...
