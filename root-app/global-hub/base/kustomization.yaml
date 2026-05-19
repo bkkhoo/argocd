@@ -17,14 +17,6 @@ resources:
   # - ../../../apps/rhacs-central/prod
 
 patches:
-  # remove the config-rhacs-secured-cluster rhacm policy
-  - patch: |-
-      $patch: delete
-      group: policy.open-cluster-management.io
-      apiVersion: v1
-      kind: Policy
-      metadata:
-        name: config-rhacs-secured-cluster
   # apps/cluster-config is set to deploy to all clusters, it is meant for managed-hubs
   # patch the app so that it targets only in-cluster of global-hub
   - target:
