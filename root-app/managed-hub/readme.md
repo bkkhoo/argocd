@@ -1,1 +1,1 @@
-The `dev` and `prod` folders are not overlays
+The `dev`, `uat`, and `prod` folders are not overlays.

@@ -7,10 +7,10 @@ resources:
   - ../../../apps/02-managed-hub-bootstrap/prod
 
   # other apps to deploy to global-hub
-  - ../../../apps/cluster-config/base            # this app set deploys to all cluster
   - ../../../apps/rhacm-policies/base
-  - ../../../apps/openshift-web-terminal/base    # this app set deploys to all cluster
-  - ../../../apps/openshift-compliance/base      # this app set deploys to all cluster
+  - ../../../apps/cluster-config/base            # this app set deploys to all clusters, patch to deploy to locally
+  - ../../../apps/openshift-web-terminal/base    # this app set deploys to all clusters, patch to deploy to locally
+  - ../../../apps/openshift-compliance/base      # this app set deploys to all clusters, patch to deploy to locally
 
 patches:
   # apps/cluster-config is set to deploy to all clusters, it is meant for managed-hubs

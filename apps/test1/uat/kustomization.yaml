@@ -12,8 +12,8 @@ patches:
     patch: |
       - op: replace
         path: /spec/template/spec/source/path
-        value: kustomize-deployments/test1/dev/
+        value: kustomize-deployments/test1/uat/
       - op: replace
         path: /spec/template/spec/destination/namespace
-        value: test-dev
+        value: test-uat
 ...

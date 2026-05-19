@@ -1,0 +1,59 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: uat-managed-hub-bootstrap
+  namespace: openshift-gitops
+  labels:
+    applications: managed-hub-bootstrap
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: managed-hub
+              operator: Exists
+            - key: env
+              operator: In
+              values:
+                - uat
+  template:
+    metadata:
+      name: "uat-{{ name }}-managed-hub-bootstrap"
+      labels:
+        applications: managed-hub-bootstrap
+    spec:
+      project: iac-gitops
+      sources:
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/rhacm
+          helm:
+            valuesObject:
+              deploymentType: all
+              availabilityConfig: High
+              disableHubSelfManagement: true
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/openshift-gitops
+          helm:
+            valuesObject:
+              deploymentType: all
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/rhacm-openshift-gitops-integration
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: apps/01-managed-hub-app-of-apps/uat
+      destination:
+        server: "{{ server }}"
+        namespace: default     # objects deployed to multiple namespaces
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+...

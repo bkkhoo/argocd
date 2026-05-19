@@ -1,43 +1,112 @@
-# Red Hat OpenShift GitOps
+# Overview
 
-This repository contains the artifacts requires to:
-- deploy OpenShift GitOps operator
-- deploy and configure OpenShift GitOps
-- deploy applications using the use app of apps pattern
+## Repository Folders
 
-The repository folders
-
-| Folder | Description |
-|--------|-------------|
-| bootstrap | Ansible playbook to deploy and configure OpenShift GitOps, RHACM, etc |
-| ****** app-of-apps | ArgoCD app-of-apps application which deploy other applications/applicationSets specified in `root-app` |
-| root-app | kustomize deployments for dev/uat/prod environment listing the applications/applicationSets to deploy |
-| apps | ArgoCD applications/applicationSets |
-| helm-charts | applications packaged as Helm Charts |
-| kustomize-deployments | applications packaged as Kustomize |
-| rhacm-polices | RHACM governance policies |
-
-## Config
-
-### Bootstrap Operators (RHACM, OpenShift GitOps)
-
+```bash
+├── apps                                # contains folders of argocd applications and applicationSets
+│   ├── 00-global-hub-app-of-apps       # app-of-apps deployment of multicluster global hub
+│   │   └── base
+│   ├── 01-managed-hub-app-of-apps      # app-of-apps deployment of managed hub
+│   │   ├── base
+│   │   ├── dev
+│   │   ├── prod
+│   │   └── uat
+│   ├── 02-managed-hub-bootstrap        # apps to bootstrap managed hub, contains:
+│   │   ├── dev                         #   1. manifests to deploy rhacm and openshift-gitops
+│   │   ├── prod                        #   2. manifests to deploy rhacm integration with openshift-gitops
+│   │   └── uat                         #   3. manifests in managed-hub-app-of-apps
+│   ├── cluster-config                  # base manaaged cluster config (self-provisioner, motd, catalog source, etc)
+│   │   └── base
+│   ├── openshift-compliance            # other applications/operators, one folder for each
+│   │   └── base
+.
+--- snip --- # other helm charts
+.
+├── bootstrap                           # ansible playbook to bootstrap multicluster global hub
+│   └── ansible
+│       └── tasks
+├── helm-charts                         # helm charts, one folder for each; the charts are referred by
+│   ├── multicluster-global-hub         # argocd applications/applicationSets in the apps folder
+│   │   └── templates
+│   │       ├── global-hub
+│   │       └── operator
+│   ├── openshift-compliance
+│   │   └── templates
+│   │       ├── operator
+│   │       └── scan
+.
+--- snip --- # other helm charts
+.
+├── kustomize-deployments               # kustomize-deployments, one folder for each; the deployments are referred by
+│   ├── motd                            # argocd applications/applicationSets in the apps folder
+│   │   └── base
+│   ├── openshift-insights
+│   │   └── base
+.
+--- snip --- # other helm charts
+.
+├── rhacm-policies                      # rhacm policies
+│   └── base
+│       ├── config
+│       │   └── rhacs
+│       └── monitor
+└── root-app                            # root apps; app of apps deploys apps defined here
+    ├── global-hub                      # for multicluster global hub
+    │   └── base
+    └── managed-hub                     # for managed hub of each env
+        ├── dev
+        ├── prod
+        └── uat
 ```
+
+## Usage
+
+### MultiCluster Global Hub Use Case
+
+This is a use case where a MultiCluster Global Hub manages a number of RHACM managed hub clusters, and each managed hub cluster manages a number of manageClusters.
+
+The commands below deploys the following components on the global Hub cluster:
+- RHACM
+- OpenShift GitOps
+- Enable RHACM integration with OpenShift GitOps
+- MultiCluster Global Hub
+- ArgoCD app-of-apps for global hub (`root-app/global-hub/base`) which deploys:
+  - ArgoCD app-of-apps for managed hub (`root-app/managed-hub/<dev|uat|prod>`) to dev/uat/prod managed hubs:
+    - dev managed hubs labels: `managed-hub=yes`, `env=dev`
+    - uat managed hubs labels: `managed-hub=yes`, `env=uat`
+    - prod managed hubs labels: `managed-hub=yes`, `env=prod`
+  - RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`
+  - cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc to `local-cluster`
+  - other ArgoCD applications to `local-cluster`
+
+```bash
 ansible-playbook -i localhost, bootstrap/ansible/bootstrap-global-hub.yaml -e config=basic
+
+# global hub manages manged hubs for multiple environments
+oc apply -k apps/00-global-hub-app-of-apps/base
 ```
 
 **Notes**:
 - Make sure to run playbook from host with `oc` and `helm` command line tools.
 - Make sure to `oc login` to the OpenShift cluster with `custer-admin` privileges before running the Ansible playbook.
 
-### Deploy App of Apps
+### Regular RHACM Use Case
 
-For MultiCluster Global Hub use case:
-```
-oc apply -k apps/00-global-hub-app-of-apps/base
-```
+This is a use case where a regular RHACM hub cluster manages a number of manageClusters.
 
-For regular RHACM use case:
-```
+The commands below deploys the following components on the global Hub cluster:
+- RHACM
+- OpenShift GitOps
+- RHACM integration with OpenShift GitOps
+- ArgoCD app-of-apps for managed hub (`root-app/managed-hub/<dev|uat|prod>`) to dev/uat/prod managed hubs which deploys:
+  - RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`
+  - cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc to managed clusters
+  - other ArgoCD applications to managed clusters
+
+```bash
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap-regular-rhacm-hub.yaml -e config=basic
+
+# dev environment
 oc apply -k apps/01-managed-hub-app-of-apps/dev
 ```
 
@@ -73,7 +142,7 @@ oc apply -k apps/01-managed-hub-app-of-apps/dev
 
 ## Reference
 
-ArgoCD resource orderng:
+ArgoCD resource ordering:
 - https://oneuptime.com/blog/post/2026-02-26-argocd-ordering-priority-multiple-sources/view
 
 OpenShift GitOps sync is failing in user namespace:
@@ -87,7 +156,7 @@ argocd login "$(oc -n openshift-gitops get route openshift-gitops-server -o json
   --password "$(oc -n openshift-gitops get secret openshift-gitops-cluster -o jsonpath='{.data.admin\.password}' | base64 -d)"
 ```
 
-### Optionally Add one or more Clusters
+### Add Clusters to ArgoCD
 
 **Note**: This is not required when RHACM integration with OpenShift GitOps is enabled. RHACM automatically adds ManageClusters to OpenShift GitOps. and syncs all labels on the ManageClusters to ArgoCD clusters.
 

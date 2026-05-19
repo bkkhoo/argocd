@@ -1,0 +1,11 @@
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  name: {{ required "the value clusterName is required" .Values.clusterName }}
+  labels:
+    {{- include "rhacm-import-cluster.labels" . | indent 4 }}
+  annotations: {}
+spec:
+  hubAcceptsClient: true
+...

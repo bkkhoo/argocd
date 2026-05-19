@@ -6,7 +6,7 @@ resources:
   - ../../../apps/cluster-config/base
   - ../../../apps/openshift-web-terminal/base
   # - ../../../apps/openshift-compliance/base
-  # - ../../../apps/rhacs-central/dev
-  # - ../../../apps/rhacs-secured-cluster/dev
-  # - ../../../apps/test1/dev
+  # - ../../../apps/rhacs-central/uat
+  # - ../../../apps/rhacs-secured-cluster/uat
+  # - ../../../apps/test1/uat
 ...

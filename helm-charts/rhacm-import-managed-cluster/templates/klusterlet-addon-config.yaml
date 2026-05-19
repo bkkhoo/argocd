@@ -1,0 +1,20 @@
+---
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: {{ required "the value clusterName is required" .Values.clusterName }}
+  namespace: {{ required "the value clusterName is required" .Values.clusterName }}
+spec:
+  clusterName: {{ required "the value clusterName is required" .Values.clusterName }}
+  clusterNamespace: {{ required "the value clusterName is required" .Values.clusterName }}
+  clusterLabels:
+    {{- include "rhacm-import-cluster.labels" . | indent 4 }}
+  applicationManager:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true
+  certPolicyController:
+    enabled: true
+...
