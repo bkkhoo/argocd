@@ -36,6 +36,8 @@ policySets:
             operator: In
             values:
               - local-cluster
+          - key: managed-hub
+            operator: DoesNotExists
 placementBindingDefaults:
   name: binding-monitor
 
