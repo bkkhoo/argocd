@@ -24,10 +24,10 @@ policySets:
     placement:
       labelSelector:
         matchExpressions:
-          - key: vendor
-            operator: In
-            values:
-              - OpenShift
+          # - key: vendor
+          #   operator: In
+          #   values:
+          #     - OpenShift
           - key: managed-hub
             operator: DoesNotExists
   - name: monitor-local-cluster
