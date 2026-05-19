@@ -1,4 +1,4 @@
-{{- if eq .Values.deploymentType "secured-cluster" }}
+{{- if has .Values.deploymentType (list "secured-cluster" "all") }}
 ---
 apiVersion: v1
 kind: Namespace

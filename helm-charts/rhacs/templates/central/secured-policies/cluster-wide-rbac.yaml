@@ -1,4 +1,4 @@
-{{- if eq .Values.deploymentType "central" }}
+{{- if has .Values.deploymentType (list "central" "all") }}
 ---
 kind: SecurityPolicy
 apiVersion: config.stackrox.io/v1alpha1

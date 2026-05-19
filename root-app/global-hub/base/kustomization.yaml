@@ -2,17 +2,29 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # the following are for managed hub
+  # the following are for managed hubs
   - ../../../apps/02-managed-hub-bootstrap/dev
+  - ../../../apps/02-managed-hub-bootstrap/uat
   - ../../../apps/02-managed-hub-bootstrap/prod
 
-  # other apps to deploy to global-hub
+  # for the global hub itself
   - ../../../apps/rhacm-policies/base
   - ../../../apps/cluster-config/base            # this app set deploys to all clusters, patch to deploy to locally
+
+  # other apps to deploy to global-hub
   - ../../../apps/openshift-web-terminal/base    # this app set deploys to all clusters, patch to deploy to locally
   - ../../../apps/openshift-compliance/base      # this app set deploys to all clusters, patch to deploy to locally
+  # - ../../../apps/rhacs-central/prod
 
 patches:
+  # remove the config-rhacs-secured-cluster rhacm policy
+  - patch: |-
+      $patch: delete
+      group: policy.open-cluster-management.io
+      apiVersion: v1
+      kind: Policy
+      metadata:
+        name: config-rhacs-secured-cluster
   # apps/cluster-config is set to deploy to all clusters, it is meant for managed-hubs
   # patch the app so that it targets only in-cluster of global-hub
   - target:

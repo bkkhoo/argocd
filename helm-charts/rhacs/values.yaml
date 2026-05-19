@@ -1,5 +1,5 @@
 ---
-deploymentType: central   # central or secure-cluster
+deploymentType: central   # all, central, or secure-cluster
 
 namespace:
   operator: rhacs-operator
