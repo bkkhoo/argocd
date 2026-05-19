@@ -28,6 +28,8 @@ policySets:
             operator: In
             values:
               - OpenShift
+          - key: managed-hub
+            operator: DoesNotExists
   - name: monitor-local-cluster
     placement:
       labelSelector:
@@ -36,8 +38,6 @@ policySets:
             operator: In
             values:
               - local-cluster
-          - key: managed-hub
-            operator: DoesNotExists
 placementBindingDefaults:
   name: binding-monitor
 
