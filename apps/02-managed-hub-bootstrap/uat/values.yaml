@@ -1,0 +1,25 @@
+---
+server:
+  autoscale:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+rbac:
+  defaultPolicy: "role:admin"
+repo:
+  replicas: 3
+ha:
+  enabled: true
+tls:
+  customCA: "custom-ca.crt"
+controller:
+  sharding:
+    enabled: true
+    replicas: 3
+    algorithm: consistent-hashing
+disableAdmin: false
+appProjects:
+  - name: iac-gitops
+    sourceRepos:
+      - "https://github.com/bkkhoo/*"
+...

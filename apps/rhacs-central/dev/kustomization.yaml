@@ -12,23 +12,7 @@ patches:
       name: rhacs-central
     patch: |
       - op: add
-        path: /spec/sources/0/helm/valuesObject
+        path: /spec/sources/0/helm/valueFiles
         value:
-            centralDB:
-              resources:
-                limits:
-                  cpu: "4"
-                  memory: 8Gi
-                requests:
-                  cpu: "2"
-                  memory: 4Gi
-            central:
-              resources:
-                limits:
-                  cpu: "2"
-                  memory: 4Gi
-                requests:
-                  cpu: "1"
-                  memory: 2Gi
-            minimumAccessRole: Admin
+          - values.yaml
 ...

@@ -41,19 +41,8 @@ spec:
           helm:
             valuesObject:
               deploymentType: all
-              server:
-                autoscale:
-                  enabled: false
-              rbac:
-                defaultPolicy: "role:admin"
-              repo:
-                replicas: 1
-              ha:
-                enabled: false
-              controller:
-                sharding:
-                  enabled: false
-              disableAdmin: false
+            valueFiles:
+              - values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration

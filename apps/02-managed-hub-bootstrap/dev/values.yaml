@@ -1,0 +1,19 @@
+---
+server:
+  autoscale:
+    enabled: false
+rbac:
+  defaultPolicy: "role:admin"
+repo:
+  replicas: 1
+ha:
+  enabled: false
+controller:
+  sharding:
+    enabled: false
+disableAdmin: false
+appProjects:
+  - name: iac-gitops
+    sourceRepos:
+      - "https://github.com/bkkhoo/*"
+...

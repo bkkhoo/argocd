@@ -41,6 +41,8 @@ spec:
           helm:
             valuesObject:
               deploymentType: all
+            valueFiles:
+              - values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration
