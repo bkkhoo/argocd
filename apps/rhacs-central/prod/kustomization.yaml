@@ -15,7 +15,6 @@ patches:
         path: /spec/sources/0/helm
         value:
           valuesObject:
-            deploymentType: central
             centralDB:
               resources:
                 limits:
