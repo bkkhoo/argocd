@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: post-sync-hook
+  name: insights-post-sync-hook
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -27,6 +27,6 @@ spec:
             defaultMode: 0755
       dnsPolicy: ClusterFirst
       restartPolicy: Never
-      serviceAccountName: post-sync-hook
+      serviceAccountName: insights-post-sync-hook
       terminationGracePeriodSeconds: 30
 ...

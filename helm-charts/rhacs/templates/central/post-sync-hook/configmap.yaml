@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: post-sync-hook
+  name: rhacs-post-sync-hook
   namespace: {{ .Values.namespace.central }}
   annotations:
     argocd.argoproj.io/sync-wave: "105"

@@ -26,11 +26,11 @@ spec:
       volumes:
         - name: scripts
           configMap:
-            name: post-sync-hook
+            name: gitops-post-sync-hook
             defaultMode: 0755
       dnsPolicy: ClusterFirst
       restartPolicy: Never
-      serviceAccountName: post-sync-hook
+      serviceAccountName: gitops-post-sync-hook
       terminationGracePeriodSeconds: 30
 ...
 {{- end }}

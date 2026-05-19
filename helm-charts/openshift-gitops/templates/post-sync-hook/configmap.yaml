@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: post-sync-hook
+  name: gitops-post-sync-hook
   namespace: {{ .Values.namespace.operator }}
   annotations:
     argocd.argoproj.io/sync-wave: "300"

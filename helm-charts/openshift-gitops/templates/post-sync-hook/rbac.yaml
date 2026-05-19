@@ -33,7 +33,7 @@ roleRef:
   name: openshift-gitops-post-sync-hook
 subjects:
   - kind: ServiceAccount
-    name: post-sync-hook
+    name: gitops-post-sync-hook
     namespace: {{ .Values.namespace.operator }}
 ...
 {{- end }}

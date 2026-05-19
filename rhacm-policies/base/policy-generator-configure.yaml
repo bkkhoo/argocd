@@ -49,6 +49,8 @@ policies:
           - key: name
             operator: NotIn
             values: ["local-cluster"]
+          - key: managed-hub
+            operator: DoesNotExists
     manifests:
       - path: config/rhacs/secured-cluster.yaml
       - path: config/rhacs/secret.yaml

@@ -1,4 +1,5 @@
 {{- if has .Values.deploymentType (list "secured-cluster" "all") }}
+  {{- if not (and (eq .Values.deploymentType "all") (eq .Values.namespace.central .Values.namespace.securedCluster)) }}
 ---
 apiVersion: v1
 kind: Namespace
@@ -8,4 +9,5 @@ metadata:
      argocd.argoproj.io/managed-by: openshift-gitops
 spec: {}
 ...
+  {{- end }}
 {{- end }}

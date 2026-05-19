@@ -14,15 +14,8 @@ spec:
       path: helm-charts/rhacs
       helm:
         parameters:
-          - name: deploymentType
-            value: central
-    - repoURL: https://github.com/bkkhoo/argocd.git
-      targetRevision: main
-      path: helm-charts/rhacs
-      helm:
-        parameters:
-          - name: deploymentType
-            value: secured-cluster
+          - name: deploymentType              # this deploys operator, central, secured-cluster, etc
+            value: all
           - name: clusterName
             value: local-cluster
   destination:
