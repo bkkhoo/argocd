@@ -9,7 +9,7 @@ PASSWORD_FILE=/var/run/secrets/rhacs/password
 CRS_NAME="openshift-clusters-$(date +%s)"
 CRS_LIST_FILE=/tmp/crs-list
 CRS_JSON_FILE=/tmp/crs.json
-MAX_ATTEMPTS=30
+MAX_ATTEMPTS=60
 
 rm -f ${CRS_LIST} ${CRS_JSON_FILE}
 
@@ -63,6 +63,19 @@ echo "get rhacs crs"
 _crs=$(oc -n ${RHACS_CENTRAL_NAMESPACE} get secret cluster-registration-secret -o jsonpath="{.data.crs}" | base64 -d)
 echo "get rhacs central hostname"
 _central_endpoint=$(oc -n ${RHACS_CENTRAL_NAMESPACE} get routes.route.openshift.io central -o jsonpath="{.spec.host}")
+
+_attempt_counter=0
+echo "waiting for ${RHACM_POLICIES_NAMESPACE} namespace to be Active..."
+until [ "$(oc get ns ${RHACM_POLICIES_NAMESPACE} -o jsonpath='{.status.phase}' 2>/dev/null)" == "Active" ]; do
+  if [ ${_attempt_counter} -eq ${MAX_ATTEMPTS} ]; then
+    echo "max attempts reached; ${RHACM_POLICIES_NAMESPACE} namespace did not reach Active state"
+    exit 1
+  fi
+  printf "."
+  _attempt_counter=$((${_attempt_counter}+1))
+  echo "made attempt ${_attempt_counter}, waiting..."
+  sleep 5
+done
 
 echo "create ${RHACM_POLICIES_NAMESPACE}/rhacs-crs"
 oc -n ${RHACM_POLICIES_NAMESPACE} create secret generic rhacs-crs\

@@ -1,4 +1,12 @@
-# Opting Out of Remote Heath and Usage Data Reporting
+# About this kustomize deployment
+
+The resources (except namespace.yaml) in this deployment are intended for use as ArgoCD PostSync hook. ArgoCD automatically deletes all the resources (except namespace.yaml) created by this deployment immediately after the PostSync hook completes successfully.
+
+When not using ArgoCD, manually delete the resources (except namespace.yaml) after the job completes.
+
+**Notes**: An ArgoCD application cannot consist solely of a PreSync/PostSync hook without any application resources.
+
+## Opting Out of Remote Heath and Usage Data Reporting
 
 Customers can opt out of reporting health and usage data. Red Hat strongly recommends leaving health and usage reporting enabled for pre-production and test clusters even if it is necessary to opt out for production clusters. This allows Red Hat to be a participant in qualifying OpenShift Container Platform in your environments and react more rapidly to product issues.
 

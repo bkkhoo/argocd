@@ -1,5 +1,9 @@
 # Overview
 
+This diagram illustrates how the different components in the Multicluster Global Hub come together to deliver multicluster management at very high scale.  The root operator is the [global-hub-app-of-apps` ArgoCD application](./apps/00-global-hub-app-of-apps/), which automatically syncs manifests from GitHub to managed hubs and managed clusters.
+
+![Multiluster Global Hub](./images/multicluster-global-hub.png)
+
 ## Repository Folders
 
 ```bash

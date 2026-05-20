@@ -2,10 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # no need to create rhacm-policies namespace, since it has been created as part of 01-managed-hub-app-of-apps
-  # creating the namespace here will cause 01-managed-hub-app-of-apps and 00-rhacm-policies apps to oscillate between Synced/OutOfSync:
-  #   'Namespace/rhacm-policies is part of applications openshift-gitops/00-rhacm-policies and dev-dev-hub01-managed-hub-bootstrap'
-  # - namespace.yaml
+  - namespace.yaml
   - managed-cluster-set-binding.yaml
 generators:
   - policy-generator-monitor.yaml
