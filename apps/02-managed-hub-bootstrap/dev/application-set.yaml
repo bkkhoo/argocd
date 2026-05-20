@@ -38,7 +38,7 @@ spec:
         - repoURL: https://github.com/bkkhoo/helm-values.git
           targetRevision: main
           path: openshift-gitops/dev
-          ref: helmValues
+          ref: helmValues       # for referencig value files from git source
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-gitops
@@ -46,7 +46,9 @@ spec:
             valuesObject:
               deploymentType: all
             valueFiles:
-              - $helmValues/values.yaml      # referencing values from git repo source[1].ref
+              # referencing values from git repo source[1].ref
+              # even though ource[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
+              - $helmValues/openshift-gitops/dev/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration
