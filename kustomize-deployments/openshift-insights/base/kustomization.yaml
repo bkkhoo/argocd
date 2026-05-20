@@ -8,6 +8,7 @@ resources:
   - job.yaml
 configMapGenerator:
   - name: disable-insights-operator
+    namespace: disable-insight
     files:
       - disable-insight-services.sh
     options:
