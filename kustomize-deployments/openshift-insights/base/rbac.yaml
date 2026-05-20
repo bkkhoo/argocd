@@ -32,5 +32,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: insights-post-sync-hook
-    namespace: default
+    namespace: disable-insight
 ...
