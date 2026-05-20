@@ -46,7 +46,7 @@ spec:
             valuesObject:
               deploymentType: all
             valueFiles:
-              - $helmValues/values      # referencing values from git repo source[1].ref
+              - $helmValues/values.yaml      # referencing values from git repo source[1].ref
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration
