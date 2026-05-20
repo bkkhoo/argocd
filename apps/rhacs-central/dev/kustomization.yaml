@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../base
 
+# values files are located relative to the chart path specified in the sources.path
 patches:
   - target:
       group: argoproj.io
@@ -14,5 +15,5 @@ patches:
       - op: add
         path: /spec/sources/0/helm/valueFiles
         value:
-          - values.yaml
+          - ../../apps/rhacs-central/dev/values.yaml
 ...
