@@ -1,11 +1,11 @@
 {{- if has .Values.deploymentType (list "argocd" "all") }}
   {{- $namespace := .Values.namespace.argocd }}
-  {{- range .Values.appProjects }}
+  {{- range $v := .Values.appProjects }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: {{ .name }}
+  name: {{ $v.name }}
   namespace: {{ $namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "200"
@@ -18,8 +18,8 @@ spec:
     - namespace: "*"
       server: "*"
   sourceRepos:
-    {{- range .sourceRepos }}
-    - {{ . }}
+    {{- range $repo := $v.sourceRepos }}
+    - "{{ $repo }}"
     {{- end }}
   {{- end }}
 ...
