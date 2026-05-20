@@ -35,14 +35,18 @@ spec:
               deploymentType: all
               availabilityConfig: Basic
               disableHubSelfManagement: true
+        - repoURL: https://github.com/bkkhoo/helm-values.git
+          targetRevision: main
+          path: openshift-gitops/dev
+          ref: helmValues
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-gitops
           helm:
             valuesObject:
               deploymentType: all
-            valueFiles:    # values files are located relative to the chart path specified in the sources.path
-              - ../../apps/02-managed-hub-bootstrap/dev/values.yaml
+            valueFiles:
+              - $helmValues/values      # referencing values from git repo source[1].ref
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration

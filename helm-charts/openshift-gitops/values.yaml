@@ -34,8 +34,5 @@ controller:
 
 disableAdmin: false
 
-appProjects:
-  - name: iac-gitops
-    sourceRepos:
-      - "https://github.com/bkkhoo/*"
+appProjects: []
 ...
