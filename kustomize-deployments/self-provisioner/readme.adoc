@@ -1,0 +1,9 @@
+:icons: font
+= About this Kustomize Deployment
+
+The configuration disable the `self-provisioner` role.
+
+[NOTE]
+====
+No overlays are necessary since the configuration is the same for all environments (`dev`, `uat`, or `prod`).
+====

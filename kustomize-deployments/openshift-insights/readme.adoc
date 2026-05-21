@@ -1,12 +1,17 @@
-# About this kustomize deployment
+:icons: font
+= About this Kustomize Deployment
 
-The resources (except namespace.yaml) in this deployment are intended for use as ArgoCD PostSync hook. ArgoCD automatically deletes all the resources (except namespace.yaml) created by this deployment immediately after the PostSync hook completes successfully.
+The resources (except namespace.yaml) in this folder are intended for use as ArgoCD PostSync hook. ArgoCD automatically deletes all the resources (except namespace.yaml) created by this deployment immediately after the PostSync hook completes successfully.
 
 When not using ArgoCD, manually delete the resources (except namespace.yaml) after the job completes.
 
-**Notes**: An ArgoCD application cannot consist solely of a PreSync/PostSync hook without any application resources.
+[NOTE]
+====
+- No overlays are necessary since the configuration is the same for all environments (`dev`, `uat`, or `prod`).
+- An ArgoCD application cannot consist solely of a PreSync/PostSync hook without any application resources.
+====
 
-## Opting Out of Remote Heath and Usage Data Reporting
+== Opting Out of Remote Heath and Usage Data Reporting
 
 Customers can opt out of reporting health and usage data. Red Hat strongly recommends leaving health and usage reporting enabled for pre-production and test clusters even if it is necessary to opt out for production clusters. This allows Red Hat to be a participant in qualifying OpenShift Container Platform in your environments and react more rapidly to product issues.
 
@@ -16,14 +21,18 @@ Some of the consequences of opting out of having a connected cluster are:
 - The OpenShift Cluster Manager will not show data about your clusters including health and usage information.
 - Your subscription entitlement information must be manually entered via console.redhat.com without the benefit of automatic usage reporting.
 
-**Notes**:
-- After disabling reporting health and usage data, manually register the cluster to link:https://console.redhat.com/openshift/register[Red Hat Hybrid Cloud Console].
+[NOTE]
+====
+- After reporting of health and usage data has been disabled, manually register the cluster to link:https://console.redhat.com/openshift/register[Red Hat Hybrid Cloud Console].
 - Use the following command to retrieve the Cluster ID of the cluster:
-  ```
-  oc get clusterversions.config.openshift.io version -o jsonpath="{.spec.clusterID}"
-  ```
++
+[source,bash]
+----
+oc get clusterversions.config.openshift.io version -o jsonpath="{.spec.clusterID}"
+----
+====
 
-## Reference
+== References
 
 - https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/support/remote-health-monitoring-with-connected-clusters#insights-operator-new-pull-secret_remote-health-reporting
 - https://manuvaldi.github.io/openshift-disconnected-workshop/openshift-disconnected-workshop/08-Insights-and-Telemetry.html

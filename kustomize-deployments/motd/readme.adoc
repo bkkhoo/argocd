@@ -1,0 +1,9 @@
+:icons: font
+= About this Kustomize Deployment
+
+This configuration ensures that users see a standardized security or maintenance notification before gaining access to the cluster via the CLI or web console.
+
+[NOTE]
+====
+No overlays are necessary since the configuration is the same for all environments (`dev`, `uat`, or `prod`).
+====

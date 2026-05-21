@@ -1,0 +1,124 @@
+:icons: font
+= OpenShift GitOps
+
+Red Hat OpenShift GitOps is a declarative continuous delivery platform based on ArgoCD. It enables teams to adopt GitOps principles for managing cluster configurations and automating secure and repeatable application delivery across hybrid multi-cluster Kubernetes environments. Following GitOps and infrastructure as code principles, administrators can store the configuration of clusters and applications in Git repositories and use Git workflows to roll them out to the target clusters.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-gitops helm-chart/openshift-gitops
+----
+
+## Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete openshift-gitops
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| `deploymentType`
+| all
+a| Deployment type:
+
+- `operator`: deploy operator only
+- `argocd`: deploy `ArgoCD` instance only
+- `all`: deploy operator and `ArgoCD` instance
+
+| `namespace.operator`
+| openshift-gitops-operator
+| Deploys operator to this namespace.
+
+| `namespace.argocd`
+| openshift-gitops
+| Deploys ArgoCD instance to this namespace.
+
+| `server.autoscale.enable`
+| true
+| Enables/Disables autoscaling (with HPA) of ArgoCD server.
+
+| `server.autoscale.minReplicas`
+| 2
+| The minimum number of replicas when scaling down.
+
+| `server.autoscale.maxReplicas`
+| 5
+| The maximum number of replicas when scaling up.
+
+| `rbac.defaultPolicy`
+| None
+| The name of the default role that ArgoCD falls back to when authorizing API requests.
+
+| `repo.replicas`
+| 3
+| The number of replicas for the ArgoCD Repo server.
+
+| `repo.rhacmPolicyGenratorImage`
+| registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
+| The RHACM PolicyGenerator plugin is not preinstalled in the OpenShift GitOps container image. To resolve this, an InitContainer is added to the repo server pod to copy the PolicyGenerator binary from link:https://catalog.redhat.com/en/software/containers/rhacm2/multicluster-observability-rhel9-operator/65a6ebeb202d91251cb0e712?image=69fa2e7a14ce65b274e8c446&architecture=amd64[RHACM Application Subscription container image] to the correct Kustomize plugin directory within the ArgoCD repo server.
+
+| `ha.enabled`
+| true
+| Enables/Disables High Availability (HA) for the ArgoCD controller.
+
+| `tls.customCA`
+| custom-ca.crt
+| Filename of the x509 CA certificate, the file must be located in the `files` folder of the Helm chart.
+
+| `controller.sharding.enabled`
+| true
+| Activates/Deactivates sharding, which distributes clusters across the specified number of controller replicas.
+
+| `controller.sharding.replicas`
+| 3
+| Defines the total number of shards (Application Controller pods) to create. Each replica acts as an independent shard.
+
+| `controller.sharding.algorithm`
+| consistent-hashing
+a| Sharding algorithm:
+- `legacy`: default method, which uses a simple modulo operation based on the cluster's index in a sorted list; this approach can cause significant cluster reassignment when clusters are added or removed.
+- `round-robin`: distributes clusters sequentially across shards in order; this provides a more even distribution by count but remains sensitive to changes in the cluster list order.
+- `consistent-hashing`: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
+
+| `disableAdmin`
+| false
+| Disables/Enables the built-in admin user.
+
+| `appProjects`
+| Empty list
+| List of AppProjects to create.
+|===
+
+Example `appProjects` parameter:
+
+[source,yaml]
+----
+appProjects:
+  - name: iac-gitops
+    sourceRepos:
+      - "https://github.com/bkkhoo/argocd.git"
+      - "https://github.com/bkkhoo/helm-values.git"
+  - name: dev-dummy
+    sourceRepos:
+      - "*"
+----
+
+[NOTE]
+====
+- This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
+- The other `DeploymentType` options are for automation (such as Ansible or bash scripts), where the operator must be deployed first and the instance can only be deployed after the operator's CSV reaches the `Succeeded` phase.
+====

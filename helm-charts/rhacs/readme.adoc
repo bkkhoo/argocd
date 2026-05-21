@@ -1,0 +1,108 @@
+:icons: font
+= Red Hat Advanced Cluster Security for Kubernetes
+
+Red Hat Advanced Cluster Security (RHACS) is an enterprise-grade, Kubernetes-native security platform that provides comprehensive threat detection, policy enforcement, and compliance management for containerized applications. RHACS integrates security into the cloud-native development lifecycle, enabling organizations to secure workloads across multiple Kubernetes-based clusters.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name rhacs helm-chart/rhacs
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete rhacs
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| `deploymentType`
+| all
+a| Deployment type:
+
+  - `operator`: deploy operator only
+  - `central`: deploy operator and `Central` instance only
+  - `secured-cluster`: deploy operator and `SecuredCluster` instance only
+  - `all`: deploy operator, `Central` and `SecuredCluster` instances.
+
+| `namespace.operator`
+| rhacs-operator
+| Deploys RHACS Operator to this namespace.
+
+| `namespace.central`
+| stackrox
+| Deploys RHACS Central to this namespace.
+
+| `namespace.securedCluster`
+| stackrox
+| Deploys RHACS SecuredCluster to this namespace.
+
+| `namespace.rhacmPolicies`
+| rhacm-policies
+| Namespace where RHACM policies are deployed.
+
+| `clusterName`
+| DUMMY
+| Name of the secured cluster.
+
+| `centralDB.resources.limits.cpu`
+| "8"
+| CPU limits for central-db pod.
+
+| `centralDB.resources.memory`
+| 16Gi
+| Memory limits for central-db pod.
+
+| `centralDB.resources.requests.memory`
+| "4"
+| CPU requests for central-db pod.
+
+| `centralDB.resources.requests.memory`
+| 8Gi
+| Memory requests for central-db pod.
+
+| `central.resources.limits.cpu`
+| "4"
+| CPU limits for central pod.
+
+| `central.resources.memory`
+| 8Gi
+| Memory limits for central pod.
+
+| `central.resources.requests.memory`
+| 1500m
+| CPU requests for central pod.
+
+| `central.resources.requests.memory`
+| 4Gi
+| Memory requests for central pod.
+|===
+
+This Helm chart deploys an ArgoCD PostSync hook that:
+
+- creates an RHACS Cluster Registration Secret (CRS).
+- copy the data of the CRS to `rhacs-crs` secret in `namespace.rhacmPolicies` namespace.
+- copy `spec.host` property of `central` route to `rhacs-central-endpoint` configMap in `namespace.rhacmPolicies` namespace.
+
+The secret and configMap created by the ArgoCD PostSync hook facilitate the distribution of CRS to managed clusters to enable the registration of the RHACS SecuredCluster to RHACS Central.
+
+[NOTE]
+====
+- This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
+- The other `DeploymentType` options are for automation (such as Ansible or bash scripts), where the operator must be deployed first and the instance can only be deployed after the operator's CSV reaches the `Succeeded` phase.
+====

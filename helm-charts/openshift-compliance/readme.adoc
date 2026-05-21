@@ -1,0 +1,49 @@
+:icons: font
+= OpenShift Compliance Operator
+
+The OpenShift Compliance Operator uses OpenSCAP to allow administrators to maintain cluster compliance with security benchmarks. The chart deploys scan with the `ocp4-cis` and `ocp4-cis-node` profiles.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-compliance helm-chart/openshift-compliance
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete openshift-compliance
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| `namespace`
+| openshift-compliance
+| Deploys OpenShift Compliance Operator to this namespace.
+
+| `schedule.minHour`
+| 1
+| Schedules scans to run at random time between `minHour` and `maxHour`. Acceptable value 0 - 9.
+
+| `schedule.maxHour`
+| 3 | Default scan start between 1:00am and 3:59am. Acceptable value 0 - 9.
+|===
+
+[NOTE]
+====
+This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner.
+====

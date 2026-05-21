@@ -1,28 +1,22 @@
 ---
 deploymentType: all         # operator, argocd, all
-
 namespace:
   operator: openshift-gitops-operator
   argocd: openshift-gitops
-
 server:
   autoscale:
     enabled: true
     minReplicas: 2
     maxReplicas: 5
-
 rbac:
   defaultPolicy: ""
-
 repo:
   replicas: 3
-
+  rhacmPolicyGenratorImage: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
 ha:
   enabled: true
-
 tls:
   customCA: "custom-ca.crt"
-
 controller:
   sharding:
     enabled: true
@@ -31,8 +25,6 @@ controller:
     # round-robin: distributes clusters sequentially across shards in order; this provides a more even distribution by count but remains sensitive to changes in the cluster list order.
     # consistent-hashing: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
     algorithm: consistent-hashing
-
 disableAdmin: false
-
 appProjects: []
 ...

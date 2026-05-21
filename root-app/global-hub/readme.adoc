@@ -1,0 +1,6 @@
+The xref:./../../apps/00-global-hub-app-of-apps/base/application.yaml[Global Hub ArgoCD app-of-apps] deploys and auto-syncs the nested kustomize deployment in xref:,.global-hub/base[this folder].
+
+[NOTE]
+====
+Multicluster Global Hub manages managed hub for all environments (dev, uat and prod), no overlays required.
+====

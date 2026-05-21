@@ -1,8 +1,0 @@
-# Notes
-
-- ArgoCD manages an application's Helm chart values through multiple mechanisms, each with a specific use case and precedence level:
-  - helm repository values.yaml (lowest)
-  - valueFiles (last file listed wins)
-  - values (inline YAML string)
-  - valuesObject (inline YAML object)
-  - parameters (highest)

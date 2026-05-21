@@ -1,0 +1,59 @@
+:icons: font
+= Advanced Cluster Management for Kubernetes
+
+Red Hat Advanced Cluster Management for Kubernetes (RHACM) provides the multicluster hub, a central management console for managing multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. Administrators can use the hub to manage the life cycle of Kubernetes-based clusters.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name rhacm helm-chart/rhacm
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete rhacm
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,2,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| `deploymentType`
+| all
+a| Deployment type:
+
+- `operator`: deploy operator only
+- `multicluster-hub`: deploy `MultiClusterHub` instance only
+- `all`: deploy operator and `MultiClusterHub` instance
+
+| `rhacmNamespace`
+| open-cluster-management
+| Deploys operator to this namespace.
+
+| `availabilityConfig`
+| High
+| Availability configuration specifies deployment replication for improved availability. Options are: `Basic` or `High`.
+
+| `disableHubSelfManagement`
+| false
+| Configuration setting in Red Hat Advanced Cluster Management (RHACM) that controls whether the hub cluster automatically manages itself.
+|===
+
+[NOTE]
+====
+- This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
+- The other `DeploymentType` options are for automation (such as Ansible or bash scripts), where the operator must be deployed first and the instance can only be deployed after the operator's CSV reaches the `Succeeded` phase.
+====

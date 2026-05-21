@@ -1,0 +1,1 @@
+Multicluster Global Hub manages managed hubs for all environments (lab, dev, uat and prod), no overlays are necessary.

@@ -1,0 +1,4 @@
+:icons: font
+= About this Kustomize Deployment
+
+The deployment manages OperatorHub catalog sources.

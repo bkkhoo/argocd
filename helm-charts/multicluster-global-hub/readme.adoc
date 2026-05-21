@@ -1,0 +1,59 @@
+:icons: font
+= Multicluster Global Hub
+
+The Multicluster Global Hub Operator contains the components of multicluster global hub. The Operator deploys all of the required components for global multicluster management. The components include `multicluster-global-hub-manager` and `multicluster-global-hub-grafana` in the global hub cluster and `multicluster-global-hub-agent` in the managed hub clusters. The Operator also deploys the strimzi kafka and crunchy postgres if external kafka and postgres are not provided.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name multicluster-global-hub helm-chart/multicluster-global-hub
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete multicluster-global-hub
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| `deploymentType`
+| all
+a| Deployment type:
+
+- `operator`: deploy operator only
+- `global-hub`: deploy `MulticlusterGlobalHub` instance only
+- `all`: deploy operator and `MulticlusterGlobalHub` instance
+
+| `namespace`
+| multicluster-global-hub
+| Deploy Multicluster Global Hub to this namespace.
+
+| `availabilityConfig`
+| High
+| Availability configuration specifies deployment replication for improved availability. Options are: `Basic` or `High`.
+
+| `postgresRetention`
+| 18m
+| Defines how long to keep the data in the postgres database. Valid time units are `m` and `y`.
+|===
+
+[NOTE]
+====
+- This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
+- The other `DeploymentType` options are for automation (such as Ansible or bash scripts), where the operator must be deployed first and the instance can only be deployed after the operator's CSV reaches the `Succeeded` phase.
+====

@@ -1,8 +1,8 @@
 ---
 apiVersion: v2
 appVersion: 2.16      # the version depends on openshift catalog source, need not necessary match what is specified here
-name: rhacm-openshift-gitops
-description: Advanced Cluster Management for Kubernetes - OpenShift GipOps Integration
+name: rhacm-import-cluster
+description: Advanced Cluster Management for Kubernetes - Import Cluster
 type: application
 version: 1.0
 ...

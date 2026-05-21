@@ -1,0 +1,12 @@
+:icons: font
+= About this Kustomize Deployment
+
+The resources in this folder deploys OpenShift Web Terminal.
+
+[NOTE]
+====
+- No overlays are necessary since the configuration is the same for all environments (`dev`, `uat`, or `prod`).
+- The Web Terminal operator:
+** leverages the DevWorkspace operator to provision environments which support common cloud CLI tools. When this operator is installed, the DevWorkspace Operator will be installed as a dependency.
+** does not provide any Kubernetes APIs.
+====

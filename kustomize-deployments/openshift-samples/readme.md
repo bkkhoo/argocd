@@ -1,1 +1,0 @@
-The configuration changes the `managementState` of of openshift samples operator to `Removed`. This causes the operator to delete all managed image streams and templates from the `openshift` namespace and ignore further watch events on sample resources.

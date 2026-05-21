@@ -94,11 +94,9 @@ spec:
     env:
       - name: KUSTOMIZE_PLUGIN_HOME
         value: /etc/kustomize/plugin
-    # the rhacm policy generator does not come preinstalled in the OpenShift GitOps container image
-    # use init container to copy policy generator binary from RHACM application subscription container image
     initContainers:
       - name: policy-generator-install
-        image: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
+        image: {{ .Values.repo.rhacmPolicyGenratorImage }}
         command:
           - /bin/bash
         args:

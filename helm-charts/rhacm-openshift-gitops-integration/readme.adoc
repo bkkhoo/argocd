@@ -1,0 +1,32 @@
+:icons: font
+= Advanced Cluster Management for Kubernetes - OpenShift GipOps Integration
+
+RHACM integrates with OpenShift GitOps (ArgoCD) to enable a Hub-and-Spoke architecture where the central Hub cluster orchestrates deployments to managed spoke clusters. This integration relies on `GitOpsCluster` custom resources to register managed clusters with an ArgoCD instance, allowing the Hub to distribute applications based on predefined `Placement` rules and cluster labels.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name rhacm-openshift-gitops helm-chart/rhacm-openshift-gitops
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete rhacm-openshift-gitops
+----
+
+== Configuration
+
+No configuration parameter/value supported by this Helm chart.
+
+[NOTE]
+====
+- This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner.
+- Rather than using this Helm chart as a standalone ArgoCD application, it can be use in a multi sources ArgoCD application that deploy RHACM, OpenShift GitOps, and integrate RHACM with OpenShift GipOps.
+====
