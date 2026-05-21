@@ -8,18 +8,39 @@
     _context:
       basic:
         availabilityConfig: Basic
-        postgresRetention: 3m
         gitOpsValuesFile: "values-openshift-gitops-basic.yaml"
       ha:
         availabilityConfig: High
-        postgresRetention: 18m
         gitOpsValuesFile: "values-openshift-gitops-ha.yaml"
+    _operators:
+      - name: rhacm
+        namespace: open-cluster-management
+        csv_name: advanced-cluster-management
+      - name: openshift-gitops
+        namespace: openshift-gitops-operator
+        csv_name: openshift-gitops-operator
 
   tasks:
     - name: fail if invalid config
       ansible.builtin.fail:
         msg: "config can only be: basic or ha"
       when: "config not in ['basic', 'ha']"
+
+    - name: ensure operator is deployed
+      loop: "{{ _operators }}"
+      register: csv_result
+      ansible.builtin.shell:
+        cmd: >
+          helm template {{ playbook_dir }}/../../helm-charts/{{ item.name }}
+          --set deploymentType=operator
+          | oc apply -f -
+
+    - name: ensure operator status is Succeeded
+      loop: "{{ _operators }}"
+      vars:
+        _csv_name: "{{ item.csv_name }}"
+        _namespace: "{{ item.namespace }}"
+      ansible.builtin.include_tasks: tasks/operator-status.yaml
 
     - name: deploy and configure rhacm
       ansible.builtin.import_tasks: tasks/rhacm.yaml

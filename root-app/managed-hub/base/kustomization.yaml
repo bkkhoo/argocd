@@ -4,5 +4,4 @@ kind: Kustomization
 resources:    # deploy these to all managed hub regardless of environment
   - ../../../apps/rhacm-policies/managed-hub
   - ../../../apps/cluster-config/base
-  - ../../../apps/rhacs-central/dev
 ...

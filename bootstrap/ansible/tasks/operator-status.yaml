@@ -1,0 +1,12 @@
+---
+- name: "ensure {{ _csv_name }} operator status is Succeeded"
+  register: csv_result
+  until:
+    - "_csv_name in csv_result.stdout"
+    - "'Succeeded' in csv_result.stdout"
+  delay: 5
+  retries: 30
+  ansible.builtin.command:
+    cmd: |
+      oc -n {{ _namespace }} get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+...

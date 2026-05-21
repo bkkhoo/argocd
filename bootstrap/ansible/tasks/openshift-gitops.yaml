@@ -1,21 +1,4 @@
 ---
-- name: ensure openshift gitops operator is deployed
-  ansible.builtin.shell:
-    cmd: >
-      helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops
-      --set deploymentType=operator
-      | oc apply -f -
-
-- name: ensure openshift-gitops operator is Succeeded
-  register: csv_result
-  until:
-    - "'openshift-gitops' in csv_result.stdout"
-    - "'Succeeded' in csv_result.stdout"
-  delay: 5
-  retries: 30
-  ansible.builtin.command:
-    cmd: oc -n openshift-gitops get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
-
 - name: check console plugins
   register: console_plugins
   ansible.builtin.command:

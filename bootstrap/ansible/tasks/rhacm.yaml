@@ -1,21 +1,4 @@
 ---
-- name: ensure RHACM operator is deployed
-  ansible.builtin.shell:
-    cmd: >
-      helm template {{ playbook_dir }}/../../helm-charts/rhacm
-      --set deploymentType=operator
-      | oc apply -f -
-
-- name: ensure RHACM operator is Succeeded
-  register: csv_result
-  until:
-    - "'advanced-cluster-management' in csv_result.stdout"
-    - "'Succeeded' in csv_result.stdout"
-  delay: 5
-  retries: 30
-  ansible.builtin.command:
-    cmd: oc -n open-cluster-management get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
-
 - name: ensure MultiClusterHub instance is created
   ansible.builtin.shell:
     cmd: >
