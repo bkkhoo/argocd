@@ -38,7 +38,7 @@ spec:
         - repoURL: https://github.com/bkkhoo/helm-values.git
           targetRevision: main
           path: openshift-gitops/dev
-          ref: helmValues       # for referencig value files from git source
+          ref: helmValues       # for referencing value files from git source
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-gitops
@@ -47,14 +47,14 @@ spec:
               deploymentType: all
             valueFiles:
               # referencing values from git repo source[1].ref
-              # even though ource[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
+              # even though source[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
               - $helmValues/openshift-gitops/dev/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
-          path: apps/01-managed-hub-app-of-apps/uat
+          path: apps/00-managed-hub-app-of-apps/uat
       destination:
         server: "{{ server }}"
         namespace: default     # objects deployed to multiple namespaces

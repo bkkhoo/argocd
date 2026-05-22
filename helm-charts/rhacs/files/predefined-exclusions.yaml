@@ -1,0 +1,54 @@
+# predefined exclusions to ensure consistency in configuration, and ease maintenance
+---
+openshift:
+  - name: "openshift system namespaces"
+    deployment:
+      name: ""
+      scope:
+        cluster: ""
+        namespace: "^(kube-.*|openshift-.*|openshift)$"
+        label:
+
+rhacs:
+  - name: "rhacs namespaces"
+    deployment:
+      name: ""
+      scope:
+        cluster: ""
+        namespace: "^(rhacs-operator|stackrox)$"
+        label:
+
+rhacm:
+  - name: "rhacm namespaces"
+    deployment:
+      name: ""
+      scope:
+        cluster: ""
+        namespace: "^(open-cluster-management.*|hive|hypershift|multicluster-engine|multicluster-global-hub)$"
+        label:
+
+openshift-pipelines:
+  - name: "openshift-pipeline EventListener"
+    deployment:
+      name: ""
+      scope:
+        cluster: ""
+        namespace: ""
+        label:
+          key: "app.kubernetes.io/managed-by"
+          value: "EventListener"
+  - name: "openshift-pipeline TaskRun pod"
+    deployment:
+      name: ""
+      scope:
+        cluster: ""
+        namespace: ""
+        label:
+          key: "app.kubernetes.io/managed-by"
+          value: "tekton-pipelines"
+...
+
+# default-broker
+# gitops-clusters-broker
+# openshift-gitops
+# openshift-gitops-operator

@@ -86,4 +86,20 @@ policies:
         - "stackrox"
     manifests:
       - path: monitor/rhacs-secured-cluster-status.yaml
+
+  - name: monitor-all-stars-role
+    complianceType: mustnothave
+    namespaceSelector:
+      include:
+        - "*"
+    manifests:
+      - path: monitor/all-stars-role.yaml
+
+  - name: monitor-privileges-scc-binding
+    complianceType: mustnothave
+    namespaceSelector:
+      include:
+        - "*"
+    manifests:
+      - path: monitor/privileged-scc-role-binding.yaml
 ...

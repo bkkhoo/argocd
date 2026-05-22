@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 01-managed-hub-app-of-apps           # prefix Application name with 00 for sorting purpose
+  name: 00-managed-hub-app-of-apps           # prefix Application name with 00 for sorting purpose
   namespace: openshift-gitops
   labels:
     applications: managed-hub-app-of-apps

@@ -1,4 +1,4 @@
-# Notes
+= Notes
 
 The `dev`, `uat`, and `prod` folders are not overlays. Setting those folders as overlays will result in the following error when a parent kustomize deployment include multiple overlays, as in `root-app/global-hub/base/kustomization.yaml`.
 

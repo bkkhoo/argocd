@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: dev-managed-hub-bootstrap
+  name: prod-managed-hub-bootstrap
   namespace: openshift-gitops
   labels:
     applications: managed-hub-bootstrap
@@ -18,10 +18,10 @@ spec:
             - key: env
               operator: In
               values:
-                - dev
+                - prod
   template:
     metadata:
-      name: "dev-{{ name }}-managed-hub-bootstrap"
+      name: "prod-{{ name }}-managed-hub-bootstrap"
       labels:
         applications: managed-hub-bootstrap
     spec:
@@ -33,28 +33,22 @@ spec:
           helm:
             valuesObject:
               deploymentType: all
-              availabilityConfig: Basic
+              availabilityConfig: High
               disableHubSelfManagement: true
-        - repoURL: https://github.com/bkkhoo/helm-values.git
-          targetRevision: main
-          path: openshift-gitops/dev
-          ref: helmValues       # for referencig value files from git source
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-gitops
           helm:
             valuesObject:
               deploymentType: all
-            valueFiles:
-              # referencing values from git repo source[1].ref
-              # even though ource[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
-              - $helmValues/openshift-gitops/dev/values.yaml
+            valueFiles:    # values files are located relative to the chart path specified in the sources.path
+              - ../../apps/01-managed-hub-bootstrap/prod/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
-          path: apps/01-managed-hub-app-of-apps/dev
+          path: apps/00-managed-hub-app-of-apps/prod
       destination:
         server: "{{ server }}"
         namespace: default     # objects deployed to multiple namespaces

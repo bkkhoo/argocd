@@ -1,7 +1,7 @@
 :icons: font
 = Overview
 
-This diagram illustrates how the different components in the Multicluster Global Hub come together to deliver multicluster management at very high scale.  The root operator is the xref:./apps/00-global-hub-app-of-apps/[global-hub-app-of-apps ArgoCD application], which automatically syncs manifests from GitHub to managed hubs and managed clusters.
+This diagram illustrates how the different components in the Multicluster Global Hub come together to deliver multicluster management at very high scale.  The root operator is the xref:apps/00-global-hub-app-of-apps[global-hub-app-of-apps ArgoCD application], which automatically syncs manifests from GitHub to managed hubs and managed clusters.
 
 image::./images/multicluster-global-hub.png[Multiluster Global Hub]
 
@@ -12,12 +12,12 @@ image::./images/multicluster-global-hub.png[Multiluster Global Hub]
 ├── apps                              # contains folders of argocd applications and applicationSets
 │ ├── 00-global-hub-app-of-apps       # app-of-apps deployment of multicluster global hub
 │ │ └── base
-│ ├── 01-managed-hub-app-of-apps      # app-of-apps deployment of managed hub
+│ ├── 00-managed-hub-app-of-apps      # app-of-apps deployment of managed hub
 │ │ ├── base
 │ │ ├── dev
 │ │ ├── prod
 │ │ └── uat
-│ ├── 02-managed-hub-bootstrap        # apps to bootstrap managed hub, contains:
+│ ├── 01-managed-hub-bootstrap        # apps to bootstrap managed hub, contains:
 │ │ ├── dev                           #   1. manifests to deploy rhacm and openshift-gitops
 │ │ ├── prod                          #   2. manifests to deploy rhacm integration with openshift-gitops
 │ │ └── uat                           #   3. manifests in managed-hub-app-of-apps
@@ -109,7 +109,7 @@ This is a use case where a regular RHACM hub cluster manages a number of manageC
 ansible-playbook -i localhost, bootstrap/ansible/bootstrap-regular-rhacm-hub.yaml -e config=basic
 
 # dev environment
-oc apply -k apps/01-managed-hub-app-of-apps/dev
+oc apply -k apps/00-managed-hub-app-of-apps/dev
 ----
 
 The commands above deploy the following components on the global Hub cluster:

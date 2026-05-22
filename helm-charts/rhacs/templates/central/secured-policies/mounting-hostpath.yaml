@@ -3,17 +3,17 @@
 kind: SecurityPolicy
 apiVersion: config.stackrox.io/v1alpha1
 metadata:
-  name: cluster-wide-rbac
+  name: mounting-hostPath
   namespace: {{ .Values.namespace.central }}
   annotations:
     argocd.argoproj.io/sync-wave: "200"
     # argocd dry-run may fail because the crd is not registered yet
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  policyName: cluster wide RBAC
-  description: cluster wide RBAC
-  rationale: Granting cluster wide access to resources is a security risk.
-  remediation: Do not grant cluster wide access to resources to service account; use roleBinding (oc adm policy add-role-to-user) instead of clusterRoleBinding (oc adm policy add-cluster-role-to-user) .
+  policyName: mounting hostPath
+  description: mounting hostPath
+  rationale: Mounting of hostPath implies container can access files on the host. This expands the attack surface of the container and gives an intruder an opportunity to break containment if the host is not properly secured.
+  remediation: Ensure that deployment do not mount hostPath, or exclude this deployment if hostPath mount is required.
   disabled: false
   categories:
     - DevOps Best Practices
@@ -27,17 +27,15 @@ spec:
 {{ include "rhacs.setExclusions" (dict "root" $ "exclusions" $exclusions) | indent 4 }}
   scope: []
   severity: MEDIUM_SEVERITY
-  enforcementActions:
-    - SCALE_TO_ZERO_ENFORCEMENT
-    - UNSATISFIABLE_NODE_CONSTRAINT_ENFORCEMENT
+  enforcementActions: []
   notifiers: []
   policySections:
-    - sectionName: pod has cluster wide permission
-      policyGroups:
-        - fieldName: Minimum RBAC Permissions
-          booleanOperator: OR
-          negate: false
-          values:
-            - value: ELEVATED_CLUSTER_WIDE
+  - sectionName: volume type hostPath
+    policyGroups:
+    - fieldName: Volume Type
+      booleanOperator: OR
+      negate: false
+      values:
+      - value: HostPath
 ...
 {{- end }}

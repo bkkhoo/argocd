@@ -11,6 +11,6 @@ metadata:
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 data:
   create-crs.sh: |
-{{ .Files.Get "scripts/create-crs.sh" | indent 4 }}
+{{ .Files.Get "files/create-crs.sh" | indent 4 }}
 ...
 {{- end }}
