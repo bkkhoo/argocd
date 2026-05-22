@@ -7,18 +7,17 @@ resources:
   - ../../../apps/01-managed-hub-bootstrap/uat
   - ../../../apps/01-managed-hub-bootstrap/prod
 
-  # for the global hub itself
+  # apps that target in-cluster only
   - ../../../apps/rhacm-policies/base
-  - ../../../apps/cluster-config/base            # this app set deploys to all clusters, patch to deploy to locally
-
-  # other apps to deploy to global-hub
-  - ../../../apps/openshift-web-terminal/base    # this app set deploys to all clusters, patch to deploy to locally
-  - ../../../apps/openshift-compliance/base      # this app set deploys to all clusters, patch to deploy to locally
   - ../../../apps/rhacs-central/prod
 
+  # apps to target all clusters (generators[0].clusters: {})
+  # reuse these apps for deployment to global-hub cluster, patch to make them target only in-cluster
+  - ../../../apps/cluster-config/base
+  - ../../../apps/openshift-web-terminal/base
+  - ../../../apps/openshift-compliance/base
+
 patches:
-  # apps/cluster-config is set to deploy to all clusters, it is meant for managed-hubs
-  # patch the app so that it targets only in-cluster of global-hub
   - target:
       group: argoproj.io
       version: v1alpha1
@@ -35,8 +34,6 @@ patches:
             elements:
               - name: in-cluster
                 server: https://kubernetes.default.svc
-  # apps/openshift-web-terminal is set to deploy to all clusters, it is meant for managed-hubs
-  # patch the app so that it targets only in-cluster of global-hub
   - target:
       group: argoproj.io
       version: v1alpha1
@@ -53,8 +50,6 @@ patches:
             elements:
               - name: in-cluster
                 server: https://kubernetes.default.svc
-  # apps/openshift-compliance is set to deploy to all clusters, it is meant for managed-hubs
-  # patch the app so that it targets only in-cluster of global-hub
   - target:
       group: argoproj.io
       version: v1alpha1
@@ -71,13 +66,4 @@ patches:
             elements:
               - name: in-cluster
                 server: https://kubernetes.default.svc
-  - target:
-      group: argoproj.io
-      version: v1alpha1
-      kind: Application
-      name: rhacs-central
-    patch: |
-      - op: replace
-        path: /metadata/name
-        value: 01-rhacs-central
 ...

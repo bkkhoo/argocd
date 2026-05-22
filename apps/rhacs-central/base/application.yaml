@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rhacs-central
+  name: 01-rhacs-central
   namespace: openshift-gitops
   labels:
     applications: rhacs-central
