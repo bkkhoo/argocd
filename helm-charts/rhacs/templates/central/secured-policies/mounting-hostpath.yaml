@@ -3,7 +3,7 @@
 kind: SecurityPolicy
 apiVersion: config.stackrox.io/v1alpha1
 metadata:
-  name: mounting-hostPath
+  name: mounting-hostpath
   namespace: {{ .Values.namespace.central }}
   annotations:
     argocd.argoproj.io/sync-wave: "200"
