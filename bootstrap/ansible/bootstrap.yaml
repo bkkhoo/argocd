@@ -1,0 +1,98 @@
+---
+- name: bootstrap
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    config: basic
+    global_hub: yes
+    env: dev
+
+    _context:
+      basic:
+        availabilityConfig: Basic
+        postgresRetention: 3m
+        gitOpsValuesFile: "values-openshift-gitops-basic.yaml"
+      ha:
+        availabilityConfig: High
+        postgresRetention: 18m
+        gitOpsValuesFile: "values-openshift-gitops-ha.yaml"
+    _components:
+      - helm_chart: openshift-gitops
+        install: true
+        namespace: openshift-gitops-operator
+        csv_name: openshift-gitops-operator
+        instance:
+          kind: argocds.argoproj.io
+          name: openshift-gitops
+          namespace: openshift-gitops
+          helm_options: >-
+            --set deploymentType=argocd
+            --values {{ _context[config]['gitOpsValuesFile']}}
+          status: Available
+      - helm_chart: rhacm
+        install: true
+        namespace: open-cluster-management
+        csv_name: advanced-cluster-management
+        instance:
+          kind: multiclusterhubs.operator.open-cluster-management.io
+          name:  multiclusterhub
+          namespace: open-cluster-management
+          helm_options: >-
+            --set deploymentType=multicluster-hub
+            --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
+            --set disableHubSelfManagement=false
+          status: Running
+      - helm_chart: multicluster-global-hub
+        install: "{{ global_hub }}"
+        namespace: multicluster-global-hub
+        csv_name: multicluster-global-hub
+        instance:
+          kind: multiclusterglobalhubs.operator.open-cluster-management.io
+          name: multiclusterglobalhub
+          namespace: multicluster-global-hub
+          helm_options: >-
+            --set deploymentType=global-hub
+            --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
+            --set postgresRetention={{ _context[config]['postgresRetention'] }}
+          status: Running
+
+  tasks:
+    - name: fail if invalid config
+      when: "config not in ['basic', 'ha']"
+      ansible.builtin.fail:
+        msg: "config can only be: basic or ha"
+
+    - name: ensure components are deployed
+      loop: "{{ _components }}"
+      loop_control:
+        label: "{{ item.helm_chart }}"
+      vars:
+        _helm_chart: "{{ item.helm_chart }}"
+        _namespace: "{{ item.namespace }}"
+        _csv_name: "{{ item.csv_name }}"
+        _instance: "{{ item.instance }}"
+      when:
+        - item.install | bool
+      ansible.builtin.include_tasks: tasks/install-component.yaml
+
+    - name: check gitops console plugins
+      register: console_plugins
+      ansible.builtin.command:
+        cmd: oc get consoles.operator.openshift.io cluster -o jsonpath="{.spec.plugins}"
+
+    - name: ensure gitops console plungin is enabled
+      when: "'gitops-plugin' not in console_plugins.stdout"
+      ansible.builtin.command:
+        cmd: >-
+          oc patch consoles.operator.openshift.io cluster --type=json
+          --patch='[{"op": "add", "path": "/spec/plugins/-", "value": "gitops-plugin"}]'
+
+    - name: ensure global-hub app-of-apps is deployed
+      when: global_hub | bool
+      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-global-hub-app-of-apps/base
+
+    - name: ensure managed-hub app-of-apps is deployed
+      when: not (global_hub | bool)
+      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-managed-hub-app-of-apps/{{ env }}
+...

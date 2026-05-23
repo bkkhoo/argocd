@@ -34,6 +34,10 @@ placementBindingDefaults:
 policies:
   - name: config-remove-kubeadmin
     complianceType: mustnothave
+    categories:
+      - AC Access Control
+    controls:
+      - AC-02 Account Management
     manifests:
       - path: config/kubeadmin-secret.yaml
 

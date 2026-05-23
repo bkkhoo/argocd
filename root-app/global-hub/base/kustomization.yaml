@@ -11,12 +11,15 @@ resources:
   - ../../../apps/rhacm-policies/base
   - ../../../apps/rhacs-central/prod
 
-  # apps to target all clusters (generators[0].clusters: {})
+  # apps that target all clusters (generators[0].clusters: {})
   # reuse these apps for deployment to global-hub cluster, patch to make them target only in-cluster
   - ../../../apps/cluster-config/base
   - ../../../apps/openshift-web-terminal/base
   - ../../../apps/openshift-compliance/base
 
+# patch to:
+# - add '01' prefix to the apps for sorting purpose, and
+# - change generator to list with in-cluster only
 patches:
   - target:
       group: argoproj.io

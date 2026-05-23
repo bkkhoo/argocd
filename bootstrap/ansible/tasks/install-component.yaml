@@ -1,0 +1,34 @@
+---
+- name: "ensure {{ _helm_chart }} operator is deployed"
+  when:
+  register: csv_result
+  ansible.builtin.shell:
+    cmd: >-
+      helm template {{ playbook_dir }}/../../helm-charts/{{ _helm_chart }}
+      --set deploymentType=operator
+      | oc apply -f -
+
+- name: "ensure {{ _csv_name }} csv status is Succeeded"
+  register: csv_result
+  until:
+    - "_csv_name in csv_result.stdout"
+    - "'Succeeded' in csv_result.stdout"
+  delay: 5
+  retries: 38
+  ansible.builtin.command:
+    cmd: |-
+      oc -n {{ _namespace }} get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+
+- name: "ensure {{ _instance.kind }} instance is deployed"
+  ansible.builtin.shell: >-
+    helm template {{ playbook_dir }}/../../helm-charts/{{ _helm_chart }} {{ _instance.helm_options }} | oc apply -f -
+
+- name: "wait for {{ _instance.kind }} instance to reach Running/Available phase"
+  register: instance_result
+  until: "_instance.status in instance_result.stdout"
+  delay: 5
+  retries: 80
+  ansible.builtin.command:
+    cmd: >-
+      oc {{ "-n " + _instance.namespace if _instance.namespace else "" }} get {{ _instance.kind }} {{ _instance.name }} -o jsonpath="{.status.phase}"
+...

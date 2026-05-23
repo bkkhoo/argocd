@@ -3,9 +3,7 @@
 
 The App of Apps pattern in ArgoCD is a hierarchical GitOps strategy where a single parent/root Application manages the lifecycle of multiple child Applications. This approach centralizes management by having the parent app monitor a Git repository directory containing child Application manifests, automatically creating, updating, or deleting them as changes are committed.
 
-The xref:base/application.yaml[Global Hub ArgoCD app-of-apps] monitors and auto-sync child applications in this xref:../../root-app/global-hub/base[Git repository directory].
-
-[NOTE]
-====
-Multicluster Global Hub manages managed hubs for all environments (dev, uat and prod), no overlays required.
-====
+The Managed Hub ArgoCD app-of-apps monitors and auto-sync child applications:
+- dev environment: this xref:../../root-app/managed-hub/dev[dev Git repository directory].
+- uat environment: this xref:../../root-app/managed-hub/uat[uat Git repository directory].
+- prod environment: this xref:../../root-app/managed-hub/prod[prod Git repository directory].

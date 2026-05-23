@@ -1,0 +1,36 @@
+:icons: font
+= Bootstrap Hub Cluster
+
+Ansible playbook to bootstrap a new cluster for:
+
+- MultiCluster Global Hub Use Case:
+** Deploys OpenShift GitOps, RHACM, and Multicluster Global Hub.
++
+[source,bash]
+----
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=yes
+----
+
+- Regular RHACM Use Case:
+** Deploys OpenShift GitOps and RHACM:
++
+*** dev env:
++
+[source,bash]
+----
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=no -e env=dev
+----
+
+*** uat env:
++
+[source,bash]
+----
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=no -e env=uat
+----
+
+*** prod env:
++
+[source,bash]
+----
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=no -e env=prod
+----

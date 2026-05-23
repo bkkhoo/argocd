@@ -1,5 +1,4 @@
-The managed hubs' ArgoCD deploys and auto-syncs the nested kustomize deployments from this folder:
+:icons: font
+= Overview
 
-- xref:./../../apps/00-managed-hub-app-of-apps/dev[dev environment]
-- xref:./../../apps/00-managed-hub-app-of-apps/uat[uat environment]
-- xref:./../../apps/00-managed-hub-app-of-apps/prod[prod environment]
+The xref:../../apps/00-managed-hub-app-of-apps/base/application.yaml[Managed Hub ArgoCD app-of-apps] deploys and auto-syncs the nested kustomize deployment in this folder.

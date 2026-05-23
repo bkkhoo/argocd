@@ -1,10 +1,71 @@
 :icons: font
 = About this Kustomize Deployment
 
-
-
+This deployment deploys RHACM policies. The polices are deployed to global-hub and managed-hubs only.
 
 [NOTE]
 ====
 No overlays are necessary since the same RHACM policies are deployed to all environments (`dev`, `uat`, or `prod`).
 ====
+
+== RHACM Policies
+
+[cols="2,1,3,3", options="header"]
+|===
+| Policy | Remediation Action | Placement | Description
+
+| config-remove-kubeadmin
+| Enforce
+| All OpenShift clusters.
+| Ensure `kubeadmin` user is removed.
+
+| config-rhacs-secured-cluster
+| Enforce
+| All OpenShift clusters, except `local-cluster` and cluster with `managed-hub` label.
+| Deploy RHACS operator and SecuredCluster.
+
+| monitor-cluster-operators
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor ClusterOperators (Available: True, Degraded: False)
+
+| monitor-terminating-namespaces
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for namespaces in Terminating state.
+
+| monitor-install-plans
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for InstallPlans pending approval.
+
+| monitor-nodes
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for nodes with MemoryPressure, DiskPressure, PIDPressure, and not Ready state.
+
+| monitor-managed-clusters
+| Inform
+| Only `local-cluster`.
+| Monitor for ManagedClusters that are not available. *
+
+| monitor-rhacs-central
+| Inform
+| Only `local-cluster`.
+| Monitor RHACS SecuredClusters. *
+
+| monitor-rhacs-central
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor RHACS Central.
+
+| monitor-all-stars-role
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for namespaced Role with super privileges (`apiGroups: ["*"]`, `resources: ["*"]`, and `verbs: ["*"]`)
+
+| monitor-privileges-scc-binding
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for namespace Role with `privileged` SecurityContextConstraint.
+|===
