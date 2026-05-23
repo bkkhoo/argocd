@@ -17,7 +17,7 @@
         availabilityConfig: High
         postgresRetention: 18m
         gitOpsValuesFile: "values-openshift-gitops-ha.yaml"
-    _components:
+    _components:    # operator and instance
       - helm_chart: openshift-gitops
         install: true
         namespace: openshift-gitops-operator
@@ -87,6 +87,10 @@
         cmd: >-
           oc patch consoles.operator.openshift.io cluster --type=json
           --patch='[{"op": "add", "path": "/spec/plugins/-", "value": "gitops-plugin"}]'
+
+    - name: ensure rhacm openshift-gitops integration is configured
+      ansible.builtin.shell:
+        cmd: "helm template {{ playbook_dir }}/../..//helm-charts/rhacm-openshift-gitops-integration | oc apply -f -"
 
     - name: ensure global-hub app-of-apps is deployed
       when: global_hub | bool

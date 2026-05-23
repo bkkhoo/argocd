@@ -1,4 +1,11 @@
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 = Overview
 
 The App of Apps pattern leverages ArgoCD declarative approach by creating one parent/root ArgoCD application that contains manifests defining other ArgoCD applications. This creates a hierarchical structure where the parent/root application monitors a Git repository containing application definitions, automatically creating, updating, or deleting child applications based on changes to these manifests.
@@ -27,9 +34,9 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 │ │ └── base
 │ ├── openshift-compliance
 │ │ └── base
-.
---- snip ---                          # other argocd applications/applicationSets
-.
+## .
+## --- snip ---                       # other argocd applications/applicationSets
+## .
 ├── bootstrap                         # ansible playbook to bootstrap multicluster global hub
 │ └── ansible
 │     └── tasks
@@ -42,17 +49,17 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 │ │ └── templates
 │ │     ├── operator
 │ │     └── scan
-.
---- snip ---                          # other helm charts
-.
+## .
+## --- snip ---                       # other helm charts
+## .
 ├── kustomize-deployments             # kustomize-deployments; the deployments are used by
 │ ├── motd                            # argocd applications/applicationSets in the apps folder
 │ │ └── base
 │ ├── openshift-insights
 │ │ └── base
-.
---- snip ---                          # other kustomize deployments
-.
+## .
+## --- snip ---                       # other kustomize deployments
+## .
 ├── rhacm-policies                    # rhacm policies
 │ └── base
 │     ├── config
@@ -147,6 +154,14 @@ For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` Serv
 ====
 
 . All RHACM ManagedClusters, except the `local-cluster`, should be added to the `gitops-clusters` ClusterSet.
+
+== Issues
+
+=== ArgoCD Applications stuck in "Unknown" Status
+
+The controller cannot determine if the desired state (Git) matches the live state (Cluster), often due to component failures, connectivity issues, or resource conflicts. The most common root causes are a crashed or OOMKilled application controller, Redis downtime, repo server manifest generation failures, or missing Custom Resource Definitions (CRDs).
+
+To resolve this, first check the health of core ArgoCD components by running `oc -n openshift-gitops get pods` and inspecting logs for the application controller and Redis. If the controller is not processing apps, restart the controller (`oc -n openshift-gitops rollout restart statefulsets/openshift-gitops-application-controller`) or increase its memory limits if it was OOMKilled. If Redis is unresponsive, restart it and then the controller.
 
 == References
 

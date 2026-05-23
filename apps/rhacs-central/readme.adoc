@@ -1,3 +1,11 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 ArgoCD manages an application's Helm chart values through multiple mechanisms, each with a specific use case and precedence level:
 

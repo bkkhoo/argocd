@@ -1,4 +1,11 @@
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 = Advanced Cluster Management for Kubernetes - OpenShift GipOps Integration
 
 RHACM integrates with OpenShift GitOps (ArgoCD) to enable a Hub-and-Spoke architecture where the central Hub cluster orchestrates deployments to managed spoke clusters. This integration relies on `GitOpsCluster` custom resources to register managed clusters with an ArgoCD instance, allowing the Hub to distribute applications based on predefined `Placement` rules and cluster labels.

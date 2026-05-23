@@ -1,4 +1,11 @@
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 = About this Kustomize Deployment
 
 The configuration changes the `managementState` of of OpenShift samples operator to `Removed`. This causes the operator to delete all managed image streams and templates from the `openshift` namespace and ignore further watch events on sample resources.

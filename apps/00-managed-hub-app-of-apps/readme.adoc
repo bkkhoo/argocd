@@ -1,4 +1,11 @@
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 = Overview
 
 The App of Apps pattern in ArgoCD is a hierarchical GitOps strategy where a single parent/root Application manages the lifecycle of multiple child Applications. This approach centralizes management by having the parent app monitor a Git repository directory containing child Application manifests, automatically creating, updating, or deleting them as changes are committed.

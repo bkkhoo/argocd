@@ -1,4 +1,11 @@
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 = Red Hat Advanced Cluster Security for Kubernetes
 
 Red Hat Advanced Cluster Security (RHACS) is an enterprise-grade, Kubernetes-native security platform that provides comprehensive threat detection, policy enforcement, and compliance management for containerized applications. RHACS integrates security into the cloud-native development lifecycle, enabling organizations to secure workloads across multiple Kubernetes-based clusters.

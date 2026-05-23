@@ -1,4 +1,11 @@
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 = About this Kustomize Deployment
 
 The resources (except namespace.yaml) in this folder are intended for use as ArgoCD PostSync hook. ArgoCD automatically deletes all the resources (except namespace.yaml) created by this deployment immediately after the PostSync hook completes successfully.

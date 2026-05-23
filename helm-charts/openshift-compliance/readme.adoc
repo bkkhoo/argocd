@@ -1,4 +1,11 @@
 :icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 = OpenShift Compliance Operator
 
 The OpenShift Compliance Operator uses OpenSCAP to allow administrators to maintain cluster compliance with security benchmarks. The chart deploys scan with the `ocp4-cis` and `ocp4-cis-node` profiles.
