@@ -159,11 +159,11 @@ spec:
     {{- end }}
     resources:
       limits:
-        cpu: 2000m
-        memory: 4096Mi    # default 2Gi
+        cpu: "2"
+        memory: 4Gi    # default 2Gi
       requests:
         cpu: 250m
-        memory: 1024Mi
+        memory: 1Gi
   {{- if .Values.disableAdmin }}
   disableAdmin: true     # default false, property not shown ob manifest
   {{- end }}
