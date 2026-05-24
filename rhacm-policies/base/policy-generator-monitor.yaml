@@ -87,13 +87,13 @@ policies:
     manifests:
       - path: monitor/rhacs-secured-cluster-status.yaml
 
-  - name: monitor-all-stars-role
+  - name: monitor-wildcard-permissions-role
     complianceType: mustnothave
     namespaceSelector:
       include:
         - "*"
     manifests:
-      - path: monitor/all-stars-role.yaml
+      - path: monitor/wildcard-permissions-role.yaml
 
   - name: monitor-privileges-scc-binding
     complianceType: mustnothave
@@ -102,4 +102,30 @@ policies:
         - "*"
     manifests:
       - path: monitor/privileged-scc-role-binding.yaml
+
+  - name: monitor-container-oom-killed
+    complianceType: mustnothave
+    namespaceSelector:
+      include:
+        - "*"
+    manifests:
+      - path: monitor/container-oom-killed.yaml
+
+  - name: monitor-container-crash-loop-backoff
+    complianceType: mustnothave
+    severity: low
+    namespaceSelector:
+      include:
+        - "*"
+    manifests:
+      - path: monitor/container-crash-loop-backoff.yaml
+
+  - name: monitor-container-image-pull-backoff
+    complianceType: mustnothave
+    severity: low
+    namespaceSelector:
+      include:
+        - "*"
+    manifests:
+      - path: monitor/container-image-pull-backoff.yaml
 ...

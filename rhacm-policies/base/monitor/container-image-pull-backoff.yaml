@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Pod
+status:
+  containerStatuses:
+    - started: false
+      state:
+        waiting:
+          reason: ErrImagePull
+---
+apiVersion: v1
+kind: Pod
+status:
+  containerStatuses:
+    - started: false
+      state:
+        waiting:
+          reason: ImagePullBackOff
+...

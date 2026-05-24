@@ -4,6 +4,8 @@ kind: ApplicationSet
 metadata:
   name: test-app
   namespace: openshift-gitops
+  labels:
+    applications: test-app
 spec:
   generators:
     - clusters:

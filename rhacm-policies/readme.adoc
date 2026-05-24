@@ -24,37 +24,37 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | config-remove-kubeadmin
 | Enforce
 | All OpenShift clusters.
-| Ensure `kubeadmin` user is removed.
+| Ensure the `kubeadmin` user is removed.
 
 | config-rhacs-secured-cluster
 | Enforce
 | All OpenShift clusters, except `local-cluster` and cluster with `managed-hub` label.
-| Deploy RHACS operator and SecuredCluster.
+| Deploy the RHACS operator and the SecuredCluster.
 
 | monitor-cluster-operators
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor ClusterOperators (Available: True, Degraded: False)
+| Monitor cluster operators; status should be `Available=true`, `Degraded=false`.
 
 | monitor-terminating-namespaces
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for namespaces in Terminating state.
+| Monitor for namespaces stuck in the Terminating state.
 
 | monitor-install-plans
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for InstallPlans pending approval.
+| Monitor InstallPlans that are pending approval.
 
 | monitor-nodes
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for nodes with MemoryPressure, DiskPressure, PIDPressure, and not Ready state.
+| Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state
 
 | monitor-managed-clusters
 | Inform
 | Only `local-cluster`.
-| Monitor for ManagedClusters that are not available. *
+| Monitor ManagedCluster Availability. *
 
 | monitor-rhacs-central
 | Inform
@@ -66,13 +66,33 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor RHACS Central.
 
-| monitor-all-stars-role
+| monitor-wildcard-permissions-role
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for namespaced Role with super privileges (`apiGroups: ["*"]`, `resources: ["*"]`, and `verbs: ["*"]`)
+| Detected namespaced Role with wildcard permissions (`apiGroups: ["*"]`, `resources: ["*"]`, `verbs: ["*"]`).
 
 | monitor-privileges-scc-binding
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for namespace Role with `privileged` SecurityContextConstraint.
+| Monitor for namespaces with RoleBindings that grant access to `privileged` Security Context Constraint.
+
+| monitor-container-oom-killed
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for containers that exceed their defined memory limit and are killed by the Linux kernel's Out-Of-Memory killer (OOMKilled).
+
+| monitor-container-crash-loop-backoff
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for containers that are repeatedly crashing and restarting (CrashLoopBackOff).
+
+| monitor-container-image-pull-backoff
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for containers where the cluster repeatedly fails to pull the required container image from a registry (ImagePullBackOff).
 |===
+
+[NOTE]
+====
+* - the policy is not deployed to managed hubs because managed hubs do not have `local-custer` (`disableHubSelfManagement: false`).
+====
