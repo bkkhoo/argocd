@@ -162,11 +162,30 @@ For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` Serv
 
 == Issues
 
-=== ArgoCD Applications Stuck in "Unknown" Status
+=== ArgoCD Applications Stuck in `Unknown` Status
 
-The controller cannot determine if the desired state (Git) matches the live state (Cluster), often due to component failures, connectivity issues, or resource conflicts. The most common root causes are a crashed or OOMKilled application controller, Redis downtime, repo server manifest generation failures, or missing Custom Resource Definitions (CRDs).
+The controller cannot determine if the desired state (Git) matches the live state (Cluster), often due to component failures, connectivity issues, or resource conflicts. The most common root causes are a crashed or OOMKilled application controller, Redis downtime, repo-server manifest generation failures, or missing Custom Resource Definitions (CRDs).
 
-To resolve this, first check the health of core ArgoCD components by running `oc -n openshift-gitops get pods` and inspecting logs for the application controller and Redis. If the controller is not processing apps, restart the controller (`oc -n openshift-gitops rollout restart statefulsets/openshift-gitops-application-controller`) or increase its memory limits if it was OOMKilled. If Redis is unresponsive, restart it and then the controller.
+**Troubleshooting & Resolution**:
+
+. Check Component Health: Inspect the core ArgoCD components by running:
++
+[source,bash]
+----
+oc -n openshift-gitops get pods
+----
+. Review Logs: Check the logs for both the application controller and Redis pods.
+. Mitigate Controller Issues: If the controller is not processing applications, restart it:
++
+[source,bash]
+----
+oc -n openshift-gitops rollout restart statefulsets/openshift-gitops-application-controller
+----
+. Handle Redis Downtime: If Redis is unresponsive, restart the Redis component first, followed by the application controller.
+
+**Memory Limit Adjustment**:
+
+By default, the `statefulsets/openshift-gitops-application-controller`` container has `resources.limits.memory` set to 2Gi. When multiple large applications are syncing simultaneously, the container can run out of memory and get OOMKilled. To resolve this, increase the `resources.limits.memory` to 4Gi or more.
 
 == References
 

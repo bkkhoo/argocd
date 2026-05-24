@@ -1,8 +1,11 @@
-# for managed hub, remove the following rhacm policies; these policies are placed on local-cluster, and
-# the managed hub has disableHubSelfManagement: false, which disables local-cluster:
-#   - monitor-managed-clusters
-#   - monitor-rhacs-central
-#   - monitor-argocd-applications
+# on managed hubs, the following resources are deleted:
+# - policy:
+#   - monitor-managed-clusters: no local-cluster, ManagedClusters only appeared on local-cluster
+#   - monitor-rhacs-central: no local-cluster, rhacs central is only deployed on local-cluster
+#   - monitor-argocd-applications: : no local-cluster, argocd is only deployed on local-cluster
+# - policy set:
+#   - monitor-local-cluster: no local-cluster
+#   - monitor-managed-hubs: no managed cluster labeled with "managed-hub=yes"; managed cluster with such label should only attached to global-hub
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -39,5 +42,19 @@ patches:
                 kind: Policy
                 metadata:
                   name: monitor-argocd-applications
+                  namespace: rhacm-policies
+            - patch: |-
+                $patch: delete
+                apiVersion: policy.open-cluster-management.io/v1
+                kind: PolicySet
+                metadata:
+                  name: monitor-local-cluster
+                  namespace: rhacm-policies
+            - patch: |-
+                $patch: delete
+                apiVersion: policy.open-cluster-management.io/v1
+                kind: PolicySet
+                metadata:
+                  name: monitor-managed-hubs
                   namespace: rhacm-policies
 ...
