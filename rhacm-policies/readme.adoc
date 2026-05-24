@@ -36,16 +36,6 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor cluster operators; status should be `Available=true`, `Degraded=false`.
 
-| monitor-terminating-namespaces
-| Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for namespaces stuck in the Terminating state.
-
-| monitor-install-plans
-| Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor InstallPlans that are pending approval.
-
 | monitor-nodes
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
@@ -56,15 +46,20 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Only `local-cluster`.
 | Monitor ManagedCluster Availability. *
 
-| monitor-rhacs-central
+| monitor-argocd-applications
 | Inform
-| Only `local-cluster`.
-| Monitor RHACS SecuredClusters. *
+|
+| Monitor ArgoCD application health (ensuring it is not Unknown, Missing, or Degraded) and sync status (ensuring it is not Unknown or OutOfSync).
 
 | monitor-rhacs-central
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| Only `local-cluster`.
 | Monitor RHACS Central.
+
+| monitor-rhacs-secured-clusters
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor RHACS SecuredClusters. *
 
 | monitor-wildcard-permissions-role
 | Inform
@@ -75,6 +70,16 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor for namespaces with RoleBindings that grant access to `privileged` Security Context Constraint.
+
+| monitor-terminating-namespaces
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for namespaces stuck in the Terminating state.
+
+| monitor-install-plans
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor InstallPlans that are pending approval.
 
 | monitor-container-oom-killed
 | Inform

@@ -2,6 +2,7 @@
 # the managed hub has disableHubSelfManagement: false, which disables local-cluster:
 #   - monitor-managed-clusters
 #   - monitor-rhacs-central
+#   - monitor-argocd-applications
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -31,5 +32,12 @@ patches:
                 kind: Policy
                 metadata:
                   name: monitor-rhacs-central
+                  namespace: rhacm-policies
+            - patch: |-
+                $patch: delete
+                apiVersion: policy.open-cluster-management.io/v1
+                kind: Policy
+                metadata:
+                  name: monitor-argocd-applications
                   namespace: rhacm-policies
 ...
