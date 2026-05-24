@@ -1,5 +1,5 @@
 ---
 labels:
-  app: webhook-backend-1
+  app: test-app-1
   env: dev
 ...

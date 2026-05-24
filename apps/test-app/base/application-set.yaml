@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: web-app-set
+  name: test-app
   namespace: openshift-gitops
 spec:
   generators:
@@ -13,20 +13,22 @@ spec:
               operator: In
               values:
                 - OpenShift
+            - key: test-app
+              operator: Exists
   template:
     metadata:
-      name: "{{ name }}-web"
+      name: "{{ name }}-test-app"
       labels:
-        applications: web-app-set
+        applications: test-app
     spec:
       project: iac-gitops
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: kustomize-deployments/test1/overlays/dev/
+        path: kustomize-deployments/test-app/overlays/prod
       destination:
         server: "{{ server }}"
-        namespace: test-dev
+        namespace: test-prod
       syncPolicy:
         automated:
           prune: true

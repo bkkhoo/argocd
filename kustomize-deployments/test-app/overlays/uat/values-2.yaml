@@ -1,5 +1,5 @@
 ---
 labels:
-  app: webhook-backend-2
+  app: test-app-2
   env: uat
 ...

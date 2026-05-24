@@ -6,7 +6,7 @@
   vars:
     config: basic
     global_hub: yes
-    env: dev
+    env: prod
 
     _context:
       basic:

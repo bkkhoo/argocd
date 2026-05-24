@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webhook-backend-1
+  name: test-app-1
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "test-chart-1.setLabels" .Values.labels | indent 4 }}
@@ -17,12 +17,12 @@ spec:
     type: Recreate
   template:
     metadata:
-      name: webhook-backend
+      name: test-app-1
       labels:
         {{- include "test-chart-1.setLabels" .Values.labels | indent 8 }}
     spec:
       containers:
-      - name: webhook-backend
+      - name: test-app-1
         image: quay.io/bkhoo/python3-async:2.0
         command:
           - "python"

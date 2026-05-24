@@ -1,9 +1,9 @@
 ---
-serviceAccount: webhook-backend-1
+serviceAccount: test-app-1
 
 labels:
-  app: webhook-backend-1
-  env: lab
+  app: test-app-1
+  env: prod
 
 env:
   HOME: /opt

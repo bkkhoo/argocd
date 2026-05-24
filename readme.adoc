@@ -117,7 +117,7 @@ This is a use case where a regular RHACM hub cluster manages a number of manageC
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=no -e env=dev
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=prod
 ----
 
 The ansible playbook performs the following on the managed hub cluster:

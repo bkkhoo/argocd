@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 appVersion: 1.0
-name: webhook-backend-1
+name: test-app-1
 description: Helm Chart to deploy generic webhook backend
 type: application
 version: 1.0

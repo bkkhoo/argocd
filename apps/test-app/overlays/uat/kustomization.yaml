@@ -8,12 +8,12 @@ patches:
       group: argoproj.io
       version: v1alpha1
       kind: ApplicationSet
-      name: web-app-set
+      name: test-app
     patch: |
       - op: replace
         path: /spec/template/spec/source/path
-        value: kustomize-deployments/test1/overlays/prod/
+        value: kustomize-deployments/test-app/overlays/uat
       - op: replace
         path: /spec/template/spec/destination/namespace
-        value: test-prod
+        value: test-uat
 ...
