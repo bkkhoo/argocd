@@ -48,7 +48,7 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 
 | monitor-argocd-applications
 | Inform
-|
+| `local-cluster` and cluster with `managed-hub` label.
 | Monitor ArgoCD application health (ensuring it is not Unknown, Missing, or Degraded) and sync status (ensuring it is not Unknown or OutOfSync).
 
 | monitor-rhacs-central
