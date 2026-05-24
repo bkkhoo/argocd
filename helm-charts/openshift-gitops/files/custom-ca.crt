@@ -1,3 +1,6 @@
+############
+###### IMPORTANT: replace with private ca bundle of the organization
+############
 -----BEGIN CERTIFICATE-----
 MIIFODCCAyCgAwIBAgIUGLdI98rwqO/sMm8+MbX/BSFouI0wDQYJKoZIhvcNAQEL
 BQAwITEfMB0GA1UEAwwWcHJpdmF0ZS1jYS5wcml2YXRlLm9yZzAeFw0yNjAyMTIy

@@ -98,5 +98,5 @@
 
     - name: ensure managed-hub app-of-apps is deployed
       when: not (global_hub | bool)
-      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-managed-hub-app-of-apps/{{ env }}
+      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-managed-hub-app-of-apps/overlays/{{ env }}
 ...

@@ -18,60 +18,65 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 
 [source,bash]
 ----
-├── apps                              # argocd applications/applicationSets
-│ ├── 00-global-hub-app-of-apps       # app-of-apps deployment of multicluster global hub
-│ │ └── base
-│ ├── 00-managed-hub-app-of-apps      # app-of-apps deployment of managed hub
-│ │ ├── base
-│ │ ├── dev
-│ │ ├── prod
-│ │ └── uat
-│ ├── 01-managed-hub-bootstrap        # apps to bootstrap managed hub, contains:
-│ │ ├── dev                           #   - manifests to deploy rhacm and openshift-gitops
-│ │ ├── prod                          #   - manifests to deploy rhacm integration with openshift-gitops
-│ │ └── uat                           #   - manifests for managed-hub-app-of-apps
-│ ├── cluster-config                  # base cluster config (self-provisioner, motd, etc)
-│ │ └── base
-│ ├── openshift-compliance
-│ │ └── base
+├── apps                                # argocd applications/applicationSets
+│   ├── 00-global-hub-app-of-apps       # app-of-apps deployment for multicluster global hub
+│   │   └── base
+│   ├── 00-managed-hub-app-of-apps      # app-of-apps deployment for managed hub
+│   │   ├── base
+│   │   └── overlays
+│   │       ├── dev
+│   │       ├── prod
+│   │       └── uat
+│   ├── 01-managed-hub-bootstrap        # bootstrap managed hub, deploys the following to manage hub:
+│   │   ├── dev                         #   - rhacm and openshift-gitops
+│   │   ├── prod                        #   - rhacm integration with openshift-gitops
+│   │   └── uat                         #   - managed-hub-app-of-apps
+│   ├── cluster-config                  # base cluster config (self-provisioner, motd, etc)
+│   │   └── base
+│   ├── openshift-compliance
+│   │   └── base
 ## .
-## --- snip ---                       # other argocd applications/applicationSets
+## --- snip ---                         # other argocd applications/applicationSets
 ## .
-├── bootstrap                         # ansible playbook to bootstrap multicluster global hub
-│ └── ansible
-│     └── tasks
-├── helm-charts                       # helm charts; the charts are used by
-│ ├── multicluster-global-hub         # argocd applications/applicationSets in the apps folder
-│ │ └── templates
-│ │     ├── global-hub
-│ │     └── operator
-│ ├── openshift-compliance
-│ │ └── templates
-│ │     ├── operator
-│ │     └── scan
+├── bootstrap                           # ansible playbook to bootstrap multicluster global hub
+│   └── ansible
+│       └── tasks
+├── helm-charts                         # helm charts; the charts are used by argocd
+│   ├── multicluster-global-hub         # applications/applicationSets in the apps folder
+│   │   └── templates
+│   │       ├── global-hub
+│   │       └── operator
+│   ├── openshift-compliance
+│   │   └── templates
+│   │       ├── operator
+│   │       └── scan
 ## .
-## --- snip ---                       # other helm charts
+## --- snip ---                         # other helm charts
 ## .
-├── kustomize-deployments             # kustomize-deployments; the deployments are used by
-│ ├── motd                            # argocd applications/applicationSets in the apps folder
-│ │ └── base
-│ ├── openshift-insights
-│ │ └── base
+├── images
+├── kustomize-deployments               # kustomize-deployments; the deployments are used by
+│   ├── motd                            # argocd applications/applicationSets in the apps folder
+│   │   └── base
+│   ├── openshift-insights
+│   │   └── base
 ## .
-## --- snip ---                       # other kustomize deployments
+## --- snip ---                         # other kustomize deployments
 ## .
-├── rhacm-policies                    # rhacm policies
-│ └── base
-│     ├── config
-│     │ └── rhacs
-│     └── monitor
-└── root-app                          # root apps; app of apps deploys apps defined here
-    ├── global-hub                    # for multicluster global hub
-    │ └── base
-    └── managed-hub                   # for managed hub of each env
-        ├── dev
-        ├── prod
-        └── uat
+├── misc
+├── rhacm-policies                      # rhacm policies
+│   └── base
+│       ├── config                      # manifests for rhacm configuration policies
+│       │   └── rhacs
+│       └── monitor                     # manifests for rhacm monitoring policies
+└── root-app                            # root apps; app of apps deploys apps defined here
+    ├── global-hub                      # for multicluster global hub
+    │   └── base
+    └── managed-hub                     # for managed hub of each env
+        ├── base
+        └── overlays
+            ├── dev
+            ├── prod
+            └── uat
 ----
 
 == Usage
@@ -92,7 +97,7 @@ The ansible playbook performs the following on the global Hub cluster:
 - Enable RHACM integration with OpenShift GitOps.
 - Deploys MultiCluster Global Hub.
 - Deploys global hub app-of-apps (`root-app/global-hub/base`); the app-of-apps, in turn deploys:
-** app-of-apps for managed hub (`root-app/managed-hub/<dev|uat|prod>`) to dev/uat/prod managed hubs:
+** app-of-apps for managed hub (`root-app/managed-hub/overlays/<dev|uat|prod>`) to dev/uat/prod managed hubs:
 *** `dev` managed hubs labels: `managed-hub=yes`, `env=dev`.
 *** `uat` managed hubs labels: `managed-hub=yes`, `env=uat`.
 *** `prod` managed hubs labels: `managed-hub=yes`, `env=prod`.
@@ -120,7 +125,7 @@ The ansible playbook performs the following on the managed hub cluster:
 - Deploys RHACM.
 - Deploys OpenShift GitOps.
 - Enable RHACM integration with OpenShift GitOps.
-- deploys managed hub app-of-apps (`root-app/managed-hub/<dev|uat|prod>`) to dev/uat/prod managed hubs; the app-of-apps, in turn deploys:
+- deploys managed hub app-of-apps (`root-app/managed-hub/overlays/<dev|uat|prod>`) to dev/uat/prod managed hubs; the app-of-apps, in turn deploys:
 ** RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`.
 ** cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc, to managed clusters.
 ** other ArgoCD applications to managed clusters.
@@ -157,7 +162,7 @@ For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` Serv
 
 == Issues
 
-=== ArgoCD Applications stuck in "Unknown" Status
+=== ArgoCD Applications Stuck in "Unknown" Status
 
 The controller cannot determine if the desired state (Git) matches the live state (Cluster), often due to component failures, connectivity issues, or resource conflicts. The most common root causes are a crashed or OOMKilled application controller, Redis downtime, repo server manifest generation failures, or missing Custom Resource Definitions (CRDs).
 

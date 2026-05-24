@@ -1,0 +1,92 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= OpenShift Project Request Template
+
+OpenShift Project Request Templates allow administrators to automatically inject resources like `ResourceQuotas`, `LimitRanges`, and `NetworkPolicies` into every new project created by users. This ensures consistent governance and resource limits across the cluster without manual intervention for each namespace.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name project-request-template helm-chart/project-request-template
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete project-request-template
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| enableDefaultDenyIngressNetworkPolicy
+| true
+| Enable/Disable default deny all ingress traffic NetworkPolicy.
+
+| resourceQuota.requests.cpu
+| 5
+| Across all pods in a non-terminal state, the sum of CPU limits cannot exceed this value.
+
+| resourceQuota.requests.memory
+| 5Gi
+| Across all pods in a non-terminal state, the sum of memory limits cannot exceed this value.
+
+| resourceQuota.limits.cpu
+| 5
+| Across all pods in a non-terminal state, the sum of CPU requests cannot exceed this value.
+
+| resourceQuota.limits.memory
+| 5Gi
+| Across all pods in a non-terminal state, the sum of memory requests cannot exceed this value.
+
+| limitRange.default.cpu
+| 500m
+| Automatically assigns default cpu limits to containers that do not specify their own resource constraints.
+
+| limitRange.default.memory
+| 512Mi
+| Automatically assigns default memory limits to containers that do not specify their own resource constraints.
+
+| limitRange.defaultRequest.cpu
+| 250m
+| Automatically assigns default cpu requests to containers that do not specify their own resource constraints.
+
+| limitRange.defaultRequest.memory
+| 256Mi
+| Automatically assigns default memory requests to containers that do not specify their own resource constraints.
+
+| limitRange.min.cpu
+| 1
+| Rejects pod creation if resource cpu requests fall below the defined minimum.
+
+| limitRange.min.memory
+| 1Gi
+| Rejects pod creation if resource memory requests fall below the defined minimum.
+
+| limitRange.max.cpu
+| 125m
+| Rejects pod creation if resource cpu requests exceed the defined maximum.
+
+| limitRange.max.memory
+| 128Mi
+| Rejects pod creation if resource memory requests exceed the defined maximum.
+|===

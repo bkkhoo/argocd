@@ -1,0 +1,11 @@
+---
+apiVersion: config.openshift.io/v1
+kind: Project
+metadata:
+  name: cluster
+  annotations:
+    argocd.argoproj.io/sync-options: Delete=false
+spec:
+  projectRequestTemplate:
+    name: project-request
+...

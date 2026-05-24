@@ -1,0 +1,35 @@
+# for managed hub, remove the following rhacm policies; these policies are placed on local-cluster, and
+# the managed hub has disableHubSelfManagement: false, which disables local-cluster:
+#   - monitor-managed-clusters
+#   - monitor-rhacs-central
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+patches:
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: ApplicationSet
+      name: rhacm-policies
+    patch: |
+      - op: add
+        path: /spec/template/spec/source/kustomize
+        value:
+          patches:
+            - patch: |-
+                $patch: delete
+                apiVersion: policy.open-cluster-management.io/v1
+                kind: Policy
+                metadata:
+                  name: monitor-managed-clusters
+                  namespace: rhacm-policies
+            - patch: |-
+                $patch: delete
+                apiVersion: policy.open-cluster-management.io/v1
+                kind: Policy
+                metadata:
+                  name: monitor-rhacs-central
+                  namespace: rhacm-policies
+...

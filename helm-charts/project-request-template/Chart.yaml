@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 1.0
+name: project-request-template
+description: OpenShift Project Request Template
+type: application
+version: 1.0
+...

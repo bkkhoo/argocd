@@ -1,0 +1,83 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: project-request
+  namespace: openshift-config
+  annotations:
+    argocd.argoproj.io/sync-options: Delete=false
+parameters:
+  - name: PROJECT_NAME
+  - name: PROJECT_DISPLAYNAME
+  - name: PROJECT_DESCRIPTION
+  - name: PROJECT_ADMIN_USER
+  - name: PROJECT_REQUESTING_USER
+objects:
+  - kind: Project
+    apiVersion: project.openshift.io/v1
+    metadata:
+      name: "${PROJECT_NAME}"
+      creationTimestamp:
+      annotations:
+        openshift.io/description: "${PROJECT_DESCRIPTION}"
+        openshift.io/display-name: "${PROJECT_DISPLAYNAME}"
+        openshift.io/requester: "${PROJECT_REQUESTING_USER}"
+    spec: {}
+    status: {}
+  - kind: RoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    metadata:
+      name: admin
+      namespace: "${PROJECT_NAME}"
+      creationTimestamp:
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: admin
+    subjects:
+      - kind: User
+        apiGroup: rbac.authorization.k8s.io
+        name: "${PROJECT_ADMIN_USER}"
+  {{- if .Values.enableDefaultDenyIngressNetworkPolicy }}
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: default-deny-ingress
+      namespace: "${PROJECT_NAME}"
+    spec:
+      podSelector: {}
+      policyTypes:
+        - Ingress
+  {{- end }}
+  - apiVersion: v1
+    kind: ResourceQuota
+    metadata:
+      name: project-quota
+      namespace: "${PROJECT_NAME}"
+    spec:
+      hard:
+        requests.cpu: "{{ .Values.resourceQuota.requests.cpu }}"
+        requests.memory: "{{ .Values.resourceQuota.requests.memory }}"
+        limits.cpu: "{{ .Values.resourceQuota.limits.cpu }}"
+        limits.memory: "{{ .Values.resourceQuota.limits.memory }}"
+  - apiVersion: v1
+    kind: LimitRange
+    metadata:
+      name: limit-range
+      namespace: "${PROJECT_NAME}"
+    spec:
+      limits:
+        - default:
+            cpu: "{{ .Values.limitRange.default.cpu }}"
+            memory: "{{ .Values.limitRange.default.memory }}"
+          defaultRequest:
+            cpu: "{{ .Values.limitRange.defaultRequest.cpu }}"
+            memory: "{{ .Values.limitRange.defaultRequest.memory }}"
+          max:
+            cpu: "{{ .Values.limitRange.max.cpu }}"
+            memory: "{{ .Values.limitRange.max.memory }}"
+          min:
+            cpu: "{{ .Values.limitRange.min.cpu }}"
+            memory: "{{ .Values.limitRange.min.memory }}"
+          type: Container
+...

@@ -9,7 +9,7 @@ resources:
 
   # apps that target in-cluster only
   - ../../../apps/rhacm-policies/base
-  - ../../../apps/rhacs-central/prod
+  - ../../../apps/rhacs-central/overlays/prod
 
   # apps that target all clusters (generators[0].clusters: {})
   # reuse these apps for deployment to global-hub cluster, patch to make them target only in-cluster

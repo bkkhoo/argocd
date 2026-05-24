@@ -23,7 +23,7 @@ spec:
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: kustomize-deployments/test1/dev/
+        path: kustomize-deployments/test1/overlays/dev/
       destination:
         server: "{{ server }}"
         namespace: test-dev
