@@ -10,7 +10,7 @@ endif::[]
 
 The App of Apps pattern leverages ArgoCD declarative approach by creating one parent/root ArgoCD application that contains manifests defining other ArgoCD applications. This creates a hierarchical structure where the parent/root application monitors a Git repository containing application definitions, automatically creating, updating, or deleting child applications based on changes to these manifests.
 
-This diagram illustrates how different components (Multicluster Global Hub, Red Hat Advanced Cluster Managed, and OpenShift GitOps) integrate to deliver high-scale multicluster management. The parent/root application is the xref:apps/00-global-hub-app-of-apps/[global-hub-app-of-apps ArgoCD application], which automatically syncs manifests from GitHub to managed hubs and managed clusters.
+This diagram illustrates how different components (Multicluster Global Hub, Red Hat Advanced Cluster Managed, and OpenShift GitOps) integrate to deliver high-scale multicluster management. The parent/root application is the link:apps/00-global-hub-app-of-apps/[global-hub-app-of-apps ArgoCD application], which automatically syncs manifests from GitHub to managed hubs and managed clusters.
 
 image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 

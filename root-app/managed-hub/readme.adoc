@@ -8,4 +8,4 @@ ifdef::env-github[]
 endif::[]
 = Overview
 
-The xref:../../apps/00-managed-hub-app-of-appsl[Managed Hub ArgoCD app-of-apps] deploys and auto-syncs the nested kustomize deployment in this folder.
+The link:../../apps/00-managed-hub-app-of-appsl[Managed Hub ArgoCD app-of-apps] deploys and auto-syncs the nested kustomize deployment in this folder.

@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Overview
 
-The xref:../../apps/00-global-hub-app-of-apps/base/application.yaml[Global Hub ArgoCD app-of-apps] deploys and auto-syncs the nested kustomize deployment in this folder.
+The link:../../apps/00-global-hub-app-of-apps/base/application.yaml[Global Hub ArgoCD app-of-apps] deploys and auto-syncs the nested kustomize deployment in this folder.
 
 [NOTE]
 ====
