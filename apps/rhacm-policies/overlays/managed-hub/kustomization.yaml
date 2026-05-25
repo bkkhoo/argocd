@@ -12,11 +12,11 @@ patches:
   - target:
       group: argoproj.io
       version: v1alpha1
-      kind: ApplicationSet
-      name: rhacm-policies
+      kind: Application
+      name: 00-rhacm-policies
     patch: |
       - op: add
-        path: /spec/template/spec/source/kustomize
+        path: /spec/source/kustomize
         value:
           patches:
             - target:
