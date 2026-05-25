@@ -43,18 +43,18 @@ patches:
                 metadata:
                   name: monitor-argocd-applications
                   namespace: rhacm-policies
-            # - patch: |-
-            #     $patch: delete
-            #     apiVersion: policy.open-cluster-management.io/v1
-            #     kind: PolicySet
-            #     metadata:
-            #       name: monitor-local-cluster
-            #       namespace: rhacm-policies
-            # - patch: |-
-            #     $patch: delete
-            #     apiVersion: policy.open-cluster-management.io/v1
-            #     kind: PolicySet
-            #     metadata:
-            #       name: monitor-managed-hubs
-            #       namespace: rhacm-policies
+            - patch: |-
+                $patch: delete
+                apiVersion: policy.open-cluster-management.io/v1beta1
+                kind: PolicySet
+                metadata:
+                  name: monitor-local-cluster
+                  namespace: rhacm-policies
+            - patch: |-
+                $patch: delete
+                apiVersion: policy.open-cluster-management.io/v1beta1
+                kind: PolicySet
+                metadata:
+                  name: monitor-managed-hubs
+                  namespace: rhacm-policies
 ...
