@@ -62,13 +62,13 @@ policies:
     manifests:
       - path: monitor/node-status.yaml
 
-  # - name: monitor-managed-clusters
-  #   complianceType: musthave
-  #   policySets:           # override policyDefaults.policySets
-  #     - ps-monitor-local-cluster
-  #     - ps-monitor-managed-hubs
-  #   manifests:
-  #     - path: monitor/managed-cluster-status.yaml
+  - name: monitor-managed-clusters
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - ps-monitor-local-cluster
+      # - ps-monitor-managed-hubs
+    manifests:
+      - path: monitor/managed-cluster-status.yaml
 
   # - name: monitor-managed-hubs-no-local-cluster
   #   complianceType: mustnothave
@@ -77,13 +77,13 @@ policies:
   #   manifests:
   #     - path: monitor/managed-hubs-local-cluster.yaml
 
-  # - name: monitor-rhacs-central
-  #   complianceType: musthave
-  #   policySets:           # override policyDefaults.policySets
-  #     - ps-monitor-local-cluster
-  #     - ps-monitor-managed-hubs
-  #   manifests:
-  #     - path: monitor/rhacs-central-status.yaml
+  - name: monitor-rhacs-central
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - ps-monitor-local-cluster
+      # - ps-monitor-managed-hubs
+    manifests:
+      - path: monitor/rhacs-central-status.yaml
 
   - name: monitor-rhacs-secured-clusters
     complianceType: musthave
