@@ -38,16 +38,16 @@ policySets:
             operator: In
             values:
               - local-cluster
-  - name: monitor-managed-hubs
-    placement:
-      labelSelector:
-        matchExpressions:
-          - key: vendor
-            operator: In
-            values:
-              - OpenShift
-          - key: managed-hub
-            operator: Exists
+  # - name: monitor-managed-hubs
+  #   placement:
+  #     labelSelector:
+  #       matchExpressions:
+  #         - key: vendor
+  #           operator: In
+  #           values:
+  #             - OpenShift
+  #         - key: managed-hub
+  #           operator: Exists
 placementBindingDefaults:
   name: binding-monitor
 
@@ -62,28 +62,28 @@ policies:
     manifests:
       - path: monitor/node-status.yaml
 
-  - name: monitor-managed-clusters
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - monitor-local-cluster
-      - monitor-managed-hubs
-    manifests:
-      - path: monitor/managed-cluster-status.yaml
+  # - name: monitor-managed-clusters
+  #   complianceType: musthave
+  #   policySets:           # override policyDefaults.policySets
+  #     - monitor-local-cluster
+  #     - monitor-managed-hubs
+  #   manifests:
+  #     - path: monitor/managed-cluster-status.yaml
 
-  - name: monitor-managed-hubs-no-local-cluster
-    complianceType: mustnothave
-    policySets:           # override policyDefaults.policySets
-      - monitor-managed-hubs
-    manifests:
-      - path: monitor/managed-hubs-local-cluster.yaml
+  # - name: monitor-managed-hubs-no-local-cluster
+  #   complianceType: mustnothave
+  #   policySets:           # override policyDefaults.policySets
+  #     - monitor-managed-hubs
+  #   manifests:
+  #     - path: monitor/managed-hubs-local-cluster.yaml
 
-  - name: monitor-rhacs-central
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - monitor-local-cluster
-      - monitor-managed-hubs
-    manifests:
-      - path: monitor/rhacs-central-status.yaml
+  # - name: monitor-rhacs-central
+  #   complianceType: musthave
+  #   policySets:           # override policyDefaults.policySets
+  #     - monitor-local-cluster
+  #     - monitor-managed-hubs
+  #   manifests:
+  #     - path: monitor/rhacs-central-status.yaml
 
   - name: monitor-rhacs-secured-clusters
     complianceType: musthave
