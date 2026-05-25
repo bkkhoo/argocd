@@ -1,11 +1,12 @@
-# on managed hubs, the following resources are deleted:
+# on managed hubs, the following resources are disable:
 # - policy:
-#   - monitor-managed-clusters: no local-cluster, ManagedClusters only appeared on local-cluster
-#   - monitor-rhacs-central: no local-cluster, rhacs central is only deployed on local-cluster
-#   - monitor-argocd-applications: : no local-cluster, argocd is only deployed on local-cluster
-# - policy set:
-#   - monitor-local-cluster: no local-cluster
-#   - monitor-managed-hubs: no managed cluster labeled with "managed-hub=yes"; managed cluster with such label should only attached to global-hub
+#   - monitor-managed-clusters: no local-cluster on managed hub, ManagedClusters only appeared on local-cluster
+#   - monitor-rhacs-central: no local-cluster on managed hub, rhacs central is only deployed on local-cluster
+#   - monitor-openshift-gitops: no local-cluster on managed hub, openshift-gitops is only deployed on local-cluster
+#   - monitor-argocd-applications: : no local-cluster on managed hubr, argocd is only deployed on local-cluster
+### - policy set:
+###   - monitor-local-cluster: no local-cluster
+###   - monitor-managed-hubs: no managed cluster labeled with "managed-hub=yes"; managed cluster with such label should only attached to global-hub
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -22,39 +23,76 @@ patches:
         path: /spec/template/spec/source/kustomize
         value:
           patches:
-            - patch: |-
-                $patch: delete
-                apiVersion: policy.open-cluster-management.io/v1
+            - target:
+                group: policy.open-cluster-management.io
+                version: v1
                 kind: Policy
-                metadata:
-                  name: monitor-managed-clusters
-                  namespace: rhacm-policies
-            - patch: |-
-                $patch: delete
-                apiVersion: policy.open-cluster-management.io/v1
+                name: monitor-managed-clusters
+              patch: |
+                - op: replace
+                  path: /spec/disabled
+                  value: true
+            - target:
+                group: policy.open-cluster-management.io
+                version: v1
                 kind: Policy
-                metadata:
-                  name: monitor-rhacs-central
-                  namespace: rhacm-policies
-            - patch: |-
-                $patch: delete
-                apiVersion: policy.open-cluster-management.io/v1
+                name: monitor-openshift-gitops
+              patch: |
+                - op: replace
+                  path: /spec/disabled
+                  value: true
+            - target:
+                group: policy.open-cluster-management.io
+                version: v1
                 kind: Policy
-                metadata:
-                  name: monitor-argocd-applications
-                  namespace: rhacm-policies
-            - patch: |-
-                $patch: delete
-                apiVersion: policy.open-cluster-management.io/v1beta1
-                kind: PolicySet
-                metadata:
-                  name: monitor-local-cluster
-                  namespace: rhacm-policies
-            - patch: |-
-                $patch: delete
-                apiVersion: policy.open-cluster-management.io/v1beta1
-                kind: PolicySet
-                metadata:
-                  name: monitor-managed-hubs
-                  namespace: rhacm-policies
+                name: monitor-argocd-applications
+              patch: |
+                - op: replace
+                  path: /spec/disabled
+                  value: true
+            - target:
+                group: policy.open-cluster-management.io
+                version: v1
+                kind: Policy
+                name: monitor-rhacs-central
+              patch: |
+                - op: replace
+                  path: /spec/disabled
+                  value: true
+
+            # - patch: |-
+            #     $patch: delete
+            #     apiVersion: policy.open-cluster-management.io/v1
+            #     kind: Policy
+            #     metadata:
+            #       name: monitor-managed-clusters
+            #       namespace: rhacm-policies
+            # - patch: |-
+            #     $patch: delete
+            #     apiVersion: policy.open-cluster-management.io/v1
+            #     kind: Policy
+            #     metadata:
+            #       name: monitor-argocd-applications
+            #       namespace: rhacm-policies
+            # - patch: |-
+            #     $patch: delete
+            #     apiVersion: policy.open-cluster-management.io/v1
+            #     kind: Policy
+            #     metadata:
+            #       name: monitor-rhacs-central
+            #       namespace: rhacm-policies
+            # - patch: |-
+            #     $patch: delete
+            #     apiVersion: policy.open-cluster-management.io/v1beta1
+            #     kind: PolicySet
+            #     metadata:
+            #       name: monitor-local-cluster
+            #       namespace: rhacm-policies
+            # - patch: |-
+            #     $patch: delete
+            #     apiVersion: policy.open-cluster-management.io/v1beta1
+            #     kind: PolicySet
+            #     metadata:
+            #       name: monitor-managed-hubs
+            #       namespace: rhacm-policies
 ...

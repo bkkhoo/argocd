@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster
+  namespace: openshift-gitops
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-plugin
+  namespace: openshift-gitops
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openshift-gitops-applicationset-controller
+  namespace: openshift-gitops
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openshift-gitops-dex-server
+  namespace: openshift-gitops
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openshift-gitops-redis-ha-haproxy
+  namespace: openshift-gitops
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gopenshift-gitops-repo-server
+  namespace: openshift-gitops
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openshift-gitops-server
+  namespace: openshift-gitops
+status:
+  conditions:
+    - status: "True"
+      type: Available
+...

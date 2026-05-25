@@ -70,6 +70,14 @@ policies:
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
+  - name: monitor-openshift-gitops
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - monitor-local-cluster
+      - monitor-managed-hubs
+    manifests:
+      - path: monitor/openshift-gitops-status.yaml
+
   - name: monitor-argocd-applications
     complianceType: mustnothave
     policySets:           # override policyDefaults.policySets
