@@ -28,7 +28,6 @@ policySets:
             operator: In
             values:
               - OpenShift
-policySets:
   - name: ps-config-non-local-cluster-non-managed-hub
     placement:
       labelSelector:
