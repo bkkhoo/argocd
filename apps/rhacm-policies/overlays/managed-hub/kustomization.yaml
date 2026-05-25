@@ -1,6 +1,7 @@
 # on managed hubs, the following resources are disable:
 # - policy:
 #   - monitor-managed-clusters: no local-cluster on managed hub, ManagedClusters only appeared on local-cluster
+#   - monitor-managed-hubs-no-local-cluster: this policy ony applicable to global-hub
 #   - monitor-rhacs-central: no local-cluster on managed hub, rhacs central is only deployed on local-cluster
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -23,6 +24,15 @@ patches:
                 version: v1
                 kind: Policy
                 name: monitor-managed-clusters
+              patch: |
+                - op: replace
+                  path: /spec/disabled
+                  value: true
+            - target:
+                group: policy.open-cluster-management.io
+                version: v1
+                kind: Policy
+                name: monitor-managed-hubs-no-local-cluster
               patch: |
                 - op: replace
                   path: /spec/disabled
