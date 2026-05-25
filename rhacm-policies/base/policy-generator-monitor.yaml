@@ -18,9 +18,9 @@ policyDefaults:
   remediationAction: inform
   severity: medium
   policySets:
-    - monitor-all-clusters
+    - ps-monitor-all-clusters
 policySets:
-  - name: monitor-all-clusters
+  - name: ps-monitor-all-clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -30,7 +30,7 @@ policySets:
               - OpenShift
           - key: managed-hub
             operator: DoesNotExist
-  - name: monitor-local-cluster
+  - name: ps-monitor-local-cluster
     placement:
       labelSelector:
         matchExpressions:
@@ -38,7 +38,7 @@ policySets:
             operator: In
             values:
               - local-cluster
-  - name: monitor-managed-hubs
+  - name: ps-monitor-managed-hubs
     placement:
       labelSelector:
         matchExpressions:
@@ -65,23 +65,23 @@ policies:
   - name: monitor-managed-clusters
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
-      - monitor-local-cluster
-      - monitor-managed-hubs
+      - ps-monitor-local-cluster
+      - ps-monitor-managed-hubs
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
   - name: monitor-managed-hubs-no-local-cluster
     complianceType: mustnothave
     policySets:           # override policyDefaults.policySets
-      - monitor-managed-hubs
+      - ps-monitor-managed-hubs
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
 
   - name: monitor-rhacs-central
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
-      - monitor-local-cluster
-      - monitor-managed-hubs
+      - ps-monitor-local-cluster
+      - ps-monitor-managed-hubs
     manifests:
       - path: monitor/rhacs-central-status.yaml
 

@@ -17,10 +17,10 @@ policyDefaults:
     - CM-02 Baseline Configuration
   remediationAction: enforce
   policySets:
-    - config-all-clusters
+    - ps-config-all-clusters
   severity: medium
 policySets:
-  - name: config-all-clusters
+  - name: ps-config-all-clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -28,6 +28,22 @@ policySets:
             operator: In
             values:
               - OpenShift
+policySets:
+  - name: ps-config-non-local-cluster-non-managed-hub
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+          - key: name
+            operator: NotIn
+            values:
+              - local-cluster
+          - key: managed-hub
+            operator: DoesNotExist
+
 placementBindingDefaults:
   name: binding-config
 
@@ -43,20 +59,8 @@ policies:
 
   - name: config-rhacs-secured-cluster
     complianceType: musthave
-    policySets: []        # override policyDefaults.policySets
-    placement:            # specify placement for this policy
-      labelSelector:
-        matchExpressions:
-          - key: vendor
-            operator: In
-            values:
-              - OpenShift
-          - key: name
-            operator: NotIn
-            values:
-              - local-cluster
-          - key: managed-hub
-            operator: DoesNotExist
+    policySets:         # override policyDefaults.policySets
+      - ps-config-non-local-cluster-non-managed-hub
     manifests:
       - path: config/rhacs/secured-cluster.yaml
       - path: config/rhacs/secret.yaml
