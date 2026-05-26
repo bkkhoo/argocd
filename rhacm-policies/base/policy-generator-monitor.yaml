@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
-  name: pg-monitoring
+  name: pg-monitor
 policyDefaults:
   namespace: rhacm-policies
   policyAnnotations:
