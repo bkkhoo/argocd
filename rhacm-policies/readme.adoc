@@ -41,17 +41,17 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state
 
-| monitor-managed-clusters
+| monitor-managed-clusters *
 | Inform
 | Only `local-cluster`.
-| Monitor ManagedCluster Availability. *
+| Monitor ManagedCluster Availability.
 
-| monitor-managed-hubs-local-cluster
+| monitor-managed-hubs-local-cluster *
 | Inform
 | All OpenShift clusters with `managed-hub` label.
 | Monitor for managed hub with `local-cluster`.
 
-| monitor-rhacs-central
+| monitor-rhacs-central *
 | Inform
 | Only `local-cluster`.
 | Monitor RHACS Central.
@@ -59,7 +59,7 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | monitor-rhacs-secured-clusters
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor RHACS SecuredClusters. *
+| Monitor RHACS SecuredClusters.
 
 | monitor-role-with-wildcard-permissions
 | Inform
@@ -104,5 +104,5 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 
 [NOTE]
 ====
-* - the policy is disabled on managed hubs because managed hubs do not have `local-custer` (`disableHubSelfManagement: false`).
+* - The policy is disabled on managed hubs because managed hubs do not manage themselves and lack a `local-cluster` (the RHACM `MultiClusterHub` instance is configured with `disableHubSelfManagement: true`)
 ====

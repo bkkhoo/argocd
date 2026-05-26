@@ -28,7 +28,7 @@ policySets:
             operator: In
             values:
               - OpenShift
-  - name: ps-config-non-local-cluster-non-managed-hub
+  - name: ps-config-no-local-cluster-no-managed-hub
     placement:
       labelSelector:
         matchExpressions:
@@ -59,7 +59,7 @@ policies:
   - name: config-rhacs-secured-cluster
     complianceType: musthave
     policySets:         # override policyDefaults.policySets
-      - ps-config-non-local-cluster-non-managed-hub
+      - ps-config-no-local-cluster-no-managed-hub
     manifests:
       - path: config/rhacs/secured-cluster.yaml
       - path: config/rhacs/secret.yaml
