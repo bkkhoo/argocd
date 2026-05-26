@@ -93,13 +93,13 @@ policies:
     manifests:
       - path: monitor/rhacs-secured-cluster-status.yaml
 
-  - name: monitor-wildcard-permissions-role
+  - name: monitor-role-with-wildcard-permissions
     complianceType: mustnothave
     namespaceSelector:
       include:
         - "*"
     manifests:
-      - path: monitor/wildcard-permissions-role.yaml
+      - path: monitor/role-with-wildcard-permissions.yaml
 
   - name: monitor-privileges-scc-binding
     complianceType: mustnothave
