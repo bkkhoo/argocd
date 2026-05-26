@@ -1,0 +1,22 @@
+# check for default storageClass
+# if more than 1, list all as violations
+object-templates-raw: |
+  {{- $sc := (lookup "storage.k8s.io/v1" "StorageClass" "" "") }}
+  {{- $default_sc := 0 }}
+  {{- if gt (len $sc.items) 1 }}
+    {{ range $sc.items }}
+      {{- if eq (index .metadata.annotations "storageclass.kubernetes.io/is-default-class") "true" }}
+        {{- $default_sc = add $default_sc 1 }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if gt $default_sc 1 }}
+    {{ range $sc.items }}
+  - complianceType: mustnothave
+    objectDefinition:
+      kind: StorageClass
+      apiVersion: storage.k8s.io/v1
+      metadata:
+        name: {{ .metadata.name }}
+    {{- end }}
+  {{- end }}

@@ -70,7 +70,7 @@ policies:
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
-  - name: monitor-managed-hubs-no-local-cluster
+  - name: monitor-managed-hubs-local-cluster
     complianceType: mustnothave
     policySets:           # override policyDefaults.policySets
       - ps-monitor-managed-hubs
@@ -147,4 +147,9 @@ policies:
         - "*"
     manifests:
       - path: monitor/container-image-pull-backoff.yaml
+
+  - name: monitor-default-storage-class
+    severity: low
+    manifests:
+      - path: monitor/default-storage-class.yaml
 ...

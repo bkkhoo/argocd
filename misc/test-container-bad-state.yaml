@@ -2,18 +2,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: test-container-status
+  name: test-bad-status
 spec: {}
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: test-oom-kill
-  namespace: test-container-status
+  namespace: test-bad-status
 spec:
   containers:
   - name: test-oom-kill
-    image: polinux/stress
+    image: docker.io/polinux/stress:latest
     resources:
       requests:
         memory: "100Mi"
@@ -26,11 +26,11 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: test-image-pull-backoff
-  namespace: test-container-status
+  namespace: test-bad-status
 spec:
   containers:
   - name: test-image-pull-backoff
     image: dummy
 ...
 
-# oc -n test-container-status get pod -w -o json | jq '{"name": .metadata.name, "started": .status.containerStatuses[].started, "state": .status.containerStatuses[].state.waiting.reason, "lastState": .status.containerStatuses[].lastState.terminated.reason}'
+# oc -n test-bad-status get pod -w -o json | jq '{"name": .metadata.name, "started": .status.containerStatuses[].started, "state": .status.containerStatuses[].state.waiting.reason, "lastState": .status.containerStatuses[].lastState.terminated.reason}'

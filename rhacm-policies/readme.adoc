@@ -46,6 +46,11 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Only `local-cluster`.
 | Monitor ManagedCluster Availability. *
 
+| monitor-managed-hubs-local-cluster
+| Inform
+| All OpenShift clusters with `managed-hub` label.
+| Monitor for managed hub with `local-cluster`.
+
 | monitor-rhacs-central
 | Inform
 | Only `local-cluster`.
@@ -90,9 +95,14 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor for containers where the cluster repeatedly fails to pull the required container image from a registry (ImagePullBackOff).
+
+| monitor-default-storage-class
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor default StorageClass, alert if more than one default StorageClass is defined.
 |===
 
 [NOTE]
 ====
-* - the policy is not deployed to managed hubs because managed hubs do not have `local-custer` (`disableHubSelfManagement: false`).
+* - the policy is disabled on managed hubs because managed hubs do not have `local-custer` (`disableHubSelfManagement: false`).
 ====
