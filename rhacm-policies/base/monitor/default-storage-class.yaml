@@ -2,16 +2,16 @@
 # if more than 1, list all as violations
 object-templates-raw: |
   {{- $storage_classes := (lookup "storage.k8s.io/v1" "StorageClass" "" "") }}
-  {{- $default_sc := 0 }}
+  {{- $default_sc_count := 0 }}
   {{- if gt (len $storage_classes.items) 1 }}
     {{ range $storage_classes.items }}
       {{- $annotations := .metadata.annotations }}
       {{- if and $annotations (eq (index $annotations "storageclass.kubernetes.io/is-default-class") "true") }}
-        {{- $default_sc = add $default_sc 1 }}
+        {{- $default_sc_count = add $default_sc_count 1 }}
       {{- end }}
     {{- end }}
   {{- end }}
-  {{- if gt $default_sc 1 }}
+  {{- if gt $default_sc_count 1 }}
     {{ range $storage_classes.items }}
   - complianceType: mustnothave
     objectDefinition:

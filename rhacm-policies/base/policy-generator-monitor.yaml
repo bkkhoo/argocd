@@ -73,6 +73,7 @@ policies:
   - name: monitor-managed-hubs-local-cluster
     complianceType: mustnothave
     policySets:           # override policyDefaults.policySets
+      - ps-monitor-local-cluster
       - ps-monitor-managed-hubs
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
