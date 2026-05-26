@@ -38,16 +38,16 @@ policySets:
             operator: In
             values:
               - local-cluster
-  # - name: ps-monitor-managed-hubs
-  #   placement:
-  #     labelSelector:
-  #       matchExpressions:
-  #         - key: vendor
-  #           operator: In
-  #           values:
-  #             - OpenShift
-  #         - key: managed-hub
-  #           operator: Exists
+  - name: ps-monitor-managed-hubs
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+          - key: managed-hub
+            operator: Exists
 placementBindingDefaults:
   name: binding-monitor
 
@@ -70,12 +70,12 @@ policies:
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
-  # - name: monitor-managed-hubs-no-local-cluster
-  #   complianceType: mustnothave
-  #   policySets:           # override policyDefaults.policySets
-  #     - ps-monitor-managed-hubs
-  #   manifests:
-  #     - path: monitor/managed-hubs-local-cluster.yaml
+  - name: monitor-managed-hubs-no-local-cluster
+    complianceType: mustnothave
+    policySets:           # override policyDefaults.policySets
+      - ps-monitor-managed-hubs
+    manifests:
+      - path: monitor/managed-hubs-local-cluster.yaml
 
   - name: monitor-rhacs-central
     complianceType: musthave

@@ -8,36 +8,6 @@ kind: Kustomization
 resources:
   - ../../base
 
-# patches:
-#   - target:
-#       group: argoproj.io
-#       version: v1alpha1
-#       kind: Application
-#       name: 00-rhacm-policies
-#     patch: |
-#       - op: add
-#         path: /spec/source/kustomize
-#         value:
-#           patches:
-#             - target:
-#                 group: policy.open-cluster-management.io
-#                 version: v1
-#                 kind: Policy
-#                 name: monitor-managed-clusters
-#               patch: |
-#                 - op: replace
-#                   path: /spec/disabled
-#                   value: true
-#             - target:
-#                 group: policy.open-cluster-management.io
-#                 version: v1
-#                 kind: Policy
-#                 name: monitor-rhacs-central
-#               patch: |
-#                 - op: replace
-#                   path: /spec/disabled
-#                   value: true
-
 patches:
   - target:
       group: argoproj.io

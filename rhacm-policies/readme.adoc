@@ -46,11 +46,6 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Only `local-cluster`.
 | Monitor ManagedCluster Availability. *
 
-| monitor-argocd-applications
-| Inform
-| `local-cluster` and cluster with `managed-hub` label.
-| Monitor ArgoCD application health (ensuring it is not Unknown, Missing, or Degraded) and sync status (ensuring it is not Unknown or OutOfSync).
-
 | monitor-rhacs-central
 | Inform
 | Only `local-cluster`.
@@ -61,7 +56,7 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor RHACS SecuredClusters. *
 
-| monitor-wildcard-permissions-role
+| monitor-role-with-wildcard-permissions
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Detected namespaced Role with wildcard permissions (`apiGroups: ["*"]`, `resources: ["*"]`, `verbs: ["*"]`).
