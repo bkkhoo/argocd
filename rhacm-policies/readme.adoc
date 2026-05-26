@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = About this Kustomize Deployment
 
-This deployment deploys RHACM policies. The polices are deployed to global-hub and managed-hubs only.
+RHACM governance policies, the polices are deployed to **global-hub** and **managed-hubs** only.
 
 [NOTE]
 ====
@@ -49,7 +49,7 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | monitor-managed-hubs-local-cluster *
 | Inform
 | All OpenShift clusters with `managed-hub` label.
-| Monitor for managed hub with `local-cluster`.
+| Monitor managed-hub with `local-cluster`; no managed-hub should have `local-cluster`.
 
 | monitor-rhacs-central *
 | Inform
@@ -84,17 +84,22 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | monitor-container-oom-killed
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for containers that exceed their defined memory limit and are killed by the Linux kernel's Out-Of-Memory killer (OOMKilled).
+| Monitor for containers that exceed their defined memory limit and are killed by the Linux kernel's Out-Of-Memory killer (`OOMKilled`).
 
 | monitor-container-crash-loop-backoff
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for containers that are repeatedly crashing and restarting (CrashLoopBackOff).
+| Monitor for containers that are repeatedly crashing and restarting (`CrashLoopBackOff`).
 
 | monitor-container-image-pull-backoff
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for containers where the cluster repeatedly fails to pull the required container image from a registry (ImagePullBackOff).
+| Monitor for containers where the cluster repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
+
+| monitor-pending-persistent-volume-claim
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor PersistentVolumeClaim in `Pending` state.
 
 | monitor-default-storage-class
 | Inform
@@ -104,5 +109,5 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 
 [NOTE]
 ====
-* - The policy is disabled on managed hubs because managed hubs do not manage themselves and lack a `local-cluster` (the RHACM `MultiClusterHub` instance is configured with `disableHubSelfManagement: true`)
+* - The policy is disabled on managed-hubs because **__managed-hubs do not manage themselves__** and lack a `local-cluster` (the RHACM `MultiClusterHub` instance is configured with `disableHubSelfManagement: true`). The policies are disabled using link:apps/rhacm-policies/overlays/managed-hub/kustomization.yaml[kustomize patches].
 ====

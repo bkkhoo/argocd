@@ -31,6 +31,19 @@ spec:
   containers:
   - name: test-image-pull-backoff
     image: dummy
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pending-pvc
+  namespace: test-bad-status
+spec:
+  storageClassName: dummy
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ...
 
 # oc -n test-bad-status get pod -w -o json | jq '{"name": .metadata.name, "started": .status.containerStatuses[].started, "state": .status.containerStatuses[].state.waiting.reason, "lastState": .status.containerStatuses[].lastState.terminated.reason}'

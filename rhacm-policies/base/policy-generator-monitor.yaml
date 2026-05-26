@@ -146,8 +146,16 @@ policies:
     manifests:
       - path: monitor/container-image-pull-backoff.yaml
 
-  - name: monitor-default-storage-class
+  - name: monitor-pending-persistent-volume-claim
+    complianceType: mustnothave
     severity: low
+    namespaceSelector:
+      include:
+        - "*"
+    manifests:
+      - path: monitor/persistent-volume-claim.yaml
+
+  - name: monitor-default-storage-class
     manifests:
       - path: monitor/default-storage-class.yaml
 ...
