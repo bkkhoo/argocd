@@ -66,14 +66,12 @@ policies:
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
       - ps-monitor-local-cluster
-      - ps-monitor-managed-hubs
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
   - name: monitor-managed-hubs-local-cluster
     complianceType: mustnothave
     policySets:           # override policyDefaults.policySets
-      - ps-monitor-local-cluster
       - ps-monitor-managed-hubs
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
@@ -82,7 +80,6 @@ policies:
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
       - ps-monitor-local-cluster
-      - ps-monitor-managed-hubs
     manifests:
       - path: monitor/rhacs-central-status.yaml
 
@@ -151,9 +148,6 @@ policies:
 
   - name: monitor-default-storage-class
     severity: low
-    policySets:           # override policyDefaults.policySets
-      - ps-monitor-local-cluster
-      - ps-monitor-managed-hubs
     manifests:
       - path: monitor/default-storage-class.yaml
 ...
