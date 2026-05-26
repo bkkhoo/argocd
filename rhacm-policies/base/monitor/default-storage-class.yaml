@@ -6,7 +6,7 @@ object-templates-raw: |
   {{- if gt (len $storage_classes.items) 1 }}
     {{ range $storage_classes.items }}
       {{- $annotations := .metadata.annotations }}
-      {{- if and $$annotations (eq (index $annotations "storageclass.kubernetes.io/is-default-class") "true") }}
+      {{- if and $annotations (eq (index $annotations "storageclass.kubernetes.io/is-default-class") "true") }}
         {{- $default_sc = add $default_sc 1 }}
       {{- end }}
     {{- end }}
