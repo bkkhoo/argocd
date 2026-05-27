@@ -28,6 +28,12 @@ policySets:
             operator: In
             values:
               - OpenShift
+  - name: ps-config-managed-hubs
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: managed-hub
+            operator: Exists
   - name: ps-config-no-local-cluster-no-managed-hub
     placement:
       labelSelector:
@@ -55,6 +61,12 @@ policies:
       - AC-02 Account Management
     manifests:
       - path: config/kubeadmin-secret.yaml
+
+  - name: config-argocd-repo-secrets
+    policySets:         # override policyDefaults.policySets
+      - ps-config-managed-hubs
+    manifests:
+      - path: config/argocd/repo-secret.yaml
 
   - name: config-rhacs-secured-cluster
     complianceType: musthave

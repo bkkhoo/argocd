@@ -26,6 +26,11 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | All OpenShift clusters.
 | Ensure the `kubeadmin` user is removed.
 
+| config-argocd-repo-secrets
+| Enforce
+| All clusters with `managed-hub` label.
+| Ensure ArgoCD repo secrets are distributed to managed-hubs' openshift-gitops namespace
+
 | config-rhacs-secured-cluster
 | Enforce
 | All OpenShift clusters, except `local-cluster` and cluster with `managed-hub` label.

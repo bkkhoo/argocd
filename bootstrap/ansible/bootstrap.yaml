@@ -7,7 +7,15 @@
     config: basic
     global_hub: yes
     env: prod
-
+    git_repos:
+      - repo_name: github-argocd
+        repo_url: https://github.com/bkkhoo/argocd.git
+        repo_username: bkkhoo
+        repo_token: "{{ github_token }}"
+      - repo_name: github-helm-values
+        repo_url: https://github.com/bkkhoo/helm-values.git
+        repo_username: test
+        repo_token: "{{ github_token }}"
     _context:
       basic:
         availabilityConfig: Basic
@@ -56,6 +64,8 @@
             --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
             --set postgresRetention={{ _context[config]['postgresRetention'] }}
           status: Running
+  vars_files:
+    - github-token-vaulted.yaml
 
   tasks:
     - name: fail if invalid config
@@ -91,6 +101,28 @@
     - name: ensure rhacm openshift-gitops integration is configured
       ansible.builtin.shell:
         cmd: "helm template {{ playbook_dir }}/../..//helm-charts/rhacm-openshift-gitops-integration | oc apply -f -"
+
+    - name: check if rhacm-policies namespace exist
+      register: namespace_check
+      failed_when: false
+      ansible.builtin.command:
+        cmd: oc get namespace rhacm-policies
+
+    - name: ensure rhacm-policies namespace exist
+      when: namespace_check.rc != 0
+      ansible.builtin.command:
+        cmd: oc create namespace rhacm-policies
+
+    - name: create argocd repo secrets
+      loop: "{{ git_repos }}"
+      loop_control:
+        label: "{{ item.repo_name }}"
+      vars:
+        repo_name: "{{ item.repo_name }}"
+        repo_url: "{{ item.repo_url }}"
+        repo_username: "{{ item.repo_username }}"
+        repo_token: "{{ item.repo_token }}"
+      ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
 
     - name: ensure global-hub app-of-apps is deployed
       when: global_hub | bool

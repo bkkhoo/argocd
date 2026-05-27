@@ -1,4 +1,5 @@
 # the following policies are disabled on managed hubs because managed hubs do not manage themselves and lack a local-cluster:
+#   config-argocd-repo-secrets: this policy is only for distributed argocd repo secrets from global-hub to managed-hubs
 #   monitor-managed-clusters: ManagedClusters only appeared on local-cluster
 #   monitor-managed-hubs-local-cluster
 #   monitor-rhacs-central: rhacs central is only deployed on local-cluster
@@ -19,6 +20,15 @@ patches:
         path: /spec/source/kustomize
         value:
           patches:
+            - target:
+                group: policy.open-cluster-management.io
+                version: v1
+                kind: Policy
+                name: config-argocd-repo-secrets
+              patch: |
+                - op: replace
+                  path: /spec/disabled
+                  value: true
             - target:
                 group: policy.open-cluster-management.io
                 version: v1

@@ -1,5 +1,6 @@
 # check for default storageClass
 # if more than 1, list all as violations
+---
 object-templates-raw: |
   {{- $storage_classes := (lookup "storage.k8s.io/v1" "StorageClass" "" "") }}
   {{- $default_sc_count := 0 }}
@@ -21,3 +22,4 @@ object-templates-raw: |
         name: {{ .metadata.name }}
     {{- end }}
   {{- end }}
+...
