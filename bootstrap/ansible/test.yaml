@@ -1,0 +1,93 @@
+---
+- name: bootstrap
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    config: basic
+    global_hub: yes
+    env: prod
+    git_repos:
+      - repo_name: github-argocd
+        repo_url: https://github.com/bkkhoo/argocd.git
+        repo_username: bkkhoo
+        repo_token: "{{ github_token }}"
+      - repo_name: github-helm-values
+        repo_url: https://github.com/bkkhoo/helm-values.git
+        repo_username: test
+        repo_token: "{{ github_token }}"
+
+    _context:
+      basic:
+        availabilityConfig: Basic
+        postgresRetention: 3m
+        gitOpsValuesFile: "values-openshift-gitops-basic.yaml"
+      ha:
+        availabilityConfig: High
+        postgresRetention: 18m
+        gitOpsValuesFile: "values-openshift-gitops-ha.yaml"
+    _components:    # operator and instance
+      - helm_chart: openshift-gitops
+        install: true
+        namespace: openshift-gitops-operator
+        csv_name: openshift-gitops-operator
+        instance:
+          kind: argocds.argoproj.io
+          name: openshift-gitops
+          namespace: openshift-gitops
+          helm_options: >-
+            --set deploymentType=argocd
+            --values {{ _context[config]['gitOpsValuesFile']}}
+          status: Available
+      - helm_chart: rhacm
+        install: true
+        namespace: open-cluster-management
+        csv_name: advanced-cluster-management
+        instance:
+          kind: multiclusterhubs.operator.open-cluster-management.io
+          name:  multiclusterhub
+          namespace: open-cluster-management
+          helm_options: >-
+            --set deploymentType=multicluster-hub
+            --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
+            --set disableHubSelfManagement=false
+          status: Running
+      - helm_chart: multicluster-global-hub
+        install: "{{ global_hub }}"
+        namespace: multicluster-global-hub
+        csv_name: multicluster-global-hub
+        instance:
+          kind: multiclusterglobalhubs.operator.open-cluster-management.io
+          name: multiclusterglobalhub
+          namespace: multicluster-global-hub
+          helm_options: >-
+            --set deploymentType=global-hub
+            --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
+            --set postgresRetention={{ _context[config]['postgresRetention'] }}
+          status: Running
+  vars_files:
+    - github-token-vaulted.yaml
+
+  tasks:
+    - name: check if rhacm-policies namespace exist
+      register: namespace_check
+      failed_when: false
+      ansible.builtin.command:
+        cmd: oc get namespace rhacm-policies
+
+    - name: ensure rhacm-policies namespace exist
+      when: namespace_check.rc != 0
+      ansible.builtin.command:
+        cmd: oc create namespace rhacm-policies
+
+    - name: create argocd repo secrets
+      loop: "{{ git_repos }}"
+      loop_control:
+        label: "{{ item.repo_name }}"
+      vars:
+        repo_name: "{{ item.repo_name }}"
+        repo_url: "{{ item.repo_url }}"
+        repo_username: "{{ item.repo_username }}"
+        repo_token: "{{ item.repo_token }}"
+      ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
+...

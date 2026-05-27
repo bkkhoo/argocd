@@ -15,6 +15,7 @@ resources:
   # reuse these apps for deployment to global-hub cluster, patch to make them target only in-cluster
   - ../../../apps/cluster-config/base
   - ../../../apps/openshift-web-terminal/base
+  - ../../../apps/openshift-pipelines/base
   - ../../../apps/openshift-compliance/base
 
 # patch to:
@@ -46,6 +47,22 @@ patches:
       - op: replace
         path: /spec/template/metadata/name
         value: "01-openshift-web-terminal"
+      - op: replace
+        path: /spec/generators/0
+        value:
+          list:
+            elements:
+              - name: in-cluster
+                server: https://kubernetes.default.svc
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: ApplicationSet
+      name: openshift-pipelines
+    patch: |
+      - op: replace
+        path: /spec/template/metadata/name
+        value: "01-openshift-pipelines"
       - op: replace
         path: /spec/generators/0
         value:

@@ -4,8 +4,9 @@ kind: Kustomization
 resources:
   - ../../base
   - ../../../../apps/rhacs-central/overlays/prod
-  # - ../../../../apps/openshift-web-terminal/base
-  # - ../../../../apps/openshift-compliance/base
+  - ../../../../apps/openshift-web-terminal/base
+  - ../../../../apps/openshift-pipelines/base
+  - ../../../../apps/openshift-compliance/base
   - ../../../../apps/rhacs-secured-cluster/overlays/prod
   - ../../../../apps/test-app/overlays/prod
 ...
