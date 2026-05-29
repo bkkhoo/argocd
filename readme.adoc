@@ -40,7 +40,9 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 ## .
 ├── bootstrap                           # ansible playbook to bootstrap multicluster global hub
 │   └── ansible
-│       └── tasks
+│       ├── tasks
+│       ├── templates
+│       └── vars
 ├── helm-charts                         # helm charts; the charts are used by argocd
 │   ├── multicluster-global-hub         # applications/applicationSets in the apps folder
 │   │   └── templates
@@ -53,7 +55,7 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 ## .
 ## --- snip ---                         # other helm charts
 ## .
-├── images
+├── images                              # images/diagrams
 ├── kustomize-deployments               # kustomize-deployments; the deployments are used by
 │   ├── motd                            # argocd applications/applicationSets in the apps folder
 │   │   └── base
@@ -64,10 +66,14 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 ## .
 ├── misc
 ├── rhacm-policies                      # rhacm policies
-│   └── base
-│       ├── config                      # manifests for rhacm configuration policies
-│       │   └── rhacs
-│       └── monitor                     # manifests for rhacm monitoring policies
+│   ├── base
+│   │   ├── config                      # manifests for rhacm configuration policies
+│   │   │   ├── argocd
+│   │   │   └── rhacs
+│   │   └── monitor                     # manifests for rhacm monitoring policies
+│   └── overlays
+│       ├── global-hub
+│       └── managed-hub
 └── root-app                            # root apps; app of apps deploys apps defined here
     ├── global-hub                      # for multicluster global hub
     │   └── base
