@@ -16,44 +16,7 @@ patches:
       kind: Application
       name: 00-rhacm-policies
     patch: |
-      - op: add
-        path: /spec/source/kustomize
-        value:
-          patches:
-            - target:
-                group: policy.open-cluster-management.io
-                version: v1
-                kind: Policy
-                name: config-argocd-repo-secrets
-              patch: |
-                - op: replace
-                  path: /spec/disabled
-                  value: true
-            - target:
-                group: policy.open-cluster-management.io
-                version: v1
-                kind: Policy
-                name: monitor-managed-clusters
-              patch: |
-                - op: replace
-                  path: /spec/disabled
-                  value: true
-            - target:
-                group: policy.open-cluster-management.io
-                version: v1
-                kind: Policy
-                name: monitor-managed-hubs-local-cluster
-              patch: |
-                - op: replace
-                  path: /spec/disabled
-                  value: true
-            - target:
-                group: policy.open-cluster-management.io
-                version: v1
-                kind: Policy
-                name: monitor-rhacs-central
-              patch: |
-                - op: replace
-                  path: /spec/disabled
-                  value: true
+      - op: replace
+        path: /spec/source/path
+        value: rhacm-policies/overlays/managed-hub
 ...

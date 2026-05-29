@@ -1,3 +1,4 @@
+---
 centralDB:
   resources:
     limits:
@@ -15,3 +16,4 @@ central:
       cpu: "1"
       memory: 2Gi
 minimumAccessRole: Admin
+...
