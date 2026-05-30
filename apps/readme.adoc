@@ -30,28 +30,28 @@ endif::[]
 
 | cluster-config
 | ApplicationSet
-| All OpenShift clusters without `managed-hub` label.
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Cluster configurations (disable self provisioner, disable insights/telemetry services, OperatorHub, etc,)
 
 | openshift-compliance
 | ApplicationSet
-| All OpenShift clusters without `managed-hub` label.
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Deploy OpenShift Compliance operator and compliance scan.
 
 | openshift-pipelines
 | ApplicationSet
-| All OpenShift clusters without `managed-hub` label.
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Deploy OpenShift Pipelines operator.
 
 | openshift-web-terminal
 | ApplicationSet
-| All OpenShift clusters without `managed-hub` label.
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Deploy OpenShift Web Terminal operator.
 
 | rhacm-policies
 | Application
 | in-cluster
-| Deploy RHACM Governance Policies tp global-hub and managed-hubs.
+| Deploy RHACM Governance Policies to global-hub and managed-hubs.
 
 | rhacs-central
 | Application

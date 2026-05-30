@@ -50,7 +50,7 @@ spec:
             valuesObject:
               deploymentType: all
             valueFiles:
-              # referencing values from git repo source[1].ref
+              # referencing values from git repo source[1].ref above
               # even though source[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
               - $helmValues/openshift-gitops/dev/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git

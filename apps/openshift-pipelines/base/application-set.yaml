@@ -19,6 +19,13 @@ spec:
                 - OpenShift
             - key: managed-hub
               operator: DoesNotExist
+    # argocd automatically registers the local cluster (in-cluster) as https://kubernetes.default.svc but does not create a Secret for
+    # it by default, meaning it lacks the "argocd.argoproj.io/secret-type: cluster" label; consequently, selectors like matchExpressions
+    # and matchLabels will exclude the local cluster. the list generator below include local cluster int the selection.
+    - list:
+        elements:
+          - name: in-cluster
+            server: https://kubernetes.default.svc
   template:
     metadata:
       name: "{{ name }}-openshift-pipelines"
