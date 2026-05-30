@@ -211,6 +211,21 @@ resolve by restarting the ArgoCD application controller:
 oc -n openshift-gitops delete pod -l app.kubernetes.io/name=openshift-gitops-application-controller
 ----
 
+== ToDO
+
+. RHACM policy to distribute repo secret (the secret configure ARgoCD repository) from global-hub `rhacm-policies` namespace to managed-hub `openshift-gitops` namespace.
++
+The current setup:
+
+** link:bootstrap/ansible/bootsrtap.yaml[Bootstrap ansible playbook] creates the secrets on global-hub `rhacm-policies` and `openshift-gitops` namespaces. The access tokens are stored in link:bootstrap/ansible/vars/github-token-vault-encrypted.yaml[ansible-vault encrypted file].
+** RHACM policy `config-rhacs-secured-cluster` uses link:rhacm-policies/base/config/openshift-gitops/repo-secret.yaml[static configuration] to deploy the secrets to managed-hubs.
++
+The ideal setup:
+
+** RHACM policy dynamically retrieve the secrets from global-hub `rhacm-policies` namespace (using `argocd.argoproj.io/secret-type=repository` label selector) and deploy them to  managed-hubs.
+
+. tbd
+
 == References
 
 - link:https://oneuptime.com/blog/post/2026-02-26-argocd-ordering-priority-multiple-sources/view[ArgoCD resource ordering]

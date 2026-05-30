@@ -27,7 +27,7 @@
   register: instance_result
   until: "_instance.status in instance_result.stdout"
   delay: 5
-  retries: 80
+  retries: 88
   ansible.builtin.command:
     cmd: >-
       oc {{ "-n " + _instance.namespace if _instance.namespace else "" }} get {{ _instance.kind }} {{ _instance.name }} -o jsonpath="{.status.phase}"

@@ -11,11 +11,11 @@
       - repo_name: github-argocd
         repo_url: https://github.com/bkkhoo/argocd.git
         repo_username: bkkhoo
-        repo_token: "{{ github_token }}"
+        repo_token: "{{ github_argocd }}"
       - repo_name: github-helm-values
         repo_url: https://github.com/bkkhoo/helm-values.git
         repo_username: test
-        repo_token: "{{ github_token }}"
+        repo_token: "{{ github_helm_values }}"
     _context:
       basic:
         availabilityConfig: Basic
@@ -65,7 +65,7 @@
             --set postgresRetention={{ _context[config]['postgresRetention'] }}
           status: Running
   vars_files:
-    - github-token-vaulted.yaml
+    - github-token-vault-encrypted.yaml
 
   tasks:
     - name: fail if invalid config
@@ -102,16 +102,9 @@
       ansible.builtin.shell:
         cmd: "helm template {{ playbook_dir }}/../..//helm-charts/rhacm-openshift-gitops-integration | oc apply -f -"
 
-    - name: check if rhacm-policies namespace exist
-      register: namespace_check
-      failed_when: false
-      ansible.builtin.command:
-        cmd: oc get namespace rhacm-policies
-
     - name: ensure rhacm-policies namespace exist
-      when: namespace_check.rc != 0
-      ansible.builtin.command:
-        cmd: oc create namespace rhacm-policies
+      ansible.builtin.shell:
+        cmd: oc create namespace rhacm-policies --dry-run=client -o yaml | oc apply -f -
 
     - name: create argocd repo secrets
       loop: "{{ git_repos }}"
