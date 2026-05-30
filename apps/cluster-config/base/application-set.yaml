@@ -19,6 +19,9 @@ spec:
                 - OpenShift
             - key: managed-hub
               operator: DoesNotExist
+    - list:
+        name: in-cluster
+        server: https://kubernetes.default.svc
   template:
     metadata:
       name: "{{ name }}-cluster-config"

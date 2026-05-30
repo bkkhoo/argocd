@@ -8,10 +8,10 @@ resources:
   - ../../../apps/01-managed-hub-bootstrap/prod
 
   # apps that target in-cluster only
-  - ../../../apps/rhacm-policies/base
+  - ../../../apps/rhacm-policies/overlays/global-hub
   - ../../../apps/rhacs-central/overlays/prod
 
-  - ../../../apps/rhacs-secured-cluster/overlays/dev
+  - ../../../apps/rhacs-secured-cluster/overlays/prod
   - ../../../apps/cluster-config/base
   - ../../../apps/openshift-web-terminal/base
   - ../../../apps/openshift-pipelines/base
