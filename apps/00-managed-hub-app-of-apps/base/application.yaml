@@ -13,7 +13,7 @@ spec:
   project: iac-gitops
   source:
     repoURL: https://github.com/bkkhoo/argocd.git
-    path: root-app/managed-hub/overlays/prod
+    path: root-app/managed-hub/base
     targetRevision: main
   destination:
     name: in-cluster

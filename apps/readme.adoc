@@ -1,0 +1,70 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= ArgoCD Applications and ApplicationSets
+
+[cols="2,1,3,3", options="header"]
+|===
+| Name | Type | Destination Cluster(s) | Description
+
+| 00-global-hub-app-of-apps
+| Application
+| in-cluster
+| Global hub app-of-apps.
+
+| 00-managed-hub-app-of-apps
+| Application
+| in-cluster
+| Managed hubs app-of-apps.
+
+| 01-managed-hub-bootstrap
+| ApplicationSet
+| All OpenShift clusters with `managed-hub` label for `dev`\|`uat`\|`prod` environments.
+| Deploy OpenShift GitOps, RHACM, and managed hubs app-of-apps on managed hubs.
+
+| cluster-config
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label.
+| Cluster configurations (disable self provisioner, disable insights/telemetry services, OperatorHub, etc,)
+
+| openshift-compliance
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label.
+| Deploy OpenShift Compliance operator and compliance scan.
+
+| openshift-pipelines
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label.
+| Deploy OpenShift Pipelines operator.
+
+| openshift-web-terminal
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label.
+| Deploy OpenShift Web Terminal operator.
+
+| rhacm-policies
+| Application
+| in-cluster
+| Deploy RHACM Governance Policies tp global-hub and managed-hubs.
+
+| rhacs-central
+| Application
+| in-cluster
+| Deploy RHACS Central and SecuredCluster tp global-hub and managed-hub.
+
+| rhacs-secured-cluster
+| ApplicationSet
+| All OpenShift clusters, excluding `local-cluster` and any cluster with `managed-hub` label.
+| Deploy RHACS SecuredCluster in global-hub and managed-hub.
+
+| test-app
+| ApplicationSet
+| All OpenShift clusters with the `test-app` label, excluding clusters with the `managed-hub` label.
+| Deploy dummy test application.
+|===

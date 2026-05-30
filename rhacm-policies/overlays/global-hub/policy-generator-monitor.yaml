@@ -1,0 +1,61 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: pg-gh-monitor
+policyDefaults:
+  namespace: rhacm-policies
+  policyAnnotations:
+    generated-by: policy-generator
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  standards:
+    - NIST SP 800-53
+  categories:
+    - CA Assessment Authorization and Monitoring
+  controls:
+    - CA-07 Continuous Monitoring
+  remediationAction: inform
+  severity: medium
+  policySets:
+    - ps-gh-monitor-local-cluster
+policySets:
+  - name: ps-gh-monitor-local-cluster
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: name
+            operator: In
+            values:
+              - local-cluster
+  - name: ps-gh-monitor-managed-hubs
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+          - key: managed-hub
+            operator: Exists
+placementBindingDefaults:
+  name: binding-gh-monitor
+
+policies:
+  - name: monitor-managed-clusters
+    complianceType: musthave
+    manifests:
+      - path: monitor/managed-cluster-status.yaml
+
+  - name: monitor-managed-hubs-local-cluster
+    complianceType: mustnothave
+    policySets:           # override policyDefaults.policySets
+      - ps-gh-monitor-managed-hubs
+    manifests:
+      - path: monitor/managed-hubs-local-cluster.yaml
+
+  - name: monitor-rhacs-central
+    complianceType: musthave
+    manifests:
+      - path: monitor/rhacs-central-status.yaml
+...

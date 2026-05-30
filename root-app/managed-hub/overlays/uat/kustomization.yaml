@@ -4,9 +4,6 @@ kind: Kustomization
 resources:
   - ../../base
   - ../../../../apps/rhacs-central/overlays/uat
-  - ../../../../apps/openshift-web-terminal/base
-  - ../../../../apps/openshift-pipelines/base
-  - ../../../../apps/openshift-compliance/base
   - ../../../../apps/rhacs-secured-cluster/overlays/uat
   - ../../../../apps/test-app/overlays/uat
 ...

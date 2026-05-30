@@ -168,63 +168,20 @@ For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` Serv
 
 == Issues
 
-=== ArgoCD Applications Stuck in Unknown Status (ArgoCD application controller OOMKilled)
+See link:readme-issues.adoc[document].
 
-The controller cannot determine if the desired state (Git) matches the live state (Cluster), often due to component failures, connectivity issues, or resource conflicts. The most common root causes are a crashed or OOMKilled application controller, Redis downtime, repo-server manifest generation failures, or missing Custom Resource Definitions (CRDs).
-
-**Troubleshooting & Resolution**:
-
-. Check Component Health: Inspect the core ArgoCD components by running:
-+
-[source,bash]
-----
-oc -n openshift-gitops get pods
-----
-. Review Logs: Check the logs for both the application controller and Redis pods.
-. Mitigate Controller Issues: If the controller is not processing applications, restart it:
-+
-[source,bash]
-----
-oc -n openshift-gitops rollout restart statefulsets/openshift-gitops-application-controller
-----
-. Handle Redis Downtime: If Redis is unresponsive, restart the Redis component first, followed by the application controller.
-
-**Memory Limit Adjustment**:
-
-By default, the `statefulsets/openshift-gitops-application-controller`` container has `resources.limits.memory` set to 2Gi. When multiple large applications are syncing simultaneously, the container can run out of memory and get OOMKilled. To resolve this, increase the `resources.limits.memory` to 4Gi or more.
-
-=== ArgoCD Applications Stuck in Unknown State (cluster added to fast, hub rhacm probably not ready)
-
-[source,text]
-----
-error synchronizing cache state : failed to get server version: failed to get server version: an error on the server ("proxy to anp-proxy-server failed because No agent available") has prevented the request from succeeding
-Failed to load live state: failed to get cluster info for "https://cluster-proxy-addon-user.multicluster-engine.svc.cluster.local:9092/prod-cluster01": error synchronizing cache state : failed to get server version: failed to get server version: an error on the server ("proxy to anp-proxy-server failed because No agent available") has prevented the request from succeeding
-Failed to load target state: failed to get cluster version for cluster "https://cluster-proxy-addon-user.multicluster-engine.svc.cluster.local:9092/prod-cluster01": failed to get cluster info for "https://cluster-proxy-addon-user.multicluster-engine.svc.cluster.local:9092/prod-cluster01": error synchronizing cache state : failed to get server version: failed to get server version: an error on the server ("proxy to anp-proxy-server failed because No agent available") has prevented the request from succeeding
-----
-
-Likely due to Hub cluster RHACM (`multicluster-engine/cluster-proxy-addon-user` deployment) is not ready when spoke cluster is added.
-
-resolve by restarting the ArgoCD application controller:
-
-[source,bash]
-----
-oc -n openshift-gitops delete pod -l app.kubernetes.io/name=openshift-gitops-application-controller
-----
-
-== ToDO
+== To-dos
 
 . RHACM policy to distribute repo secret (the secret configure ARgoCD repository) from global-hub `rhacm-policies` namespace to managed-hub `openshift-gitops` namespace.
-+
-The current setup:
+** The current setup:
+*** link:bootstrap/ansible/bootsrtap.yaml[Bootstrap ansible playbook] creates the secrets on global-hub `rhacm-policies` and `openshift-gitops` namespaces. The access tokens are stored in link:bootstrap/ansible/vars/github-token-vault-encrypted.yaml[ansible-vault encrypted file].
+*** RHACM policy `config-rhacs-secured-cluster` uses link:rhacm-policies/base/config/openshift-gitops/repo-secret.yaml[static configuration] to deploy the secrets to managed-hubs.
+** The ideal setup:
+*** RHACM policy dynamically retrieve the secrets from global-hub `rhacm-policies` namespace (using `argocd.argoproj.io/secret-type=repository` label selector) and deploy them to  managed-hubs.
 
-** link:bootstrap/ansible/bootsrtap.yaml[Bootstrap ansible playbook] creates the secrets on global-hub `rhacm-policies` and `openshift-gitops` namespaces. The access tokens are stored in link:bootstrap/ansible/vars/github-token-vault-encrypted.yaml[ansible-vault encrypted file].
-** RHACM policy `config-rhacs-secured-cluster` uses link:rhacm-policies/base/config/openshift-gitops/repo-secret.yaml[static configuration] to deploy the secrets to managed-hubs.
-+
-The ideal setup:
+. Modify link:helm-charts/openshift-gitops[openshift-gitops Helm chart] to deploy operator **__without__** also auto-create argocd instance (set evironment variable `DISABLE_DEFAULT_ARGOCD_INSTANCE=true`), then deploy the argocd instance separately.
 
-** RHACM policy dynamically retrieve the secrets from global-hub `rhacm-policies` namespace (using `argocd.argoproj.io/secret-type=repository` label selector) and deploy them to  managed-hubs.
-
-. tbd
+. RHACM policies to monitor RHACS central on managed-hubs since **__managed-hubs do not manage themselves__**.
 
 == References
 

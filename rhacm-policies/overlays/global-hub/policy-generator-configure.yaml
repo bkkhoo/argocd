@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
-  name: pg-config
+  name: pg-gh-config
 policyDefaults:
   namespace: rhacm-policies
   policyAnnotations:
@@ -17,10 +17,10 @@ policyDefaults:
     - CM-02 Baseline Configuration
   remediationAction: enforce
   policySets:
-    - ps-config-all-clusters
+    - ps-gh-config-all-clusters
   severity: medium
 policySets:
-  - name: ps-config-all-clusters
+  - name: ps-gh-config-all-clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -28,39 +28,20 @@ policySets:
             operator: In
             values:
               - OpenShift
-  - name: ps-config-no-local-cluster-no-managed-hub
+  - name: ps-gh-config-managed-hubs
     placement:
       labelSelector:
         matchExpressions:
-          - key: vendor
-            operator: In
-            values:
-              - OpenShift
-          - key: name
-            operator: NotIn
-            values:
-              - local-cluster
           - key: managed-hub
-            operator: DoesNotExist
+            operator: Exists
 
 placementBindingDefaults:
-  name: binding-config
+  name: binding-gh-config
 
 policies:
-  - name: config-remove-kubeadmin
-    complianceType: mustnothave
-    categories:
-      - AC Access Control
-    controls:
-      - AC-02 Account Management
-    manifests:
-      - path: config/kubeadmin-secret.yaml
-
-  - name: config-rhacs-secured-cluster
-    complianceType: musthave
+  - name: config-argocd-repo-secrets
     policySets:         # override policyDefaults.policySets
-      - ps-config-no-local-cluster-no-managed-hub
+      - ps-gh-config-managed-hubs
     manifests:
-      - path: config/rhacs/secured-cluster.yaml
-      - path: config/rhacs/secret.yaml
+      - path: config/openshift-gitops/repo-secret.yaml
 ...

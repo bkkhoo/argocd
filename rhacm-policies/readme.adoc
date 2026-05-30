@@ -10,12 +10,11 @@ endif::[]
 
 RHACM governance policies, the polices are deployed to **global-hub** and **managed-hubs** only.
 
-[NOTE]
-====
-No overlays are necessary since the same RHACM policies are deployed to all environments (`dev`, `uat`, or `prod`).
-====
-
 == RHACM Policies
+
+=== Common Policies
+
+These policies are common to both global-hub and managed-hubs.
 
 [cols="2,1,3,3", options="header"]
 |===
@@ -25,11 +24,6 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Enforce
 | All OpenShift clusters.
 | Ensure the `kubeadmin` user is removed.
-
-| config-argocd-repo-secrets **pass:[*]**
-| Enforce
-| All clusters with `managed-hub` label.
-| Ensure ArgoCD repo secrets are distributed to managed-hubs' `openshift-gitops` namespace.
 
 | config-rhacs-secured-cluster
 | Enforce
@@ -45,21 +39,6 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
-
-| monitor-managed-clusters **pass:[+]**
-| Inform
-| Only `local-cluster`.
-| Monitor ManagedCluster Availability.
-
-| monitor-managed-hubs-local-cluster **pass:[+]**
-| Inform
-| All OpenShift clusters with `managed-hub` label.
-| Monitor managed-hub with `local-cluster`; no managed-hub should have `local-cluster`.
-
-| monitor-rhacs-central **pass:[+]**
-| Inform
-| Only `local-cluster`.
-| Monitor RHACS Central.
 
 | monitor-rhacs-secured-clusters
 | Inform
@@ -112,6 +91,35 @@ No overlays are necessary since the same RHACM policies are deployed to all envi
 | Monitor default StorageClass, alert if more than one default StorageClass is defined.
 |===
 
+=== Global-Hub Policies
+
+These policies are for global-hub only.
+
+[cols="2,1,3,3", options="header"]
+|===
+| Policy | Remediation Action | Placement | Description
+
+| config-argocd-repo-secrets **pass:[*]**
+| Enforce
+| All clusters with `managed-hub` label.
+| Ensure ArgoCD repo secrets are distributed to managed-hubs' `openshift-gitops` namespace.
+
+| monitor-managed-clusters **pass:[+]**
+| Inform
+| Only `local-cluster`.
+| Monitor ManagedCluster Availability.
+
+| monitor-managed-hubs-local-cluster **pass:[+]**
+| Inform
+| All OpenShift clusters with `managed-hub` label.
+| Monitor managed-hub with `local-cluster`; no managed-hub should have `local-cluster`.
+
+| monitor-rhacs-central **pass:[+]**
+| Inform
+| Only `local-cluster`.
+| Monitor RHACS Central.
+|===
+
 [NOTE]
 ====
 :tab: {nbsp}{nbsp}
@@ -121,3 +129,13 @@ The policy is disabled on managed hubs, as managed hubs do not need to distribut
 **pass:[+]**{tab}
 The policy is disabled on managed-hubs because **__managed-hubs do not manage themselves__** and lack a `local-cluster` (the RHACM `MultiClusterHub` instance is configured with `disableHubSelfManagement: true`). The policies are disabled using link:overlays/managed-hub/kustomization.yaml[kustomize patches].
 ====
+
+=== Managed-Hubs Policies
+
+These policies are for managed-hubs only.
+
+[cols="2,1,3,3", options="header"]
+|===
+| Policy | Remediation Action | Placement | Description
+
+|===

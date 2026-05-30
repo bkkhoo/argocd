@@ -13,6 +13,10 @@ spec:
     - clusters:
         selector:
           matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
             - key: managed-hub
               operator: Exists
             - key: env

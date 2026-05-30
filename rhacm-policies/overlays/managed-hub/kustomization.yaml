@@ -4,45 +4,5 @@ kind: Kustomization
 resources:
   - ../../base
 
-# disable the following policies on managed-hubs
-#   - managed hubs do not need to distribute ArgoCD repo secrets to managed clusters.
-#   - managed-hubs do not manage themselves and lack a local-cluster.
-
-patches:
-  - target:
-      group: policy.open-cluster-management.io
-      version: v1
-      kind: Policy
-      name: config-argocd-repo-secrets
-    patch: |
-      - op: replace
-        path: /spec/disabled
-        value: true
-  - target:
-      group: policy.open-cluster-management.io
-      version: v1
-      kind: Policy
-      name: monitor-managed-clusters
-    patch: |
-      - op: replace
-        path: /spec/disabled
-        value: true
-  - target:
-      group: policy.open-cluster-management.io
-      version: v1
-      kind: Policy
-      name: monitor-managed-hubs-local-cluster
-    patch: |
-      - op: replace
-        path: /spec/disabled
-        value: true
-  - target:
-      group: policy.open-cluster-management.io
-      version: v1
-      kind: Policy
-      name: monitor-rhacs-central
-    patch: |
-      - op: replace
-        path: /spec/disabled
-        value: true
+# currently no managed-hubs specific policies
 ...

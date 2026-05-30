@@ -4,4 +4,7 @@ kind: Kustomization
 resources:    # deploy these to all managed hub regardless of environment
   - ../../../apps/rhacm-policies/overlays/managed-hub
   - ../../../apps/cluster-config/base
+  - ../../../apps/openshift-web-terminal/base
+  - ../../../apps/openshift-pipelines/base
+  - ../../../apps/openshift-compliance/base
 ...

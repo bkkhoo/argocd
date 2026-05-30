@@ -9,8 +9,16 @@ metadata:
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
-  generators:                          # make sure only one element in the list
-    - clusters: {}                     # all clusters
+  generators:
+    - clusters:                        # on global-hub, deploy to all clusters except those with managed-hub label
+        selector:                      # on managed-hubs, no cluster should have the managed-hub label
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+            - key: managed-hub
+              operator: DoesNotExist
   template:
     metadata:
       name: "{{ name }}-openshift-web-terminal"

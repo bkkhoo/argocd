@@ -17,6 +17,10 @@ spec:
               operator: In
               values:
                 - OpenShift
+            - key: name
+              operator: NotIn
+              values:
+                - local-cluster
             - key: managed-hub
               operator: DoesNotExist
   template:
