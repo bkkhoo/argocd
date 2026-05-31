@@ -9,7 +9,7 @@ object-templates-raw: |
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: {{ #deployment_name }}
+    name: {{ $deployment_name }}
     namespace: openshift-gitops
   status:
     conditions:
