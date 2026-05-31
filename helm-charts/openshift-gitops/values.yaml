@@ -9,7 +9,7 @@ server:
     minReplicas: 2
     maxReplicas: 5
 rbac:
-  defaultPolicy: ""
+  defaultPolicy: ""        # example: role:admin, role:readonly
 repo:
   replicas: 3
   rhacmPolicyGenratorImage: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16

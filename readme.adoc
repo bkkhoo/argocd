@@ -174,12 +174,12 @@ See link:readme-issues.adoc[document].
 
 . RHACM policy to distribute repo secret (the secret configure ARgoCD repository) from global-hub `rhacm-policies` namespace to managed-hub `openshift-gitops` namespace.
 ** The current setup:
-*** link:bootstrap/ansible/bootsrtap.yaml[Bootstrap ansible playbook] creates the secrets on global-hub `rhacm-policies` and `openshift-gitops` namespaces. The access tokens are stored in link:bootstrap/ansible/vars/github-token-vault-encrypted.yaml[ansible-vault encrypted file].
+*** link:bootstrap/ansible/bootstrap.yaml[Bootstrap ansible playbook] creates the secrets on global-hub `rhacm-policies` and `openshift-gitops` namespaces. The access tokens are stored in link:bootstrap/ansible/vars/github-token-vault-encrypted.yaml[ansible-vault encrypted file].
 *** RHACM policy `config-rhacs-secured-cluster` uses link:rhacm-policies/base/config/openshift-gitops/repo-secret.yaml[static configuration] to deploy the secrets to managed-hubs.
 ** The ideal setup:
 *** RHACM policy dynamically retrieve the secrets from global-hub `rhacm-policies` namespace (using `argocd.argoproj.io/secret-type=repository` label selector) and deploy them to  managed-hubs.
 
-. Modify link:helm-charts/openshift-gitops[openshift-gitops Helm chart] to deploy operator **__without__** also auto-create argocd instance (set evironment variable `DISABLE_DEFAULT_ARGOCD_INSTANCE=true`), then deploy the argocd instance separately.
+. Modify link:helm-charts/openshift-gitops[openshift-gitops Helm chart] to deploy operator **__without__** also auto-create argocd instance (set environment variable `DISABLE_DEFAULT_ARGOCD_INSTANCE=true`), then deploy the argocd instance separately.
 
 . RHACM policies to monitor RHACS central on managed-hubs since **__managed-hubs do not manage themselves__**.
 

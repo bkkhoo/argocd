@@ -165,7 +165,7 @@ spec:
         cpu: 250m
         memory: 1Gi
   {{- if .Values.disableAdmin }}
-  disableAdmin: true     # default false, property not shown ob manifest
+  disableAdmin: true     # default false, property not shown on manifest
   {{- end }}
   kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
 {{ .Files.Get "files/resource-exclusion.yaml" | indent 2 }}

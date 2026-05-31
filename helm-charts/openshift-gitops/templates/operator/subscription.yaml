@@ -14,12 +14,12 @@ spec:
   sourceNamespace: openshift-marketplace
   channel: latest
   installPlanApproval: Automatic
-  # config:
-  #   env:
-  #     - name: DISABLE_DEFAULT_ARGOCD_INSTANCE
-  #       value: "true"
-  #     - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
-  #       value: "openshift-gitops"
+  config:
+    env:
+      - name: DISABLE_DEFAULT_ARGOCD_INSTANCE
+        value: "true"
+      - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
+        value: "openshift-gitops"
   #   nodeSelector:
   #     node-role.kubernetes.io/infra: ""
   #   tolerations:

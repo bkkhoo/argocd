@@ -23,7 +23,7 @@
   ansible.builtin.shell: >-
     helm template {{ playbook_dir }}/../../helm-charts/{{ _helm_chart }} {{ _instance.helm_options }} | oc apply -f -
 
-- name: "wait for {{ _instance.kind }} instance to reach Running/Available phase"
+- name: "waensure {{ _instance.kind }} instance reach Running/Available phase"
   register: instance_result
   until: "_instance.status in instance_result.stdout"
   delay: 5
