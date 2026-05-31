@@ -3,11 +3,11 @@ object-templates-raw: |
   {{- $argocd := lookup "argoproj.io/v1beta1" "ArgoCD" "openshift-gitops" "openshift-gitops" }}
   {{- $deployment_name := "" }}
   {{- if $argocd.spec.ha.enabled }}
-    {{- $deployment_name := "openshift-gitops-redis-ha-haproxy" }}
+    {{- $deployment_name = "openshift-gitops-redis-ha-haproxy" }}
   {{- else }}
-    {{- $deployment_name := "openshift-gitops-redis" }}
+    {{- $deployment_name = "openshift-gitops-redis" }}
   {{- end }}
-  - complianceType: mustnothave
+  - complianceType: musthave
     objectDefinition:
       apiVersion: apps/v1
       kind: Deployment
