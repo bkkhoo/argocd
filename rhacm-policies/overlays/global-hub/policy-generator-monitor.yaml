@@ -55,6 +55,12 @@ policies:
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
 
+  - name: monitor-openshift-gitops
+    complianceType: musthave
+    manifests:
+      - path: monitor/openshift-gitops/deployment-status.yaml
+      - path: monitor/openshift-gitops/stateful-set-status.yaml
+
   - name: monitor-rhacs-central
     complianceType: musthave
     manifests:
