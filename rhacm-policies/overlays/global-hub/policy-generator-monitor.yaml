@@ -60,6 +60,7 @@ policies:
     manifests:
       - path: monitor/openshift-gitops/deployment-status.yaml
       - path: monitor/openshift-gitops/stateful-set-status.yaml
+      - path: monitor/openshift-gitops/redis-deployment-status.yaml
 
   - name: monitor-rhacs-central
     complianceType: musthave
