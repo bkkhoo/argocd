@@ -1,7 +1,7 @@
 ---
 object-templates-raw: |
   {{- $argocd := lookup "argoproj.io/v1beta1" "ArgoCD" "openshift-gitops" "openshift-gitops" }}
-  {{- if $argocd.ha.enabled }}
+  {{- if $argocd.spec.ha.enabled }}
     {{- #deployment_name := "openshift-gitops-redis-ha-haproxy" }}
   {{- else }}
     {{- #deployment_name := "openshift-gitops-redis" }}
