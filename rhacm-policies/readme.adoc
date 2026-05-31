@@ -104,36 +104,31 @@ These policies are for global-hub only.
 |===
 | Policy | Remediation Action | Placement | Description
 
-| config-argocd-repo-secrets **pass:[*]**
+| config-argocd-repo-secrets
 | Enforce
 | All clusters with `managed-hub` label.
 | Ensure ArgoCD repo secrets are distributed to managed-hubs' `openshift-gitops` namespace.
 
-| monitor-managed-clusters **pass:[+]**
+| monitor-managed-clusters
 | Inform
-| Only `local-cluster`.
+| `local-cluster` and all OpenShift cluster with `managed-hub` label.
 | Monitor ManagedCluster Availability.
 
-| monitor-managed-hubs-local-cluster **pass:[+]**
+| monitor-managed-hubs-local-cluster
 | Inform
 | All OpenShift clusters with `managed-hub` label.
 | Monitor managed-hub with `local-cluster`; no managed-hub should have `local-cluster`.
 
-| monitor-rhacs-central **pass:[+]**
+| monitor-openshift-gitops
 | Inform
-| Only `local-cluster`.
-| Monitor RHACS Central.
+| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| Monitor OpenSHift GitOps.
+
+| monitor-rhacs-central
+| Inform
+| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| Monitor RHACS Central and SecuredClusters.
 |===
-
-[NOTE]
-====
-:tab: {nbsp}{nbsp}
-**pass:[*]**{tab}
-The policy is disabled on managed hubs, as managed hubs do not need to distribute ArgoCD repo secrets to managed clusters.
-
-**pass:[+]**{tab}
-The policy is disabled on managed-hubs because **__managed-hubs do not manage themselves__** and lack a `local-cluster` (the RHACM `MultiClusterHub` instance is configured with `disableHubSelfManagement: true`). The policies are disabled using link:overlays/managed-hub/kustomization.yaml[kustomize patches].
-====
 
 === Managed-Hubs Policies
 
