@@ -85,8 +85,7 @@ spec:
   rbac:
     defaultPolicy: "{{ .Values.rbac.defaultPolicy }}"
     policy: |
-      g, system:cluster-admins, role:admin
-      g, cluster-admins, role:admin
+      {{- .Values.rbac.policy | nindent 6 }}
     scopes: "[groups]"
   repo:
     enabled: true

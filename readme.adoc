@@ -179,8 +179,6 @@ See link:readme-issues.adoc[document].
 ** The ideal setup:
 *** RHACM policy dynamically retrieve the secrets from global-hub `rhacm-policies` namespace (using `argocd.argoproj.io/secret-type=repository` label selector) and deploy them to  managed-hubs.
 
-. Modify link:helm-charts/openshift-gitops[openshift-gitops Helm chart] to deploy operator **__without__** also auto-create argocd instance (set environment variable `DISABLE_DEFAULT_ARGOCD_INSTANCE=true`), then deploy the argocd instance separately.
-
 . RHACM policies to monitor RHACS central on managed-hubs since **__managed-hubs do not manage themselves__**.
 
 == References
