@@ -19,6 +19,7 @@ policyDefaults:
   severity: medium
   policySets:
     - ps-gh-monitor-local-cluster
+    - ps-gh-monitor-managed-hubs
 policySets:
   - name: ps-gh-monitor-local-cluster
     placement:
@@ -56,9 +57,6 @@ policies:
 
   - name: monitor-rhacs-central
     complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - ps-gh-monitor-local-cluster
-      - ps-gh-monitor-managed-hubs
     manifests:
       - path: monitor/rhacs-central-status.yaml
 ...
