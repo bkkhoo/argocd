@@ -1,0 +1,19 @@
+---
+object-templates-raw: |
+  {{- $argocd := lookup "argoproj.io/v1beta1" "ArgoCD" "openshift-gitops" "openshift-gitops" }}
+  {{- if $argocd.ha.enabled }}
+  {{- $replicas := $ss.status.replicas }}
+    {{- #deployment_name := "openshift-gitops-redis-ha-haproxy" }}
+  {{- else }}
+    {{- #deployment_name := "openshift-gitops-redis" }}
+  {{- end }}
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: {{ #deployment_name }}
+    namespace: openshift-gitops
+  status:
+    conditions:
+      - status: "True"
+        type: Available
+...

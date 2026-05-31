@@ -3,8 +3,8 @@
 ---
 object-templates-raw: |
   {{- $ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
-  {{- $replicas := $s.status.replicas }}
-  {{- $available_replicas := $s.status.availableReplicas }}
+  {{- $replicas := $ss.status.replicas }}
+  {{- $available_replicas := $ss.status.availableReplicas }}
   {{- if ne $replicas $available_replicas }}
   - complianceType: mustnothave
     objectDefinition:
