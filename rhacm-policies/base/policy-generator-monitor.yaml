@@ -107,6 +107,11 @@ policies:
     manifests:
       - path: monitor/container-image-pull-backoff.yaml
 
+  - name: monitor-failed-persistent-volume
+    complianceType: mustnothave
+    manifests:
+      - path: monitor/persistent-volume-status.yaml
+
   - name: monitor-pending-persistent-volume-claim
     complianceType: mustnothave
     severity: low
@@ -114,7 +119,7 @@ policies:
       include:
         - "*"
     manifests:
-      - path: monitor/persistent-volume-claim.yaml
+      - path: monitor/persistent-volume-claim-status.yaml
 
   - name: monitor-default-storage-class
     manifests:

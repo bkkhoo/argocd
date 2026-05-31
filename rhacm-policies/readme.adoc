@@ -80,6 +80,11 @@ These policies are common to both global-hub and managed-hubs.
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor for containers where the cluster repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
 
+| monitor-failed-persistent-volume
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor PersistentVolumeClaim in `Failed` state.
+
 | monitor-pending-persistent-volume-claim
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
