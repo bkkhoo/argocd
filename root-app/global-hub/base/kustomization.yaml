@@ -13,7 +13,8 @@ resources:
 
   - ../../../apps/rhacs-secured-cluster/overlays/prod
   - ../../../apps/cluster-config/base
-  - ../../../apps/openshift-web-terminal/base
-  - ../../../apps/openshift-pipelines/base
-  - ../../../apps/openshift-compliance/base
+  - ../../../apps/mandatory-operators/base
+  # - ../../../apps/openshift-web-terminal/base
+  # - ../../../apps/openshift-pipelines/base
+  # - ../../../apps/openshift-compliance/base
 ...
