@@ -1,0 +1,61 @@
+# if argocd ha is enable, openshift-gitops deploys:
+#   deployment/openshift-gitops-redis-ha-haproxy
+#   statefulSet/openshift-gitops-redis-ha-server
+# else
+#   deployment/openshift-gitops-redis
+#
+# statefulSets status:
+#   violation if status.readyReplicas != status.replicas
+---
+object-templates-raw: |
+  {{- $argocd := lookup "argoproj.io/v1beta1" "ArgoCD" "openshift-gitops" "openshift-gitops" }}
+  {{- $deployment_name := "" }}
+  {{- if $argocd.spec.ha.enabled }}
+    {{- $deployment_name = "openshift-gitops-redis-ha-haproxy" }}
+  {{- else }}
+    {{- $deployment_name = "openshift-gitops-redis" }}
+  {{- end }}
+  - complianceType: musthave
+    objectDefinition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: {{ $deployment_name }}
+        namespace: openshift-gitops
+      status:
+        conditions:
+          - status: "True"
+            type: Available
+  {{- $app_ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
+  {{- $replicas := $app_ss.status.replicas }}
+  {{- $ready_replicas := $app_ss.status.readyReplicas }}
+  {{- if ne $replicas $ready_replicas }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: openshift-gitops-application-controller
+        namespace: openshift-gitops
+      status:
+        readyReplicas: {{ $ready_replicas }}
+        replicas: {{ $replicas }}
+  {{- end }}
+  {{- if $argocd.spec.ha.enabled }}
+    {{- $redis_ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
+    {{- $replicas := $redis_ss.status.replicas }}
+    {{- $ready_replicas := $redis_ss.status.readyReplicas }}
+    {{- if ne $replicas $ready_replicas }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: openshift-gitops-redis-ha-server
+        namespace: openshift-gitops
+      status:
+        readyReplicas: {{ $ready_replicas }}
+        replicas: {{ $replicas }}
+    {{- end }}
+  {{- end }}
+...
