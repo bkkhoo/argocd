@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: openshift-compliance
+  name: openshift-serverless
   namespace: openshift-gitops
   labels:
-    applications: openshift-compliance
+    applications: openshift-serverless
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
@@ -19,6 +19,8 @@ spec:
                 - OpenShift
             - key: managed-hub
               operator: DoesNotExist
+            - key: openshift-serverless
+              operator: Exists
     # argocd automatically registers the local cluster (in-cluster) as https://kubernetes.default.svc but does not create a Secret for
     # it by default, meaning it lacks the "argocd.argoproj.io/secret-type: cluster" label; consequently, selectors like matchExpressions
     # and matchLabels will exclude the local cluster. the list generator below include local cluster int the selection.
@@ -28,18 +30,18 @@ spec:
             server: https://kubernetes.default.svc
   template:
     metadata:
-      name: "{{ name }}-openshift-compliance"
+      name: "{{ name }}-openshift-serverless"
       labels:
-        applications: openshift-compliance
+        applications: openshift-serverless
     spec:
       project: iac-gitops
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: helm-charts/openshift-compliance/
+        path: kustomize-deployments/openshift-serverless/base/
       destination:
         server: "{{ server }}"
-        namespace: openshift-compliance
+        namespace: default
       syncPolicy:
         automated:
           prune: true

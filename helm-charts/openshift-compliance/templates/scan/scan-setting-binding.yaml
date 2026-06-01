@@ -1,3 +1,4 @@
+{{- if .Values.complianceScan.enable }}
 ---
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSettingBinding
@@ -8,14 +9,14 @@ metadata:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 profiles:
-  - name: ocp4-cis                         # check cluster profile
+{{- range .Values.complianceScan.profiles }}
+  - name: {{ . }}
     apiGroup: compliance.openshift.io/v1alpha1
     kind: Profile
-  - name: ocp4-cis-node                    # check nodes profile
-    apiGroup: compliance.openshift.io/v1alpha1
-    kind: Profile
+{{- end }}
 settingsRef:
   apiGroup: compliance.openshift.io/v1alpha1
   kind: ScanSetting
   name: raw-result-on-worker               # this store raw result on worker instead of master
 ...
+{{- end }}

@@ -40,12 +40,13 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-compliance/
+          helm:
+            valuesObject:
+              complianceScan:
+                enable: false
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: kustomize-deployments/openshift-web-terminal/base/
-        - repoURL: https://github.com/bkkhoo/argocd.git
-          targetRevision: main
-          path: kustomize-deployments/openshift-serverless/base/
       destination:
         server: "{{ server }}"
         namespace: default

@@ -1,5 +1,6 @@
+{{- if .Values.complianceScan.enable }}
 {{- $randomMinute := mod (randNumeric 2 | atoi) 59 }}
-{{- $randomHour := substr 0 1 (seq (int .Values.schedule.minHour) (int .Values.schedule.maxHour) | nospace | shuffle) }}
+{{- $randomHour := substr 0 1 (seq (int .Values.complianceScan.schedule.minHour) (int .Values.complianceScan.schedule.maxHour) | nospace | shuffle) }}
 ---
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSetting
@@ -23,9 +24,11 @@ rawResultStorage:
     - operator: Exists
 schedule: "{{ $randomMinute }} {{ $randomHour }} * * *"
 roles:
-  - master
-  - worker
+{{- range .Values.complianceScan.roles }}
+  - {{ . }}
+{{- end }}
 maxRetryOnTimeout: 3
 scanTolerations:
   - operator: Exists
 ...
+{{- end }}

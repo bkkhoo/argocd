@@ -1,6 +1,14 @@
 ---
 namespace: openshift-compliance
-schedule:
-  minHour: 1
-  maxHour: 3
+complianceScan:
+  enable: false
+  profiles:
+    - ocp4-cis           # scan cluster
+    - ocp4-cis-node      # scan nodes
+  schedule:
+    minHour: 1
+    maxHour: 3
+  roles:
+    - master
+    - worker
 ...
