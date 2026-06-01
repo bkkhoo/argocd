@@ -61,7 +61,7 @@ spec:
           helm:
             parameters:
               - name: enableDefaultDenyIngressNetworkPolicy
-                value: false
+                value: "false"
       destination:
         server: "{{ server }}"
       syncPolicy:
