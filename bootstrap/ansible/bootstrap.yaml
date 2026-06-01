@@ -65,7 +65,7 @@
             --set postgresRetention={{ _context[config]['postgresRetention'] }}
           status: Running
   vars_files:
-    - github-token-vault-encrypted.yaml
+    - github-token-vault-encrypted.yaml    # this file is encrypted with ansible-vault
 
   tasks:
     - name: fail if invalid config

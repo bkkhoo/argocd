@@ -5,6 +5,9 @@ metadata:
   name: {{ required "the value clusterName is required" .Values.clusterName }}
   labels:
     {{- include "rhacm-import-cluster.labels" . | indent 4 }}
+    {{- if hasKey .Values.clusterLabels "managed-hub" }}
+    global-hub.open-cluster-management.io/deploy-mode: default
+    {{- end }}
   annotations: {}
 spec:
   hubAcceptsClient: true

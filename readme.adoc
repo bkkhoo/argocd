@@ -85,6 +85,28 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
             └── uat
 ----
 
+== Terminology
+
+[cols="1,4"]
+|===
+| Global Hub
+| Multicluster Global Hub is a component of RHACM that enables the management of multiple hub clusters from a single central control plane.  It is designed for high-scale environments where a single hub cannot effectively manage the volume of clusters, allowing administrators to divide clusters into groups, each managed by a specific managed hub, while the global hub aggregates and monitors data across all of them.
+
+| Managed Hub
+| RHACM hub clusters that are imported into the global hub. They manage their own local clusters and synchronize state, policy compliance, and inventory data back to the global hub via the multicluster-global-hub-agent.
+
+| Manage Cluster
+| Any OpenShift/Kubernetes cluster that is enrolled into the RHACM environment to be governed and monitored. These clusters communicate with the central/managed hub cluster via a client component called the `Klusterlet`, which pulls configuration, policies, and workload definitions from the hub.
+
+| `local-cluster`
+a| The `local-cluster` is a reserved namespace and resource in RHACM that represents the hub cluster when it is managed by itself. By default, RHACM automatically imports and manages the hub cluster as the `local-cluster`, allowing for a unified view of the entire fleet from a single console.
+
+**Note**: The managed hub `local-cluster` is disabled when managed-hub is imported to the global hub in default mode.
+
+| `in-cluster`
+| When ArgoCD is installed within an OpenShift/Kubernetes cluster, it automatically registers that specific cluster as the `in-cluster` connection, allowing it to deploy applications to itself without additional configuration. This local cluster is distinguished from remote clusters by the absence of a corresponding Secret resource with the `argocd.argoproj.io/secret-type: cluster` label; therefore, standard label selectors targeting this label will exclude the local cluster.
+|===
+
 == Usage
 
 === MultiCluster Global Hub Use Case

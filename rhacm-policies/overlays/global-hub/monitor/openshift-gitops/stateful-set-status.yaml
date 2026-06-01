@@ -1,10 +1,10 @@
-# check openshift-gitops-application-controller statefulSet
+# check statefulSets; openshift-gitops-redis-ha-server is only deployed if argocd ha is enabled
 # violation if status.availableReplicas != status.replicas
 ---
 object-templates-raw: |
-  {{- $ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
-  {{- $replicas := $ss.status.replicas }}
-  {{- $available_replicas := $ss.status.availableReplicas }}
+  {{- $app_ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
+  {{- $replicas := $app_ss.status.replicas }}
+  {{- $available_replicas := $app_ss.status.availableReplicas }}
   {{- if ne $replicas $available_replicas }}
   - complianceType: mustnothave
     objectDefinition:
@@ -16,5 +16,23 @@ object-templates-raw: |
       status:
         availableReplicas: {{ $available_replicas }}
         replicas: {{ $replicas }}
+  {{- end }}
+  {{- $argocd := lookup "argoproj.io/v1beta1" "ArgoCD" "openshift-gitops" "openshift-gitops" }}
+  {{- if $argocd.spec.ha.enabled }}
+    {{- $redis_ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
+    {{- $replicas := $redis_ss.status.replicas }}
+    {{- $available_replicas := $redis_ss.status.availableReplicas }}
+    {{- if ne $replicas $available_replicas }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: openshift-gitops-redis-ha-server
+        namespace: openshift-gitops
+      status:
+        availableReplicas: {{ $available_replicas }}
+        replicas: {{ $replicas }}
+    {{- end }}
   {{- end }}
 ...

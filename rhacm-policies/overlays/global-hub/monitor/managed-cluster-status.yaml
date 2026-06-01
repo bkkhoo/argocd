@@ -1,14 +1,3 @@
-# ---
-# apiVersion: cluster.open-cluster-management.io/v1
-# kind: ManagedCluster
-# status:
-#   conditions:
-#     - type: ManagedClusterConditionAvailable
-#       reason: ManagedClusterAvailable
-#       status: "True"
-# ...
-
-
 ---
 object-templates-raw: |
   {{- $mc := (lookup "cluster.open-cluster-management.io/v1" "ManagedCluster" "" "").items }}

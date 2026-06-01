@@ -54,14 +54,14 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: kustomize-deployments/motd/base
-        # # configure project request template
-        # - repoURL: https://github.com/bkkhoo/argocd.git
-        #   targetRevision: main
-        #   path: helm-charts/project-request-template
-        #   helm:
-        #     parameters:
-        #       - name: enableDefaultDenyIngressNetworkPolicy
-        #         value: false
+        # configure project request template
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/project-request-template
+          helm:
+            parameters:
+              - name: enableDefaultDenyIngressNetworkPolicy
+                value: false
       destination:
         server: "{{ server }}"
       syncPolicy:
