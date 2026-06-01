@@ -1,10 +1,8 @@
 ---
 serviceAccount: test-app-2
-
 labels:
   app: test-app-2
   env: prod
-
 env:
   HOME: /opt
   CONFIG_FILE: "/opt/config.yaml"

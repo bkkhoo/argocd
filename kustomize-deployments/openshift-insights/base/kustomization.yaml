@@ -6,6 +6,10 @@ resources:
   - service-account.yaml
   - rbac.yaml
   - job.yaml
+images:
+  - name: ose-tools-image
+    newName: registry.redhat.io/openshift4/ose-tools-rhel9
+    newTag: v4.20
 configMapGenerator:
   - name: disable-insights-operator
     namespace: disable-insight

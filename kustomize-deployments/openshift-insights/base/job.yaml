@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: disable-insights-operator
-          image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+          image: ose-tools-image
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh

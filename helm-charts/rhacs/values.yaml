@@ -1,14 +1,11 @@
 ---
 deploymentType: all   # all, central, or secure-cluster
-
 namespace:
   operator: rhacs-operator
   central: stackrox
   securedCluster: stackrox
   rhacmPolicies: rhacm-policies
-
 clusterName: DUMMY        # set by argocd using helm values
-
 centralDB:
   resources:
     limits:
@@ -17,7 +14,6 @@ centralDB:
     requests:
       cpu: "4"
       memory: 8Gi
-
 central:
   resources:
     limits:
@@ -26,6 +22,6 @@ central:
     requests:
       cpu: 1500m
       memory: 4Gi
-
 minimumAccessRole: Analyst
+postSynHookImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
 ...

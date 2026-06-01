@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: create-crs
-          image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+          image: {{ .Values.postSynHookImage }}
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
