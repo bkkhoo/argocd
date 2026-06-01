@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: openshift-compliance
+  name: mandatory-operators
   namespace: openshift-gitops
   labels:
-    applications: openshift-compliance
+    applications: mandatory-operators
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
@@ -28,9 +28,9 @@ spec:
             server: https://kubernetes.default.svc
   template:
     metadata:
-      name: "{{ name }}-openshift-compliance"
+      name: "{{ name }}-mandatory-operators"
       labels:
-        applications: openshift-compliance
+        applications: mandatory-operators
     spec:
       project: iac-gitops
       sources:
