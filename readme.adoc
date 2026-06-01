@@ -174,7 +174,7 @@ The ansible playbook performs the following on the managed hub cluster:
 
 . For Application/ApplicationSet that deploys Custom Resource (CR) alongside or before their operator (which deploys Custom Resource Definitions, CRDs) are deployed/registered in the cluster, the `argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true` annotation should be added to the instance/operand/CR manifest. The `SkipDryRunOnMissingResource=true` sync option allows ArgoCD to bypass dry-run validation.
 
-. On `in-cluster` (local cluster where ArgoCD is deployed), the ServiceAccount `openshift-gitops-argocd-application-controller` in `openshift-gitops` namespace does not have enough privileges to add/delete/update some resources (such as `configs.samples.operator.openshift.io`), the `supplementary-rbac-argocd-application-controller` ClusterRole/ClusterRoleBinding grants supplementary privileges to the ServiceAccount. Without the supplementary privileges, ArgoCD will failed to sync with the following error:
+. On ArgoCd `in-cluster`, the ServiceAccount `openshift-gitops-argocd-application-controller` in `openshift-gitops` namespace does not have enough privileges to get/list/watch/create/update/delete some resources (such as `configs.samples.operator.openshift.io`), the link:helm-charts/openshift-gitops/templates/argocd-instance/rbac.yaml[ClusterRole/ClusterRoleBinding and Role/RoleBinding] grant supplementary privileges to the ServiceAccount. Without the supplementary privileges, ArgoCD will failed to sync with the following error:
 +
 [source,text]
 ----

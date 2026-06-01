@@ -42,5 +42,35 @@ subjects:
   - kind: ServiceAccount
     name: openshift-gitops-argocd-application-controller
     namespace: {{ .Values.namespace.argocd }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argocd-application-controller
+  namespace: openshift-config
+rules:
+  - apiGroups:
+      - template.openshift.io
+    resources:
+      - templates
+    verbs:        # do not grant create/delete, since argocd only need to update/patch
+      - get
+      - list
+      - watch
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-application-controller
+  namespace: openshift-config
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argocd-application-controller
+subjects:
+  - kind: ServiceAccount
+    name: openshift-gitops-argocd-application-controller
+    namespace: {{ .Values.namespace.argocd }}
 ...
 {{- end }}
