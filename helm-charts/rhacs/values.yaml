@@ -23,5 +23,5 @@ central:
       cpu: 1500m
       memory: 4Gi
 minimumAccessRole: Analyst
-postSynHookImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+postSyncHookImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
 ...

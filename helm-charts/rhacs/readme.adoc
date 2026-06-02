@@ -38,7 +38,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
-| `deploymentType`
+| deploymentType
 | all
 a| Deployment type:
 
@@ -47,58 +47,97 @@ a| Deployment type:
   - `secured-cluster`: deploy operator and `SecuredCluster` instance only
   - `all`: deploy operator, `Central` and `SecuredCluster` instances.
 
-| `namespace.operator`
+| namespace.operator
 | rhacs-operator
 | Deploys RHACS Operator to this namespace.
 
-| `namespace.central`
+| namespace.central
 | stackrox
 | Deploys RHACS Central to this namespace.
 
-| `namespace.securedCluster`
+| namespace.securedCluster
 | stackrox
 | Deploys RHACS SecuredCluster to this namespace.
 
-| `namespace.rhacmPolicies`
+| namespace.rhacmPolicies
 | rhacm-policies
 | Namespace where RHACM policies are deployed.
 
-| `clusterName`
+| clusterName
 | DUMMY
 | Name of the secured cluster.
 
-| `centralDB.resources.limits.cpu`
+| centralDB.resources.limits.cpu
 | "8"
 | CPU limits for central-db pod.
 
-| `centralDB.resources.memory`
+| centralDB.resources.memory
 | 16Gi
 | Memory limits for central-db pod.
 
-| `centralDB.resources.requests.memory`
+| centralDB.resources.requests.memory
 | "4"
 | CPU requests for central-db pod.
 
-| `centralDB.resources.requests.memory`
+| centralDB.resources.requests.memory
 | 8Gi
 | Memory requests for central-db pod.
 
-| `central.resources.limits.cpu`
+| central.resources.limits.cpu
 | "4"
 | CPU limits for central pod.
 
-| `central.resources.memory`
+| central.resources.memory
 | 8Gi
 | Memory limits for central pod.
 
-| `central.resources.requests.memory`
+| central.resources.requests.memory
 | 1500m
 | CPU requests for central pod.
 
-| `central.resources.requests.memory`
+| central.resources.requests.memory
 | 4Gi
 | Memory requests for central pod.
+
+| minimumAccessRole
+| Analyst
+| The default permission level assigned to all users who log in via a specific identity provider.
+
+| postSyncHookImage
+| `registry.redhat.io/openshift4/ose-tools-rhel9:v4.20`
+| The container image to use for ArgoCD PostSync Hook job.
 |===
+
+
+---
+deploymentType: all   # all, central, or secure-cluster
+namespace:
+  operator: rhacs-operator
+  central: stackrox
+  securedCluster: stackrox
+  rhacmPolicies: rhacm-policies
+clusterName: DUMMY        # set by argocd using helm values
+centralDB:
+  resources:
+    limits:
+      cpu: "8"
+      memory: 16Gi
+    requests:
+      cpu: "4"
+      memory: 8Gi
+central:
+  resources:
+    limits:
+      cpu: "4"
+      memory: 8Gi
+    requests:
+      cpu: 1500m
+      memory: 4Gi
+minimumAccessRole: Analyst
+postSyncHookImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+...
+
+
 
 This Helm chart deploys an ArgoCD PostSync hook that:
 

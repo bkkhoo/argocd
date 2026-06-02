@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: create-crs
-          image: {{ .Values.postSynHookImage }}
+          image: {{ .Values.postSyncHookImage }}
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh

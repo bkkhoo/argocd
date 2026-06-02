@@ -35,5 +35,5 @@ localUsers:
     apiKey: true
     login: true
     role: "role:admin"
-postSynHookImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+postSyncHookImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
 ...

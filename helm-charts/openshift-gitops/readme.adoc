@@ -132,8 +132,8 @@ a| List of local users to created on ArgoCD server.
 The default local `admin` account, if enabled, does not have API access to ArgoCD.
 ====
 
-| postSynHookImage
-| registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+| postSyncHookImage
+| `registry.redhat.io/openshift4/ose-tools-rhel9:v4.20`
 | The container image to use for ArgoCD PostSync Hook job.
 |===
 
