@@ -31,3 +31,18 @@ The command performs the followings:
 *** name: cluster01
 *** server: url of the target/managed
 *** config: dict containing bearer token (`bearerToken`)
+
+== REST API
+
+[source,bash]
+----
+ARGOCD_SERVER="$(oc -n openshift-gitops get route openshift-gitops-server -o jsonpath={'.spec.host}')"
+ARGOCD_TOKEN="$(argocd account generate-token --account api-admin --expires-in 12h)"
+
+curl -k -H "Authorization: Bearer ${ARGOCD_TOKEN}" https://${ARGOCD_SERVER}/api/v1/clusters | jq
+----
+
+[NOTE]
+====
+The default local `admin` account, if enabled, does not have API access to ArgoCD.
+====

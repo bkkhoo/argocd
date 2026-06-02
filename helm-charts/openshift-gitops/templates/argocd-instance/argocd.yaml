@@ -82,6 +82,19 @@ spec:
         enabled: false
       route:
         enabled: false
+  {{- if .Values.disableAdmin }}
+  disableAdmin: true     # default false, property not shown on manifest
+  {{- end }}
+  {{- if .Values.localUsers }}
+  localUsers:
+    {{- range .Values.localUsers }}
+    - name: {{ .username }}
+      apiKey: {{ .apiKey }}
+      login: {{ .login }}
+      tokenLifetime: "3h"
+      autoRenewToken: false
+    {{- end }}
+  {{- end }}
   rbac:
     defaultPolicy: "{{ .Values.rbac.defaultPolicy }}"
     policy: |
@@ -163,9 +176,6 @@ spec:
       requests:
         cpu: 250m
         memory: 1Gi
-  {{- if .Values.disableAdmin }}
-  disableAdmin: true     # default false, property not shown on manifest
-  {{- end }}
   kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
 {{ .Files.Get "files/resource-exclusion.yaml" | indent 2 }}
 ...

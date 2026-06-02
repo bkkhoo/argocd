@@ -31,7 +31,10 @@ spec:
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: kustomize-deployments/openshift-serverless/base/
+        path: helm-charts/openshift-serverless
+        helm:
+          valuesObject:
+            serviceMeshIntegration: false
       destination:
         server: "{{ server }}"
         namespace: default

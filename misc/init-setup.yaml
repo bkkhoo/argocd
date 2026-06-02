@@ -49,4 +49,8 @@
         _env: "{{ item.value.env }}"
         _managed_hub: "{{ item.value.managed_hub | bool }}"
       ansible.builtin.include_tasks: tasks/setup-import-cluster-values.yaml
+
+    - name: change to global-hub context
+      ansible.builtin.command:
+        cmd: oc config use-context global-hub
 ...
