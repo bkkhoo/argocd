@@ -1,0 +1,40 @@
+# check namespaces with more than 1 operatorGroups
+---
+object-templates-raw: |
+  {{- $ogs := lookup "operators.coreos.com/v1" "OperatorGroup" "" "" }}
+  {{- $namespaced_og_count := dict }}
+  {{- range $ogs.items }}
+    {{- if not (hasKey $namespaced_og_count .metadata.namespace) }}
+      {{ $namespaced_og_count := set $namespaced_og_count .metadata.namespace 1 }}
+    {{- else }}
+      {{- $old_count := get $namespaced_og_count .metadata.namespace -}}
+      {{- $count := add $old_count 1 }}
+      {{- $_ := set $namespaced_og_count .metadata.namespace $count -}}
+    {{- end }}
+  {{- end }}
+  {{- range $k, $v := $namespaced_og_count }}
+    {{- if gt $v 1 }}
+    {{- $namespaced_ogs := lookup "operators.coreos.com/v1" "OperatorGroup" $k "" }}
+      {{- range $namespaced_ogs.items }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: operators.coreos.com/v1
+      kind: OperatorGroup
+      metadata:
+        name: {{ .metadata.name }}
+        namespace: {{ .metadata.namespace }}
+      spec:
+        {{ .spec | toYaml | nindent 8 }}
+      status:
+        conditions:
+        {{- range $index, $key := .status.conditions }}
+          {{- if eq $index 0 }}
+          - {{ . | toYaml | indent 10 }}
+           {{- else }}
+           {{ . | toYaml | nindent 10 }}
+           {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+...

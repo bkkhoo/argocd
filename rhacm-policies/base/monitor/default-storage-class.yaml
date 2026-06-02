@@ -16,8 +16,8 @@ object-templates-raw: |
     {{ range $storage_classes.items }}
   - complianceType: mustnothave
     objectDefinition:
-      kind: StorageClass
       apiVersion: storage.k8s.io/v1
+      kind: StorageClass
       metadata:
         name: {{ .metadata.name }}
     {{- end }}

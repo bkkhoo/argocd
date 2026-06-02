@@ -124,4 +124,8 @@ policies:
   - name: monitor-default-storage-class
     manifests:
       - path: monitor/default-storage-class.yaml
+
+  - name: monitor-operator-group
+    manifests:
+      - path: monitor/operator-group-status.yaml
 ...

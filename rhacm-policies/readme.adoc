@@ -94,6 +94,11 @@ These policies are common to both global-hub and managed-hubs.
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor default StorageClass, alert if more than one default StorageClass is defined.
+
+| monitor-operator-group
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor for namespaces with more than one OperatorGroup.
 |===
 
 === Global-Hub Policies
