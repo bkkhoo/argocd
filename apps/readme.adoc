@@ -33,20 +33,19 @@ endif::[]
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Cluster configurations (disable self provisioner, disable insights/telemetry services, OperatorHub, etc,)
 
-| openshift-compliance
+| mandatory-operators
 | ApplicationSet
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
-| Deploy OpenShift Compliance operator and compliance scan.
+a| Deploy the following operators:
 
-| openshift-pipelines
-| ApplicationSet
-| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
-| Deploy OpenShift Pipelines operator.
+- penShift Compliance
+- OpenShift Pipelines
+- OpenShift Web Terminal
 
-| openshift-web-terminal
+| openshift-serverless
 | ApplicationSet
-| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
-| Deploy OpenShift Web Terminal operator.
+| All OpenShift clusters without the `managed-hub` label but with the `openshift-serverless` label.
+| Deploy OpenShift Serverless operator.
 
 | rhacm-policies
 | Application
@@ -65,6 +64,6 @@ endif::[]
 
 | test-app
 | ApplicationSet
-| All OpenShift clusters with the `test-app` label, excluding clusters with the `managed-hub` label.
+| All OpenShift clusters without the `managed-hub` label but with the `test-app` label.
 | Deploy dummy test application.
 |===

@@ -11,7 +11,7 @@ spec:
   config:
     autoscaler:
       enable-zero-initial-scale: "true"
-    features:
+    features:        # enable/disable specific knative serving features
       kubernetes.podspec-affinity: enabled
       kubernetes.podspec-nodeselector: enabled
       kubernetes.podspec-persistent-volume-claim: enabled

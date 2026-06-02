@@ -1,0 +1,27 @@
+---
+- name: "login to openshift cluster {{ _cluster_name }}"
+  ansible.builtin.command:
+    cmd: oc login --insecure-skip-tls-verify -u admin -p {{ _password }} {{ _url }}
+
+- name: get current context
+  register: context
+  ansible.builtin.command:
+    cmd: oc config current-context
+
+- name: rename context
+  ansible.builtin.command:
+    cmd: oc config rename-context {{ context.stdout }} {{ _cluster_name }}
+
+- name: get api token
+  register: token
+  ansible.builtin.command:
+    cmd: oc whoami --show-token
+
+- name: create values yaml
+  vars:
+    _token: "{{ token.stdout }}"
+  ansible.builtin.template:
+    src: values.yaml.j2
+    dest: "/tmp/values-{{ _cluster_name }}.yaml"
+    mode: "0644"
+...

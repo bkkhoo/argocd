@@ -1,0 +1,11 @@
+---
+clusterName: {{ _cluster_name }}
+clusterURL: {{ _url }}
+clusterAuthToken: {{ _token }}
+clusterSet: gitops-clusters
+clusterLabels:
+  env: {{ _env }}
+{% if _managed_hub %}
+  managed-hub: 'yes'
+{% endif %}
+...

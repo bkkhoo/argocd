@@ -1,0 +1,52 @@
+# ansible-playbook -i localhost, misc/init-setup.yaml
+#
+# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-dev-hub01.yaml | oc apply -f -
+# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-hub01.yaml | oc apply -f -
+# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-cluster01.yaml | oc apply -f -
+# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-cluster02.yaml | oc apply -f -
+#
+---
+- name: bootstrap
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - clusters.yaml    # this file is encrypted with ansible-vault
+    # clusters.yaml file example
+    # clusters:
+    #   global-hub:
+    #     console: <console-url>
+    #     api: <api-server-url>
+    #     username: <username>
+    #     password: <password>
+    #     env: global
+    #     managed_hub: false
+    #   prod-hub01:
+    #     console: <console-url>
+    #     api: <api-server-url>
+    #     username: <username>
+    #     password: <password>
+    #     env: prod
+    #     managed_hub: true
+    #   prod-cluster01:
+    #     console: <console-url>
+    #     api: <api-server-url>
+    #     username: <username>
+    #     password: <password>
+    #     env: prod
+    #     managed_hub: false
+
+  tasks:
+    - name: test
+      loop: "{{ clusters | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
+      vars:
+        _cluster_name: "{{ item.key }}"
+        _url: "{{ item.value.api }}"
+        _username: "{{ item.value.username }}"
+        _password: "{{ item.value.password }}"
+        _env: "{{ item.value.env }}"
+        _managed_hub: "{{ item.value.managed_hub | bool }}"
+      ansible.builtin.include_tasks: tasks/setup-import-cluster-values.yaml
+...
