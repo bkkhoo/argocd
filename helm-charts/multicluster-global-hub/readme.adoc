@@ -38,7 +38,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
-| `deploymentType`
+| deploymentType
 | all
 a| Deployment type:
 
@@ -46,15 +46,15 @@ a| Deployment type:
 - `global-hub`: deploy `MulticlusterGlobalHub` instance only
 - `all`: deploy operator and `MulticlusterGlobalHub` instance
 
-| `namespace`
+| namespace
 | multicluster-global-hub
 | Deploy Multicluster Global Hub to this namespace.
 
-| `availabilityConfig`
+| availabilityConfig
 | High
 | Availability configuration specifies deployment replication for improved availability. Options are: `Basic` or `High`.
 
-| `postgresRetention`
+| postgresRetention
 | 18m
 | Defines how long to keep the data in the postgres database. Valid time units are `m` and `y`.
 |===

@@ -15,7 +15,7 @@ rbac:
     g, cluster-admins, role:admin
 repo:
   replicas: 3
-  rhacmPolicyGenratorImage: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
+  rhacmPolicyGeneratorImage: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
 ha:
   enabled: true
 tls:

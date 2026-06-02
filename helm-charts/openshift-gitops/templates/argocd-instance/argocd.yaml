@@ -108,7 +108,7 @@ spec:
         value: /etc/kustomize/plugin
     initContainers:
       - name: policy-generator-install
-        image: {{ .Values.repo.rhacmPolicyGenratorImage }}
+        image: {{ .Values.repo.rhacmPolicyGeneratorImage }}
         command:
           - /bin/bash
         args:

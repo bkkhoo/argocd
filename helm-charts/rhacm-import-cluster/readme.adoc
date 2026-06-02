@@ -70,19 +70,19 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
-| `clusterName`
+| clusterName
 | None
 | Name of the cluster.
 
-| `clusterURL`
+| clusterURL
 | None
 | URL of the cluster.
 
-| `clusterAuthToken`
+| clusterAuthToken
 | None
 | Bearer token with cluster admin privileges from the cluster.
 
-| `clusterLabels`
+| clusterLabels
 | None
 | Additional labels to apply to the cluster.
 |===

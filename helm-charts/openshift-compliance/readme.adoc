@@ -38,16 +38,36 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
-| `namespace`
+| namespace
 | openshift-compliance
 | Deploys OpenShift Compliance Operator to this namespace.
 
-| `schedule.minHour`
+| complianceScan.enable
+| false
+| Configure `ScanSetting` and `ScanSettingBinding`.
+
+| complianceScan.profiles
+a|[source,yaml]
+----
+- ocp4-cis
+- ocp4-cis-node
+----
+| Specifies which compliance standards to check, such as ocp4-cis (cluster) and ocp4-cis-node (node OS).
+
+| complianceScan.schedule.minHour
 | 1
 | Schedules scans to run at random time between `minHour` and `maxHour`. Acceptable value 0 - 9.
 
-| `schedule.maxHour`
+| complianceScan.schedule.maxHour
 | 3 | Default scan start between 1:00am and 3:59am. Acceptable value 0 - 9.
+
+| complianceScan.roles
+a|[source,yaml]
+----
+- master
+- worker
+----
+| Defines which node roles to scan
 |===
 
 [NOTE]
