@@ -74,14 +74,15 @@ spec:
         server: "{{ server }}"
       ignoreDifferences:
         - group: batch                   # the etcd-backup cronjob schedule has random values
-          kind: CronJob
+          kind: CronJob                  # ignoring cronjob status so the app does not get stuck in "Syncing" state
           name: etcd-backup
           namespace: etcd-backup
           jsonPointers:
             - /spec/schedule
+            - /status
         - kind: PersistentVolumeClaim    # The pvc state will change to Bound only after the etcd-backup CronJob
           name: etcd-snapshot-db-backup  # runs at least once
-          namespace: etcd-backup         # ignoring pvc state so the app does not get stuck in "Progressing" state
+          namespace: etcd-backup         # ignoring pvc status so the app does not get stuck in "Syncing" state
           jsonPointers:
             - /status
         - kind: PersistentVolumeClaim
