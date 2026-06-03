@@ -1,0 +1,25 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: etcd-backup-now
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  activeDeadlineSeconds: 600      # max duration the job is allowed to run
+  template:
+    spec:
+      containers:
+        - name: etcd-backup
+          image: {{ .Values.cronjobContainerImage }}
+          command:
+            - /bin/sh
+            - -c
+            - oc -n {{ .Values.namespace }} create job etcd-backup-now --from=cronjob/etcd-backup
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: gitops-post-sync-hook
+      terminationGracePeriodSeconds: 30
+...

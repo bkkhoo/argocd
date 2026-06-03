@@ -74,23 +74,11 @@ spec:
         server: "{{ server }}"
       ignoreDifferences:
         - group: batch                   # the etcd-backup cronjob schedule has random values
-          kind: CronJob                  # ignoring cronjob status so the app does not get stuck in "Syncing" state
+          kind: CronJob
           name: etcd-backup
           namespace: etcd-backup
           jsonPointers:
             - /spec/schedule
-        - group: ""
-          kind: PersistentVolumeClaim    # The pvc state will change to Bound only after the etcd-backup CronJob
-          name: etcd-snapshot-db-backup  # runs at least once
-          namespace: etcd-backup         # ignoring pvc status so the app does not get stuck in "Syncing" state
-          jsonPointers:
-            - /status
-        - group: ""
-          kind: PersistentVolumeClaim
-          name: etcd-static-resources-backup
-          namespace: etcd-backup
-          jsonPointers:
-            - /status
       syncPolicy:
         automated:
           prune: false       # the config here modify pre-existing resources that are part of openshift
