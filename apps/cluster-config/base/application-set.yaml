@@ -83,12 +83,12 @@ spec:
           name: etcd-snapshot-db-backup  # runs at least once
           namespace: etcd-backup         # ignoring pvc state so the app does not get stuck in "Progressing" state
           jsonPointers:
-            - /status/phase
+            - /status
         - kind: PersistentVolumeClaim
           name: etcd-static-resources-backup
           namespace: etcd-backup
           jsonPointers:
-            - /status/phase
+            - /status
       syncPolicy:
         automated:
           prune: false       # the config here modify pre-existing resources that are part of openshift
