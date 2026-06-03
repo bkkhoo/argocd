@@ -115,11 +115,12 @@ policies:
       - path: monitor/persistent-volume-status.yaml
 
   - name: monitor-persistent-volume-claim
-    complianceType: musthave
     severity: low
     namespaceSelector:
       include:
         - "*"
+      exclude:
+        - etcd-backup       # etcd backup cronjob run as privileged container
     manifests:
       - path: monitor/persistent-volume-claim-status.yaml
 

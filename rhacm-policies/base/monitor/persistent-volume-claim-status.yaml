@@ -1,6 +1,19 @@
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-status:
-  phase: Bound
+object-templates-raw: |
+  {{- $pvcs := (lookup "v1" "PersistentVolumeClaim" "" "") }}
+  {{- range $pvcs.items }}
+    {{- if ne .status.phase "Bound" }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: {{ .metadata.name }}
+        namespace: {{ .metadata.namespace }}
+      spec:
+        {{ .spec | toYaml | nindent 6 }}
+      status:
+        {{ .status | toYaml | nindent 6 }}
+    {{- end }}
+  {{- end }}
 ...
