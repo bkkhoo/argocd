@@ -115,6 +115,7 @@ policies:
       - path: monitor/persistent-volume-status.yaml
 
   - name: monitor-persistent-volume-claim
+    complianceType: mustnothave
     severity: low
     namespaceSelector:
       include:

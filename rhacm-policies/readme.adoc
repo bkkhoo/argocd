@@ -85,10 +85,10 @@ These policies are common to both global-hub and managed-hubs.
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor PersistentVolumeClaim in `Failed` state.
 
-| monitor-pending-persistent-volume-claim
+| monitor-persistent-volume-claim
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor PersistentVolumeClaim in `Pending` state.
+| Monitor PersistentVolumeClaims that are not in `Bound` state.
 
 | monitor-default-storage-class
 | Inform
