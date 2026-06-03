@@ -79,13 +79,14 @@ spec:
           namespace: etcd-backup
           jsonPointers:
             - /spec/schedule
-            - /status
-        - kind: PersistentVolumeClaim    # The pvc state will change to Bound only after the etcd-backup CronJob
+        - group: ""
+          kind: PersistentVolumeClaim    # The pvc state will change to Bound only after the etcd-backup CronJob
           name: etcd-snapshot-db-backup  # runs at least once
           namespace: etcd-backup         # ignoring pvc status so the app does not get stuck in "Syncing" state
           jsonPointers:
             - /status
-        - kind: PersistentVolumeClaim
+        - group: ""
+          kind: PersistentVolumeClaim
           name: etcd-static-resources-backup
           namespace: etcd-backup
           jsonPointers:
