@@ -12,7 +12,7 @@ rules:
       - batch
     resources:
       - jobs
-      - cronjob
+      - cronjobs
     verbs:
       - get
       - list
