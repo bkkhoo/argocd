@@ -114,8 +114,8 @@ policies:
     manifests:
       - path: monitor/persistent-volume-status.yaml
 
-  - name: monitor-pending-persistent-volume-claim
-    complianceType: mustnothave
+  - name: monitor-persistent-volume-claim
+    complianceType: musthave
     severity: low
     namespaceSelector:
       include:
