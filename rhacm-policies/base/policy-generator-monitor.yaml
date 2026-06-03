@@ -65,6 +65,8 @@ policies:
     namespaceSelector:
       include:
         - "*"
+      exclude:
+        - etcd-backup       # etcd backup cronjob run as privileged container
     manifests:
       - path: monitor/privileged-scc-role-binding.yaml
 

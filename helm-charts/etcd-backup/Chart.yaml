@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 1.1
+name: etcd-backup
+description: Backup etcd every 4 hours
+type: application
+version: 1.0
+...

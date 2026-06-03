@@ -58,6 +58,10 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: kustomize-deployments/etcd-encryption/base
+        # setup etcd backup cronjob
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/etcd-backup
         # configure project request template
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main

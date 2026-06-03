@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etcd-backup
+  namespace: {{ .Values.namespace }}
+data:
+  etcd-backup.sh: |
+{{ .Files.Get "files/etcd-backup.sh" | indent 4 }}
+...

@@ -1,0 +1,133 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= ETCD Backup
+
+etcd is the key-value store for OpenShift, which persists the state of all resource objects.
+
+OpenShift provides two primary methods for etcd backup: automated backups via the `EtcdBackup` operator and manual or cronjob-based backups using the `cluster-backup.sh` script. This Helm chart uses the cronjob-based backup method to backup etcd data to two `PersistentVolumeClaims`.
+
+The `cluster-backup.sh` script produces two artifacts:
+
+- `snapshot_<datetimestamp>.db`: This file is the etcd snapshot. The link:template/cronjob.yaml[cronjob] compresses the file with `gzip`.
+- `static_kuberesources_<datetimestamp>.tar.gz`: This file contains the resources for the static pods. If etcd encryption is enabled, it also contains the encryption keys for the etcd snapshot.
+
+[NOTE]
+====
+- If etcd encryption is enabled, it is recommended to store the `static_kuberesources` file separately from the etcd snapshot for security reasons.
+- The `CronJob` that backs up etcd data runs as a privileged container.
+====
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-gitops helm-chart/etcd-backup
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete etcd-backup
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| namespace
+| etcd-backup
+| Namespace to deploy the resources.
+
+| pvc.storageClass
+| gp3-csi
+| The `StorageClass` that `PersistentVolumeClaim` uses to request persistent storage.
+
+| pvc.snapshot.name
+| etcd-snapshot-db-backup
+| PersistentVolumeClaim for storing etcd snapshots.
+
+| pvc.snapshot.size
+| 50Gi
+| Size of the PersistentVolumeClaim for storing etcd snapshots. Make sure to size the PersistentVolumeClaim to ensure sufficient space is available to retain all backup files within the retention period.
+
+| pvc.staticResources.name
+| etcd-static-resources-backup
+| PersistentVolumeClaim for storing resources for the static pods.
+
+| pvc.staticResources.size
+| 10Gi
+| Size of the PersistentVolumeClaim for storing resources for the static pods. Make sure to size the PersistentVolumeClaim to ensure sufficient space is available to retain all backup files within the retention period.
+
+| frequency
+| 3
+| The interval (in hours) at which backups are created, which directly determines the Recovery Point Objective (RPO) or maximum tolerable data loss.
+
+| retentionDays
+| 7
+| Number of days to retain backup data.
+
+| cronjobContainerImage
+| `registry.redhat.io/openshift4/ose-tools-rhel9:v4.20`
+| The container image to use for etcd backup cronjob.
+|===
+
+== Additional Note
+
+Viewing etcd backup data on OpenShift:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Pod
+metadata:
+  name: list-backups
+  namespace: etcd-backup
+spec:
+  restartPolicy: Never
+  containers:
+    - name: list-backups
+      image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: SNAPSHOT_DB_BACKUP_PATH
+          value: /snapshot-db-backup
+        - name: STATIC_RESOURCES_BACKUP_PATH
+          value: /static-resources-backup
+      command:
+        - /bin/bash
+        - -c
+        - ls -lh /snapshot-db-backup; ls -lh /static-resources-backup
+      resources:
+        requests:
+          cpu: 125m
+          memory: 64Mi
+      volumeMounts:
+        - name: snapshot-db-backup
+          mountPath: /snapshot-db-backup
+        - name: static-resources-backup
+          mountPath: /static-resources-backup
+  volumes:
+    - name: snapshot-db-backup
+      persistentVolumeClaim:
+        claimName: etcd-snapshot-db-backup
+    - name: static-resources-backup
+      persistentVolumeClaim:
+        claimName: etcd-static-resources-backup
+---

@@ -53,7 +53,7 @@ rules:
       - template.openshift.io
     resources:
       - templates
-    verbs:        # do not grant create/delete, since argocd only need to update/patch
+    verbs:        # do not grant delete, since argocd only need to create/update/patch
       - get
       - list
       - watch

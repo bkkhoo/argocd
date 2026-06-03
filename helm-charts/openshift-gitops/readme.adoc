@@ -19,7 +19,7 @@ The install the chart:
 helm install --name openshift-gitops helm-chart/openshift-gitops
 ----
 
-## Uninstalling the Chart
+== Uninstalling the Chart
 
 To uninstall/delete the chart deployment:
 

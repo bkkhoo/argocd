@@ -1,0 +1,78 @@
+{{- $startHour := substr 0 1 (seq 0 (int (sub .Values.frequency 1)) | nospace | shuffle) }}
+{{- $randomMinute := mod (randNumeric 2 | atoi) 59 }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  namespace: {{ .Values.namespace }}
+spec:
+  schedule: "{{ $randomMinute }} {{ $startHour }}-23/{{ .Values.frequency }} * * *"
+  successfulJobsHistoryLimit: 3  # remove after successful completion
+  failedJobsHistoryLimit: 3      # retain failed for debugging
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            node-role.kubernetes.io/control-plane: ""
+          tolerations:           # tolerate any taints
+            - operator: Exists
+          activeDeadlineSeconds: 3000
+          restartPolicy: Never
+          serviceAccountName: etcd-backup
+          priorityClassName: system-node-critical
+          priority: 2000001000
+          schedulerName: default-scheduler
+          hostNetwork: true
+          enableServiceLinks: true
+          terminationGracePeriodSeconds: 30
+          preemptionPolicy: PreemptLowerPriority
+          containers:
+            - name: cluster-backup
+              image: {{ .Values.cronjobContainerImage }}
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: SNAPSHOT_DB_BACKUP_PATH
+                  value: /snapshot-db-backup
+                - name: STATIC_RESOURCES_BACKUP_PATH
+                  value: /static-resources-backup
+                - name: BACKUP_RETENTION_DAYS
+                  value: "{{ .Values.retentionDays }}"
+              command:
+                - /bin/bash
+                - -c
+                - /scripts/etcd-backup.sh
+              resources:
+                requests:
+                  cpu: 250m
+                  memory: 128Mi
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                - name: host
+                  mountPath: /host
+                - name: snapshot-db-backup
+                  mountPath: /snapshot-db-backup
+                - name: static-resources-backup
+                  mountPath: /static-resources-backup
+          volumes:
+            - name: scripts
+              configMap:
+                name: etcd-backup
+                defaultMode: 0755
+            - name: host
+              hostPath:
+                path: /
+                type: Directory
+            - name: snapshot-db-backup
+              persistentVolumeClaim:
+                claimName: {{ .Values.pvc.snapshot.name }}
+            - name: static-resources-backup
+              persistentVolumeClaim:
+                claimName: {{ .Values.pvc.staticResources.name }}
+...
