@@ -50,6 +50,12 @@ spec:
       destination:
         server: "{{ server }}"
         namespace: default
+      ignoreDifferences:
+        - group: compliance.openshift.io      # the ScanSetting schedule has random values
+          kind: ScanSetting
+          name: raw-result-on-worker
+          jsonPointers:
+            - /schedule
       syncPolicy:
         automated:
           prune: true

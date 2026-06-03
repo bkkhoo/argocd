@@ -74,6 +74,13 @@ spec:
         {{- end }}
       destination:
         server: "{{ server }}"
+      ignoreDifferences:
+        - group: batch      # the etcd-backup cronjob schedule has random values
+          kind: CronJob
+          name: etcd-backup
+          namespace: etcd-backup
+          jsonPointers:
+            - /spec/schedule
       syncPolicy:
         automated:
           prune: false       # the config here modify pre-existing resources that are part of openshift
