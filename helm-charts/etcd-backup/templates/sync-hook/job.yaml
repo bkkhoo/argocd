@@ -5,7 +5,7 @@ metadata:
   name: etcd-backup-now
   namespace: {{ .Values.namespace }}
   annotations:
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   activeDeadlineSeconds: 600      # max duration the job is allowed to run
@@ -20,6 +20,6 @@ spec:
             - oc -n {{ .Values.namespace }} create job etcd-backup-now --from=cronjob/etcd-backup
       dnsPolicy: ClusterFirst
       restartPolicy: Never
-      serviceAccountName: gitops-post-sync-hook
+      serviceAccountName: gitops-sync-hook
       terminationGracePeriodSeconds: 30
 ...
