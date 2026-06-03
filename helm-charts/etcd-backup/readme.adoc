@@ -94,7 +94,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 The `etcd-backup` chart deploys a pair of `PersistentVolumeClaims`. When managed by ArgoCD, if these claims reference a `StorageClass` with `volumeBindingMode: WaitForFirstConsumer`, the application can become stuck in the Progressing (or Syncing) state. This occurs because the `PersistentVolumeClaims` remain `Pending` until a pod consumes them, yet the consuming `CronJob` is scheduled to run much later.
 
-To resolve this deadlock, an link:templates/sync-hook[ArgoCD Sync hook] deploys a one-time `Job` derived from the `CronJob` specification. This Job acts as the initial consumer, triggering dynamic volume provisioning and transitioning the `PersistentVolumeClaims` to the `Bound` state. Once bound, the ArgoCD sync completes successfully.
+To resolve this deadlock, an link:templates/sync-hook[ArgoCD Sync hook] deploys a one-time do-nothing `Job` that mounts the `PersistentVolumeClaims`. This Job acts as the initial consumer, triggering dynamic volume provisioning and transitioning the `PersistentVolumeClaims` to the `Bound` state. Once bound, the ArgoCD sync completes successfully.
 
 Alternatively, customize the ArgoCD resource health check for `PersistentVolumeClaim` resources to treat both `Pending` (specifically when waiting for first consumer) and `Bound` states as `Healthy`.
 
