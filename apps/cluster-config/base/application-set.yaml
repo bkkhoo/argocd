@@ -63,6 +63,7 @@ spec:
           targetRevision: main
           path: helm-charts/etcd-backup
         # configure project request template
+        {{- if not has (index .metadata.labels "project-template-override") (list "yes" "true") }}
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/project-request-template
@@ -70,6 +71,7 @@ spec:
             parameters:
               - name: enableDefaultDenyIngressNetworkPolicy
                 value: "false"
+        {{- end }}
       destination:
         server: "{{ server }}"
       syncPolicy:
