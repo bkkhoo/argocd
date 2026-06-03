@@ -11,6 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
+  volumeBindingMode: Immediate
   storageClassName: {{ .Values.pvc.storageClass }}
 ---
 apiVersion: v1
@@ -25,5 +26,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
+  volumeBindingMode: Immediate
   storageClassName: {{ .Values.pvc.storageClass }}
 ...
