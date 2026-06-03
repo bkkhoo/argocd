@@ -17,7 +17,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - oc -n {{ .Values.namespace }} delete job etcd-backup-now && oc -n {{ .Values.namespace }} create job etcd-backup-now --from=cronjob/etcd-backup
+            - oc -n {{ .Values.namespace }} delete job etcd-backup-now; oc -n {{ .Values.namespace }} create job etcd-backup-now --from=cronjob/etcd-backup
           volumeMounts:
             - name: snapshot-db-backup
               mountPath: /snapshot-db-backup
