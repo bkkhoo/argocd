@@ -129,6 +129,11 @@ These policies are for global-hub only.
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
 | Monitor OpenSHift GitOps.
 
+| monitor-multicluster-global-hub-agent
+| Inform
+| All clusters with `managed-hub` label.
+| Monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster.
+
 | monitor-rhacs-central
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.

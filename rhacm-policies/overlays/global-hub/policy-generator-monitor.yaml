@@ -60,6 +60,13 @@ policies:
       - path: monitor/openshift-gitops/deployment-status.yaml
       - path: monitor/openshift-gitops/object-templates-raw-status.yaml
 
+  - name: monitor-multicluster-global-hub-agent
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - ps-gh-monitor-managed-hubs
+    manifests:
+      - path: monitor/multicluster-global-hub-agent-status.yaml
+
   - name: monitor-rhacs-central
     complianceType: musthave
     manifests:
