@@ -18,8 +18,20 @@ spec:
             - /bin/sh
             - -c
             - oc -n {{ .Values.namespace }} create job etcd-backup-now --from=cronjob/etcd-backup
+          volumeMounts:
+            - name: snapshot-db-backup
+              mountPath: /snapshot-db-backup
+            - name: static-resources-backup
+              mountPath: /static-resources-backup
       dnsPolicy: ClusterFirst
       restartPolicy: Never
       serviceAccountName: gitops-sync-hook
       terminationGracePeriodSeconds: 30
+      volumes:
+        - name: snapshot-db-backup
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.snapshot.name }}
+        - name: static-resources-backup
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.staticResources.name }}
 ...
