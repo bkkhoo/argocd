@@ -56,6 +56,9 @@ policies:
 
   - name: monitor-argocd-application-set
     complianceType: mustnothave
+    namespaceSelector:
+      include:
+        - openshift-gitops
     manifests:
       - path: monitor/application-set-status.yaml
 
