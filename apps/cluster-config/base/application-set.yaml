@@ -7,6 +7,9 @@ metadata:
   labels:
     applications: cluster-config
 spec:
+  goTemplate: true                     # enable go templating for spec.template field
+  goTemplateOptions:
+    - missingkey=error
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -28,7 +31,7 @@ spec:
             server: https://kubernetes.default.svc
   template:
     metadata:
-      name: "{{ name }}-cluster-config"
+      name: "{{ .name }}-cluster-config"
       labels:
         applications: cluster-config
     spec:
@@ -68,10 +71,10 @@ spec:
           path: helm-charts/project-request-template
           helm:
             parameters:
-              - name: enableDefaultDenyIngressNetworkPolicy
-                value: "false"
+              - name: projectTemplateOverride
+                value: '{{ if index .metadata.labels "project-template-override" }}true{{ else }}false{{ end }}'
       destination:
-        server: "{{ server }}"
+        server: "{{ .server }}"
       ignoreDifferences:
         - group: batch                   # the etcd-backup cronjob schedule has random values
           kind: CronJob

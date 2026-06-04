@@ -8,7 +8,12 @@ ifdef::env-github[]
 endif::[]
 = OpenShift Project Request Template
 
-OpenShift Project Request Templates allow administrators to automatically inject resources like `ResourceQuotas`, `LimitRanges`, and `NetworkPolicies` into every new project created by users. This ensures consistent governance and resource limits across the cluster without manual intervention for each namespace.
+OpenShift Project Request Templates allow administrators to automatically inject resources into every new project created by users. This ensures consistent governance and resource limits across the cluster without manual intervention for each namespace. The following resources are injected:
+
+- `RoleBinding`: grant project/namespace admin privileges to user.
+- `NetworkPolicies`: the network policy deny all ingress traffic.
+- `ResourceQuotas`: enforces aggregate limits on resource consumption (CPU and memory) in the namespace.
+- `LimitRanges`: constrains the resource allocations (limits and requests) for each applicable object kind in the namespace.
 
 == Installing the Chart
 
@@ -38,9 +43,12 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
-| enableDefaultDenyIngressNetworkPolicy
-| true
-| Enable/Disable default deny all ingress traffic NetworkPolicy.
+| projectTemplateOverride
+| false
+a| Override part of project request template:
+
+- true: only injects `RoleBinding`.
+- false: injects `RoleBinding`, `NetworkPolicies`, `ResourceQuotas` and `LimitRanges`.
 
 | resourceQuota.requests.cpu
 | 5

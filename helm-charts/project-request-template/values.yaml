@@ -1,5 +1,5 @@
 ---
-enableDefaultDenyIngressNetworkPolicy: true
+projectTemplateOverride: false
 resourceQuota:
   requests:
     cpu: "5"
