@@ -127,7 +127,12 @@ These policies are for global-hub only.
 | monitor-openshift-gitops
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Monitor OpenSHift GitOps.
+| Monitor OpenShift GitOps.
+
+| monitor-argocd-application-set
+| Inform
+| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| Monitor ArgoCD ApplicationSets.
 
 | monitor-multicluster-global-hub-agent
 | Inform

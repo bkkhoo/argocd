@@ -54,6 +54,11 @@ policies:
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
 
+  - name: monitor-argocd-application-set
+    complianceType: mustnothave
+    manifests:
+      - path: monitor/application-set-status.yaml
+
   - name: monitor-openshift-gitops
     complianceType: musthave       # object-templates-raw sets its own complianceType
     manifests:
