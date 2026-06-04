@@ -74,7 +74,7 @@ spec:
           path: helm-charts/project-request-template
           helm:
             valuesObject:
-              projectTemplateOverride: '{{ if index .metadata.labels "project-template-override" }}true{{ else }}false{{ end }}'
+              projectTemplateOverride: '{{ if index .metadata.labels "project-template-override" }}override{{ else }}not{{ end }}'
       destination:
         server: "{{ .server }}"
       ignoreDifferences:

@@ -44,11 +44,11 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Description
 
 | projectTemplateOverride
-| false
-a| Override part of project request template:
+| not
+a| Override part of project request template, note that the value is a string NOT boolean:
 
-- true: only injects `RoleBinding`.
-- false: injects `RoleBinding`, `NetworkPolicies`, `ResourceQuotas` and `LimitRanges`.
+- override: only injects `RoleBinding`.
+- other value: injects `RoleBinding`, `NetworkPolicies`, `ResourceQuotas` and `LimitRanges`.
 
 | resourceQuota.requests.cpu
 | 5
