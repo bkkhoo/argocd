@@ -39,6 +39,13 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Description
 
 | serviceMeshIntegration
-| true
-| Enable/Disable OpenShift Serverless integration with OpenShift Service Mesh. Note that the value is a string NOT boolean.
+| true pass:[+]
+a| Enable or disable the OpenShift Serverless integration configuration with OpenShift Service Mesh.
+
+pass:[+] The value must be a string, not boolean.
 |===
+
+[NOTE]
+====
+Configuring Serverless integration for Service Mesh without Service Mesh installed will cause some pods (such as the `KnativeServing` `activator` and `net-istio-controller`) to continually restart.
+====

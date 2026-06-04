@@ -2,14 +2,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: openshift-serverless
+  name: openshift-service-mesh
   namespace: openshift-gitops
   labels:
-    applications: openshift-serverless
+    applications: openshift-service-mesh
 spec:
-  goTemplate: true                     # enable go templating for spec.template field
-  goTemplateOptions:
-    - missingkey=error
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -22,24 +19,22 @@ spec:
                 - OpenShift
             - key: managed-hub
               operator: DoesNotExist
-            - key: openshift-serverless
+            - key: openshift-service-mesh
               operator: Exists
   template:
     metadata:
-      name: "{{ .name }}-openshift-serverless"
+      name: "{{ .name }}-openshift-service-mesh"
       labels:
-        applications: openshift-serverless
+        applications: openshift-service-mesh
     spec:
       project: iac-gitops
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: helm-charts/openshift-serverless
-        # if the cluster has openshift-service-mesh label, enabled KnativeServing and KnativeEventing istio integration config
-        # the app will not converge if istio integration is configured without service mesh installed
+        path: helm-charts/openshift-service-mesh
         helm:
           valuesObject:
-            serviceMeshIntegration: '{{ if index .metadata.labels "openshift-service-mesh" }}true{{ else }}false{{ end }}'
+            version: "2"
       destination:
         server: "{{ .server }}"
         namespace: default

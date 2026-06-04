@@ -45,7 +45,12 @@ a| Deploy the following operators:
 | openshift-serverless
 | ApplicationSet
 | All OpenShift clusters without the `managed-hub` label but with the `openshift-serverless` label.
-| Deploy OpenShift Serverless operator.
+| Deploy OpenShift Serverless.
+
+| openshift-service-mesh
+| ApplicationSet
+| All OpenShift clusters without the `managed-hub` label but with the `openshift-service-mesh` label.
+| Deploy OpenShift Service Mesh.
 
 | rhacm-policies
 | Application

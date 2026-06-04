@@ -1,5 +1,5 @@
 ---
-projectTemplateOverride: "not"
+projectTemplateOverride: "false"
 resourceQuota:
   requests:
     cpu: "5"

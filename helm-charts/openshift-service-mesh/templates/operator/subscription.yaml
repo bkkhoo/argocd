@@ -1,0 +1,28 @@
+---
+{{- $names := dict "2" "servicemeshoperator" "3" "servicemeshoperator3" }}
+{{- $smName := index $names (.Values.version | toString) }}
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: {{ $smName }}
+  namespace: openshift-operators
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: {{ $smName }}
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  # config:
+  #   nodeSelector:
+  #     node-role.kubernetes.io/infra: ""
+  #   tolerations:
+  #     - effect: NoSchedule
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+  #     - effect: NoExecute
+  #       key: node-role.kubernetes.io/infra
+  #       value: reserved
+...
