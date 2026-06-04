@@ -70,12 +70,8 @@ spec:
           targetRevision: main
           path: helm-charts/project-request-template
           helm:
-            parameters:
-              - name: projectTemplateOverride
-                value: >-
-                  {{- $labels := (index . "metadata" | default dict) }}
-                  {{- $labels = (index $labels "labels" | default dict) }}
-                  {{- if ne (index $labels "project-template-override") "0" }}true{{ else }}false{{ end }}
+            valuesObject:
+              projectTemplateOverride: '{{ if ne (index $labels "project-template-override") "0" }}true{{- else }}false{{ end }}'
       destination:
         server: "{{ .server }}"
       ignoreDifferences:
