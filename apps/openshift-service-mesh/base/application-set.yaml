@@ -23,7 +23,7 @@ spec:
               operator: Exists
   template:
     metadata:
-      name: "{{ .name }}-openshift-service-mesh"
+      name: "{{ name }}-openshift-service-mesh"
       labels:
         applications: openshift-service-mesh
     spec:
@@ -36,7 +36,7 @@ spec:
           valuesObject:
             version: "2"
       destination:
-        server: "{{ .server }}"
+        server: "{{ server }}"
         namespace: default
       syncPolicy:
         automated:
