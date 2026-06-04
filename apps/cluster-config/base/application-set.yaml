@@ -72,7 +72,7 @@ spec:
           helm:
             parameters:
               - name: projectTemplateOverride
-                value: '{{ if index .metadata.labels "project-template-override" }}true{{ else }}false{{ end }}'
+                value: '{{ if hasKey .metadata.labels "project-template-override" }}true{{ else }}false{{ end }}'
       destination:
         server: "{{ .server }}"
       ignoreDifferences:
