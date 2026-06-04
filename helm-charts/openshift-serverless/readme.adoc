@@ -40,5 +40,5 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 | serviceMeshIntegration
 | true
-| Enable/Disable OpenShift Serverless integration with OpenShift Service Mesh.
+| Enable/Disable OpenShift Serverless integration with OpenShift Service Mesh. Note that the value is a string NOT boolean.
 |===

@@ -22,9 +22,9 @@ spec:
       kubernetes.podspec-sechedulername: enabled
       kubernetes.podspec-tolerations: enabled
       multi-container-probing: enabled
-{{- if .Values.serviceMeshIntegration }}
-      istio:
+    istio:
       local-gateway.knative-serving.knative-local-gateway: knative-local-gateway.istio-system.svc.cluster.local
+{{- if eq (.Values.serviceMeshIntegration | toString) "true" }}
   ingress:
     istio:
       enabled: true

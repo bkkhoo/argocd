@@ -29,9 +29,9 @@ spec:
         elements:
           - name: in-cluster
             server: https://kubernetes.default.svc
-            metadata:                 # set dummy label so goTemplate does not error
-              labels:
-                dummy: dummy
+            metadata:                 # set label so goTemplate does not error
+              labels:                 # global-hub does not need project-request-template
+                project-template-override: override
   template:
     metadata:
       name: "{{ .name }}-cluster-config"

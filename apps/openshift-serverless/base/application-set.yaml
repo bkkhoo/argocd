@@ -7,6 +7,9 @@ metadata:
   labels:
     applications: openshift-serverless
 spec:
+  goTemplate: true                     # enable go templating for spec.template field
+  goTemplateOptions:
+    - missingkey=error
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -23,7 +26,7 @@ spec:
               operator: Exists
   template:
     metadata:
-      name: "{{ name }}-openshift-serverless"
+      name: "{{ .name }}-openshift-serverless"
       labels:
         applications: openshift-serverless
     spec:
@@ -32,11 +35,12 @@ spec:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
         path: helm-charts/openshift-serverless
+        # if the cluster has openshift-service-mesh label, enabled KnativeServing and KnativeEventing istio integration config
         helm:
           valuesObject:
-            serviceMeshIntegration: false
+            serviceMeshIntegration: '{{ if index .metadata.labels "openshift-service-mesh" }}true{{ else }}false{{ end }}'
       destination:
-        server: "{{ server }}"
+        server: "{{ .server }}"
         namespace: default
       syncPolicy:
         automated:
