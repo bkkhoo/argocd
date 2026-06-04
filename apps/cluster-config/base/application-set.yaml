@@ -75,7 +75,7 @@ spec:
                 value: >-
                   {{- $labels := (index . "metadata" | default dict) }}
                   {{- $labels = (index $labels "labels" | default dict) }}
-                  {{ if ne (index $labels "project-template-override") "0" }}true{{ else }}false{{ end }}
+                  {{- if ne (index $labels "project-template-override") "0" }}true{{ else }}false{{ end }}
       destination:
         server: "{{ .server }}"
       ignoreDifferences:
