@@ -1,0 +1,45 @@
+# flag if the last scheduled run of the cronjob failed
+---
+object-templates-raw: |
+  {{- $cronjobs := dict }}
+  {{- range (lookup "batch/v1" "CronJob" "" "").items }}
+    {{- $namespace := .metadata.namespace }}
+    {{- $name := .metadata.name }}
+    {{ $fqdn := printf "%s/%s" .metadata.namespace .metadata.name }}
+    {{- $dict := dict "cronjobName" .metadata.name
+                      "cronjobNamespace" .metadata.namespace
+                      "schedule" .spec.schedule
+                      "status" .status }}
+    {{- $cronjobs = merge $cronjobs (dict $fqdn $dict) }}
+  {{- end }}
+  {{- range $cronjobs }}
+    {{ $fqdn := printf "%s/%s" .cronjobNamespace .cronjobName }}
+    {{- $cronjob_name := .cronjobName }}
+    {{- $jobs := list }}
+    {{- range (lookup "batch/v1" "Job" .cronjobNamespace "").items }}
+      {{- $owner := index .metadata.ownerReferences 0 }}
+      {{- if and (eq $owner.kind "CronJob") (eq $owner.name $cronjob_name) }}
+        {{- $jobs = append $jobs (printf "%s failed=%s" .metadata.creationTimestamp (hasKey .status "failed" | toString)) }}
+      {{- end }}
+    {{- end }}
+    {{- $dict := dict $fqdn (dict "jobs" ($jobs | sortAlpha)) }}
+    {{- $cronjobs = merge $cronjobs $dict }}
+  {{- end }}
+  {{- range $cronjobs }}
+    {{- $last_job := last .jobs | toString }}
+    {{- $cron_status := (split " " $last_job)._1 }}
+    {{- if eq (split " " $last_job)._1 "failed=true" }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: /v1
+      kind: ConfigMap
+      metadata:
+        name: {{ .cronjobName }}
+        namespace: {{ .cronjobNamespace }}
+      spec:
+        schedule: "{{ .schedule }}"
+      status:
+        {{ .status | toYaml | nindent 6 }}
+    {{- end }}
+  {{- end }}
+...

@@ -132,4 +132,8 @@ policies:
   - name: monitor-operator-group
     manifests:
       - path: monitor/operator-group-status.yaml
+
+  - name: monitor-failed-cronjob
+    manifests:
+      - path: monitor/failed-cronjob-status.yaml
 ...

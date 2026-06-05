@@ -8,7 +8,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   schedule: "{{ $randomMinute }} {{ $startHour }}-23/{{ .Values.frequency }} * * *"
-  successfulJobsHistoryLimit: 1  # remove after successful completion
+  successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3      # retain failed for debugging
   concurrencyPolicy: Forbid
   jobTemplate:

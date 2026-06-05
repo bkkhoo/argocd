@@ -78,7 +78,7 @@ These policies are common to both global-hub and managed-hubs.
 | monitor-container-image-pull-backoff
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for containers where the cluster repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
+| Monitor for pods where the kubelet repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
 
 | monitor-failed-persistent-volume
 | Inform
@@ -98,7 +98,12 @@ These policies are common to both global-hub and managed-hubs.
 | monitor-operator-group
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor for namespaces with more than one OperatorGroup.
+| Monitor namespaces that have more than one OperatorGroup.
+
+| monitor-failed-cronjob
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor CronJobs for failed Jobs in their last scheduled run.
 |===
 
 === Global-Hub Policies
