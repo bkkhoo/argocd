@@ -44,6 +44,7 @@ placementBindingDefaults:
 
 policies:
   - name: monitor-managed-clusters
+    complianceType: mustnothave
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
