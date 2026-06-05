@@ -80,10 +80,13 @@ These policies are common to both global-hub and managed-hubs.
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor for pods where the kubelet repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
 
-| monitor-failed-persistent-volume
+| monitor-persistent-volume
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
-| Monitor PersistentVolumeClaim in `Failed` state.
+a| Monitor PersistentVolume (PV) state:
+
+- `Failed`: PV failed to be correctly recycled or deleted after being released from a claim.
+- `Released`: For a PersistentVolume with `spec.persistentVolumeReclaimPolicy: Retain`, once the associated PersistentVolumeClaim is deleted, an administrator must manually intervene to remove the claimRef field from the PV specification to make the volume available again.
 
 | monitor-persistent-volume-claim
 | Inform

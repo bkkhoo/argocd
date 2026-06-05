@@ -109,7 +109,7 @@ policies:
     manifests:
       - path: monitor/container-image-pull-backoff.yaml
 
-  - name: monitor-failed-persistent-volume
+  - name: monitor-persistent-volume
     complianceType: mustnothave
     manifests:
       - path: monitor/persistent-volume-status.yaml

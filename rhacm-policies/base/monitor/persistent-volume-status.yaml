@@ -3,4 +3,11 @@ apiVersion: v1
 kind: PersistentVolume
 status:
   phase: Failed
+---
+apiVersion: v1
+kind: PersistentVolume
+spec:
+  persistentVolumeReclaimPolicy: Retain
+status:
+  phase: Released
 ...
