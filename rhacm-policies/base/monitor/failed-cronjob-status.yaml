@@ -31,8 +31,8 @@ object-templates-raw: |
     {{- if eq (split " " $last_job)._1 "failed=true" }}
   - complianceType: mustnothave
     objectDefinition:
-      apiVersion: /v1
-      kind: ConfigMap
+      apiVersion: batch/v1
+      kind: CronJob
       metadata:
         name: {{ .cronjobName }}
         namespace: {{ .cronjobNamespace }}
