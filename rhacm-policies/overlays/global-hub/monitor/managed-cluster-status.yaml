@@ -1,15 +1,13 @@
 ---
-object-templates-raw: |
-  {{- $mc := (lookup "cluster.open-cluster-management.io/v1" "ManagedCluster" "" "").items }}
-  {{- if $mc }}
-  - complianceType: musthave
-    objectDefinition:
-      apiVersion: cluster.open-cluster-management.io/v1
-      kind: ManagedCluster
-      status:
-        conditions:
-          - type: ManagedClusterConditionAvailable
-            reason: ManagedClusterAvailable
-            status: "True"
-  {{- end }}
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+status:
+  conditions:
+    - status: Unknown
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+status:
+  conditions:
+    - status: "False"
 ...

@@ -122,7 +122,7 @@ These policies are for global-hub only.
 | monitor-managed-clusters
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Monitor ManagedCluster Availability.
+| Monitor ManagedCluster Availability on global hub and managed-hubs.
 
 | monitor-managed-hubs-local-cluster
 | Inform
