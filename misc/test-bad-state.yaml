@@ -1,0 +1,156 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-bad-status
+spec: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-oom-kill
+  namespace: test-bad-status
+spec:
+  containers:
+  - name: test-oom-kill
+    image: docker.io/polinux/stress:latest
+    resources:
+      requests:
+        memory: "100Mi"
+      limits:
+        memory: "200Mi"
+    command: ["stress"]
+    args: ["--vm", "1", "--vm-bytes", "250M", "--vm-hang", "1"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-image-pull-backoff
+  namespace: test-bad-status
+spec:
+  containers:
+  - name: test-image-pull-backoff
+    image: dummy
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pending-pvc
+  namespace: test-bad-status
+spec:
+  storageClassName: dummy
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-12345
+  namespace: test-bad-status
+spec:
+  backoffLimit: 3
+  completions: 1
+  parallelism: 1
+  suspend: false
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      activeDeadlineSeconds: 3000
+      containers:
+      - name: test-12345
+        command:
+        - /bin/bash
+        - -c
+        - exit 1
+        image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+        imagePullPolicy: IfNotPresent
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: test-111
+  namespace: test-bad-status
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          activeDeadlineSeconds: 60
+          containers:
+          - command:
+            - /bin/bash
+            - -c
+            - exit 1
+            image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+            imagePullPolicy: IfNotPresent
+            name: cluster-backup
+          dnsPolicy: ClusterFirst
+          enableServiceLinks: true
+          restartPolicy: Never
+          serviceAccountName: etcd-backup
+  schedule: "*/3 * * * *"
+  successfulJobsHistoryLimit: 1
+  suspend: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-123
+  namespace: test-bad-status
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: gp3-csi
+  volumeMode: Filesystem
+  volumeName: pv-123
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-123
+spec:
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: pvc-123
+    namespace: test-123
+    resourceVersion: "125405"
+    uid: 66d5c34c-5277-4eb8-81f8-9d0480789b32
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  csi:
+    driver: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: vol-064d5b37f51905a2f
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values:
+          - us-east-2b
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp3-csi
+  volumeMode: Filesystem
+...
+
+# oc -n test-bad-status get pod -w -o json | jq '{"name": .metadata.name, "started": .status.containerStatuses[].started, "state": .status.containerStatuses[].state.waiting.reason, "lastState": .status.containerStatuses[].lastState.terminated.reason}'
