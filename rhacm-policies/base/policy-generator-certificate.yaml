@@ -34,5 +34,5 @@ placementBindingDefaults:
 policies:
   - name: certificate-status
     manifests:
-      - path: cert/openshift-ingress.yaml
+      - path: cert/certificate-policy.yaml
 ...
