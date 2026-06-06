@@ -6,6 +6,7 @@ resources:
   - managed-cluster-set-binding.yaml
 generators:
   - policy-generator-monitor.yaml
+  - policy-generator-certificate.yaml
   - policy-generator-configure.yaml
 
 patches:

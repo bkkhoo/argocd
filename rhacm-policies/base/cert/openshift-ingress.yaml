@@ -1,0 +1,17 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: CertificatePolicy
+metadata:
+  name: openshift-cert-policy
+spec:
+  namespaceSelector:
+    include:
+      - openshift-gitops
+      - openshift-ingress
+      - openshift-ingress-operator
+      - openshift-pipelines
+      - stackrox
+  minimumDuration: 360h
+  remediationAction: inform
+  severity: medium
+...

@@ -112,6 +112,11 @@ a| Monitor PersistentVolume (PV) state:
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor OpenShift routes that are not admitted, such as when `spec.host` is already claimed by another route in the cluster.
+
+| certificate-status
+| Inform
+| All OpenShift clusters.
+| Monitor TLS certificates of namespaces (openshift-gitops, openshift-ingress, openshift-ingress-operator, openshift-pipelines, stackrox); triggers a violation if a certificate expires in 15 days or less.
 |===
 
 === Global-Hub Policies

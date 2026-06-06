@@ -1,0 +1,38 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: pg-certificate
+policyDefaults:
+  namespace: rhacm-policies
+  policyAnnotations:
+    generated-by: policy-generator
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  standards:
+    - NIST SP 800-53
+  categories:
+    - SC System and Communications Protection
+  controls:
+    - SC-12 Cryptographic Key Establishment and Management
+  remediationAction: inform
+  severity: medium
+  policySets:
+    - ps-cert-all-clusters
+policySets:
+  - name: ps-cert-all-clusters
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+placementBindingDefaults:
+  name: binding-cert
+
+policies:
+  - name: certificate-status
+    manifests:
+      - path: cert/openshift-ingress.yaml
+...
