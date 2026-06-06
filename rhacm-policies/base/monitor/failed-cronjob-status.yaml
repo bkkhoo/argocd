@@ -1,5 +1,4 @@
 # flag if the last scheduled run of the cronjob failed
-# policytools template-resolver rhacm-policies/base/monitor/failed-cronjob-status.yaml --hub-kubeconfig ~/.kube/config --cluster-name local-cluster --hub-namespace rhacm-policies
 ---
 object-templates-raw: |
   {{- $cronjobs := dict }}

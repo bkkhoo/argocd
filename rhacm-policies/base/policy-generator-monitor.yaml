@@ -136,4 +136,12 @@ policies:
   - name: monitor-failed-cronjob
     manifests:
       - path: monitor/failed-cronjob-status.yaml
+
+  - name: monitor-openshift-route
+    complianceType: mustnothave
+    namespaceSelector:
+      include:
+        - "*"
+    manifests:
+      - path: monitor/route-status.yaml
 ...

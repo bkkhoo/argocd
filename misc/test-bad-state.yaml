@@ -151,6 +151,36 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: gp3-csi
   volumeMode: Filesystem
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: bad-route-1
+  namespace: test-bad-status
+spec:
+  host: test.example.com
+  port:
+    targetPort: https
+  to:
+    kind: Service
+    name: central
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: bad-route-2
+  namespace: test-bad-status
+spec:
+  host: test.example.com
+  port:
+    targetPort: https
+  to:
+    kind: Service
+    name: central
+    weight: 100
+  wildcardPolicy: None
 ...
 
 # oc -n test-bad-status get pod -w -o json | jq '{"name": .metadata.name, "started": .status.containerStatuses[].started, "state": .status.containerStatuses[].state.waiting.reason, "lastState": .status.containerStatuses[].lastState.terminated.reason}'

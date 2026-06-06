@@ -107,6 +107,11 @@ a| Monitor PersistentVolume (PV) state:
 | Inform
 | All OpenShift clusters, except cluster with `managed-hub` label.
 | Monitor CronJobs for failed Jobs in their last scheduled run.
+
+| monitor-openshift-route
+| Inform
+| All OpenShift clusters, except cluster with `managed-hub` label.
+| Monitor OpenShift routes that are not admitted, such as when `spec.host` is already claimed by another route in the cluster.
 |===
 
 === Global-Hub Policies
