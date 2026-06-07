@@ -20,7 +20,7 @@ policyDefaults:
   policySets:
     - base-cert-all-clusters
 policySets:
-  - name: ps-cert-all-clusters
+  - name: base-cert-all-clusters
     placement:
       labelSelector:
         matchExpressions:
