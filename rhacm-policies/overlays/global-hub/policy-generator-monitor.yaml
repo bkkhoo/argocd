@@ -89,7 +89,22 @@ policies:
       include:
         - "*"
       exclude:
+        - "kube-*"
         - "openshift*"
+        - "open-*"
+        - "multicluster-*"
+        - default
+        - default-broker
+        - disable-insight
+        - etcd-backup
+        - gitops-clusters-broker
+        - hive
+        - hypershift
+        - kanative-eventing
+        - kanative-serving
+        - rhacm-policies
+        - rhacs-operator
+        - stackrox
     manifests:
       - path: monitor/policy-report.yaml
 ...
