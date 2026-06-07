@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = About this Kustomize Deployment
 
-The resources in this folder deploys OpenShift Web Terminal.
+The resources in this folder deploys OpenShift Web Terminal. OpenShift Web Terminal is an embedded command-line interface within the OpenShift web console, allowing users to interact with the cluster using common CLI tools without leaving the browser.
 
 [NOTE]
 ====

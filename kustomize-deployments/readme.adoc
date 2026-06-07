@@ -1,0 +1,39 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Kustomize Deployments
+
+[cols="2,5", options="header"]
+|===
+| Name | Description
+
+| etcd-encryption
+| Configure ETCD Encryption, AES-GCM algorithms
+
+| motd
+| Configuration to ensure that users see a standardized security or maintenance notification before gaining access to the cluster via the CLI or web console.
+
+| openshift-insights
+| Opt out of reporting OpenShift health and usage data.
+
+| openshift-pipelines
+| Deploy OpenShift Pipelines. OpenShift Pipelines is a cloud-native, serverless CI/CD solution built on the open-source Tekton framework
+
+| openshift-samples
+| Change the `managementState` of the OpenShift Samples Operator to `Removed`. This causes the operator to delete all managed image streams and templates from the `openshift` namespace and ignore further watch events on sample resources.
+
+| openshift-web-terminal
+| Deploy OpenShift Web Terminal operator. OpenShift Web Terminal is an embedded command-line interface within the OpenShift web console, allowing users to interact with the cluster using common CLI tools without leaving the browser.
+
+| operator-hub
+| Configure OperatorHub catalog sources.
+
+| self-provisioner
+| Disable the `self-provisioner` role.
+|===

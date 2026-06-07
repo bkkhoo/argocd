@@ -85,6 +85,12 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
             └── uat
 ----
 
+=== Repository Contents
+
+- link:apps/[ArgoCD Application and ApplicationSets]
+- link:helm-charts/[Helm Charts]
+- link:kustomize-deployment/[Kustomize Deployment]
+
 == Terminology
 
 [cols="1,4"]

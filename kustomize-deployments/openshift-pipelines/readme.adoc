@@ -8,4 +8,4 @@ ifdef::env-github[]
 endif::[]
 = About this Kustomize Deployment
 
-The resources in this folder deploys OpenShift Pipelines.
+The resources in this folder deploys OpenShift Pipelines. OpenShift Pipelines is a cloud-native, serverless CI/CD solution built on the open-source Tekton framework.

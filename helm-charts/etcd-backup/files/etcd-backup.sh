@@ -2,8 +2,30 @@
 set -euo pipefail
 
 BACKUP_PATH=/home/core/backups
+max_attempts=60
 
-echo "starting backup at $(date '+%F %T %Z') ..."
+attempt=0
+pattern="EncryptionCompleted"
+echo "Waiting for etcd encryption to complete..."
+while [ $attempt -lt $max_attempts ] && ! oc get openshiftapiserver cluster -o=jsonpath='{range .status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}' | grep -q "$pattern"; do
+  attempt=$((attempt + 1))
+  echo "Attempt $attempt: etcd encryption not complete yet, waiting..."
+  sleep 5
+done
+
+attempt=0
+echo "Waiting for cluster operators update or reconciliation to complete..."
+while [ $attempt -lt $max_attempts ]; do
+  output="$(oc get co -o=jsonpath='{range .items[*].status.conditions[?(@.type=="Progressing")]}{.status}{","}')"
+    if [[ ! "$output" =~ "True" ]]; then
+      break
+    fi
+  attempt=$((attempt + 1))
+  echo "Attempt $attempt: cluster operators still updating or reconciling, waiting..."
+  sleep 5
+done
+
+echo -e "\nstarting backup at $(date '+%F %T %Z') ..."
 chroot /host sudo -E /usr/local/bin/cluster-backup.sh "${BACKUP_PATH}"
 
 echo -e "\ncompressing snapshot db..."
