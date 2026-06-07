@@ -80,4 +80,16 @@ policies:
     complianceType: musthave
     manifests:
       - path: monitor/rhacs-central-status.yaml
+
+  - name: 00-monitor-policy-report      # 00- prefix for the policy name for sorting use
+    complianceType: "mustnothave"
+    controls:
+      - CA-02 Security Assessments
+    namespaceSelector:
+      include:
+        - "*"
+      exclude:
+        - "openshift*"
+    manifests:
+      - path: monitor/policy-report.yaml
 ...

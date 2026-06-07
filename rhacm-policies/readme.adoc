@@ -127,6 +127,11 @@ These policies are for global-hub only.
 |===
 | Policy | Remediation Action | Placement | Description
 
+| 00-monitor-policy-report
+| Inform
+| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| Monitor PolicyReports that aggregate and display governance and security violations across managed clusters.
+
 | config-argocd-repo-secrets
 | Enforce
 | All clusters with `managed-hub` label.
