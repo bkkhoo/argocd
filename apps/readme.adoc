@@ -42,7 +42,7 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 a| Deploy the following operators:
 
-- penShift Compliance
+- OpenShift Compliance
 - OpenShift Pipelines
 - OpenShift Web Terminal
 
