@@ -16,16 +16,16 @@ endif::[]
 | 00-global-hub-app-of-apps
 | Application
 | in-cluster
-| Global hub app-of-apps, which manages and deploys child applications in link:/root-app/global-hub/base
+| Global hub app-of-apps, which manages and deploys child applications in link:/root-app/global-hub/base[this folder].
 
 | 00-managed-hub-app-of-apps
 | Application
 | in-cluster
 a| Managed hubs app-of-apps, which manages and deploys child applications for dev/uat/prod environments:
 
-- `dev`: /root-app/managed-hub/overlays/dev
-- `uat`: /root-app/managed-hub/overlays/uat
-- `prod`: /root-app/managed-hub/overlays/prod
+- link:/root-app/managed-hub/overlays/dev[dev]
+- link:/root-app/managed-hub/overlays/uat[uat]
+- link:/root-app/managed-hub/overlays/prod[prod]
 
 | 01-managed-hub-bootstrap
 | ApplicationSet
