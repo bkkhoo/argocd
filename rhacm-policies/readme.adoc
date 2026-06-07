@@ -32,57 +32,57 @@ These policies are common to both global-hub and managed-hubs.
 
 | monitor-cluster-operators
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor cluster operators; status should be `Available=true`, `Degraded=false`.
 
 | monitor-nodes
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
 
 | monitor-rhacs-secured-clusters
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor RHACS SecuredClusters.
 
 | monitor-role-with-wildcard-permissions
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Detected namespaced Role with wildcard permissions (`apiGroups: ["*"]`, `resources: ["*"]`, `verbs: ["*"]`).
 
 | monitor-privileges-scc-binding
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor for namespaces with RoleBindings that grant access to `privileged` Security Context Constraint.
 
 | monitor-terminating-namespaces
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor for namespaces stuck in the Terminating state.
 
 | monitor-install-plans
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor InstallPlans that are pending approval.
 
 | monitor-container-oom-killed
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor for containers that exceed their defined memory limit and are killed by the Linux kernel's Out-Of-Memory killer (`OOMKilled`).
 
 | monitor-container-crash-loop-backoff
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor for containers that are repeatedly crashing and restarting (`CrashLoopBackOff`).
 
 | monitor-container-image-pull-backoff
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor for pods where the kubelet repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
 
 | monitor-persistent-volume
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 a| Monitor PersistentVolume (PV) state:
 
 - `Failed`: PV failed to be correctly recycled or deleted after being released from a claim.
@@ -90,27 +90,27 @@ a| Monitor PersistentVolume (PV) state:
 
 | monitor-persistent-volume-claim
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor PersistentVolumeClaims that are not in `Bound` state.
 
 | monitor-default-storage-class
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor default StorageClass, alert if more than one default StorageClass is defined.
 
 | monitor-operator-group
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor namespaces that have more than one OperatorGroup.
 
 | monitor-failed-cronjob
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor CronJobs for failed Jobs in their last scheduled run.
 
 | monitor-openshift-route
 | Inform
-| All OpenShift clusters, except cluster with `managed-hub` label.
+| All OpenShift clusters.
 | Monitor OpenShift routes that are not admitted, such as when `spec.host` is already claimed by another route in the cluster.
 
 | certificate-status
@@ -127,10 +127,10 @@ These policies are for global-hub only.
 |===
 | Policy | Remediation Action | Placement | Description
 
-| 00-monitor-policy-report
-| Inform
-| `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Monitor PolicyReports that aggregate and display governance and security violations across managed clusters.
+// | 00-monitor-policy-report
+// | Inform
+// | `local-cluster` and all OpenShift cluster with `managed-hub` label.
+// | Monitor PolicyReports that aggregate and display governance and security violations across managed clusters.
 
 | config-argocd-repo-secrets
 | Enforce
@@ -147,6 +147,11 @@ These policies are for global-hub only.
 | All OpenShift clusters with `managed-hub` label.
 | Monitor managed-hub with `local-cluster`; no managed-hub should have `local-cluster`.
 
+| monitor-multicluster-global-hub-agent
+| Inform
+| All clusters with `managed-hub` label.
+| Monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster.
+
 | monitor-openshift-gitops
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
@@ -156,11 +161,6 @@ These policies are for global-hub only.
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
 | Monitor ArgoCD ApplicationSets.
-
-| monitor-multicluster-global-hub-agent
-| Inform
-| All clusters with `managed-hub` label.
-| Monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster.
 
 | monitor-rhacs-central
 | Inform

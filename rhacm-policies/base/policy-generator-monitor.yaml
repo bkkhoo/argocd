@@ -28,8 +28,6 @@ policySets:
             operator: In
             values:
               - OpenShift
-          # - key: managed-hub
-          #   operator: DoesNotExist
 placementBindingDefaults:
   name: base-monitor-binding
 

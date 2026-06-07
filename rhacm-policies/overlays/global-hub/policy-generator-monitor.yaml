@@ -55,6 +55,19 @@ policies:
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
 
+  - name: monitor-multicluster-global-hub-agent
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-managed-hubs
+    manifests:
+      - path: monitor/multicluster-global-hub-agent-status.yaml
+
+  - name: monitor-openshift-gitops
+    complianceType: musthave       # object-templates-raw sets its own complianceType
+    manifests:
+      - path: monitor/openshift-gitops/deployment-status.yaml
+      - path: monitor/openshift-gitops/object-templates-raw-status.yaml
+
   - name: monitor-argocd-application-set
     complianceType: mustnothave
     namespaceSelector:
@@ -63,48 +76,35 @@ policies:
     manifests:
       - path: monitor/application-set-status.yaml
 
-  - name: monitor-openshift-gitops
-    complianceType: musthave       # object-templates-raw sets its own complianceType
-    manifests:
-      - path: monitor/openshift-gitops/deployment-status.yaml
-      - path: monitor/openshift-gitops/object-templates-raw-status.yaml
-
-  - name: monitor-multicluster-global-hub-agent
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - gh-monitor-managed-hubs
-    manifests:
-      - path: monitor/multicluster-global-hub-agent-status.yaml
-
   - name: monitor-rhacs-central
     complianceType: musthave
     manifests:
       - path: monitor/rhacs-central-status.yaml
 
-  - name: 00-monitor-policy-report      # 00- prefix for the policy name for sorting use
-    complianceType: "mustnothave"
-    controls:
-      - CA-02 Security Assessments
-    namespaceSelector:
-      include:
-        - "*"
-      exclude:
-        - "kube-*"
-        - "openshift*"
-        - "open-*"
-        - "multicluster-*"
-        - default
-        - default-broker
-        - disable-insight
-        - etcd-backup
-        - gitops-clusters-broker
-        - hive
-        - hypershift
-        - kanative-eventing
-        - kanative-serving
-        - rhacm-policies
-        - rhacs-operator
-        - stackrox
-    manifests:
-      - path: monitor/policy-report.yaml
+  # - name: 00-monitor-policy-report      # 00- prefix for the policy name for sorting use
+  #   complianceType: "mustnothave"
+  #   controls:
+  #     - CA-02 Security Assessments
+  #   namespaceSelector:
+  #     include:
+  #       - "*"
+  #     exclude:
+  #       - "kube-*"
+  #       - "openshift*"
+  #       - "open-*"
+  #       - "multicluster-*"
+  #       - default
+  #       - default-broker
+  #       - disable-insight
+  #       - etcd-backup
+  #       - gitops-clusters-broker
+  #       - hive
+  #       - hypershift
+  #       - kanative-eventing
+  #       - kanative-serving
+  #       - rhacm-policies
+  #       - rhacs-operator
+  #       - stackrox
+  #   manifests:
+  #     - path: monitor/policy-report.yaml
 ...

@@ -16,22 +16,26 @@ endif::[]
 | 00-global-hub-app-of-apps
 | Application
 | in-cluster
-| Global hub app-of-apps.
+| Global hub app-of-apps, which manages and deploys child applications in link:/root-app/global-hub/base
 
 | 00-managed-hub-app-of-apps
 | Application
 | in-cluster
-| Managed hubs app-of-apps.
+a| Managed hubs app-of-apps, which manages and deploys child applications for dev/uat/prod environments:
+
+- `dev`: /root-app/managed-hub/overlays/dev
+- `uat`: /root-app/managed-hub/overlays/uat
+- `prod`: /root-app/managed-hub/overlays/prod
 
 | 01-managed-hub-bootstrap
 | ApplicationSet
-| All OpenShift clusters with `managed-hub` label for `dev`\|`uat`\|`prod` environments.
+| All OpenShift clusters with `managed-hub` label and `env` label (set to `dev`, `uat`, or `prod`).
 | Deploy OpenShift GitOps, RHACM, and managed hubs app-of-apps on managed hubs.
 
 | cluster-config
 | ApplicationSet
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
-| Cluster configurations (disable self provisioner, disable insights/telemetry services, OperatorHub, etc,)
+| Cluster configurations (disable self provisioner, enable etcd encryption, set project request template, etc.).
 
 | mandatory-operators
 | ApplicationSet
@@ -45,7 +49,7 @@ a| Deploy the following operators:
 | openshift-serverless
 | ApplicationSet
 | All OpenShift clusters without the `managed-hub` label but with the `openshift-serverless` label.
-| Deploy OpenShift Serverless.
+| Deploy OpenShift Serverless. On clusters labeled with `openshift-service-mesh`, integration with OpenShift Service Mesh is automatically configured.
 
 | openshift-service-mesh
 | ApplicationSet
@@ -60,12 +64,12 @@ a| Deploy the following operators:
 | rhacs-central
 | Application
 | in-cluster
-| Deploy RHACS Central and SecuredCluster tp global-hub and managed-hub.
+| Deploy RHACS Central and SecuredCluster to global-hub and managed-hubs.
 
 | rhacs-secured-cluster
 | ApplicationSet
 | All OpenShift clusters, excluding `local-cluster` and any cluster with `managed-hub` label.
-| Deploy RHACS SecuredCluster in global-hub and managed-hub.
+| Deploy RHACS SecuredCluster.
 
 | test-app
 | ApplicationSet
