@@ -28,7 +28,7 @@ policySets:
             operator: In
             values:
               - OpenShift
-  - name: ps-gh-config-managed-hubs
+  - name: gh-config-managed-hubs
     placement:
       labelSelector:
         matchExpressions:
