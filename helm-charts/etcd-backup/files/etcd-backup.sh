@@ -14,7 +14,7 @@ while [ $attempt -lt $max_attempts ] && ! oc get openshiftapiserver cluster -o=j
 done
 
 attempt=0
-echo "Waiting for cluster operators update or reconciliation to complete..."
+echo-e "\nWaiting for cluster operators update or reconciliation to complete..."
 while [ $attempt -lt $max_attempts ]; do
   output="$(oc get co -o=jsonpath='{range .items[*].status.conditions[?(@.type=="Progressing")]}{.status}{","}')"
     if [[ ! "$output" =~ "True" ]]; then
