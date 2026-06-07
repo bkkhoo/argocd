@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
-  name: pg-gh-config
+  name: gh-config-policy
 policyDefaults:
   namespace: rhacm-policies
   policyAnnotations:
@@ -17,10 +17,10 @@ policyDefaults:
     - CM-02 Baseline Configuration
   remediationAction: enforce
   policySets:
-    - ps-gh-config-all-clusters
+    - gh-config-all-clusters
   severity: medium
 policySets:
-  - name: ps-gh-config-all-clusters
+  - name: gh-config-all-clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -36,12 +36,12 @@ policySets:
             operator: Exists
 
 placementBindingDefaults:
-  name: binding-gh-config
+  name: gh-config-binding
 
 policies:
   - name: config-argocd-repo-secrets
     policySets:         # override policyDefaults.policySets
-      - ps-gh-config-managed-hubs
+      - gh-config-managed-hubs
     manifests:
       - path: config/openshift-gitops/repo-secret.yaml
 ...

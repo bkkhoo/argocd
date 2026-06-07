@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
-  name: pg-certificate
+  name: base-certificate-policy
 policyDefaults:
   namespace: rhacm-policies
   policyAnnotations:
@@ -18,7 +18,7 @@ policyDefaults:
   remediationAction: inform
   severity: medium
   policySets:
-    - ps-cert-all-clusters
+    - base-cert-all-clusters
 policySets:
   - name: ps-cert-all-clusters
     placement:
@@ -29,7 +29,7 @@ policySets:
             values:
               - OpenShift
 placementBindingDefaults:
-  name: binding-cert
+  name: base-cert-binding
 
 policies:
   - name: certificate-status

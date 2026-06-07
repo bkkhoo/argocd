@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
-  name: pg-monitor
+  name: base-monitor-policy
 policyDefaults:
   namespace: rhacm-policies
   policyAnnotations:
@@ -18,9 +18,9 @@ policyDefaults:
   remediationAction: inform
   severity: medium
   policySets:
-    - ps-monitor-all-clusters
+    - base-monitor-all-clusters
 policySets:
-  - name: ps-monitor-all-clusters
+  - name: base-monitor-all-clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -28,10 +28,10 @@ policySets:
             operator: In
             values:
               - OpenShift
-          - key: managed-hub
-            operator: DoesNotExist
+          # - key: managed-hub
+          #   operator: DoesNotExist
 placementBindingDefaults:
-  name: binding-monitor
+  name: base-monitor-binding
 
 policies:
   - name: monitor-cluster-operators

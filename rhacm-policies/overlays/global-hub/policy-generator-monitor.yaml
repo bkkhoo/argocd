@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
-  name: pg-gh-monitor
+  name: gh-monitor-policy
 policyDefaults:
   namespace: rhacm-policies
   policyAnnotations:
@@ -18,10 +18,10 @@ policyDefaults:
   remediationAction: inform
   severity: medium
   policySets:
-    - ps-gh-monitor-local-cluster
-    - ps-gh-monitor-managed-hubs
+    - gh-monitor-local-cluster
+    - gh-monitor-managed-hubs
 policySets:
-  - name: ps-gh-monitor-local-cluster
+  - name: gh-monitor-local-cluster
     placement:
       labelSelector:
         matchExpressions:
@@ -29,7 +29,7 @@ policySets:
             operator: In
             values:
               - local-cluster
-  - name: ps-gh-monitor-managed-hubs
+  - name: gh-monitor-managed-hubs
     placement:
       labelSelector:
         matchExpressions:
@@ -40,7 +40,7 @@ policySets:
           - key: managed-hub
             operator: Exists
 placementBindingDefaults:
-  name: binding-gh-monitor
+  name: gh-monitor-binding
 
 policies:
   - name: monitor-managed-clusters
@@ -51,7 +51,7 @@ policies:
   - name: monitor-managed-hubs-local-cluster
     complianceType: mustnothave
     policySets:           # override policyDefaults.policySets
-      - ps-gh-monitor-managed-hubs
+      - gh-monitor-managed-hubs
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
 
@@ -72,7 +72,7 @@ policies:
   - name: monitor-multicluster-global-hub-agent
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
-      - ps-gh-monitor-managed-hubs
+      - gh-monitor-managed-hubs
     manifests:
       - path: monitor/multicluster-global-hub-agent-status.yaml
 
