@@ -1,8 +1,8 @@
 ---
 apiVersion: v2
 appVersion: 1.0
-name: openshift-serverless
-description: OpenShift Serverless
+name: openshift-oauth
+description: OpenShift oAuth token config
 type: application
 version: 1.0
 ...
