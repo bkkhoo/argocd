@@ -213,3 +213,8 @@ See link:readme-issues.adoc[document].
 
 - link:https://oneuptime.com/blog/post/2026-02-26-argocd-ordering-priority-multiple-sources/view[ArgoCD resource ordering]
 - link:https://access.redhat.com/solutions/6012601[OpenShift GitOps sync is failing in user namespace]
+
+- Tips for using templating in RHACM governance policies:
+  ** link:https://www.redhat.com/en/blog/tips-for-using-templating-in-governance-policies-part-1[Part 1]
+  ** link:https://www.redhat.com/en/blog/tips-for-using-templating-in-governance-policies-part-2[Part 2]
+  ** link:https://developers.redhat.com/articles/2025/03/19/tips-using-templating-governance-policies-part-3[Part 3]

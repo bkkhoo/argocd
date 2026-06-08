@@ -1,0 +1,13 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rhacs-operator-controller-manager
+  namespace: rhacs-operator
+  labels:
+    olm.owner: '{{ (lookup "operators.coreos.com/v1alpha1" "Subscription" "rhacs-operator" "rhacs-operator").status.currentCSV }}'
+status:
+  conditions:
+    - status: "True"
+      type: Available
+...

@@ -42,11 +42,16 @@ policies:
     manifests:
       - path: monitor/node-status.yaml
 
+  - name: monitor-etcd-encryption
+    complianceType: musthave
+    manifests:
+      - path: monitor/etcd-encryption-status.yaml
+
   - name: monitor-rhacs-secured-clusters
     complianceType: musthave
     namespaceSelector:
       include:
-        - "stackrox"
+        - stackrox
     manifests:
       - path: monitor/rhacs-secured-cluster-status.yaml
 

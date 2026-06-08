@@ -65,11 +65,14 @@ policies:
   - name: monitor-openshift-gitops
     complianceType: musthave       # object-templates-raw sets its own complianceType
     manifests:
+      - path: monitor/openshift-gitops/operator-subscription-status.yaml
+      - path: monitor/openshift-gitops/operator-controller-manager-status.yaml
       - path: monitor/openshift-gitops/deployment-status.yaml
       - path: monitor/openshift-gitops/object-templates-raw-status.yaml
+      - path: monitor/openshift-gitops/argocd-status.yaml
 
   - name: monitor-argocd-application-set
-    complianceType: mustnothave
+    complianceType: musthave
     namespaceSelector:
       include:
         - openshift-gitops
@@ -79,7 +82,9 @@ policies:
   - name: monitor-rhacs-central
     complianceType: musthave
     manifests:
-      - path: monitor/rhacs-central-status.yaml
+      - path: monitor/rhacs-central//operator-subscription-status.yaml
+      - path: monitor/rhacs-central//operator-controller-manager-status.yaml
+      - path: monitor/rhacs-central/deployment-status.yaml
 
   # - name: 00-monitor-policy-report      # 00- prefix for the policy name for sorting use
   #   complianceType: "mustnothave"

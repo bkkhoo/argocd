@@ -4,5 +4,7 @@ kind: ApplicationSet
 status:
   conditions:
   - type: ErrorOccurred
+    status: "False"
+  - type: ResourcesUpToDate
     status: "True"
 ...

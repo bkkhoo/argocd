@@ -40,6 +40,11 @@ These policies are common to both global-hub and managed-hubs.
 | All OpenShift clusters.
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
 
+| monitor-etcd-encryption
+| Inform
+| All OpenShift clusters.
+| Verify that ETCD encryption has completed.
+
 | monitor-rhacs-secured-clusters
 | Inform
 | All OpenShift clusters.
