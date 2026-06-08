@@ -100,7 +100,6 @@ spec:
           dnsPolicy: ClusterFirst
           enableServiceLinks: true
           restartPolicy: Never
-          serviceAccountName: etcd-backup
   schedule: "*/3 * * * *"
   successfulJobsHistoryLimit: 1
   suspend: false
