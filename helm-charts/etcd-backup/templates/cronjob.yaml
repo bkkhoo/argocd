@@ -19,7 +19,7 @@ spec:
             node-role.kubernetes.io/control-plane: ""
           tolerations:           # tolerate any taints
             - operator: Exists
-          activeDeadlineSeconds: 900
+          activeDeadlineSeconds: 3000
           restartPolicy: Never
           serviceAccountName: etcd-backup
           priorityClassName: system-node-critical
