@@ -1,0 +1,11 @@
+---
+env: prod
+accessTokenMaxAgeSeconds:
+  dev: 86400
+  uat: 14400
+  prod: 14400
+accessTokenInactivityTimeout:
+  dev: 86400s
+  uat: 1800s
+  prod: 1800s
+...

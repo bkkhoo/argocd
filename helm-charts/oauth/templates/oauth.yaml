@@ -1,0 +1,14 @@
+{{- $env := "prod" }}
+{{- if eq .Values.env1 "dev" "uat" "prod" }}
+  {{- $env = .Values.env }}
+{{- end }}
+---
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  tokenConfig:
+    accessTokenMaxAgeSeconds: {{ index .Values.accessTokenMaxAgeSeconds $env }}
+    accessTokenInactivityTimeout: {{ index .Values.accessTokenInactivityTimeout $env }}
+...

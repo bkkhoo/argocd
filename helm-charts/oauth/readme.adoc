@@ -1,0 +1,51 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= OpenShift Serverless
+
+The Red Hat OpenShift Serverless operator provides a collection of APIs that enables containers, microservices and functions to run "serverless". Serverless applications can scale up and down (to zero) on demand and be triggered by a number of event sources.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name project-request-template helm-chart/openshift-serverless
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete openshift-serverless
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| serviceMeshIntegration
+| true pass:[+]
+a| Enable or disable the OpenShift Serverless integration configuration with OpenShift Service Mesh.
+
+pass:[+] The value must be a string, not boolean.
+|===
+
+[NOTE]
+====
+Configuring Serverless integration for Service Mesh without Service Mesh installed will cause some pods (such as the `KnativeServing` `activator` and `net-istio-controller`) to continually restart.
+====

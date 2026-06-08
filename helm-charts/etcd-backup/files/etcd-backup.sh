@@ -8,7 +8,9 @@ MAX_ATTEMPTS=180       # would result in waiting up to ~15min for cluster to be 
 attempt=0
 echo  "Waiting for etcd encryption and cluster operators update/reconciliation to complete..."
 while [ ${attempt} -lt ${MAX_ATTEMPTS} ]; do
+  # looking for output full of False, i.e. Progressing=False for each cluster operator
   output1="$(oc get co -o=jsonpath='{range .items[*].status.conditions[?(@.type=="Progressing")]}{.status}{","}')"
+  # looking for output EncryptionCompleted
   output2="$(oc get openshiftapiserver cluster -o=jsonpath='{range .status.conditions[?(@.type=="Encrypted")]}{.reason}' | grep $ENCRYPTION_PATTERN)"
   if [[ ! "${output1}" =~ "${CLUSTER_OPERATOR_PATTERN}" ]] && [[ "${output2}" == "${ENCRYPTION_PATTERN}" ]]; then
     break
@@ -18,7 +20,7 @@ while [ ${attempt} -lt ${MAX_ATTEMPTS} ]; do
   sleep 5
 done
 
-set -euo pipefail    # fail script if any command of pipeline failed
+set -euo pipefail    # fail script if any command or pipeline failed
 
 echo -e "\nstarting backup at $(date '+%F %T %Z') ..."
 chroot /host sudo -E /usr/local/bin/cluster-backup.sh "${BACKUP_PATH}"
