@@ -1,4 +1,14 @@
 ---
-accessTokenInactivityTimeout
-accessTokenMaxAgeSeconds
+namespace: etcd-backup
+pvc:
+  storageClass: gp3-csi
+  snapshot:
+    name: etcd-snapshot-db-backup
+    size: 50Gi
+  staticResources:
+    name: etcd-static-resources-backup
+    size: 10Gi
+frequency: 3       # every 3 hours; due to templating limitation can only set 1-9
+retentionDays: 7
+cronjobContainerImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
 ...
