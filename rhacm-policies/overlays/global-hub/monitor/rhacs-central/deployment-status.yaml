@@ -2,6 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: rhacs-operator-controller-manager
+  namespace: rhacs-operator
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: central
   namespace: stackrox
 status:

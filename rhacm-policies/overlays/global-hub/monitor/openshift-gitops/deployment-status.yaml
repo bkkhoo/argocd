@@ -2,6 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: openshift-gitops-operator-controller-manager
+  namespace: openshift-gitops-operator
+status:
+  conditions:
+    - status: "True"
+      type: Available
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: cluster
   namespace: openshift-gitops
 status:
