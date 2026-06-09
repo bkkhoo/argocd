@@ -38,10 +38,10 @@ spec:
       enabled: true
     resources:
       limits:
-        cpu: {{ .Values.server.resources.limits.cpu }}
+        cpu: "{{ .Values.server.resources.limits.cpu }}"
         memory: {{ .Values.server.resources.limits.memory }}
       requests:
-        cpu: {{ .Values.server.resources.requests.cpu }}
+        cpu: "{{ .Values.server.resources.requests.cpu }}"
         memory: {{ .Values.server.resources.requests.memory }}
   grafana:
     enabled: false
@@ -107,10 +107,10 @@ spec:
         value: /etc/kustomize/plugin
     resources:
       limits:
-        cpu: {{ .Values.repo.resources.limits.cpu }}
+        cpu: "{{ .Values.repo.resources.limits.cpu }}"
         memory: {{ .Values.repo.resources.limits.memory }}
       requests:
-        cpu: {{ .Values.repo.resources.requests.cpu }}
+        cpu: "{{ .Values.repo.resources.requests.cpu }}"
         memory: {{ .Values.repo.resources.requests.memory }}
     initContainers:
       - name: policy-generator-install
@@ -151,10 +151,10 @@ spec:
     autotls: openshift
     resources:
       limits:
-        cpu: {{ .Values.redis.resources.limits.cpu }}
+        cpu: "{{ .Values.redis.resources.limits.cpu }}"
         memory: {{ .Values.redis.resources.limits.memory }}
       requests:
-        cpu: {{ .Values.redis.resources.requests.cpu }}
+        cpu: "{{ .Values.redis.resources.requests.cpu }}"
         memory: {{ .Values.redis.resources.requests.memory }}
   controller:
     enabled: true
@@ -168,10 +168,10 @@ spec:
     {{- end }}
     resources:
       limits:
-        cpu: {{ .Values.controller.resources.limits.cpu }}
+        cpu: "{{ .Values.controller.resources.limits.cpu }}"
         memory: {{ .Values.controller.resources.limits.memory }}
       requests:
-        cpu: {{ .Values.controller.resources.requests.cpu }}
+        cpu: "{{ .Values.controller.resources.requests.cpu }}"
         memory: {{ .Values.controller.resources.requests.memory }}
   kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
 {{ .Files.Get "files/resource-exclusion.yaml" | indent 2 }}
