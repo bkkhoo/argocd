@@ -32,7 +32,7 @@ helm delete openshift-gitops
 
 The following table lists the configurable parameters/values of this Helm chart and their default values.
 
-[cols="2,1,4", options="header"]
+[cols="2,2,6", options="header"]
 |===
 | Parameter
 | Default
