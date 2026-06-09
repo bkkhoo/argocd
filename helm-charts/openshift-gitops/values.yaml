@@ -8,6 +8,13 @@ server:
     enabled: true
     minReplicas: 2
     maxReplicas: 5
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
 rbac:
   defaultPolicy: ""        # example: role:admin, role:readonly
   policy: |
@@ -15,11 +22,26 @@ rbac:
     g, cluster-admins, role:admin
 repo:
   replicas: 3
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
   rhacmPolicyGeneratorImage: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
-ha:
-  enabled: true
 tls:
   customCA: "custom-ca.crt"
+redis:
+  ha:
+    enabled: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
 controller:
   sharding:
     enabled: true
@@ -28,6 +50,13 @@ controller:
     # round-robin: distributes clusters sequentially across shards in order; this provides a more even distribution by count but remains sensitive to changes in the cluster list order.
     # consistent-hashing: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
     algorithm: consistent-hashing
+  resources:
+    limits:
+      cpu: "2"
+      memory: 4Gi
+    requests:
+      cpu: "1"
+      memory: 2Gi
 disableAdmin: false
 appProjects: []
 localUsers:

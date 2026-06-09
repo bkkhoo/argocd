@@ -66,6 +66,22 @@ a| Deployment type:
 | 5
 | The maximum number of replicas when scaling up.
 
+| server.resources.limits.cpu
+| 500m
+| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+
+| server.resources.limits.memory
+| 512Mi
+| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| server.resources.requests.cpu
+| 250m
+| The minimum CPU resource a container needs to run.
+
+| server.resources.requests.memory
+| 256Mi
+| The minimum memory resource a container needs to run.
+
 | rbac.defaultPolicy
 | None
 | The name of the default role that ArgoCD falls back to when authorizing API requests.
@@ -81,17 +97,49 @@ g, cluster-admins, role:admin
 | 3
 | The number of replicas for the ArgoCD Repo server.
 
+| repo.resources.limits.cpu
+| "1"
+| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+
+| repo.resources.limits.memory
+| 1Gi
+| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| repo.resources.requests.cpu
+| 500m
+| The minimum CPU resource a container needs to run.
+
+| repo.resources.requests.memory
+| 512Mi
+| The minimum memory resource a container needs to run.
+
 | repo.rhacmPolicyGeneratorImage
 | registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
 | The RHACM PolicyGenerator plugin is not preinstalled in the OpenShift GitOps container image. To resolve this, an InitContainer is added to the repo server pod to copy the PolicyGenerator binary from link:https://catalog.redhat.com/en/software/containers/rhacm2/multicluster-observability-rhel9-operator/65a6ebeb202d91251cb0e712?image=69fa2e7a14ce65b274e8c446&architecture=amd64[RHACM Application Subscription container image] to the correct Kustomize plugin directory within the ArgoCD repo server.
+
+| tls.customCA
+| custom-ca.crt
+| Filename of the x509 CA certificate, the file must be located in the `files` folder of the Helm chart.
 
 | ha.enabled
 | true
 | Enables/Disables High Availability (HA) for the ArgoCD controller.
 
-| tls.customCA
-| custom-ca.crt
-| Filename of the x509 CA certificate, the file must be located in the `files` folder of the Helm chart.
+| redis.resources.limits.cpu
+| 500m
+| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+
+| redis.resources.limits.memory
+| 512Mi
+| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| redis.resources.requests.cpu
+| 250m
+| The minimum CPU resource a container needs to run.
+
+| redis.resources.requests.memory
+| 256Mi
+| The minimum memory resource a container needs to run.
 
 | controller.sharding.enabled
 | true
@@ -104,18 +152,30 @@ g, cluster-admins, role:admin
 | controller.sharding.algorithm
 | consistent-hashing
 a| Sharding algorithm:
+
 - `legacy`: default method, which uses a simple modulo operation based on the cluster's index in a sorted list; this approach can cause significant cluster reassignment when clusters are added or removed.
 - `round-robin`: distributes clusters sequentially across shards in order; this provides a more even distribution by count but remains sensitive to changes in the cluster list order.
 - `consistent-hashing`: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
 
+| controller.resources.limits.cpu
+| "2"
+| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+
+| controller.resources.limits.memory
+| 4Gi
+| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| controller.resources.requests.cpu
+| "1"
+| The minimum CPU resource a container needs to run.
+
+| controller.resources.requests.memory
+| 2Gi
+| The minimum memory resource a container needs to run.
+
 | disableAdmin
 | false
 | Disables/Enables the built-in admin user.
-
-| appProjects
-| Empty list
-| List of AppProjects to create.
-
 
 | localUsers
 a|
@@ -131,6 +191,10 @@ a| List of local users to created on ArgoCD server.
 ====
 The default local `admin` account, if enabled, does not have API access to ArgoCD.
 ====
+
+| appProjects
+| Empty list
+| List of AppProjects to create.
 
 | postSyncHookImage
 | `registry.redhat.io/openshift4/ose-tools-rhel9:v4.20`

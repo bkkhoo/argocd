@@ -36,14 +36,13 @@ spec:
       {{- end }}
     route:
       enabled: true
-    # use default resources
-    # resources:
-    #   limits:
-    #     cpu: 500m
-    #     memory: 256Mi
-    #   requests:
-    #     cpu: 125m
-    #     memory: 128Mi
+    resources:
+      limits:
+        cpu: {{ .Values.server.resources.limits.cpu }}
+        memory: {{ .Values.server.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.server.resources.requests.cpu }}
+        memory: {{ .Values.server.resources.requests.memory }}
   grafana:
     enabled: false
   monitoring:
@@ -106,6 +105,13 @@ spec:
     env:
       - name: KUSTOMIZE_PLUGIN_HOME
         value: /etc/kustomize/plugin
+    resources:
+      limits:
+        cpu: {{ .Values.repo.resources.limits.cpu }}
+        memory: {{ .Values.repo.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.repo.resources.requests.cpu }}
+        memory: {{ .Values.repo.resources.requests.memory }}
     initContainers:
       - name: policy-generator-install
         image: {{ .Values.repo.rhacmPolicyGeneratorImage }}
@@ -117,30 +123,12 @@ spec:
         volumeMounts:
           - mountPath: /policy-generator
             name: policy-generator
-    # use default resources
-    # resources:
-    #   limits:
-    #     cpu: 1000m
-    #     memory: 1024Mi
-    #   requests:
-    #     cpu: 250m
-    #     memory: 256Mi
     volumeMounts:
       - mountPath: /etc/kustomize/plugin/policy.open-cluster-management.io/v1/policygenerator
         name: policy-generator
     volumes:
       - emptyDir: {}
         name: policy-generator
-  ha:
-    enabled: {{ .Values.ha.enabled }}
-    # use default resources
-    # resources:
-    #   limits:
-    #     cpu: 500m
-    #     memory: 256Mi
-    #   requests:
-    #     cpu: 250m
-    #     memory: 128Mi
   tls:
     {{- if .Values.tls.customCA }}
     ca:
@@ -148,9 +136,8 @@ spec:
     {{- else }}
     ca: {}
     {{- end }}
-  redis:
-    enabled: true
-    autotls: openshift
+  ha:
+    enabled: {{ .Values.redis.ha.enabled }}
     # use default resources
     # resources:
     #   limits:
@@ -159,6 +146,16 @@ spec:
     #   requests:
     #     cpu: 250m
     #     memory: 128Mi
+  redis:
+    enabled: true
+    autotls: openshift
+    resources:
+      limits:
+        cpu: {{ .Values.redis.resources.limits.cpu }}
+        memory: {{ .Values.redis.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.redis.resources.requests.cpu }}
+        memory: {{ .Values.redis.resources.requests.memory }}
   controller:
     enabled: true
     {{- if .Values.controller.sharding.enabled }}
@@ -171,11 +168,11 @@ spec:
     {{- end }}
     resources:
       limits:
-        cpu: "2"
-        memory: 4Gi    # default 2Gi
+        cpu: {{ .Values.controller.resources.limits.cpu }}
+        memory: {{ .Values.controller.resources.limits.memory }}
       requests:
-        cpu: 250m
-        memory: 1Gi
+        cpu: {{ .Values.controller.resources.requests.cpu }}
+        memory: {{ .Values.controller.resources.requests.memory }}
   kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
 {{ .Files.Get "files/resource-exclusion.yaml" | indent 2 }}
 ...

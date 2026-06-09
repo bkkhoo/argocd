@@ -11,11 +11,12 @@ rbac:
 repo:
   replicas: 1
 
-ha:
-  enabled: false
-
 tls:
   customCA: "custom-ca.crt"
+
+redis:
+  ha:
+    enabled: false
 
 controller:
   sharding:

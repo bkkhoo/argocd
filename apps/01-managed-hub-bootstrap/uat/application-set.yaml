@@ -41,7 +41,7 @@ spec:
               disableHubSelfManagement: true
         - repoURL: https://github.com/bkkhoo/helm-values.git
           targetRevision: main
-          path: openshift-gitops/dev
+          path: openshift-gitops/uat
           ref: helmValues       # for referencing value files from git source
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
@@ -52,7 +52,7 @@ spec:
             valueFiles:
               # referencing values from git repo source[1].ref
               # even though source[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
-              - $helmValues/openshift-gitops/dev/values.yaml
+              - $helmValues/openshift-gitops/uat/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/rhacm-openshift-gitops-integration

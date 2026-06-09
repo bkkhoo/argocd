@@ -8,10 +8,11 @@ rbac:
   defaultPolicy: "role:admin"
 repo:
   replicas: 3
-ha:
-  enabled: true
 tls:
   customCA: "custom-ca.crt"
+redis:
+  ha:
+    enabled: true
 controller:
   sharding:
     enabled: true
