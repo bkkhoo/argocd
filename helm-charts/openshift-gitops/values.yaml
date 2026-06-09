@@ -15,11 +15,6 @@ server:
     requests:
       cpu: 250m
       memory: 256Mi
-rbac:
-  defaultPolicy: ""        # example: role:admin, role:readonly
-  policy: |
-    g, system:cluster-admins, role:admin
-    g, cluster-admins, role:admin
 repo:
   replicas: 3
   resources:
@@ -30,11 +25,24 @@ repo:
       cpu: 500m
       memory: 512Mi
   rhacmPolicyGeneratorImage: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
-tls:
-  customCA: "custom-ca.crt"
+applicationSet:
+  resources:
+    limits:
+      cpu: "2"
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 512Mi
 redis:
   ha:
     enabled: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
   resources:
     limits:
       cpu: 500m
@@ -58,11 +66,18 @@ controller:
       cpu: 1
       memory: 2Gi
 disableAdmin: false
-appProjects: []
+rbac:
+  defaultPolicy: ""        # example: role:admin, role:readonly
+  policy: |
+    g, system:cluster-admins, role:admin
+    g, cluster-admins, role:admin
 localUsers:
   - username: api-admin
     apiKey: true
     login: true
     role: "role:admin"
+tls:
+  customCA: "custom-ca.crt"
+appProjects: []
 postSyncHookImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
 ...

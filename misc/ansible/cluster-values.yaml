@@ -1,9 +1,9 @@
 # ansible-playbook -i localhost, misc/ansible/cluster-values.yaml
 #
+# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-global-cluster01.yaml | oc apply -f -
 # helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-dev-hub01.yaml | oc apply -f -
 # helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-hub01.yaml | oc apply -f -
 # helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-cluster01.yaml | oc apply -f -
-# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-cluster02.yaml | oc apply -f -
 #
 ---
 - name: bootstrap

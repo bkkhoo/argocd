@@ -68,14 +68,13 @@ spec:
     provider: dex
   applicationSet:
     enabled: true
-    # use default resources
-    # resources:
-    #   limits:
-    #     cpu: "2"
-    #     memory: 1Gi
-    #   requests:
-    #     cpu: 250m
-    #     memory: 512Mi
+    resources:
+      limits:
+        cpu: "{{ .Values.applicationSet.resources.limits.cpu }}"
+        memory: {{ .Values.applicationSet.resources.limits.memory }}
+      requests:
+        cpu: "{{ .Values.applicationSet.resources.requests.cpu }}"
+        memory: {{ .Values.applicationSet.resources.requests.memory }}
     webhookServer:
       ingress:
         enabled: false
@@ -138,14 +137,13 @@ spec:
     {{- end }}
   ha:
     enabled: {{ .Values.redis.ha.enabled }}
-    # use default resources
-    # resources:
-    #   limits:
-    #     cpu: 500m
-    #     memory: 256Mi
-    #   requests:
-    #     cpu: 250m
-    #     memory: 128Mi
+    resources:
+      limits:
+        cpu: "{{ .Values.redis.ha.resources.limits.cpu }}"
+        memory: {{ .Values.redis.ha.resources.limits.memory }}
+      requests:
+        cpu: "{{ .Values.redis.ha.resources.requests.cpu }}"
+        memory: {{ .Values.redis.ha.resources.requests.memory }}
   redis:
     enabled: true
     autotls: openshift

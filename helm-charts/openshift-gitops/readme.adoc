@@ -82,18 +82,6 @@ a| Deployment type:
 | 256Mi
 | The minimum memory resource a container needs to run.
 
-| rbac.defaultPolicy
-| None
-| The name of the default role that ArgoCD falls back to when authorizing API requests.
-
-| rbac.policy
-a|[source,yaml]
-----
-g, system:cluster-admins, role:admin
-g, cluster-admins, role:admin
-----
-| ArgoCd RBAC policies.
-
 | repo.replicas
 | 3
 | The number of replicas for the ArgoCD Repo server.
@@ -118,13 +106,41 @@ g, cluster-admins, role:admin
 | registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
 | The RHACM PolicyGenerator plugin is not preinstalled in the OpenShift GitOps container image. To resolve this, an InitContainer is added to the repo server pod to copy the PolicyGenerator binary from link:https://catalog.redhat.com/en/software/containers/rhacm2/multicluster-observability-rhel9-operator/65a6ebeb202d91251cb0e712?image=69fa2e7a14ce65b274e8c446&architecture=amd64[RHACM Application Subscription container image] to the correct Kustomize plugin directory within the ArgoCD repo server.
 
-| tls.customCA
-| custom-ca.crt
-| Filename of the x509 CA certificate, the file must be located in the `files` folder of the Helm chart.
+| applicationSet.resources.limits.cpu
+| 2
+| The maximum CPU resource consumption allowed; exceeding it results in throttling.
 
-| ha.enabled
+| applicationSet.resources.limits.memory
+| 1Gi
+| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| applicationSet.resources.requests.cpu
+| 250m
+| The minimum CPU resource a container needs to run.
+
+| applicationSet.resources.requests.memory
+| 512Mi
+| The minimum memory resource a container needs to run.
+
+| redis.ha.enabled
 | true
 | Enables/Disables High Availability (HA) for the ArgoCD controller.
+
+| redis.ha.resources.limits.cpu
+| 500m
+| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+
+| redis.ha.resources.limits.memory
+| 256Mi
+| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| redis.ha.resources.requests.cpu
+| 250m
+| The minimum CPU resource a container needs to run.
+
+| redis.ha.resources.requests.memory
+| 128Mi
+| The minimum memory resource a container needs to run.
 
 | redis.resources.limits.cpu
 | 500m
@@ -178,6 +194,18 @@ a| Sharding algorithm:
 | false
 | Disables/Enables the built-in admin user.
 
+| rbac.defaultPolicy
+| None
+| The name of the default role that ArgoCD falls back to when authorizing API requests.
+
+| rbac.policy
+a|[source,yaml]
+----
+g, system:cluster-admins, role:admin
+g, cluster-admins, role:admin
+----
+| ArgoCd RBAC policies.
+
 | localUsers
 a|
 [source,yaml]
@@ -192,6 +220,10 @@ a| List of local users to created on ArgoCD server.
 ====
 The default local `admin` account, if enabled, does not have API access to ArgoCD.
 ====
+
+| tls.customCA
+| custom-ca.crt
+| Filename of the x509 CA certificate, the file must be located in the `files` folder of the Helm chart.
 
 | appProjects
 | Empty list
