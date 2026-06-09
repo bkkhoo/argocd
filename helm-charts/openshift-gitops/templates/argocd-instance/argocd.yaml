@@ -57,14 +57,13 @@ spec:
   sso:
     dex:
       openShiftOAuth: true
-      # use default resources
-      # resources:
-      #   limits:
-      #     cpu: 500m
-      #     memory: 256Mi
-      #   requests:
-      #     cpu: 250m
-      #     memory: 128Mi
+      resources:
+        limits:
+          cpu: "{{ .Values.dex.resources.limits.cpu }}"
+          memory: {{ .Values.dex.resources.limits.memory }}
+        requests:
+          cpu: "{{ .Values.dex.resources.requests.cpu }}"
+          memory: {{ .Values.dex.resources.requests.memory }}
     provider: dex
   applicationSet:
     enabled: true

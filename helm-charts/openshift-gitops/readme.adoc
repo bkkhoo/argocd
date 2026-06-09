@@ -80,7 +80,23 @@ a| Deployment type:
 
 | server.resources.requests.memory
 | 256Mi
-| The minimum memory resource a container needs to run.
+| The minimum CPU resource a container needs to run.
+
+| dex.resources.limits.cpu
+| 500m
+| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+
+| dex.resources.requests.memory
+| 256Mi
+| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| dex.resources.limits.cpu
+| 250m
+| The minimum CPU resource a container needs to run.
+
+| dex.resources.requests.memory
+| 128Mi
+| The minimum CPU resource a container needs to run.
 
 | repo.replicas
 | 3
@@ -199,7 +215,7 @@ a| Sharding algorithm:
 | The name of the default role that ArgoCD falls back to when authorizing API requests.
 
 | rbac.policy
-a|[source,yaml]
+a| [source,yaml]
 ----
 g, system:cluster-admins, role:admin
 g, cluster-admins, role:admin
@@ -207,19 +223,14 @@ g, cluster-admins, role:admin
 | ArgoCd RBAC policies.
 
 | localUsers
-a|
-[source,yaml]
+a| [source,yaml]
 ----
 - username: api-admin
   apiKey: true
   login: true
   role: "role:admin"
 ----
-a| List of local users to created on ArgoCD server.
-[NOTE]
-====
-The default local `admin` account, if enabled, does not have API access to ArgoCD.
-====
+| List of local users to created on ArgoCD server. The default local `admin` account, if enabled, does not have API access to ArgoCD.
 
 | tls.customCA
 | custom-ca.crt
