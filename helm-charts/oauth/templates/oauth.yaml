@@ -1,5 +1,5 @@
 {{- $env := "prod" }}
-{{- if eq .Values.env1 "dev" "uat" "prod" }}
+{{- if eq .Values.env "dev" "uat" "prod" }}
   {{- $env = .Values.env }}
 {{- end }}
 ---

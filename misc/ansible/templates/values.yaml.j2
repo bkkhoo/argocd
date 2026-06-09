@@ -3,9 +3,15 @@ clusterName: {{ _cluster_name }}
 clusterURL: {{ _url }}
 clusterAuthToken: {{ _token }}
 clusterSet: gitops-clusters
+{% if (_env != "xxx") or _managed_hub %}
 clusterLabels:
+{% if _env != "xxx" %}
   env: {{ _env }}
+{% endif %}
 {% if _managed_hub %}
   managed-hub: 'yes'
+{% endif %}
+{% else %}
+clusterLabels: {}
 {% endif %}
 ...

@@ -1,2 +1,2 @@
 .DS_Store
-misc/vars/clusters.yaml
+misc/ansible/vars/clusters.yaml

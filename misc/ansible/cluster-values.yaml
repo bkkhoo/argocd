@@ -1,4 +1,4 @@
-# ansible-playbook -i localhost, misc/init-setup.yaml
+# ansible-playbook -i localhost, misc/ansible/cluster-values.yaml
 #
 # helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-dev-hub01.yaml | oc apply -f -
 # helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-hub01.yaml | oc apply -f -
@@ -19,14 +19,13 @@
     #     api: <api-server-url>
     #     username: <username>
     #     password: <password>
-    #     env: global
     #     managed_hub: false
     #   prod-hub01:
     #     console: <console-url>
     #     api: <api-server-url>
     #     username: <username>
     #     password: <password>
-    #     env: prod
+    #     env: prod        # env is optional
     #     managed_hub: true
     #   prod-cluster01:
     #     console: <console-url>
@@ -46,7 +45,7 @@
         _url: "{{ item.value.api }}"
         _username: "{{ item.value.username }}"
         _password: "{{ item.value.password }}"
-        _env: "{{ item.value.env }}"
+        _env: "{{ item.value.env | default('xxx') }}"
         _managed_hub: "{{ item.value.managed_hub | bool }}"
       ansible.builtin.include_tasks: tasks/setup-import-cluster-values.yaml
 

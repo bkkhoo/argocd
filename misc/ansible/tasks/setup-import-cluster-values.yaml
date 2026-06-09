@@ -8,6 +8,11 @@
   ansible.builtin.command:
     cmd: oc config current-context
 
+- name: remove the context if exist
+  failed_when: false
+  ansible.builtin.command:
+    cmd: oc config delete-context {{ _cluster_name }}
+
 - name: rename context
   ansible.builtin.command:
     cmd: oc config rename-context {{ context.stdout }} {{ _cluster_name }}
