@@ -99,7 +99,7 @@ g, cluster-admins, role:admin
 | The number of replicas for the ArgoCD Repo server.
 
 | repo.resources.limits.cpu
-| 1000m
+| 1
 | The maximum CPU resource consumption allowed; exceeding it results in throttling.
 
 | repo.resources.limits.memory
@@ -159,7 +159,7 @@ a| Sharding algorithm:
 - `consistent-hashing`: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
 
 | controller.resources.limits.cpu
-| 2000m
+| 2
 | The maximum CPU resource consumption allowed; exceeding it results in throttling.
 
 | controller.resources.limits.memory
@@ -167,7 +167,7 @@ a| Sharding algorithm:
 | The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
 
 | controller.resources.requests.cpu
-| 1000m
+| 1
 | The minimum CPU resource a container needs to run.
 
 | controller.resources.requests.memory
