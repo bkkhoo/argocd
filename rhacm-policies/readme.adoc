@@ -8,13 +8,13 @@ ifdef::env-github[]
 endif::[]
 = About this Kustomize Deployment
 
-RHACM governance policies, the polices are deployed to **global-hub** and **managed-hubs** only.
+RHACM governance policies, the polices are deployed to **global hub** and **managed hubs** only.
 
 == RHACM Policies
 
 === Common Policies
 
-These policies are common to both global-hub and managed-hubs.
+These policies are common to both global hub and managed hubs.
 
 [cols="2,1,3,3", options="header"]
 |===
@@ -23,12 +23,12 @@ These policies are common to both global-hub and managed-hubs.
 | config-remove-kubeadmin
 | Enforce
 | All OpenShift clusters.
-| Ensure the `kubeadmin` user is removed.
+| Ensure `kubeadmin` user is removed.
 
 | config-rhacs-secured-cluster
 | Enforce
 | All OpenShift clusters, except `local-cluster` and cluster with `managed-hub` label.
-| Deploy the RHACS operator and the SecuredCluster.
+| Deploy RHACS operator, SecuredCluster and cluster registration secret.
 
 | monitor-cluster-operators
 | Inform
@@ -48,12 +48,12 @@ These policies are common to both global-hub and managed-hubs.
 | monitor-rhacs-secured-clusters
 | Inform
 | All OpenShift clusters.
-| Monitor RHACS SecuredClusters.
+| Monitor RHACS SecuredCluster deployments.
 
 | monitor-role-with-wildcard-permissions
 | Inform
 | All OpenShift clusters.
-| Detected namespaced Role with wildcard permissions (`apiGroups: ["*"]`, `resources: ["*"]`, `verbs: ["*"]`).
+| Detect namespaced Role with wildcard permissions (`apiGroups: ["*"]`, `resources: ["*"]`, `verbs: ["*"]`).
 
 | monitor-privileges-scc-binding
 | Inform
@@ -101,7 +101,7 @@ a| Monitor PersistentVolume (PV) state:
 | monitor-default-storage-class
 | Inform
 | All OpenShift clusters.
-| Monitor default StorageClass, alert if more than one default StorageClass is defined.
+| Monitor to ensure only one default StorageClass.
 
 | monitor-operator-group
 | Inform
@@ -111,7 +111,7 @@ a| Monitor PersistentVolume (PV) state:
 | monitor-failed-cronjob
 | Inform
 | All OpenShift clusters.
-| Monitor CronJobs for failed Jobs in their last scheduled run.
+| Monitor CronJobs  that failed their last scheduled run.
 
 | monitor-openshift-route
 | Inform
@@ -121,12 +121,12 @@ a| Monitor PersistentVolume (PV) state:
 | certificate-status
 | Inform
 | All OpenShift clusters.
-| Monitor TLS certificates of namespaces (openshift-gitops, openshift-ingress, openshift-ingress-operator, openshift-pipelines, stackrox); triggers a violation if a certificate expires in 15 days or less.
+| Monitor TLS certificates of namespaces (openshift-gitops, openshift-ingress, openshift-ingress-operator, openshift-pipelines, stackrox); triggers a violation if a certificate expires in 15 days or fewer.
 |===
 
-=== Global-Hub Policies
+=== Global Hub Policies
 
-These policies are for global-hub only.
+These policies are for global hub only.
 
 [cols="2,1,3,3", options="header"]
 |===
@@ -140,17 +140,17 @@ These policies are for global-hub only.
 | config-argocd-repo-secrets
 | Enforce
 | All clusters with `managed-hub` label.
-| Ensure ArgoCD repo secrets are distributed to managed-hubs' `openshift-gitops` namespace.
+| Ensure ArgoCD repo secrets are distributed to managed hubs' `openshift-gitops` namespace.
 
 | monitor-managed-clusters
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Monitor ManagedCluster Availability on global hub and managed-hubs.
+| Monitor ManagedCluster Availability on global hub and managed hubs.
 
 | monitor-managed-hubs-local-cluster
 | Inform
 | All OpenShift clusters with `managed-hub` label.
-| Monitor managed-hub with `local-cluster`; no managed-hub should have `local-cluster`.
+| Monitor managed hub with `local-cluster`; no managed hub should have `local-cluster`.
 
 | monitor-multicluster-global-hub-agent
 | Inform
@@ -160,7 +160,7 @@ These policies are for global-hub only.
 | monitor-openshift-gitops
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Monitor OpenShift GitOps.
+| Monitor OpenShift GitOps deployments.
 
 | monitor-argocd-application-set
 | Inform
@@ -170,12 +170,12 @@ These policies are for global-hub only.
 | monitor-rhacs-central
 | Inform
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Monitor RHACS Central and SecuredClusters.
+| Monitor RHACS Central and SecuredClusters deployments.
 |===
 
-=== Managed-Hubs Policies
+=== Managed Hubs Policies
 
-These policies are for managed-hubs only.
+These policies are for managed hubs only.
 
 [cols="2,1,3,3", options="header"]
 |===

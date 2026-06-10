@@ -21,6 +21,7 @@ policyDefaults:
     - base-monitor-all-clusters
 policySets:
   - name: base-monitor-all-clusters
+    description: monitoring policies for all clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -33,21 +34,25 @@ placementBindingDefaults:
 
 policies:
   - name: monitor-cluster-operators
+    description: monitor cluster operators
     complianceType: mustnothave
     manifests:
       - path: monitor/cluster-operator-status.yaml
 
   - name: monitor-nodes
+    description: monitor nodes with memory, disk or pid pressure, or not ready
     complianceType: mustnothave
     manifests:
       - path: monitor/node-status.yaml
 
   - name: monitor-etcd-encryption
+    description: verify that ETCD encryption has completed
     complianceType: musthave
     manifests:
       - path: monitor/etcd-encryption-status.yaml
 
   - name: monitor-rhacs-secured-clusters
+    description: monitor rhacs securedCluster deployments
     complianceType: musthave
     namespaceSelector:
       include:
@@ -56,6 +61,7 @@ policies:
       - path: monitor/rhacs-secured-cluster-status.yaml
 
   - name: monitor-role-with-wildcard-permissions
+    description: detect namespaced Role with wildcard permissions
     complianceType: mustnothave
     namespaceSelector:
       include:
@@ -64,6 +70,7 @@ policies:
       - path: monitor/role-with-wildcard-permissions.yaml
 
   - name: monitor-privileges-scc-binding
+    description: monitor namespaced role granting access to privileged scc
     complianceType: mustnothave
     namespaceSelector:
       include:
@@ -74,11 +81,13 @@ policies:
       - path: monitor/privileged-scc-role-binding.yaml
 
   - name: monitor-terminating-namespaces
+    description: monitor namespaces stuck in the Terminating state
     complianceType: mustnothave
     manifests:
       - path: monitor/namespace-status.yaml
 
   - name: monitor-install-plans
+    description: monitor installPlans pending approval
     complianceType: mustnothave
     namespaceSelector:
       include:
@@ -87,6 +96,7 @@ policies:
       - path: monitor/install-plan-status.yaml
 
   - name: monitor-container-oom-killed
+    description: monitor container oom-killed
     complianceType: mustnothave
     namespaceSelector:
       include:
@@ -95,6 +105,7 @@ policies:
       - path: monitor/container-oom-killed.yaml
 
   - name: monitor-container-crash-loop-backoff
+    description: monitor pod/container CrashLoopBackOff
     complianceType: mustnothave
     severity: low
     namespaceSelector:
@@ -104,6 +115,7 @@ policies:
       - path: monitor/container-crash-loop-backoff.yaml
 
   - name: monitor-container-image-pull-backoff
+    description: monitor pod/container ImagePullBackOff
     complianceType: mustnothave
     severity: low
     namespaceSelector:
@@ -113,11 +125,13 @@ policies:
       - path: monitor/container-image-pull-backoff.yaml
 
   - name: monitor-persistent-volume
+    description: monitor persistent volume in failed/released state
     complianceType: mustnothave
     manifests:
       - path: monitor/persistent-volume-status.yaml
 
   - name: monitor-persistent-volume-claim
+    description:
     complianceType: mustnothave
     severity: low
     namespaceSelector:
@@ -129,18 +143,22 @@ policies:
       - path: monitor/persistent-volume-claim-status.yaml
 
   - name: monitor-default-storage-class
+    description: monitor to ensure only one default storage class
     manifests:
       - path: monitor/default-storage-class.yaml
 
   - name: monitor-operator-group
+    description: monitor namespaces that have more than one operatorGroup
     manifests:
       - path: monitor/operator-group-status.yaml
 
   - name: monitor-failed-cronjob
+    description: monitor cronJobs that failed their last scheduled run
     manifests:
       - path: monitor/failed-cronjob-status.yaml
 
   - name: monitor-openshift-route
+    description: monitor routes that are not admitted
     complianceType: mustnothave
     namespaceSelector:
       include:

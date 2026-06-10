@@ -21,6 +21,7 @@ policyDefaults:
     - base-cert-all-clusters
 policySets:
   - name: base-cert-all-clusters
+    description: certificates policies for all clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -33,6 +34,7 @@ placementBindingDefaults:
 
 policies:
   - name: certificate-status
+    description: monitor certificates expiring in 15 or fewer days
     manifests:
       - path: cert/certificate-policy.yaml
 ...

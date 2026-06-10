@@ -22,6 +22,7 @@ policyDefaults:
     - gh-monitor-managed-hubs
 policySets:
   - name: gh-monitor-local-cluster
+    description: global hub monitor policies for local-cluster
     placement:
       labelSelector:
         matchExpressions:
@@ -30,6 +31,7 @@ policySets:
             values:
               - local-cluster
   - name: gh-monitor-managed-hubs
+    description: global hub monitor policies for all managed hubs
     placement:
       labelSelector:
         matchExpressions:
@@ -44,11 +46,13 @@ placementBindingDefaults:
 
 policies:
   - name: monitor-managed-clusters
+    description: monitor managedCluster availability
     complianceType: mustnothave
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
   - name: monitor-managed-hubs-local-cluster
+    description: monitor managed hub with local-cluster; no managed hub should have local-cluster
     complianceType: mustnothave
     policySets:           # override policyDefaults.policySets
       - gh-monitor-managed-hubs
@@ -56,6 +60,7 @@ policies:
       - path: monitor/managed-hubs-local-cluster.yaml
 
   - name: monitor-multicluster-global-hub-agent
+    description: monitor multicluster global hub agent
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
       - gh-monitor-managed-hubs
@@ -63,6 +68,7 @@ policies:
       - path: monitor/multicluster-global-hub-agent-status.yaml
 
   - name: monitor-openshift-gitops
+    description: monitor openshift gitops deployments
     complianceType: musthave       # object-templates-raw sets its own complianceType
     manifests:
       - path: monitor/openshift-gitops/operator-subscription-status.yaml
@@ -71,6 +77,7 @@ policies:
       - path: monitor/openshift-gitops/argocd-status.yaml
 
   - name: monitor-argocd-application-set
+    description: monitor argocd applicationSets
     complianceType: musthave
     namespaceSelector:
       include:
@@ -79,12 +86,14 @@ policies:
       - path: monitor/application-set-status.yaml
 
   - name: monitor-rhacs-central
+    description: monitor rhacs central and securedClusters deployments
     complianceType: musthave
     manifests:
       - path: monitor/rhacs-central//operator-subscription-status.yaml
       - path: monitor/rhacs-central/deployment-status.yaml
 
   # - name: 00-monitor-policy-report      # 00- prefix for the policy name for sorting use
+  #   description: monitor policy report with failed results
   #   complianceType: "mustnothave"
   #   controls:
   #     - CA-02 Security Assessments

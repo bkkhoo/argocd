@@ -21,6 +21,7 @@ policyDefaults:
   severity: medium
 policySets:
   - name: base-config-all-clusters
+    description: base config policies for all clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -29,6 +30,7 @@ policySets:
             values:
               - OpenShift
   - name: base-config-no-local-cluster-no-managed-hub
+    description: base config policies for all clusters, except local-cluster and managed-hub
     placement:
       labelSelector:
         matchExpressions:
@@ -42,12 +44,12 @@ policySets:
               - local-cluster
           - key: managed-hub
             operator: DoesNotExist
-
 placementBindingDefaults:
   name: base-config-binding
 
 policies:
   - name: config-remove-kubeadmin
+    description: remove kube-system/kubeadmin secret
     complianceType: mustnothave
     categories:
       - AC Access Control
@@ -57,6 +59,7 @@ policies:
       - path: config/kubeadmin-secret.yaml
 
   - name: config-rhacs-secured-cluster
+    description: deploy rhacs operator, securedCluster and cluster registration secret
     complianceType: musthave
     policySets:         # override policyDefaults.policySets
       - base-config-no-local-cluster-no-managed-hub

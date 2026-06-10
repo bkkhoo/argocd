@@ -21,6 +21,7 @@ policyDefaults:
   severity: medium
 policySets:
   - name: gh-config-all-clusters
+    description: global hub config policies for all clusters
     placement:
       labelSelector:
         matchExpressions:
@@ -29,6 +30,7 @@ policySets:
             values:
               - OpenShift
   - name: gh-config-managed-hubs
+    description: global hub config policies for all managed hubs
     placement:
       labelSelector:
         matchExpressions:
@@ -40,6 +42,7 @@ placementBindingDefaults:
 
 policies:
   - name: config-argocd-repo-secrets
+    description: copy argocd repo secrets from global hub to managed hubs
     policySets:         # override policyDefaults.policySets
       - gh-config-managed-hubs
     manifests:
