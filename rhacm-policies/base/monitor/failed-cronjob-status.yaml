@@ -44,7 +44,6 @@ object-templates-raw: |
         namespace: {{ .cronjobNamespace }}
       spec:
         schedule: "{{ .schedule }}"
-        status: "{{ $status }}"
       status:
         {{ .status | toYaml | nindent 6 }}
     {{- end }}

@@ -1,0 +1,41 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= OpenShift Logging
+
+The Red Hat OpenShift Logging Operator orchestrates log collection and forwarding to Red Had managed log stores and other third-party receivers.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-compliance helm-chart/openshift-logging
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete openshift-logging
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+|===

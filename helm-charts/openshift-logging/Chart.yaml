@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 6.5       # the version depends on openshift catalog source, need not necessary match what is specified here
+name: openshift-logging
+description: OpenShift Logging
+type: application
+version: 1.0
+...

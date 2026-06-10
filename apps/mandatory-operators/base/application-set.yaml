@@ -36,6 +36,9 @@ spec:
       sources:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
+          path: helm-charts/openshift-logging/
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
           path: kustomize-deployments/openshift-pipelines/base/
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main

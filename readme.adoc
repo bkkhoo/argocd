@@ -121,7 +121,7 @@ This is a use case where a MultiCluster Global Hub manages a number of RHACM man
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=yes
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml --extra-vars config=basic --extra-vars global_hub=yes --ask-vault-password
 ----
 
 The ansible playbook performs the following on the global Hub cluster:
@@ -151,7 +151,8 @@ This is a use case where a regular RHACM hub cluster manages a number of manageC
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=prod
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml --ask-vault-password \
+  --extra-vars config=ha --extra-vars global_hub=no --extra-vars env=prod
 ----
 
 The ansible playbook performs the following on the managed hub cluster:
@@ -176,7 +177,9 @@ The ansible playbook performs the following on the managed hub cluster:
 
 . The `argocd.argoproj.io/managed-by: openshift-gitops` label is used to grant ArgoCD namespace Admin privileges to manage resources in other target namespaces.
 
-. OpenShift GitOps v1.20.x does not support Helm lookup function. See https://github.com/argoproj/argo-cd/issues/21745 for more details.
+. ArgoCD generates Helm manifests by running the `helm template` command rather than using `helm install`. The resulting manifests are then applied to the cluster using `kubectl apply`. This approach has two key implications:
+** No Helm release metadata is stored in the cluster.
+** Templates cannot query live Kubernetes resources during rendering. Specifically, the Helm `lookup` function is not supported when using ArgoCD. For more details, see: https://github.com/argoproj/argo-cd/issues/21745.
 
 . For Application/ApplicationSet that deploys Custom Resource (CR) alongside or before their operator (which deploys Custom Resource Definitions, CRDs) are deployed/registered in the cluster, the `argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true` annotation should be added to the instance/operand/CR manifest. The `SkipDryRunOnMissingResource=true` sync option allows ArgoCD to bypass dry-run validation.
 
