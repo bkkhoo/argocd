@@ -20,8 +20,9 @@ object-templates-raw: |
       {{- if hasKey .metadata "ownerReferences" }}
         {{- $owner := index .metadata.ownerReferences 0 }}
         {{- if and (eq $owner.kind "CronJob") (eq $owner.name $cronjob_name) }}
-          {{- $jobs = append $jobs (printf "%s succeeded=%s failed=%s"
+          {{- $jobs = append $jobs (printf "%s active=%s succeeded=%s failed=%s"
                                            .metadata.creationTimestamp
+                                           (hasKey .status "active" | toString)
                                            (hasKey .status "succeeded" | toString)
                                            (hasKey .status "failed" | toString)) }}
         {{- end }}
@@ -31,9 +32,9 @@ object-templates-raw: |
     {{- $cronjobs = merge $cronjobs $dict }}
   {{- end }}
   {{- range $cronjobs }}
-    {{- $last_job := last .jobs | toString }}
-    {{- $cron_status := (split " " $last_job)._1 }}
-    {{- if eq (split " " $last_job)._1 "succeeded=false" }}
+    {{- $status := split " " (last .jobs | toString) }}
+    {{- if eq $status._1 "active=false" }}
+      {{- if eq $status._2 "succeeded=false" }}
   - complianceType: mustnothave
     objectDefinition:
       apiVersion: batch/v1
@@ -45,6 +46,7 @@ object-templates-raw: |
         schedule: "{{ .schedule }}"
       status:
         {{ .status | toYaml | nindent 6 }}
+      {{- end }}
     {{- end }}
   {{- end }}
 ...

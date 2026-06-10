@@ -9,11 +9,11 @@ metadata:
 spec:
   schedule: "{{ $randomMinute }} {{ $startHour }}-23/{{ .Values.frequency }} * * *"
   successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 3      # retain failed for debugging
+  failedJobsHistoryLimit: 2      # retain failed for debugging
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
-      backoffLimit: 2
+      backoffLimit: 1
       template:
         spec:
           nodeSelector:
