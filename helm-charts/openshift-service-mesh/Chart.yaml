@@ -1,8 +1,8 @@
 ---
 apiVersion: v2
 appVersion: 2.6       # the version depends on openshift catalog source, need not necessary match what is specified here
-name: openshift-service-mesh-2
-description: OpenShift Service Mesh 2
+name: openshift-service-mesh
+description: OpenShift Service Mesh
 type: application
 version: 1.0
 ...

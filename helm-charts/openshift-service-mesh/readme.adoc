@@ -6,7 +6,7 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
-= OpenShift Service Mesh 2
+= OpenShift Service Mesh
 
 Red Hat OpenShift Service Mesh provides an easy way to create a network of deployed services that provides discovery, load balancing, service-to-service authentication, failure recovery, metrics, and monitoring. A service mesh also provides more complex operational functionality, including A/B testing, canary releases, rate limiting, access control, and end-to-end authentication.
 
@@ -16,7 +16,7 @@ The install the chart:
 
 [source,bash]
 ----
-helm install --name openshift-compliance helm-chart/openshift-service-mesh-2
+helm install --name openshift-compliance helm-chart/openshift-service-mesh
 ----
 
 == Uninstalling the Chart
@@ -25,7 +25,7 @@ To uninstall/delete the chart deployment:
 
 [source,bash]
 ----
-helm delete openshift-service-mesh-2
+helm delete openshift-service-mesh
 ----
 
 == Configuration
