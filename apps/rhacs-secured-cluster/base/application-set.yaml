@@ -56,4 +56,11 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+      info:
+        - name: env
+          value: prod
+        - name: type
+          value: applicationSet
+        - name: target
+          value: not local-cluster and clusters without managed-hub label
 ...

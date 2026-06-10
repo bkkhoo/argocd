@@ -24,4 +24,11 @@ spec:
       selfHeal: true     # do not delete the resources when they are no longer defined in git
     syncOptions:
       - CreateNamespace=true
+  info:
+    - name: env
+      value: prod
+    - name: type
+      value: app of apps
+    - name: target
+      value: in-cluster
 ...

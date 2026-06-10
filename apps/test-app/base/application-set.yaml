@@ -39,4 +39,11 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+      info:
+        - name: env
+          value: prod
+        - name: type
+          value: applicationSet
+        - name: target
+          value: clusters with test-app but without managed-hub labels
 ...

@@ -97,4 +97,11 @@ spec:
           selfHeal: true     # do not delete the resources when they are no longer defined in git
         syncOptions:
           - CreateNamespace=true
+      info:
+        - name: env
+          value: any
+        - name: type
+          value: applicationSet
+        - name: target
+          value: in-cluster and clusters without managed-hub label
 ...

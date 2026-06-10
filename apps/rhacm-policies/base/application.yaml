@@ -21,4 +21,11 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+    info:
+      - name: env
+        value: any
+      - name: type
+        value: application
+      - name: target
+        value: in-cluster
 ...

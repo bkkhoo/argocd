@@ -16,4 +16,7 @@ patches:
         path: /spec/sources/0/helm/valueFiles
         value:
           - ../../apps/rhacs-central/overlays/prod/values.yaml
+      - op: replace
+        path: /spec/info/0/value
+        value: prod
 ...

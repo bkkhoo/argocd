@@ -12,9 +12,11 @@ patches:
       kind: Application
       name: 01-rhacs-central
     patch: |
-    patch: |
       - op: add
         path: /spec/sources/0/helm/valueFiles
         value:
           - ../../apps/rhacs-central/overlays/uat/values.yaml
+      - op: replace
+        path: /spec/info/0/value
+        value: uat
 ...

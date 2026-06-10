@@ -14,4 +14,7 @@ patches:
       - op: replace
         path: /spec/source/path
         value: root-app/managed-hub/overlays/uat
+      - op: replace
+        path: /spec/info/0/value
+        value: uat
 ...

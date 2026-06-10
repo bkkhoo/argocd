@@ -17,4 +17,7 @@ patches:
       - op: replace
         path: /spec/template/spec/destination/namespace
         value: test-prod
+      - op: replace
+        path: /spec/template/spec/info/0/value
+        value: prod
 ...
