@@ -68,35 +68,35 @@ a| Deployment type:
 
 | server.resources.limits.cpu
 | 500m
-| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+| The maximum CPU resource the ArgoCD server pod is allowed to consume; exceeding this limit results in throttling.
 
 | server.resources.limits.memory
 | 512Mi
-| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+| The maximum memory resource the ArgoCD server pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
 
 | server.resources.requests.cpu
 | 250m
-| The minimum CPU resource a container needs to run.
+| The minimum CPU resource the ArgoCD server pod needs to run.
 
 | server.resources.requests.memory
 | 256Mi
-| The minimum CPU resource a container needs to run.
+| The minimum memory resource the ArgoCD server pod needs to run.
 
 | dex.resources.limits.cpu
 | 500m
-| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+| The maximum CPU resource the ArgoCD Dex pod is allowed to consume; exceeding this limit results in throttling.
 
-| dex.resources.requests.memory
+| dex.resources.limits.memory
 | 256Mi
-| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+| The maximum memory resource the ArgoCD Dex pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
 
-| dex.resources.limits.cpu
+| dex.resources.requests.cpu
 | 250m
-| The minimum CPU resource a container needs to run.
+| The minimum CPU resource the ArgoCD Dex pod needs to run.
 
 | dex.resources.requests.memory
 | 128Mi
-| The minimum CPU resource a container needs to run.
+| The minimum memory resource the ArgoCD Dex pod needs to run.
 
 | repo.replicas
 | 3
@@ -104,19 +104,19 @@ a| Deployment type:
 
 | repo.resources.limits.cpu
 | 1
-| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+| The maximum CPU resource the ArgoCD Repo pod is allowed to consume; exceeding this limit results in throttling.
 
 | repo.resources.limits.memory
 | 1Gi
-| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+| The maximum memory resource the ArgoCD repo pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
 
 | repo.resources.requests.cpu
 | 500m
-| The minimum CPU resource a container needs to run.
+| The minimum CPU resource the ArgoCD repo pod needs to run.
 
 | repo.resources.requests.memory
 | 512Mi
-| The minimum memory resource a container needs to run.
+| The minimum memory resource the ArgoCD repo pod needs to run.
 
 | repo.rhacmPolicyGeneratorImage
 | registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
@@ -124,19 +124,19 @@ a| Deployment type:
 
 | applicationSet.resources.limits.cpu
 | 2
-| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+| The maximum CPU resource the ArgoCD ApplicationSet controller pod is allowed to consume; exceeding this limit results in throttling.
 
 | applicationSet.resources.limits.memory
 | 1Gi
-| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+| The maximum memory resource the ArgoCD ApplicationSet controller pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
 
 | applicationSet.resources.requests.cpu
 | 250m
-| The minimum CPU resource a container needs to run.
+| The minimum CPU resource the ArgoCD ApplicationSet controller pod needs to run.
 
 | applicationSet.resources.requests.memory
 | 512Mi
-| The minimum memory resource a container needs to run.
+| The minimum memory resource the ArgoCD ApplicationSet controller pod needs to run.
 
 | redis.ha.enabled
 | true
@@ -144,35 +144,35 @@ a| Deployment type:
 
 | redis.ha.resources.limits.cpu
 | 500m
-| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+| The maximum CPU resource the ArgoCD Redis HA proxy pod is allowed to consume; exceeding this limit results in throttling.
 
 | redis.ha.resources.limits.memory
 | 256Mi
-| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+| The maximum memory resource the ArgoCD Redis HA proxy pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
 
 | redis.ha.resources.requests.cpu
 | 250m
-| The minimum CPU resource a container needs to run.
+| The minimum CPU resource the ArgoCD Redis HA proxy pod needs to run.
 
 | redis.ha.resources.requests.memory
 | 128Mi
-| The minimum memory resource a container needs to run.
+| The minimum memory resource the ArgoCD Redis HA proxy pod needs to run.
 
 | redis.resources.limits.cpu
 | 500m
-| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+| The maximum CPU resource the ArgoCD Redis pod is allowed to consume; exceeding this limit results in throttling.
 
 | redis.resources.limits.memory
 | 512Mi
-| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+| The maximum memory resource the ArgoCD Redis pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
 
 | redis.resources.requests.cpu
 | 250m
-| The minimum CPU resource a container needs to run.
+| The minimum CPU resource the ArgoCD Redis pod needs to run.
 
 | redis.resources.requests.memory
 | 256Mi
-| The minimum memory resource a container needs to run.
+| The minimum memory resource the ArgoCD Redis pod needs to run.
 
 | controller.sharding.enabled
 | true
@@ -192,19 +192,19 @@ a| Sharding algorithm:
 
 | controller.resources.limits.cpu
 | 2
-| The maximum CPU resource consumption allowed; exceeding it results in throttling.
+| The maximum CPU resource the ArgoCD Application controller pod is allowed to consume; exceeding this limit results in throttling.
 
 | controller.resources.limits.memory
 | 4Gi
-| The maximum memory resource consumption allowed; exceeding it results in an Out-Of-Memory (OOM) kill, terminating the container.
+| The maximum memory resource the ArgoCD Application controller pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
 
 | controller.resources.requests.cpu
 | 1
-| The minimum CPU resource a container needs to run.
+| The minimum CPU resource the ArgoCD Application controller pod needs to run.
 
 | controller.resources.requests.memory
 | 2Gi
-| The minimum memory resource a container needs to run.
+| The minimum memory resource the ArgoCD Application controller pod needs to run.
 
 | disableAdmin
 | false

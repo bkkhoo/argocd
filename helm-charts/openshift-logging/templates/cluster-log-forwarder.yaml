@@ -1,58 +1,61 @@
-# ---
-# apiVersion: logging.openshift.io/v1
-# kind: ClusterLogForwarder
-# metadata:
-#   name: instance
-#   namespace: openshift-logging
-#   annotations:
-#     argocd.argoproj.io/sync-wave: "100"
-#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-# spec:
-#   outputs:
-#     - name: splunk
-#       type: splunk
-#       url: 'https://splunk.example.org:8088'
-#       secret:
-#         name: splunk-secret
-#   pipelines:
-#     - inputRefs:
-#         - application
-#         - audit
-#         - infrastructure
-#       name: splunk
-#       outputRefs:
-#         - splunk
-# ...
-
-
-
-
-# apiVersion: observability.openshift.io/v1
-# kind: ClusterLogForwarder
-# metadata:
-#   name: logging
-#   namespace: openshift-logging
-# spec:
-#   managementState: Managed
-#   outputs:
-#     - lokiStack:
-#         authentication:
-#           token:
-#             from: serviceAccount
-#         target:
-#           name: logging-loki
-#       tls:
-#         ca:
-#           configMapName: openshift-service-ca.crt
-#           key: service-ca.crt
-#       name: logging-loki
-#       type: lokiStack
-#   pipelines:
-#     - inputRefs:
-#         - application
-#         - infrastructure
-#       outputRefs:
-#         - logging-loki
-#       name: logs-to-loki
-#   serviceAccount:
-#     name: log-collector
+{{- if index .Values "outputs" }}
+---
+apiVersion: observability.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  managementState: Managed
+  collector:
+    resources:
+      limits:
+        cpu: "{{ .Values.resources.limits.cpu }}"
+        memory: {{ .Values.resources.limits.memory }}
+      requests:
+        cpu: "{{ .Values.resources.requests.cpu }}"
+        memory: {{ .Values.resources.requests.memory }}
+  serviceAccount:
+    name: {{ .Values.serviceAccount }}
+  filters:
+    - name: detect-multiline-exception
+      type: detectMultilineException
+  {{- $outputs := .Values.outputs }}
+  outputs:
+    {{- range $index, $type := list "application" "infrastructure" "audit" }}
+      {{- if index $outputs $type }}
+        {{- $config := index $outputs $type }}
+    - name: {{ $type }}-log
+      type: http
+      http:
+        url: {{ $config.url }}
+        method: POST
+        format: json
+        headers:
+          content-type: application/json
+        authentication:
+          token:
+            from: secret
+            secret:
+              name: {{ $config.secret.name }}
+              key: {{ $config.secret.key }}
+        timeout: {{ $outputs.httpTimeout }}
+      {{- end }}
+    {{- end }}
+  pipelines:
+    {{- range $index, $type := list "application" "infrastructure" "audit" }}
+      {{- if index $outputs $type }}
+    - name: {{ $type }}-log
+      filterRefs:
+        - detect-multiline-exception
+      inputRefs:
+        - {{ $type }}
+      outputRefs:
+        - {{ $type }}-log
+      {{- end }}
+    {{- end }}
+...
+{{- end }}

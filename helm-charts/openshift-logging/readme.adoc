@@ -10,6 +10,11 @@ endif::[]
 
 The Red Hat OpenShift Logging Operator orchestrates log collection and forwarding to Red Had managed log stores and other third-party receivers.
 
+The Helm chart installs the OpenShift Logging operator and configures the ClusterLogForwarder to forward application, infrastructure, and audit log records to an HTTP endpoint using the POST method. It also configures the ClusterLogForwarder to authenticate with the HTTP endpoint using a bearer token stored in a Kubernetes Secret. Administrators must create this secret either:
+
+- manually for each cluster, or
+- automatically via the RHACM hub template function.
+
 == Installing the Chart
 
 The install the chart:
@@ -32,10 +37,49 @@ helm delete openshift-logging
 
 The following table lists the configurable parameters/values of this Helm chart and their default values.
 
-[cols="2,1,4", options="header"]
+[cols="2,2,4", options="header"]
 |===
 | Parameter
 | Default
 | Description
 
+| resources.limits.cpu
+| 6
+| The maximum CPU resource the collector pod is allowed to consume; exceeding this limit results in throttling.
+
+| resources.limits.memory
+| 2Gi
+| The maximum memory resource the collector pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| resources.requests.cpu
+| 500m
+| The minimum CPU resource the collector pod needs to run.
+
+| resources.requests.memory
+| 64Mi
+| The minimum CPU resource the collector pod needs to run.
+
+| serviceAccount
+| log-collector
+| Name of the ServiceAccount to use to deploy the Forwarder.
+
+| outputs.httpTimeout
+| N/A
+| The HTTP request timeout in seconds.
+
+| outputs.__<logType>__
+| N/A
+| Type of logs, must be one of `application`, `infrastructure`, or `audit`.
+
+| outputs.__<logType>__.url
+| N/A
+| Endpoint URL for log ingestion.
+
+| outputs.__<logType>__.secret.name
+| N/A
+| Name of the secret containing the bearer token for authentication.
+
+| outputs.__<logType>__.secret.key
+| N/A
+| Name of the key used to retrieve the value from the referenced secret.
 |===
