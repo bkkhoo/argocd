@@ -1,0 +1,11 @@
+{% for key, value in bearerTokens.items() %}
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: openshift-logging-token-{{ key }}
+stringData:
+  {{ value | to_nice_yaml | indent(width=2, first=False) }}
+{% endfor %}
+...

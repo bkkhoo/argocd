@@ -7,15 +7,6 @@
     config: basic
     global_hub: yes
     env: prod
-    git_repos:
-      - repo_name: github-argocd
-        repo_url: https://github.com/bkkhoo/argocd.git
-        repo_username: bkkhoo
-        repo_token: "{{ github_argocd }}"
-      - repo_name: github-helm-values
-        repo_url: https://github.com/bkkhoo/helm-values.git
-        repo_username: test
-        repo_token: "{{ github_helm_values }}"
     _context:
       basic:
         availabilityConfig: Basic
@@ -65,7 +56,8 @@
             --set postgresRetention={{ _context[config]['postgresRetention'] }}
           status: Running
   vars_files:
-    - github-token-vault-encrypted.yaml    # this file is encrypted with ansible-vault
+    - git-repo-vault-encrypted.yaml                   # this file is encrypted with ansible-vault
+    - openshift-logging-token-vault-encrypted.yaml    # this file is encrypted with ansible-vault
 
   tasks:
     - name: fail if invalid config
@@ -109,13 +101,16 @@
     - name: create argocd repo secrets
       loop: "{{ git_repos }}"
       loop_control:
-        label: "{{ item.repo_name }}"
+        label: "{{ item.name }}"
       vars:
-        repo_name: "{{ item.repo_name }}"
-        repo_url: "{{ item.repo_url }}"
-        repo_username: "{{ item.repo_username }}"
-        repo_token: "{{ item.repo_token }}"
+        repo_name: "{{ item.name }}"
+        repo_url: "{{ item.url }}"
+        repo_username: "{{ item.username }}"
+        repo_token: "{{ item.token }}"
       ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
+
+    - name: create openshift logging secrets
+      ansible.builtin.include_tasks: tasks/openshift-logging-secret.yaml
 
     - name: ensure global-hub app-of-apps is deployed
       when: global_hub | bool

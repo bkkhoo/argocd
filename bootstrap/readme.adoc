@@ -8,6 +8,11 @@ ifdef::env-github[]
 endif::[]
 = Bootstrap Hub Cluster
 
+The link:ansible/bootstrap.yaml[Ansible playbook] deploys and configures OpenShift GitOps, RHACM, and Multicluster Global Hub. The playbook also create the following secrets in the `rhacm-policies` namespace:
+
+- link:ansible/templates/argocd-repo-secret.yaml.j2[ArgoCD Repository secrets] using the tokens from the link:ansible/vars/github-token-vault-encrypted.yaml[vault-encrypted file].
+- link:ansible/templates/openshift-logging-token.yaml.j2[OpenShift Logging HTTP authentication bearer tokens] using the tokens from the link:ansible/vars/openshift-logging-token-encrypted.yaml[vault-encrypted file].
+
 Ansible playbook to bootstrap a new cluster for:
 
 - MultiCluster Global Hub Use Case:
