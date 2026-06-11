@@ -20,15 +20,15 @@ policyDefaults:
     - gh-config-all-clusters
   severity: medium
 policySets:
-  - name: gh-config-all-clusters
-    description: global hub config policies for all clusters
+  - name: gh-config-local-cluster
+    description: global hub config policies for local-cluster
     placement:
       labelSelector:
         matchExpressions:
-          - key: vendor
+          - key: name
             operator: In
             values:
-              - OpenShift
+              - local-cluster
   - name: gh-config-managed-hubs
     description: global hub config policies for all managed hubs
     placement:
@@ -47,4 +47,12 @@ policies:
       - gh-config-managed-hubs
     manifests:
       - path: config/openshift-gitops/repo-secret.yaml
+
+  - name: config-openshift-logging-http-secret-hub
+    description: copy openshift logging http endpoint authentication secrets to global hub and managed hubs
+    policySets:         # override policyDefaults.policySets
+      - gh-config-local-cluster
+      - gh-config-managed-hubs
+    manifests:
+      - path: config/openshift-logging/secret.yaml
 ...

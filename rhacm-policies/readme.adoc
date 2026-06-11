@@ -30,6 +30,11 @@ These policies are common to both global hub and managed hubs.
 | All OpenShift clusters, except `local-cluster` and cluster with `managed-hub` label.
 | Deploy RHACS operator, SecuredCluster and cluster registration secret.
 
+| config-openshift-logging-http-secrets
+| Enforce
+| All OpenShift clusters.
+| Copy OpenShift logging HTTP endpoint authentication secrets to all clusters.
+
 | monitor-cluster-operators
 | Inform
 | All OpenShift clusters.
@@ -141,6 +146,11 @@ These policies are for global hub only.
 | Enforce
 | All clusters with `managed-hub` label.
 | Ensure ArgoCD repo secrets are distributed to managed hubs' `openshift-gitops` namespace.
+
+| config-openshift-logging-http-secret-hub
+| Enforce
+| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| Copy OpenShift logging HTTP endpoint authentication secrets to global hub and managed hubs
 
 | monitor-managed-clusters
 | Inform

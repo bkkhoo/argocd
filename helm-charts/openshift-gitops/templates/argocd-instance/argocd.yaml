@@ -6,7 +6,7 @@ metadata:
   name: openshift-gitops
   namespace: {{ .Values.namespace.argocd }}
   annotations:
-    argocd.argoproj.io/sync-wave: "200"
+    argocd.argoproj.io/sync-wave: "205"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   networkPolicy:
