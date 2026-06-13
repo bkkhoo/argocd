@@ -1,0 +1,76 @@
+{{- $values := .Values }}
+{{- range list "application" "infrastructure" "audit" }}
+  {{- $logType := . }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $logType }}
+  namespace: {{ $values.namespace }}
+  labels:
+    {{- include "log-receiver.setLabels" $values.labels | indent 4 }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      {{- include "log-receiver.setLabels" $values.labels | indent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: log-receiver
+      labels:
+        log-type: {{ $logType }}
+        {{- include "log-receiver.setLabels" $values.labels | indent 8 }}
+    spec:
+      containers:
+        - name: log-receiver
+          image: quay.io/bkhoo/webhook-backend:1.0
+          env:
+            - name: CERT_FILE
+              value: /run/secrets/log-receiver/tls.crt
+            - name: KEY_FILE
+              value: /run/secrets/log-receiver/tls.key
+            - name: WEBHOOK_ENDPOINT
+              value: /log
+          livenessProbe:
+            httpGet:
+              scheme: HTTPS
+              port: 8443
+              path: /healthz
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              scheme: HTTPS
+              port: 8443
+              path: /healthz
+          resources:
+            requests:
+              cpu: 200m
+              memory: 128Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /run/secrets/log-receiver/tls.crt
+              name: serving-cert
+              subPath: tls.crt
+              readOnly: true
+            - mountPath: /run/secrets/log-receiver/tls.key
+              name: serving-cert
+              subPath: tls.key
+              readOnly: true
+      serviceAccountName: {{ $values.serviceAccount }}
+      automountServiceAccountToken: false
+      volumes:
+        - name: serving-cert
+          secret:
+            secretName: {{ $logType }}-serving-cert
+{{- end }}
+...

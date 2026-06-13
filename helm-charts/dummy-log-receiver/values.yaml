@@ -1,0 +1,8 @@
+---
+namespace: log-receiver
+serviceAccount: log-receiver
+logType: infrastructure
+labels:
+  app: log-receiver
+  env: prod
+...

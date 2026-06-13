@@ -1,0 +1,29 @@
+{{- $values := .Values }}
+{{- range list "application" "infrastructure" "audit" }}
+  {{- $logType := . }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $logType }}
+  namespace: {{ $values.namespace }}
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: {{ $logType }}-serving-cert
+  labels:
+    {{- include "log-receiver.setLabels" $values.labels | indent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    log-type: {{ $logType }}
+    {{- include "log-receiver.setLabels" $values.labels | indent 4 }}
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: https
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+  sessionAffinity: None
+{{- end }}
+...

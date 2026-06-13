@@ -7,21 +7,21 @@ resources:
     cpu: 500m
     memory: 64Mi
 serviceAccount: log-collector
-# outputs:
-#   httpTimeout: 10
-#   application:
-#     url: "https://application-logs.example.com"
-#     secret:
-#       name: app-log-token
-#       key: token
-#   infrastructure:
-#     url: "https://infrastructure-logs.example.com"
-#     secret:
-#       name: infra-log-token
-#       key: token
-#   audit:
-#     url: "https://audit-logs.example.com"
-#     secret:
-#       name: audit-log-token
-#       key: token
+outputs:
+  httpTimeout: 10
+  application:
+    url: "https://application.log-receiver.svc:8443"
+    secret:
+      name: application-log-token
+      key: token
+  infrastructure:
+    url: "https://infrastructure.log-receiver.svc:8443"
+    secret:
+      name: infrastructure-log-token
+      key: token
+  audit:
+    url: "https://audit.log-receiver.svc:8443"
+    secret:
+      name: audit-log-token
+      key: token
 ...

@@ -1,0 +1,24 @@
+{{- $values := .Values }}
+{{- range list "application" "infrastructure" "audit" }}
+  {{- $logType := . }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $logType }}
+  namespace: {{ $values.namespace }}
+  labels:
+    {{- include "log-receiver.setLabels" $values.labels | indent 4 }}
+spec:
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  port:
+    targetPort: 8443
+  to:
+    kind: Service
+    name: {{ $logType }}
+    weight: 100
+  wildcardPolicy: None
+{{- end }}
+...

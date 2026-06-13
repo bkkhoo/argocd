@@ -16,7 +16,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     namespace: openshift-logging
-    name: l{{ .Values.serviceAccount }}
+    name: {{ .Values.serviceAccount }}
 {{- if index .Values "outputs" }}
   {{- if index .Values.outputs "application" }}
 ---

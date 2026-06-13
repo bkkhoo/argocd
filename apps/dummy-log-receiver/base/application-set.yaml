@@ -1,0 +1,66 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dummy-log-receiver
+  namespace: openshift-gitops
+  labels:
+    applications: log-receiver
+spec:
+  goTemplate: true                     # enable go templating for spec.template field
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+            - key: managed-hub
+              operator: DoesNotExist
+            - key: dummy-log-receiver
+              operator: Exists
+    # argocd automatically registers the local cluster (in-cluster) as https://kubernetes.default.svc but does not create a Secret for
+    # it by default, meaning it lacks the "argocd.argoproj.io/secret-type: cluster" label; consequently, selectors like matchExpressions
+    # and matchLabels will exclude the local cluster. the list generator below include local cluster int the selection.
+    - list:
+        elements:
+          - name: in-cluster
+            server: https://kubernetes.default.svc
+            metadata:
+              labels:
+                name: global-hub
+                env: prod
+  template:
+    metadata:
+      name: "{{ .name }}-dummy-log-receiver"
+      labels:
+        applications: log-receiver
+    spec:
+      project: iac-gitops
+      source:
+        repoURL: https://github.com/bkkhoo/argocd.git
+        targetRevision: main
+        path: helm-charts/dummy-log-receiver
+        helm:
+          valuesObject:
+            labels: '{{ .metadata.labels.env }}'
+      destination:
+        server: "{{ .server }}"
+        namespace: log-receiver
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+      info:
+        - name: env
+          value: any
+        - name: type
+          value: applicationSet
+        - name: target
+          value: clusters with dummy-log-receiver but without managed-hub labels
+...

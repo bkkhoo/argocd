@@ -8,6 +8,23 @@ ifdef::env-github[]
 endif::[]
 = Issues
 
+== ArgoCD Application Stuck in Unknown Status (failed to load open api schema)
+
+ArgoCD application failed to sync with the following errors:
+
+[source,text]
+----
+Failed to load live state: failed to get cluster info for "https://kubernetes.default.svc": error synchronizing cache state : failed to load open api schema while syncing cluster cache: error getting openapi resources: SchemaError(github.com/stolostron/cluster-lifecycle-api/clusterview/v1alpha1.UserPermission.status): unknown model in reference: "github.com~1stolostron~1cluster-lifecycle-api~1clusterview~1v1alpha1.UserPermissionStatus"
+
+error synchronizing cache state : failed to load open api schema while syncing cluster cache: error getting openapi resources: SchemaError(github.com/stolostron/cluster-lifecycle-api/clusterview/v1alpha1.UserPermission.status): unknown model in reference: "github.com~1stolostron~1cluster-lifecycle-api~1clusterview~1v1alpha1.UserPermissionStatus"
+----
+
+This ArgoCD sync error essentially means that ArgoCD's application controller is trying to build a cache of the cluster's API schemas, but it encountered a broken, malformed, or incompatible Custom Resource Definition (CRD) version installed on the cluster by RHACM.
+
+The incompatibility was likely introduced in RHACM v2.16.3, making ArgoCD v1.20 incompatible with RHACM v2.16.
+
+Until a newer version of ArgoCD that is compatible with RHACM v2.16 becomes available, the current workaround is to use RHACM v2.15.
+
 == ArgoCD Applications Stuck in Unknown Status (ArgoCD application controller OOMKilled)
 
 The controller cannot determine if the desired state (Git) matches the live state (Cluster), often due to component failures, connectivity issues, or resource conflicts. The most common root causes are a crashed or OOMKilled application controller, Redis downtime, repo-server manifest generation failures, or missing Custom Resource Definitions (CRDs).

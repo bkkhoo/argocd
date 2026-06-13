@@ -1,0 +1,30 @@
+= Overview
+The python script is a generic webhook backend service. The service:
+* accepts HTTP POST requests on a configurable endpoint (default `/webhook`).
+* retrieves the JSON payload and emit it on stdout.
+
+The script supports the following optional environment variables:
+
+- **WEBHOOK_ENDPOINT**:
+** the service accepts HTTP POST requests on this endpoint; requests not send to supported endpoints will be rejected with state code 400 response.
+** default `/webhook`.
+- **HEALTHZ_ENDPOINT**:
+** the service accepts healthz check (liveness and/or readiness probes) on this endpoint.
+** default `/healthz`.
+- **SERVICE_PORT**:
+** the port on which the service listens.
+** default `8443`.
+- **CERT_FILE**:
+** the service cert file location; on OpenShift, use the `service.beta.openshift.io/serving-cert-secret-name` annotation on the service resource to get OpenShift to issue cert and key.
+** default `/opt/webhook-backend/secrets/tls.crt`.
+- **KEY_FILE**:
+** the service key file location.
+** default `/opt/webhook-backend/secrets/tls.key`.
+
+== Build and push image
+
+```
+podman build -t quay.io/bkhoo/webhook-backend:1.0 .
+
+podman push quay.io/bkhoo/webhook-backend:1.0
+```

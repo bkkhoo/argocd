@@ -22,11 +22,6 @@ disableAdmin: false
 appProjects:
   - name: iac-gitops
     sourceRepos:
-      - "https://github.com/bkkhoo/*"
-
-appProjects:
-  - name: iac-gitops
-    sourceRepos:
       - "https://github.com/bkkhoo/argocd.git"
       - "https://github.com/bkkhoo/helm-values.git"
   - name: prod-dummy

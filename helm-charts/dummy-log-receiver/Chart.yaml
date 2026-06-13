@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 1.0
+name: log-receiver
+description: Helm Chart to deploy dummy log receiver
+type: application
+version: 1.0
+...
