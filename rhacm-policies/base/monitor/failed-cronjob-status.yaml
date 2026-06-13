@@ -1,4 +1,5 @@
 # flag if the last scheduled run of the cronjob failed
+# note: toString and last functions only available with rhacm v2.16
 ---
 object-templates-raw: |
   {{- $cronjobs := dict }}
@@ -33,8 +34,9 @@ object-templates-raw: |
     {{- $cronjobs = merge $cronjobs $dict }}
   {{- end }}
   {{- range $cronjobs }}
-    {{- $status := split " " (printf "%s" (last .jobs)) }}
-    {{- if and (eq $status._1 "emptyStatus=false") (eq $status._2 "active=false") (eq $status._3 "succeeded=false") }}
+    {{- if gt (len .jobs) 0 }}
+      {{- $status := split " " (printf "%s" (index .jobs (sub (len .jobs) 1))) }}
+      {{- if and (eq $status._1 "emptyStatus=false") (eq $status._2 "active=false") (eq $status._3 "succeeded=false") }}
   - complianceType: mustnothave
     objectDefinition:
       apiVersion: batch/v1
@@ -46,6 +48,7 @@ object-templates-raw: |
         schedule: "{{ .schedule }}"
       status:
         {{ .status | toYaml | nindent 6 }}
+      {{- end }}
     {{- end }}
   {{- end }}
 ...
