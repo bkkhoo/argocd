@@ -20,12 +20,12 @@ object-templates-raw: |
       {{- if hasKey .metadata "ownerReferences" }}
         {{- $owner := index .metadata.ownerReferences 0 }}
         {{- if and (eq $owner.kind "CronJob") (eq $owner.name $cronjob_name) }}
-          {{- $jobs = append $jobs (printf "%s emptyStatus=%s active=%s succeeded=%s failed=%s"
+          {{- $jobs = append $jobs (printf "%s emptyStatus=%t active=%t succeeded=%t failed=%t"
                                            .metadata.creationTimestamp
-                                           (empty .status | toString)
-                                           (hasKey .status "active" | toString)
-                                           (hasKey .status "succeeded" | toString)
-                                           (hasKey .status "failed" | toString)) }}
+                                           (empty .status)
+                                           (hasKey .status "active")
+                                           (hasKey .status "succeeded")
+                                           (hasKey .status "failed")) }}
         {{- end }}
       {{- end }}
     {{- end }}
@@ -33,7 +33,7 @@ object-templates-raw: |
     {{- $cronjobs = merge $cronjobs $dict }}
   {{- end }}
   {{- range $cronjobs }}
-    {{- $status := split " " (last .jobs | toString) }}
+    {{- $status := split " " (printf "%s" (last .jobs)) }}
     {{- if and (eq $status._1 "emptyStatus=false") (eq $status._2 "active=false") (eq $status._3 "succeeded=false") }}
   - complianceType: mustnothave
     objectDefinition:

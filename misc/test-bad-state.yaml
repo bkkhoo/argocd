@@ -83,12 +83,12 @@ spec:
     metadata:
       creationTimestamp: null
     spec:
-      backoffLimit: 2
+      backoffLimit: 1
       template:
         metadata:
           creationTimestamp: null
         spec:
-          activeDeadlineSeconds: 60
+          activeDeadlineSeconds: 120
           containers:
           - command:
             - /bin/bash
