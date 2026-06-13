@@ -1,4 +1,5 @@
 # check namespaces with more than 1 operatorGroups
+# note: nindent template functions only available with rhacm v2.16
 ---
 object-templates-raw: |
   {{- $ogs := lookup "operators.coreos.com/v1" "OperatorGroup" "" "" }}
@@ -24,16 +25,9 @@ object-templates-raw: |
         name: {{ .metadata.name }}
         namespace: {{ .metadata.namespace }}
       spec:
-        {{ .spec | toYaml | nindent 8 }}
+        {{ toYaml .spec | indent 6 }}
       status:
-        conditions:
-        {{- range $index, $key := .status.conditions }}
-          {{- if eq $index 0 }}
-          - {{ . | toYaml | indent 10 }}
-           {{- else }}
-           {{ . | toYaml | nindent 10 }}
-           {{- end }}
-        {{- end }}
+        {{ toYaml .status | indent 6 }}
       {{- end }}
     {{- end }}
   {{- end }}

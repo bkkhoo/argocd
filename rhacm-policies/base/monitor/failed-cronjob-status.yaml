@@ -1,5 +1,5 @@
 # flag if the last scheduled run of the cronjob failed
-# note: toString, last and nindent functions only available with rhacm v2.16
+# note: toString, last and nindent template functions only available with rhacm v2.16
 ---
 object-templates-raw: |
   {{- $cronjobs := dict }}
