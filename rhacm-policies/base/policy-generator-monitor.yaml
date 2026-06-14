@@ -55,7 +55,7 @@ policies:
     description: monitor cluster log forwarder status is ready
     complianceType: musthave
     manifests:
-      - path: rhacm-policies/base/monitor/cluster-log-forwarder.yaml
+      - path: monitor/cluster-log-forwarder.yaml
 
   - name: monitor-rhacs-secured-clusters
     description: monitor rhacs securedCluster deployments
