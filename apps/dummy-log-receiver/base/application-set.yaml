@@ -46,7 +46,8 @@ spec:
         path: helm-charts/dummy-log-receiver
         helm:
           valuesObject:
-            labels: '{{ .metadata.labels.env }}'
+            labels:
+              env: '{{ .metadata.labels.env }}'
       destination:
         server: "{{ .server }}"
         namespace: log-receiver
