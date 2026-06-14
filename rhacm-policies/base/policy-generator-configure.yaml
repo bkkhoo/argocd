@@ -67,9 +67,11 @@ policies:
       - path: config/rhacs/secured-cluster.yaml
       - path: config/rhacs/secret.yaml
 
-  - name: config-openshift-logging-http-secrets
-    description: copy openshift logging http endpoint authentication secrets to all clusters
+  - name: config-openshift-logging-http-secret
+    description: copy openshift logging http endpoint authentication secrets to all clusters, except hub clusters
     complianceType: musthave
+    policySets:         # override policyDefaults.policySets
+      - base-config-no-local-cluster-no-managed-hub
     manifests:
       - path: config/openshift-logging/secret.yaml
 ...

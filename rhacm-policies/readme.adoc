@@ -30,9 +30,9 @@ These policies are common to both global hub and managed hubs.
 | All OpenShift clusters, except `local-cluster` and cluster with `managed-hub` label.
 | Deploy RHACS operator, SecuredCluster and cluster registration secret.
 
-| config-openshift-logging-http-secrets
+| config-openshift-logging-http-secret
 | Enforce
-| All OpenShift clusters.
+| All OpenShift clusters, except hub clusters (`local-cluster` and cluster with `managed-hub` label).
 | Copy OpenShift logging HTTP endpoint authentication secrets to all clusters.
 
 | monitor-cluster-operators

@@ -36,13 +36,13 @@ policySets:
         matchExpressions:
           - key: managed-hub
             operator: Exists
-
 placementBindingDefaults:
   name: gh-config-binding
 
 policies:
   - name: config-argocd-repo-secrets
     description: copy argocd repo secrets from global hub to managed hubs
+    complianceType: musthave
     policySets:         # override policyDefaults.policySets
       - gh-config-managed-hubs
     manifests:
@@ -55,4 +55,5 @@ policies:
       - gh-config-managed-hubs
     manifests:
       - path: config/openshift-logging/secret.yaml
+      - path: config/openshift-logging/template-raw-secret.yaml
 ...
