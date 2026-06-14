@@ -27,12 +27,14 @@ spec:
     spec:
       containers:
         - name: log-receiver
-          image: quay.io/bkhoo/webhook-backend:1.0
+          image: {{ $values.loggingImage }}
           env:
             - name: CERT_FILE
               value: /run/secrets/log-receiver/tls.crt
             - name: KEY_FILE
               value: /run/secrets/log-receiver/tls.key
+            - name: ERROR_LOG_FILE
+              value: /tmp/logs/error.log
             - name: WEBHOOK_ENDPOINT
               value: /log
           livenessProbe:
@@ -66,11 +68,35 @@ spec:
               name: serving-cert
               subPath: tls.key
               readOnly: true
+            - mountPath: /tmp/logs
+              name: error-logs
+        - name: error-log
+          image: {{ $values.loggingImage }}
+          env:
+            - name: ERROR_LOG_FILE
+              value: /tmp/logs/error.log
+          command:
+            - sh
+            - -c
+            - touch ${ERROR_LOG_FILE} && tail -f ${ERROR_LOG_FILE}
+          resources:
+            requests:
+              cpu: 200m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /tmp/logs
+              name: error-logs
       serviceAccountName: {{ $values.serviceAccount }}
       automountServiceAccountToken: false
       volumes:
         - name: serving-cert
           secret:
             secretName: {{ $logType }}-serving-cert
+        - name: error-logs
+          emptyDir:
+            sizeLimit: 1Gi
 {{- end }}
 ...

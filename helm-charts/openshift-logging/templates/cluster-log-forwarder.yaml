@@ -44,10 +44,10 @@ spec:
               key: {{ $config.secret.key }}
         timeout: {{ $outputs.httpTimeout }}
       tls:
-        insecureSkipVerify: true
-        # ca:
-        #   key: service-ca.crt
-        #   configMapName: openshift-service-ca.crt
+        # insecureSkipVerify: true
+        ca:
+          key: service-ca.crt
+          configMapName: openshift-service-ca.crt
       {{- end }}
     {{- end }}
   pipelines:

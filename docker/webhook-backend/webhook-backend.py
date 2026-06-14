@@ -18,6 +18,7 @@ import ssl
 import sys
 
 import asyncio
+import aiofiles
 from aiohttp import web
 
 _DEFAULT_WEBHOOK_ENDPOINT = "/webhook"
@@ -25,6 +26,7 @@ _DEFAULT_HEALTHZ_ENDPOINT = "/healthz"
 _DEFAULT_SERVICE_PORT = "8443"
 _DEFAULT_CERT_FILE = "/opt/webhook-backend/secrets/tls.crt"
 _DEFAULT_KEY_FILE = "/opt/webhook-backend/secrets/tls.key"
+_DEFAULT_ERROR_LOG_FILE = "/opt/webhook-backend/error.log"
 EXIT_CODE = type("ExitCode", (object, ), {"ok": 0, "config": 11, "forceExit": 12, "unknown": 99})()
 
 class WebhookBackend():
@@ -40,6 +42,11 @@ class WebhookBackend():
         if self.site:
             await self.site.stop()    # stop handling site
 
+    async def log_error(self, error_log):
+        '''print error to file, inefficient implementation, open/close file for each error'''
+        async with aiofiles.open(self.settings.error_log_file, "a") as error_handle:
+            await error_handle.write(error_log + "\n")
+
     async def serve_forever(self):
         '''setup and start http server'''
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -54,7 +61,7 @@ class WebhookBackend():
 
     async def handler(self, request):
         '''request handler'''
-        payload, status, auth_string, emit_payload = {}, 400, "", False
+        payload, status, error_log = {}, 400, ""
         if request.method == "GET" and request.path == self.settings.healthz_endpoint:
             status = 200
         elif request.method == "POST" and request.path == self.settings.webhook_endpoint:
@@ -64,14 +71,18 @@ class WebhookBackend():
                 if payload:
                     asyncio.ensure_future(log(payload))  # schedule the task, don"t wait
             except json.decoder.JSONDecodeError:
+                error_log = "error reading json payload"
                 status = 400
+        else:
+            error_log = f"unsupported http method ({request.method}) and/or path ({request.path})"
+        if error_log:
+            asyncio.ensure_future(self.log_error(error_log))  # schedule the task, don"t wait
         return web.json_response(status=status)
-
 
 async def log(details):
     '''print log to stdout in json format'''
     print(json.dumps(details, sort_keys=False, separators=(",", ":")), file=sys.stdout)
-    sys.stdout.flush()   # must flush, otherwise log would not show up in stdout
+    sys.stdout.flush()   # flush, otherwise log would not show up in stdout immediately
 
 async def start():
     '''startup'''
@@ -80,6 +91,7 @@ async def start():
                     {"port": os.getenv("SERVICE_PORT", _DEFAULT_SERVICE_PORT),
                      "cert": os.getenv("CERT_FILE", _DEFAULT_CERT_FILE),
                      "key": os.getenv("KEY_FILE", _DEFAULT_KEY_FILE),
+                     "error_log_file": os.getenv("ERROR_LOG_FILE", _DEFAULT_ERROR_LOG_FILE),
                      "webhook_endpoint": os.getenv("WEBHOOK_ENDPOINT", _DEFAULT_WEBHOOK_ENDPOINT),
                      "healthz_endpoint": os.getenv("HEALTHZ_ENDPOINT", _DEFAULT_HEALTHZ_ENDPOINT)
                     })

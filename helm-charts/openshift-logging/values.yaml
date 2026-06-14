@@ -10,17 +10,17 @@ serviceAccount: log-collector
 outputs:
   httpTimeout: 10
   application:
-    url: "https://application.log-receiver.svc:8443"
+    url: "https://application.log-receiver.svc:8443/log"
     secret:
       name: application-log-token
       key: token
   infrastructure:
-    url: "https://infrastructure.log-receiver.svc:8443"
+    url: "https://infrastructure.log-receiver.svc:8443/log"
     secret:
       name: infrastructure-log-token
       key: token
   audit:
-    url: "https://audit.log-receiver.svc:8443"
+    url: "https://audit.log-receiver.svc:8443/log"
     secret:
       name: audit-log-token
       key: token
