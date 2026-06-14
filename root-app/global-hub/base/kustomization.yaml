@@ -17,4 +17,5 @@ resources:
   - ../../../apps/mandatory-operators/base
   - ../../../apps/openshift-serverless/base
   - ../../../apps/openshift-service-mesh/base
+  - ../../../apps/dummy-log-receiver/base
 ...

@@ -7,4 +7,5 @@ resources:    # deploy these to all managed hub regardless of environment
   - ../../../apps/mandatory-operators/base
   - ../../../apps/openshift-serverless/base
   - ../../../apps/openshift-service-mesh/base
+  - ../../../apps/dummy-log-receiver/base
 ...
