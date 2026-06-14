@@ -1,0 +1,57 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Dummy Log Receiver
+
+The dummy log receiver is a Python webhook backend server that receives JSON logs via HTTP POST. The server accepts POST requests over HTTPS, retrieves the JSON payload, and emits it to stdout. This Helm chart deploys three instances of the log receiver: one for application, infrastructure, and audit logs, respectively. The endpoints use certificates and keys issued by the OpenShift Service Certificate Authority.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name dummy-log-receiver helm-chart/dummy-log-receiver
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete dummy-log-receiver
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header,hardbreaks"]
+|===
+| Parameter
+| Default
+| Description
+
+| namespace
+| log-receiver
+| Deploy the resources to this namespace.
+
+| serviceAccount
+| log-receiver
+| Run the deployments with this serviceAccount; the serviceAccount is not granted any privileges.
+
+| labels
+| app: log-receive +
+env: prod
+| Labels to apply to the resources; the env label is mandatory.
+
+| loggingImage
+| quay.io/bkhoo/webhook-backend:1.1
+| The image for the deployments.
+|===

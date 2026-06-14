@@ -16,7 +16,7 @@ The install the chart:
 
 [source,bash]
 ----
-helm install --name openshift-compliance helm-chart/openshift-service-mesh
+helm install --name openshift-service-mesh helm-chart/openshift-service-mesh
 ----
 
 == Uninstalling the Chart

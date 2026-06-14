@@ -29,7 +29,7 @@ The install the chart:
 
 [source,bash]
 ----
-helm install --name openshift-gitops helm-chart/etcd-backup
+helm install --name etcd-backup helm-chart/etcd-backup
 ----
 
 == Uninstalling the Chart

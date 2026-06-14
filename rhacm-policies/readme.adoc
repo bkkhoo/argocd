@@ -50,6 +50,11 @@ These policies are common to both global hub and managed hubs.
 | All OpenShift clusters.
 | Verify that ETCD encryption has completed.
 
+| monitor-cluster-log-forwarder
+| Inform
+| All OpenShift clusters.
+| Monitor cluster log forwarder status is ready.
+
 | monitor-rhacs-secured-clusters
 | Inform
 | All OpenShift clusters.

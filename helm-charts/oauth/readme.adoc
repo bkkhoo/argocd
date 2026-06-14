@@ -16,7 +16,7 @@ The install the chart:
 
 [source,bash]
 ----
-helm install --name project-request-template helm-chart/openshift-oauth
+helm install --name openshift-oauth helm-chart/openshift-oauth
 ----
 
 == Configuration

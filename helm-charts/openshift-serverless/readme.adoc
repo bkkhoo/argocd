@@ -16,7 +16,7 @@ The install the chart:
 
 [source,bash]
 ----
-helm install --name project-request-template helm-chart/openshift-serverless
+helm install --name openshift-serverless helm-chart/openshift-serverless
 ----
 
 == Uninstalling the Chart

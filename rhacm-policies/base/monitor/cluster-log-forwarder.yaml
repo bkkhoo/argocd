@@ -1,0 +1,19 @@
+---
+apiVersion: observability.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+status:
+  conditions:
+  - type: observability.openshift.io/Authorized
+    reason: ClusterRolesExist
+    status: "True"
+  - type: observability.openshift.io/Valid
+    reason: ValidationSuccess
+    status: "True"
+  - type: Ready
+    reason: ReconciliationComplete
+    status: "True"
+...

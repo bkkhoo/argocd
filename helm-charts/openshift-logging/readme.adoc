@@ -21,7 +21,7 @@ The install the chart:
 
 [source,bash]
 ----
-helm install --name openshift-compliance helm-chart/openshift-logging
+helm install --name openshift-logging helm-chart/openshift-logging
 ----
 
 == Uninstalling the Chart

@@ -71,7 +71,6 @@ class WebhookBackend():
                 if payload:
                     asyncio.ensure_future(log(payload))  # schedule the task, don"t wait
             except json.decoder.JSONDecodeError:
-                error_log = "error reading json payload"
                 status = 400
         else:
             error_log = f"unsupported http method ({request.method}) and/or path ({request.path})"
