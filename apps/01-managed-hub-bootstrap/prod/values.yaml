@@ -24,7 +24,4 @@ appProjects:
     sourceRepos:
       - "https://github.com/bkkhoo/argocd.git"
       - "https://github.com/bkkhoo/helm-values.git"
-  - name: prod-dummy
-    sourceRepos:
-      - "*"
 ...

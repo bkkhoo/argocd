@@ -34,7 +34,4 @@ appProjects:
     sourceRepos:
       - "https://github.com/bkkhoo/argocd.git"
       - "https://github.com/bkkhoo/helm-values.git"
-  - name: global-ha--dummy
-    sourceRepos:
-      - "*"
 ...
