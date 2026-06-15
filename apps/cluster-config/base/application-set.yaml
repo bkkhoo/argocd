@@ -38,7 +38,7 @@ spec:
       labels:
         applications: cluster-config
     spec:
-      project: iac-gitops
+      project: gitops
       sources:
         # configure operator hub
         - repoURL: https://github.com/bkkhoo/argocd.git

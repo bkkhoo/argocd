@@ -32,7 +32,7 @@ spec:
       labels:
         applications: mandatory-operators
     spec:
-      project: iac-gitops
+      project: gitops
       sources:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main

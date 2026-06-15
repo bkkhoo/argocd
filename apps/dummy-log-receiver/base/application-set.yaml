@@ -39,7 +39,7 @@ spec:
       labels:
         applications: log-receiver
     spec:
-      project: iac-gitops
+      project: gitops
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main

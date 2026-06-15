@@ -29,7 +29,7 @@ spec:
       labels:
         applications: rhacs-secured-cluster
     spec:
-      project: iac-gitops
+      project: gitops
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main

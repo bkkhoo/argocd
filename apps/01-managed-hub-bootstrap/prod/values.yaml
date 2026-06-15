@@ -20,7 +20,7 @@ controller:
     algorithm: consistent-hashing
 disableAdmin: false
 appProjects:
-  - name: iac-gitops
+  - name: gitops
     sourceRepos:
       - "https://github.com/bkkhoo/argocd.git"
       - "https://github.com/bkkhoo/helm-values.git"

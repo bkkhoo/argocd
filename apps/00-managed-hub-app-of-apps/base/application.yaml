@@ -10,7 +10,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "9999"     # ensure this resource is deployed after managed-hub bootstrap complete
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  project: iac-gitops
+  project: gitops
   source:
     repoURL: https://github.com/bkkhoo/argocd.git
     path: root-app/managed-hub/base

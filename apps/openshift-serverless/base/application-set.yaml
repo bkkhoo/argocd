@@ -30,7 +30,7 @@ spec:
       labels:
         applications: openshift-serverless
     spec:
-      project: iac-gitops
+      project: gitops
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main

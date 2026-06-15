@@ -27,7 +27,7 @@ spec:
       labels:
         applications: openshift-service-mesh
     spec:
-      project: iac-gitops
+      project: gitops
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main

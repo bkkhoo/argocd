@@ -29,7 +29,7 @@ spec:
       labels:
         applications: managed-hub-bootstrap
     spec:
-      project: iac-gitops
+      project: gitops
       sources:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
