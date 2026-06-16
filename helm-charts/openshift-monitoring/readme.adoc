@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Configure OpenShift Monitoring
 
-Configuration of the preinstalled OpenShift Monitoring stack.
+Configure the preinstalled OpenShift Monitoring stack.
 
 == Installing the Chart
 
@@ -29,4 +29,39 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
+| enableUserWorkload
+| true
+| Enable/Disable user workload monitoring in OpenShift.
+
+| storageClass
+| None
+| Assign specific storage class for OpenShift monitoring components' persistent volumes.
+
+| platform.prometheusK8s.retention
+| 7d (7 days)
+| Define data retention time to prevent indefinite storage growth for the Prometheus instance responsible for monitoring core OpenShift platform component.
+
+| platform.prometheusK8s.storage
+| 20Gi
+| Define specific storage resource requests for persistent volumes of the Prometheus instance responsible for monitoring core OpenShift platform component.
+
+| platform.alertmanagerMain.storage
+| 10Gi
+| Define specific storage resource requests for persistent volumes of the default Alertmanager instance.
+
+| userWorkload.prometheus.retention
+| 24h (24 hours)
+| Define data retention time to prevent indefinite storage growth for the Prometheus instance responsible for monitoring user workloads.
+
+| userWorkload.prometheus.storage
+| 10Gi
+| Define specific storage resource requests for persistent volumes of the Prometheus instance responsible for monitoring user workloads.
+
+| userWorkload.thanosRuler.retention
+| 24h (24 hours)
+| Define data retention time to prevent indefinite storage growth for the Thanos Ruler instance responsible for monitoring user workloads.
+
+| userWorkload.thanosRuler.storage
+| 10Gi
+| Define specific storage resource requests for persistent volumes of the Thanos Ruler instance responsible for monitoring user workloads.
 |===

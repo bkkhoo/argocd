@@ -5,13 +5,13 @@ platform:
   prometheusK8s:
     retention: 7d              # default 15d
     storage: 20Gi
-  alertManager:
+  alertmanagerMain:
     storage: 10Gi
 userWorkload:
   prometheus:
     retention: 24h             # default 4h
     storage: 10Gi
   thanosRuler:
-    retention: 24h              # default 24h
+    retention: 24h             # default 24h
     storage: 10Gi
 ...

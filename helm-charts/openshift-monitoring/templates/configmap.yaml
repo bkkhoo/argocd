@@ -19,6 +19,7 @@ data:
             requests:
               storage: {{ .Values.platform.prometheusK8s.storage }}
     alertmanagerMain:
+      enableUserAlertmanagerConfig: {{ .Values.enableUserWorkload }}
       volumeClaimTemplate:
         spec:
           {{- if hasKey .Values "storageClass" }}
@@ -26,8 +27,7 @@ data:
           {{- end }}
           resources:
             requests:
-              storage: {{ .Values.platform.alertManager.storage }}
-      enableUserAlertmanagerConfig: {{ .Values.enableUserWorkload }}
+              storage: {{ .Values.platform.alertmanagerMain.storage }}
 {{- if .Values.enableUserWorkload }}
 ---
 apiVersion: v1
