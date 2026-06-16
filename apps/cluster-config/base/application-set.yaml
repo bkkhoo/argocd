@@ -30,8 +30,10 @@ spec:
           - name: in-cluster
             server: https://kubernetes.default.svc
             metadata:                 # set label so goTemplate does not error
-              labels:                 # global-hub does not need project-request-template
-                project-template-override: override
+              labels:
+                name: global-hub
+                env: prod
+                project-template-override: override     # global-hub does not need project-request-template
   template:
     metadata:
       name: "{{ .name }}-cluster-config"

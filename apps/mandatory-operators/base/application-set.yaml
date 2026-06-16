@@ -26,6 +26,10 @@ spec:
         elements:
           - name: in-cluster
             server: https://kubernetes.default.svc
+            metadata:
+              labels:
+                name: global-hub
+                env: prod
   template:
     metadata:
       name: "{{ name }}-mandatory-operators"
