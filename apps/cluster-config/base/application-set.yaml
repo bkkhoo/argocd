@@ -75,6 +75,14 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/etcd-backup
+        # configure image config, restricting allowed registries
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/image-config
+        # configure openshift monitoring stack
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/openshift-monitoring
         # configure project request template
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main

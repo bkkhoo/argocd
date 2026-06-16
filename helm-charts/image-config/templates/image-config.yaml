@@ -1,0 +1,25 @@
+---
+apiVersion: config.openshift.io/v1
+kind: Image
+metadata:
+  name: cluster
+spec:
+  allowedRegistriesForImport:
+    - domainName: quay.io
+      insecure: false
+  registrySources:
+    allowedRegistries:
+      - registry.redhat.io
+      - registry.access.redhat.com
+      - registry.connect.redhat.com
+      - quay.io
+      - image-registry.openshift-image-registry.svc:5000    # openshift internal registry
+      {{- range .Values.additionalRegistries }}
+      - {{ . }}
+      {{- end }}
+    insecureRegistries: []                                  # do not allow insecure registry
+    containerRuntimeSearchRegistries:
+      - image-registry.openshift-image-registry.svc:5000    # only allow push/pull with image short name from internal registry
+  additionalTrustedCA:
+    name: registry-ca
+...

@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 1.0
+name: openshift-monitoring
+description: OpenShift Monitoring config
+type: application
+version: 1.0
+...

@@ -1,0 +1,32 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Configure OpenShift Monitoring
+
+Configuration of the preinstalled OpenShift Monitoring stack.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-monitoring helm-chart/openshift-monitoring
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+|===
