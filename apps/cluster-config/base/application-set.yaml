@@ -52,7 +52,7 @@ spec:
         # - repoURL: https://github.com/bkkhoo/argocd.git      # restricting allowed registries
         #   targetRevision: main
         #   path: helm-charts/image-config
-        - repoURL: https://github.com/bkkhoo/argocd.git.     # operator hub
+        - repoURL: https://github.com/bkkhoo/argocd.git      # operator hub
           targetRevision: main
           path: kustomize-deployments/operator-hub/base
         - repoURL: https://github.com/bkkhoo/argocd.git      # disable self provisioner
