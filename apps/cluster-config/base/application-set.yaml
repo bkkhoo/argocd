@@ -41,51 +41,42 @@ spec:
     spec:
       project: gitops
       sources:
-        # configure operator hub
-        - repoURL: https://github.com/bkkhoo/argocd.git
-          targetRevision: main
-          path: kustomize-deployments/operator-hub/base
-        # # configure oauth access token timeouts
-        # - repoURL: https://github.com/bkkhoo/argocd.git
+        ######### disable for now, inconvenient inactivity timeout
+        # - repoURL: https://github.com/bkkhoo/argocd.git      # oauth access token timeouts
         #   targetRevision: main
         #   path: helm-charts/oauth
         #   helm:
         #     valuesObject:
         #       env: '{{ index .metadata.labels "env" }}'
-        # disable self provisioner
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        ######### disable for now, config cause node reboot
+        # - repoURL: https://github.com/bkkhoo/argocd.git      # restricting allowed registries
+        #   targetRevision: main
+        #   path: helm-charts/image-config
+        - repoURL: https://github.com/bkkhoo/argocd.git.     # operator hub
+          targetRevision: main
+          path: kustomize-deployments/operator-hub/base
+        - repoURL: https://github.com/bkkhoo/argocd.git      # disable self provisioner
           targetRevision: main
           path: kustomize-deployments/self-provisioner/base
-        # disable openshift insights and telemetry services
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        - repoURL: https://github.com/bkkhoo/argocd.git      # disable openshift insights and telemetry services
           targetRevision: main
           path: kustomize-deployments/openshift-insights/base
-        # configure managementState to Removed for openshift samples operator
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        - repoURL: https://github.com/bkkhoo/argocd.git      # openshift samples operator managementState=Removed
           targetRevision: main
           path: kustomize-deployments/openshift-samples/base
-        # configure motd
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        - repoURL: https://github.com/bkkhoo/argocd.git      # motd
           targetRevision: main
           path: kustomize-deployments/motd/base
-        # enable etcd encryption
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        - repoURL: https://github.com/bkkhoo/argocd.git      # enable etcd encryption
           targetRevision: main
           path: kustomize-deployments/etcd-encryption/base
-        # setup etcd backup cronjob
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        - repoURL: https://github.com/bkkhoo/argocd.git      # setup etcd backup cronjob
           targetRevision: main
           path: helm-charts/etcd-backup
-        # configure image config, restricting allowed registries
-        - repoURL: https://github.com/bkkhoo/argocd.git
-          targetRevision: main
-          path: helm-charts/image-config
-        # configure openshift monitoring stack
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        - repoURL: https://github.com/bkkhoo/argocd.git      # openshift monitoring stack
           targetRevision: main
           path: helm-charts/openshift-monitoring
-        # configure project request template
-        - repoURL: https://github.com/bkkhoo/argocd.git
+        - repoURL: https://github.com/bkkhoo/argocd.git     # project request template
           targetRevision: main
           path: helm-charts/project-request-template
           helm:
@@ -94,7 +85,7 @@ spec:
       destination:
         server: "{{ .server }}"
       ignoreDifferences:
-        - group: batch                   # the etcd-backup cronjob schedule has random values
+        - group: batch            # the etcd-backup cronjob schedule has random values
           kind: CronJob
           name: etcd-backup
           namespace: etcd-backup
@@ -102,8 +93,8 @@ spec:
             - /spec/schedule
       syncPolicy:
         automated:
-          prune: false       # the config here modify pre-existing resources that are part of openshift
-          selfHeal: true     # do not delete the resources when they are no longer defined in git
+          prune: false            # the config here modify pre-existing resources that are part of openshift
+          selfHeal: true          # do not delete the resources when they are no longer defined in git
         syncOptions:
           - CreateNamespace=true
       info:
