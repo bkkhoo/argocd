@@ -6,8 +6,8 @@ metadata:
   namespace: stackrox
 status:
   conditions:
-    - status: "True"
-      type: Available
+    - type: Available
+      status: "True"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -16,8 +16,8 @@ metadata:
   namespace: stackrox
 status:
   conditions:
-    - status: "True"
-      type: Available
+    - type: Available
+      status: "True"
 ---
 apiVersion: apps/v1
 kind: DaemonSet

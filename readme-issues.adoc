@@ -21,9 +21,9 @@ error synchronizing cache state : failed to load open api schema while syncing c
 
 This ArgoCD sync error essentially means that ArgoCD's application controller is trying to build a cache of the cluster's API schemas, but it encountered a broken, malformed, or incompatible Custom Resource Definition (CRD) version installed on the cluster by RHACM.
 
-The incompatibility was likely introduced in RHACM v2.16.3, making ArgoCD v1.20 incompatible with RHACM v2.16.
+The issue was likely introduced in RHACM v2.16.3, making ArgoCD v1.20 incompatible with RHACM v2.16, see https://redhat.atlassian.net/browse/ACM-35283.
 
-Until a newer version of ArgoCD that is compatible with RHACM v2.16 becomes available, the current workaround is to use RHACM v2.15.
+Until the issue is fixed, the current workaround is to use RHACM v2.15.
 
 == ArgoCD Applications Stuck in Unknown Status (ArgoCD application controller OOMKilled)
 

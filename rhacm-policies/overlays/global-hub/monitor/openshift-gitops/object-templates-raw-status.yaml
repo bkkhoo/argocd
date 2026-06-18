@@ -24,8 +24,8 @@ object-templates-raw: |
         namespace: openshift-gitops
       status:
         conditions:
-          - status: "True"
-            type: Available
+          - type: Available
+            status: "True"
   {{- $app_ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
   {{- $replicas := $app_ss.status.replicas }}
   {{- $ready_replicas := $app_ss.status.readyReplicas }}
