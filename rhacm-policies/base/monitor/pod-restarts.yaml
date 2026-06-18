@@ -1,0 +1,23 @@
+# flag pod with more than 200 restarts
+---
+object-templates-raw: |
+  {{- $pods := dict }}
+  {{- range (lookup "v1" "Pod" "" "").items }}
+    {{- $namespace := .metadata.namespace }}
+    {{- $name := .metadata.name }}
+    {{- $container_statuses := .status.containerStatuses }}
+    {{- $restart_count := 0 }}
+    {{- range $container_statuses }}
+      {{- $restart_count = add $restart_count .restartCount }}
+    {{- end }}
+    {{- if gt $restart_count 200 }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: {{ $name }}
+        namespace: {{ $namespace }}
+    {{- end }}
+  {{- end }}
+...

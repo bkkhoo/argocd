@@ -101,6 +101,11 @@ policies:
     manifests:
       - path: monitor/install-plan-status.yaml
 
+  - name: monitor-pod-with-more-than-200-restarts
+    description: monitor pods with more than 200 restarts
+    manifests:
+      - path: monitor/pod-restarts.yaml
+
   - name: monitor-container-oom-killed
     description: monitor container oom-killed
     complianceType: mustnothave

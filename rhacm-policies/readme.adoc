@@ -80,6 +80,11 @@ These policies are common to both global hub and managed hubs.
 | All OpenShift clusters.
 | Monitor InstallPlans that are pending approval.
 
+| monitor-pod-with-more-than-200-restarts
+| Inform
+| All OpenShift clusters.
+| Monitor pods with more than 200 restarts.
+
 | monitor-container-oom-killed
 | Inform
 | All OpenShift clusters.
