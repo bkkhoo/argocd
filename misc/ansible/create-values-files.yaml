@@ -1,9 +1,4 @@
-# ansible-playbook -i localhost, misc/ansible/cluster-values.yaml
-#
-# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-global-cluster01.yaml | oc apply -f -
-# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-dev-hub01.yaml | oc apply -f -
-# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-hub01.yaml | oc apply -f -
-# helm template helm-charts/rhacm-import-cluster/ --values /tmp/values-prod-cluster01.yaml | oc apply -f -
+# ansible-playbook -i localhost, misc/ansible/create-values-files.yaml
 #
 ---
 - name: bootstrap
@@ -19,24 +14,28 @@
     #     api: <api-server-url>
     #     username: <username>
     #     password: <password>
-    #     managed_hub: false
+    #     labels:
+    #       managed-hub: no
+    #       env: prod
     #   prod-hub01:
     #     console: <console-url>
     #     api: <api-server-url>
     #     username: <username>
     #     password: <password>
-    #     env: prod        # env is optional
-    #     managed_hub: true
+    #     labels:
+    #       managed-hub: yes
+    #       env: prod
     #   prod-cluster01:
     #     console: <console-url>
     #     api: <api-server-url>
     #     username: <username>
     #     password: <password>
-    #     env: prod
-    #     managed_hub: false
+    #     labels:
+    #       managed-hub: no
+    #       env: prod
 
   tasks:
-    - name: test
+    - name: create values file for each cluster
       loop: "{{ clusters | dict2items }}"
       loop_control:
         label: "{{ item.key }}"
@@ -45,11 +44,10 @@
         _url: "{{ item.value.api }}"
         _username: "{{ item.value.username }}"
         _password: "{{ item.value.password }}"
-        _env: "{{ item.value.env | default('xxx') }}"
-        _managed_hub: "{{ item.value.managed_hub | bool }}"
+        _labels: "{{ item.value.labels }}"
       ansible.builtin.include_tasks: tasks/setup-import-cluster-values.yaml
 
-    - name: change to global-hub context
+    - name: change to {{ (clusters | dict2items)[0].key }} context
       ansible.builtin.command:
-        cmd: oc config use-context global-hub
+        cmd: oc config use-context {{ (clusters | dict2items)[0].key }}
 ...

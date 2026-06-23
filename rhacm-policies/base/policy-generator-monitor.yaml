@@ -45,6 +45,12 @@ policies:
     manifests:
       - path: monitor/node-status.yaml
 
+  - name: monitor-control-plane-node-schedulable
+    description: monitor control plane nodes that are schedulable
+    complianceType: mustnothave
+    manifests:
+      - path: monitor/control-plane-node-schedulable.yaml
+
   - name: monitor-etcd-encryption
     description: verify that ETCD encryption has completed
     complianceType: musthave
@@ -100,6 +106,20 @@ policies:
         - "*"
     manifests:
       - path: monitor/install-plan-status.yaml
+
+  - name: monitor-pod-using-default-service-account
+    description: monitor pod using the default service account.
+    complianceType: mustnothave
+    namespaceSelector:
+      exclude:
+        - "kube-*"
+        - "openshift*"
+        - "open-cluster-management*"
+        - keycloak
+      include:
+        - "*"
+    manifests:
+      - path: monitor/pod-using-default-service-account.yaml
 
   - name: monitor-pod-with-more-than-200-restarts
     description: monitor pods with more than 200 restarts

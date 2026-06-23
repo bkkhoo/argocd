@@ -3,7 +3,7 @@
 # clusterName: DUMMY
 # clusterURL: DUMMY
 # clusterAuthToken: DUMMY
-# clusterLabels:
-#   env: dev
-#   managed-hub: "yes"
 # clusterSet: gitops-clusters
+# clusterLabels:
+#   managed-hub: "yes"
+#   env: dev

@@ -5,7 +5,7 @@ name: {{ required "the value clusterName is required" .Values.clusterName }}
 {{- if and (hasKey .Values "clusterSet") (not (empty .Values.clusterSet)) }}
 cluster.open-cluster-management.io/clusterset: {{ .Values.clusterSet }}
 {{- end }}
-{{- with .Values.clusterLabels }}
-{{ toYaml . }}
+{{- range $key, $value := .Values.clusterLabels }}
+{{ $key }}: "{{ $value }}"
 {{- end }}
 {{- end }}

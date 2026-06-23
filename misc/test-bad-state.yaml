@@ -180,6 +180,22 @@ spec:
     name: central
     weight: 100
   wildcardPolicy: None
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: dummy-operator-group-1
+  namespace: test-bad-status
+spec:
+  upgradeStrategy: Default
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: dummy-operator-group-2
+  namespace: test-bad-status
+spec:
+  upgradeStrategy: Default
 ...
 
 # oc -n test-bad-status get pod -w -o json | jq '{"name": .metadata.name, "started": .status.containerStatuses[].started, "state": .status.containerStatuses[].state.waiting.reason, "lastState": .status.containerStatuses[].lastState.terminated.reason}'

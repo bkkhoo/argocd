@@ -45,6 +45,11 @@ These policies are common to both global hub and managed hubs.
 | All OpenShift clusters.
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
 
+| monitor-control-plane-node-schedulable
+| Inform
+| All OpenShift clusters.
+| Monitor control plane nodes that are schedulable.
+
 | monitor-etcd-encryption
 | Inform
 | All OpenShift clusters.
@@ -79,6 +84,11 @@ These policies are common to both global hub and managed hubs.
 | Inform
 | All OpenShift clusters.
 | Monitor InstallPlans that are pending approval.
+
+| monitor-pod-using-default-service-account
+| Inform
+| All OpenShift clusters.
+| Monitor pods using the default service account.
 
 | monitor-pod-with-more-than-200-restarts
 | Inform
