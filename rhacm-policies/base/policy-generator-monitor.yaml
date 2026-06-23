@@ -115,6 +115,7 @@ policies:
         - "kube-*"
         - "openshift*"
         - "open-cluster-management*"
+        - "knative-*"
         - keycloak
       include:
         - "*"
