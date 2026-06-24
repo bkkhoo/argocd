@@ -64,6 +64,9 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git      # openshift samples operator managementState=Removed
           targetRevision: main
           path: kustomize-deployments/openshift-samples/base
+        - repoURL: https://github.com/bkkhoo/argocd.git      # enable hsts on console routes
+          targetRevision: main
+          path: kustomize-deployments/enable-hsts-on-console-routes
         - repoURL: https://github.com/bkkhoo/argocd.git      # motd
           targetRevision: main
           path: kustomize-deployments/motd/base

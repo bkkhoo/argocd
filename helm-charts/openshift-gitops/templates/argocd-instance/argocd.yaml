@@ -55,6 +55,7 @@ spec:
   imageUpdater:
     enabled: false
   sso:
+    provider: dex
     dex:
       openShiftOAuth: true
       resources:
@@ -64,7 +65,6 @@ spec:
         requests:
           cpu: "{{ .Values.dex.resources.requests.cpu }}"
           memory: {{ .Values.dex.resources.requests.memory }}
-    provider: dex
   applicationSet:
     enabled: true
     resources:

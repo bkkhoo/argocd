@@ -1,0 +1,18 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= About this Kustomize Deployment
+
+HTTP Strict Transport Security (HSTS) is a web security policy mechanism that protects websites against man-in-the-middle (MITM) attacks, protocol downgrade attacks, and cookie hijacking by enforcing the use of HTTPS connections.
+
+This kustomize deployment enables HSTS for the `console` and `downloads` routes in the `openshift-console` namespace by adding the `haproxy.router.openshift.io/hsts_header: "max-age=31536000;includeSubDomains;preload"` annotation.
+
+[NOTE]
+====
+No overlays are necessary since the configuration is the same for all environments (`dev`, `uat`, or `prod`).
+====
