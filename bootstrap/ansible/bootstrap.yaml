@@ -1,3 +1,7 @@
+# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=yes
+# or
+# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=High -e global_hub=yes
+#
 ---
 - name: bootstrap
   hosts: localhost
@@ -56,7 +60,7 @@
             --set postgresRetention={{ _context[config]['postgresRetention'] }}
           status: Running
   vars_files:
-    - git-repo-vault-encrypted.yaml                   # this file is encrypted with ansible-vault
+    - argocd-repo-vault-encrypted.yaml                # this file is encrypted with ansible-vault
     - openshift-logging-token-vault-encrypted.yaml    # this file is encrypted with ansible-vault
 
   tasks:
@@ -99,14 +103,15 @@
         cmd: oc create namespace rhacm-policies --dry-run=client -o yaml | oc apply -f -
 
     - name: create argocd repo secrets
-      loop: "{{ git_repos }}"
+      loop: "{{ repos }}"
       loop_control:
         label: "{{ item.name }}"
       vars:
         repo_name: "{{ item.name }}"
+        repo_type: "{{ item.type }}"
         repo_url: "{{ item.url }}"
-        repo_username: "{{ item.username }}"
-        repo_token: "{{ item.token }}"
+        repo_username: "{{ item.username if item.username is defined else 'xX_Xx' }}"
+        repo_password: "{{ item.password if item.password is defined else 'xX_Xx' }}"
       ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
 
     - name: create openshift logging secrets

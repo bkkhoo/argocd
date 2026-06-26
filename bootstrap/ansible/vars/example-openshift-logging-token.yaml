@@ -1,0 +1,15 @@
+---
+bearerTokens:
+  dev:
+    application: <bearer-token>
+    infrastructure: <bearer-token>
+    audit: <bearer-token>
+  uat:
+    application: <bearer-token>
+    infrastructure: <bearer-token>
+    audit: <bearer-token>
+  prod:
+    application: <bearer-token>
+    infrastructure: <bearer-token>
+    audit: <bearer-token>
+...

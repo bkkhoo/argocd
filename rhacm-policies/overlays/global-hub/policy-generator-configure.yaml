@@ -42,7 +42,6 @@ placementBindingDefaults:
 policies:
   - name: config-argocd-repo-secrets
     description: copy argocd repo secrets from global hub to managed hubs
-    complianceType: musthave
     policySets:         # override policyDefaults.policySets
       - gh-config-managed-hubs
     manifests:
