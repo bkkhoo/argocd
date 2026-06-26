@@ -14,6 +14,28 @@ This diagram illustrates how different components (Multicluster Global Hub, Red 
 
 image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 
+== Terminology
+
+[cols="1,4"]
+|===
+| Global Hub
+| Multicluster Global Hub is a component of RHACM that enables the management of multiple hub clusters from a single central control plane.  It is designed for high-scale environments where a single hub cannot effectively manage the volume of clusters, allowing administrators to divide clusters into groups, each managed by a specific managed hub, while the global hub aggregates and monitors data across all of them.
+
+| Managed Hub
+| RHACM hub clusters that are imported into the global hub. They manage their own local clusters and synchronize state, policy compliance, and inventory data back to the global hub via the multicluster-global-hub-agent.
+
+| Managed Cluster
+| Any OpenShift/Kubernetes cluster that is enrolled into the RHACM environment to be governed and monitored. These clusters communicate with the central/managed hub cluster via a client component called the `Klusterlet`, which pulls configuration, policies, and workload definitions from the hub.
+
+| `local-cluster`
+a| The `local-cluster` is a reserved namespace and resource in RHACM that represents the hub cluster when it is managed by itself. By default, RHACM automatically imports and manages the hub cluster as the `local-cluster`, allowing for a unified view of the entire fleet from a single console.
+
+**Note**: The managed hub's `local-cluster` is disabled when the managed hub is imported to the global hub in default mode.
+
+| `in-cluster`
+| When ArgoCD is installed within an OpenShift/Kubernetes cluster, it automatically registers that specific cluster as the `in-cluster` connection, allowing it to deploy applications to itself without additional configuration. This local cluster is distinguished from remote clusters by the absence of a corresponding Secret resource with the `argocd.argoproj.io/secret-type: cluster` label; therefore, standard label selectors targeting this label will exclude the local cluster.
+|===
+
 == Repository Folders
 
 [source,bash]
@@ -89,29 +111,7 @@ image::./images/multicluster-global-hub.png[Multicluster Global Hub]
 
 - link:apps/[ArgoCD Application and ApplicationSets]
 - link:helm-charts/[Helm Charts]
-- link:kustomize-deployment/[Kustomize Deployment]
-
-== Terminology
-
-[cols="1,4"]
-|===
-| Global Hub
-| Multicluster Global Hub is a component of RHACM that enables the management of multiple hub clusters from a single central control plane.  It is designed for high-scale environments where a single hub cannot effectively manage the volume of clusters, allowing administrators to divide clusters into groups, each managed by a specific managed hub, while the global hub aggregates and monitors data across all of them.
-
-| Managed Hub
-| RHACM hub clusters that are imported into the global hub. They manage their own local clusters and synchronize state, policy compliance, and inventory data back to the global hub via the multicluster-global-hub-agent.
-
-| Manage Cluster
-| Any OpenShift/Kubernetes cluster that is enrolled into the RHACM environment to be governed and monitored. These clusters communicate with the central/managed hub cluster via a client component called the `Klusterlet`, which pulls configuration, policies, and workload definitions from the hub.
-
-| `local-cluster`
-a| The `local-cluster` is a reserved namespace and resource in RHACM that represents the hub cluster when it is managed by itself. By default, RHACM automatically imports and manages the hub cluster as the `local-cluster`, allowing for a unified view of the entire fleet from a single console.
-
-**Note**: The managed hub `local-cluster` is disabled when managed-hub is imported to the global hub in default mode.
-
-| `in-cluster`
-| When ArgoCD is installed within an OpenShift/Kubernetes cluster, it automatically registers that specific cluster as the `in-cluster` connection, allowing it to deploy applications to itself without additional configuration. This local cluster is distinguished from remote clusters by the absence of a corresponding Secret resource with the `argocd.argoproj.io/secret-type: cluster` label; therefore, standard label selectors targeting this label will exclude the local cluster.
-|===
+- link:kustomize-deployments/[Kustomize Deployments]
 
 == Usage
 
@@ -205,20 +205,10 @@ See link:readme-issues.adoc[document].
 
 == To-dos
 
-. RHACM policy to distribute repo secret (the secret configure ARgoCD repository) from global-hub `rhacm-policies` namespace to managed-hub `openshift-gitops` namespace.
-** The current setup:
-*** link:bootstrap/ansible/bootstrap.yaml[Bootstrap ansible playbook] creates the secrets on global-hub `rhacm-policies` and `openshift-gitops` namespaces. The access tokens are stored in link:bootstrap/ansible/vars/github-token-vault-encrypted.yaml[ansible-vault encrypted file].
-*** RHACM policy `config-rhacs-secured-cluster` uses link:rhacm-policies/base/config/openshift-gitops/repo-secret.yaml[static configuration] to deploy the secrets to managed-hubs.
-** The ideal setup:
-*** RHACM policy dynamically retrieve the secrets from global-hub `rhacm-policies` namespace (using `argocd.argoproj.io/secret-type=repository` label selector) and deploy them to  managed-hubs.
-
-. RHACM policies to monitor RHACS central on managed-hubs since **__managed-hubs do not manage themselves__**.
-
 == References
 
 - link:https://oneuptime.com/blog/post/2026-02-26-argocd-ordering-priority-multiple-sources/view[ArgoCD resource ordering]
 - link:https://access.redhat.com/solutions/6012601[OpenShift GitOps sync is failing in user namespace]
-
 - Tips for using templating in RHACM governance policies:
   ** link:https://www.redhat.com/en/blog/tips-for-using-templating-in-governance-policies-part-1[Part 1]
   ** link:https://www.redhat.com/en/blog/tips-for-using-templating-in-governance-policies-part-2[Part 2]
