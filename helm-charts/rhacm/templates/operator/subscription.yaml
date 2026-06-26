@@ -11,7 +11,7 @@ spec:
   name: advanced-cluster-management
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  channel: release-2.15
+  channel: {{ .Values.operatorChannel }}
   installPlanApproval: Automatic
   # config:
   #   nodeSelector:
