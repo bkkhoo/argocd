@@ -8,4 +8,50 @@ resources:
 generators:
   - policy-generator-configure.yaml
   - policy-generator-monitor.yaml
+
+patches:
+  - target:
+      kind: Placement
+    patch: |
+      - op: add
+        path: "/spec/clusterSets"
+        value:
+          - gitops-clusters
+          - default
+      - op: add
+        path: "/metadata/labels"
+        value:
+          app.kubernetes.io/generated-by: policy-generator
+          app.kubernetes.io/part-of: rhacm-policies
+      - op: add
+        path: "/metadata/annotations"
+        value:
+          argocd.argoproj.io/sync-wave: "5"
+          argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  - target:
+      kind: PlacementBinding
+    patch: |
+      - op: add
+        path: "/metadata/labels"
+        value:
+          app.kubernetes.io/generated-by: policy-generator
+          app.kubernetes.io/part-of: rhacm-policies
+      - op: add
+        path: "/metadata/annotations"
+        value:
+          argocd.argoproj.io/sync-wave: "5"
+          argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  - target:
+      kind: PolicySet
+    patch: |
+      - op: add
+        path: "/metadata/labels"
+        value:
+          app.kubernetes.io/generated-by: policy-generator
+          app.kubernetes.io/part-of: rhacm-policies
+      - op: add
+        path: "/metadata/annotations"
+        value:
+          argocd.argoproj.io/sync-wave: "5"
+          argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 ...
