@@ -71,6 +71,11 @@ a| Deploy the following operators:
 | All OpenShift clusters, excluding `local-cluster` and any cluster with `managed-hub` label.
 | Deploy RHACS SecuredCluster.
 
+| metallb
+| ApplicationSet
+| All OpenShift clusters without the `managed-hub` label but with the `metallb` label.
+| Deploy and configure MetalLB in L2 or BGP mode.
+
 | test-app
 | ApplicationSet
 | All OpenShift clusters without the `managed-hub` label but with the `test-app` label.

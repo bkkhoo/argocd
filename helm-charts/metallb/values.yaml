@@ -1,0 +1,22 @@
+---
+advertisementMode: l2
+ipAddressRanges: []
+#### example
+# bgp:
+#   myASN: 64513
+#   peerASN: 64512
+#   routerID: 10.10.10.13
+#   keepaliveTime: 30s
+#   holdTime: 90s
+#   passwordSecret: bgp-secret
+#   ebgpMultiHop: false
+#   aggregationLength: 29
+#   communities:
+#     - 65535:65281           # NO_EXPORT
+#     - 65535:65282           # NO_ADVERTISE
+#   peers:
+#     - peerAddress: 10.118.11.1
+#       peerPort: 179
+#     - peerAddress: 10.118.11.2
+#       peerPort: 179
+...

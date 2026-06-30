@@ -1,0 +1,16 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: ip-address-pool
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  avoidBuggyIPs: true      # avoid .0 and .255, some system cannot handle these addresses properly
+  addresses:
+  {{- range $ipRange := .Values.ipAddressRanges }}
+  - {{ $ipRange }}
+  {{- end }}
+...

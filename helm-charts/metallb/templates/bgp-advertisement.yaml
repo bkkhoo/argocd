@@ -1,0 +1,28 @@
+{{- if eq .Values.advertisementMode "bgp" }}
+---
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: bgp-advertisement
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "110"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  ipAddressPools:
+    - ip-address-pool
+  peers:
+    {{- range $peer := .Values.bgp.peers }}
+    - peer-{{ $peer.peerAddress | replace "." "-" }}
+    {{- end }}
+  {{- if hasKey .Values.bgp "aggregationLength" }}
+  aggregationLength: {{ .Values.bgp.aggregationLength }}
+  {{- end }}
+  {{- if hasKey .Values.bgp "communities" }}
+  communities:
+    {{- range $community := .Values.bgp.communities }}
+    - {{ $community }}
+    {{- end }}
+  {{- end }}
+...
+{{- end }}

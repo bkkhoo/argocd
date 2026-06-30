@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 4.20      # the version depends on openshift catalog source, need not necessary match what is specified here
+name: metallb
+description: Metal LB
+type: application
+version: 1.0
+...

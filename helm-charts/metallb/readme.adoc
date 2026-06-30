@@ -1,0 +1,91 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Metal LB
+
+MetalLB is a load-balancer implementation for bare-metal Kubernetes clusters that uses standard routing protocols.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-gitops helm-chart/metallb
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete metallb
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,2,6", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| advertisementMode
+| l2
+a| Set how IPv4 addresses are advertised to externally:
+
+- l2: Layer 2 mode, one node assumes the responsibility of advertising a service to the local network, and uses standard address discovery protocols (ARP for IPv4) to make those IPs reachable on the local network.
+- bgp: BGP mode, all nodes in the cluster establish BGP peering sessions with nearby routers, and tell those routers how to forward traffic to the service IPs.
+
+| ipAddressRanges
+| Empty list
+| Define the ranges of IP addresses that can be assigned to services.
+
+| bgp.myASN
+| None
+| Specifies the Autonomous System Number (ASN) for the local end of the BGP session.
+
+| bgp.peerASN
+| None
+| Specifies the ASN for the remote end of the BGP session.
+
+| bgp.peers.peerAddress
+| None
+| The IP address of the peer to contact for establishing the BGP session.
+
+| bgp.peers.peerPort
+| None
+| Optional; the network port of the peer to contact for establishing the BGP session.  Default is 179.
+
+| bgp.routerID
+| None
+| Optional; the router ID to advertise to the BGP peer.
+
+| bgp.keepaliveTime
+| None
+| Optional; the maximum interval between sending keep-alive messages to the BGP peer. Default is 30s.
+
+| bgp.holdTime
+| None
+| Optional; the duration for the hold time to propose to the BGP peer. Default is 90s.
+
+| bgp.ebgpMultiHop
+| None
+| Optional; if BGP peer is multiple network hops away, required if the BGP peer is not directly connected to the same network. This field applies to external BGP. Default is false.
+
+| bgp.aggregationLength
+| None
+| Optional; aggregate the routes that the speaker advertises to BGP peers. For example, with an aggregation length of 24, the speaker can aggregate several 10.0.1.x/32 service IP addresses and advertise a single 10.0.1.0/24 route.
+
+| bgp.communities
+| Empty list
+| Optional; specifies one or more BGP communities.
+|===

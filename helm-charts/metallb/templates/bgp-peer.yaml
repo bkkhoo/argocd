@@ -1,0 +1,35 @@
+{{- if eq .Values.advertisementMode "bgp" }}
+{{- $bgpSettings := .Values.bgp }}
+{{- range $peer := .Values.bgp.peers }}
+---
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: peer-{{ $peer.peerAddress | replace "." "-" }}
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "110"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  myASN: {{ $bgpSettings.myASN }}
+  peerASN: {{ $bgpSettings.peerASN }}
+  peerAddress: {{ $peer.peerAddress }}
+  {{- if hasKey $peer "peerPort" }}
+  peerPort: {{ $peer.peerPort }}
+  {{- end }}
+  {{- if hasKey $bgpSettings "routerID" }}
+  routerID: {{ $bgpSettings.routerID }}
+  {{- end }}
+  {{- if hasKey $bgpSettings "keepaliveTime" }}
+  keepaliveTime: {{ $bgpSettings.keepaliveTime }}
+  {{- end }}
+  {{- if hasKey $bgpSettings "holdTime" }}
+  holdTime: {{ $bgpSettings.holdTime }}
+  {{- end }}
+  passwordSecret: bgp-secret
+  {{- if hasKey $bgpSettings "ebgpMultiHop" }}
+  ebgpMultiHop: {{ $bgpSettings.ebgpMultiHop }}
+  {{- end }}
+{{- end }}
+...
+{{- end }}

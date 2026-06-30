@@ -1,0 +1,62 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: metallb
+  namespace: openshift-gitops
+  labels:
+    applications: cluster-config
+spec:
+  goTemplate: true                     # enable go templating for spec.template field
+  goTemplateOptions:
+    - missingkey=error
+  syncPolicy:
+    preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
+  generators:
+    - clusters:                        # on global-hub, deploy to all clusters except those with managed-hub label
+        selector:                      # on managed-hubs, no cluster should have the managed-hub label
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+            - key: managed-hub
+              operator: DoesNotExist
+  template:
+    metadata:
+      name: "{{ .name }}-metallb"
+      labels:
+        applications: metallb
+    spec:
+      project: gitops
+      sources:
+        - repoURL: https://github.com/bkkhoo/helm-values.git
+          targetRevision: main
+          path: metallb
+          ref: helmValues       # for referencing value files from git source
+        - repoURL: https://github.com/bkkhoo/argocd.git
+          targetRevision: main
+          path: helm-charts/metallb
+          helm:
+            valuesObject:
+              deploymentType: all
+            valueFiles:
+              # referencing values from git repo source[0].ref above
+              # even though source[0].ref.path is specified, the $helmValues still represents the root of the source with ref field
+              - '$helmValues/metallb/{{ .metadata.labels "name" }}/values.yaml'
+      destination:
+        server: "{{ .server }}"
+      syncPolicy:
+        automated:
+          prune: false            # the config here modify pre-existing resources that are part of openshift
+          selfHeal: true          # do not delete the resources when they are no longer defined in git
+        syncOptions:
+          - CreateNamespace=true
+      info:
+        - name: env
+          value: any
+        - name: type
+          value: applicationSet
+        - name: target
+          value: any clusters that is not hub cluster
+...
