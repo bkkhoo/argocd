@@ -43,7 +43,7 @@ spec:
             valueFiles:
               # referencing values from git repo source[0].ref above
               # even though source[0].ref.path is specified, the $helmValues still represents the root of the source with ref field
-              - '$helmValues/metallb/{{ .metadata.labels "name" }}/values.yaml'
+              - '$helmValues/metallb/{{ .metadata.labels.name }}/values.yaml'
       destination:
         server: "{{ .server }}"
       syncPolicy:
