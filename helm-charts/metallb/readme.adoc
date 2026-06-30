@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Metal LB
 
-MetalLB is a load-balancer implementation for bare-metal Kubernetes clusters that uses standard routing protocols.
+MetalLB is a load-balancer implementation for bare-metal Kubernetes clusters that uses standard routing protocols. This helm install and configure MetalLB in Layer 2 or BGP mode.
 
 == Installing the Chart
 

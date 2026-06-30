@@ -1,5 +1,5 @@
 ---
-advertisementMode: l2
+advertisementMode: l2        # l2 or bgp
 ipAddressRanges: []
 #### example
 # bgp:
