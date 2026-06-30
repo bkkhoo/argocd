@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Metal LB
 
-MetalLB is a load-balancer implementation for bare-metal Kubernetes clusters that uses standard routing protocols. This helm install and configure MetalLB in Layer 2 or BGP mode.
+MetalLB is a load-balancer implementation for bare-metal Kubernetes clusters that uses standard routing protocols. This Helm chart installs and configures MetalLB in Layer 2 or BGP mode. Currently, only IPv4 address assignment is supported by this Helm chart.
 
 == Installing the Chart
 
@@ -40,7 +40,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 | advertisementMode
 | l2
-a| Set how IPv4 addresses are advertised to externally:
+a| Set how IP addresses are advertised externally:
 
 - l2: Layer 2 mode, one node assumes the responsibility of advertising a service to the local network, and uses standard address discovery protocols (ARP for IPv4) to make those IPs reachable on the local network.
 - bgp: BGP mode, all nodes in the cluster establish BGP peering sessions with nearby routers, and tell those routers how to forward traffic to the service IPs.

@@ -5,7 +5,7 @@ metadata:
   name: metallb
   namespace: openshift-gitops
   labels:
-    applications: cluster-config
+    applications: metallb
 spec:
   goTemplate: true                     # enable go templating for spec.template field
   goTemplateOptions:
@@ -38,14 +38,13 @@ spec:
           targetRevision: main
           path: helm-charts/metallb
           helm:
-            valuesObject:
-              deploymentType: all
             valueFiles:
               # referencing values from git repo source[0].ref above
               # even though source[0].ref.path is specified, the $helmValues still represents the root of the source with ref field
               - '$helmValues/metallb/{{ .metadata.labels.name }}/values.yaml'
       destination:
         server: "{{ .server }}"
+        namespace: metallb-system
       syncPolicy:
         automated:
           prune: false            # the config here modify pre-existing resources that are part of openshift
