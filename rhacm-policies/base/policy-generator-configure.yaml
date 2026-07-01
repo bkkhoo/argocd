@@ -54,7 +54,7 @@ policySets:
             values:
               - OpenShift
           - key: metallb
-            operator: DoesNotExist
+            operator: Exists
 
 placementBindingDefaults:
   name: base-config-binding
