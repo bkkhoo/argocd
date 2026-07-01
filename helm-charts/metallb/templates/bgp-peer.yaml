@@ -27,7 +27,7 @@ spec:
   holdTime: {{ $bgpSettings.holdTime }}
   {{- end }}
   passwordSecret:
-    name: bgp-secret
+    name: bgp-password
   {{- if hasKey $bgpSettings "ebgpMultiHop" }}
   ebgpMultiHop: {{ $bgpSettings.ebgpMultiHop }}
   {{- end }}

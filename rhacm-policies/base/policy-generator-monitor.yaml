@@ -88,7 +88,8 @@ policies:
       include:
         - "*"
       exclude:
-        - etcd-backup       # etcd backup cronjob run as privileged container
+        - etcd-backup          # etcd backup cronjob run as privileged container
+        - openshift-frr-k8s    # frr (free range routing) instances deployed by metal lb
     manifests:
       - path: monitor/privileged-scc-role-binding.yaml
 

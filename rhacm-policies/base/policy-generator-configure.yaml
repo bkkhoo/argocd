@@ -44,6 +44,18 @@ policySets:
               - local-cluster
           - key: managed-hub
             operator: DoesNotExist
+  - name: base-config-metallb
+    description: base config policies for all clusters with metallb label
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+          - key: metallb
+            operator: DoesNotExist
+
 placementBindingDefaults:
   name: base-config-binding
 
@@ -74,4 +86,11 @@ policies:
       - base-config-no-local-cluster-no-managed-hub
     manifests:
       - path: config/openshift-logging/secret.yaml
+
+  - name: config-metallb-bgp-password-secret
+    description: copy metallb bgp password secret from managed hub to managed clusters
+    policySets:         # override policyDefaults.policySets
+      - base-config-metallb
+    manifests:
+      - path: config/metallb-bgp-password-secret.yaml
 ...

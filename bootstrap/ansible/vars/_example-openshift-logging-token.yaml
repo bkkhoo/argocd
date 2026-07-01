@@ -1,5 +1,5 @@
 ---
-bearerTokens:
+openshift_logging_bearer_tokens:
   dev:
     application: <bearer-token>
     infrastructure: <bearer-token>

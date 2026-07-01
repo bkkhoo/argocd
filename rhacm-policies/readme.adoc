@@ -35,6 +35,11 @@ These policies are common to both global hub and managed hubs.
 | All OpenShift clusters, except hub clusters (`local-cluster` and cluster with `managed-hub` label).
 | Copy OpenShift logging HTTP endpoint authentication secrets to all clusters.
 
+| config-metallb-bgp-password-secret
+| Enforce
+| All clusters with `metallb` label.
+| Copy MetalLB BGP password secret from managed hub to managed clusters.
+
 | monitor-cluster-operators
 | Inform
 | All OpenShift clusters.
@@ -170,7 +175,12 @@ These policies are for global hub only.
 | config-openshift-logging-http-secret-hub
 | Enforce
 | `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Copy OpenShift logging HTTP endpoint authentication secrets to global hub and managed hubs
+| Copy OpenShift logging HTTP endpoint authentication secrets to global hub and managed hubs.
+
+| config-metallb-bgp-password-secret-hub
+| Enforce
+| All clusters with `managed-hub` label.
+| Copy MetalLB BGP password secret from global hub to managed hubs.
 
 | monitor-managed-clusters
 | Inform

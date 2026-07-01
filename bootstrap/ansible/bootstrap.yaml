@@ -62,6 +62,7 @@
   vars_files:
     - argocd-repo-vault-encrypted.yaml                # this file is encrypted with ansible-vault
     - openshift-logging-token-vault-encrypted.yaml    # this file is encrypted with ansible-vault
+    - metallb-bgp-password-vault-encrypted.yaml       # this file is encrypted with ansible-vault
 
   tasks:
     - name: fail if invalid config
@@ -103,7 +104,7 @@
         cmd: oc create namespace rhacm-policies --dry-run=client -o yaml | oc apply -f -
 
     - name: create argocd repo secrets
-      loop: "{{ repos }}"
+      loop: "{{ argo_repos }}"
       loop_control:
         label: "{{ item.name }}"
       vars:
@@ -115,7 +116,14 @@
       ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
 
     - name: create openshift logging secrets
-      ansible.builtin.include_tasks: tasks/openshift-logging-secret.yaml
+      vars:
+        _template: openshift-logging-token.yaml
+      ansible.builtin.include_tasks: tasks/deploy-secret.yaml
+
+    - name: create metallb bgp password secret
+      vars:
+        _template: metallb-bgp-password-secret.yaml
+      ansible.builtin.include_tasks: tasks/deploy-secret.yaml
 
     - name: ensure global-hub app-of-apps is deployed
       when: global_hub | bool

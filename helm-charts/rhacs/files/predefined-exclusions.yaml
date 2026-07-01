@@ -46,6 +46,15 @@ openshift-pipelines:
         label:
           key: "app.kubernetes.io/managed-by"
           value: "tekton-pipelines"
+
+metallb:
+  - name: "metal lb namespaces"
+    deployment:
+      name: ""
+      scope:
+        cluster: ""
+        namespace: "metallb-system"
+        label:
 ...
 
 # default-broker

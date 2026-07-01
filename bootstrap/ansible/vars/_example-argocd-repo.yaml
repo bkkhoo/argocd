@@ -1,7 +1,7 @@
 # one or more git/helm repos
 # the username and password parameters are optional
 ---
-repos:
+argo_repos:
   - name: github-argocd
     type: git
     url: https://github.com/bkkhoo/argocd.git
