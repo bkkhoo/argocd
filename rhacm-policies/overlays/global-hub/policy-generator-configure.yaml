@@ -50,7 +50,7 @@ policies:
   - name: config-openshift-logging-http-secret-hub
     description: copy openshift logging http endpoint authentication secrets to global hub and managed hubs
     policySets:         # override policyDefaults.policySets
-      # - gh-config-local-cluster
+      - gh-config-local-cluster
       - gh-config-managed-hubs
     manifests:
       # - path: config/openshift-logging/secret.yaml
