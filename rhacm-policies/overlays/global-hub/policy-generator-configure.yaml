@@ -53,7 +53,7 @@ policies:
       - gh-config-local-cluster
       - gh-config-managed-hubs
     manifests:
-      # - path: config/openshift-logging/secret.yaml
+      - path: config/openshift-logging/secret.yaml
       - path: config/openshift-logging/template-raw-secret.yaml
 
   - name: config-metallb-bgp-password-secret-hub
