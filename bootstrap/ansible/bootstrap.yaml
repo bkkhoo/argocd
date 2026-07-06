@@ -109,17 +109,27 @@
 
     - name: create secrets
       loop:     # the data comes from the ansible vault encrypted vars_files
-        - template: argocd-repo-secret.yaml
+        - secret_name: argocd-repo-all-envs
+          labels:
+            argocd.argoproj.io/secret-type: repository
+          annotations: {}
           data: "{{ argo_repos }}"
-        - template: openshift-logging-token-secret.yaml
+          target_name: argocd-repo
+          target_namespace: openshift-gitops
+        - secret_name: openshift-logging-token-all-envs
+          labels: {}
+          annotations: {}
           data: "{{ openshift_logging_bearer_tokens }}"
-        - template: metallb-bgp-password-secret.yaml
+          target_name: openshift-logging-token
+          target_namespace: rhacm-policies
+        - secret_name: bgp-password-all-envs
+          labels: {}
+          annotations: {}
           data: "{{ metallb_bpg }}"
+          target_name: bgp-password
+          target_namespace: rhacm-policies
       loop_control:
-        label: "{{ item.template }}"
-      vars:
-        _template: "{{ item.template }}"
-        _data: "{{ item.data }}"
+        label: "{{ item.secret_name }}"
       ansible.builtin.include_tasks: tasks/deploy-secret.yaml
 
     - name: ensure global-hub app-of-apps is deployed

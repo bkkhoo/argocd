@@ -46,6 +46,6 @@ policies:
       - gh-config-local-cluster  # local-cluster of the global-hub is also a managed hub
       - gh-config-managed-hubs
     manifests:
-      - path: config/global-hub-secrets/simple.yaml
+      - path: config/global-hub-secrets/dict.yaml
       - path: config/global-hub-secrets/list.yaml
 ...
