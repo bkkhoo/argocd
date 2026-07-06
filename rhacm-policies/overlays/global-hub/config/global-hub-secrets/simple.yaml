@@ -24,6 +24,12 @@ object-templates-raw: |
       metadata:
         name: {{hub index .metadata.annotations "rhacm-policies/target-name" hub}}
         namespace: {{hub index .metadata.annotations "rhacm-policies/target-namespace" hub}}
+        labels:
+          {{hub range $key, $value := .metadata.labels hub}}
+            {{hub- if ne (printf "%.15s" $key) "rhacm-policies/" hub}}
+          {{hub $key hub}}: {{hub $value hub}}
+            {{hub- end hub}}
+          {{hub end hub}}
       stringData:
         {{hub range $key, $value := ($data | base64dec | fromYaml) hub}}
         {{hub $key hub}}: {{hub $value hub}}
