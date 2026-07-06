@@ -17,7 +17,7 @@ policyDefaults:
     - CM-02 Baseline Configuration
   remediationAction: enforce
   policySets:
-    - gh-config-all-clusters
+    - gh-config-managed-hubs
   severity: medium
 policySets:
   - name: gh-config-local-cluster
@@ -48,27 +48,4 @@ policies:
     manifests:
       - path: config/global-hub-secrets/simple.yaml
       - path: config/global-hub-secrets/list.yaml
-
-  # - name: config-argocd-repo-secrets
-  #   description: copy argocd repo secrets from global hub to managed hubs
-  #   policySets:         # override policyDefaults.policySets
-  #     - gh-config-managed-hubs
-  #   manifests:
-  #     - path: config/openshift-gitops/repo-secret.yaml
-
-  # - name: config-openshift-logging-http-secret-hub
-  #   description: copy openshift logging http endpoint authentication secrets to global hub and managed hubs
-  #   policySets:         # override policyDefaults.policySets
-  #     - gh-config-local-cluster
-  #     - gh-config-managed-hubs
-  #   manifests:
-  #     - path: config/openshift-logging/secret.yaml
-  #     - path: config/openshift-logging/template-raw-secret.yaml
-
-  # - name: config-metallb-bgp-password-secret-hub
-  #   description: copy metallb bgp password secret from global hub to managed hubs
-  #   policySets:         # override policyDefaults.policySets
-  #     - gh-config-managed-hubs
-  #   manifests:
-  #     - path: config/metallb-bgp-password-secret.yaml
 ...

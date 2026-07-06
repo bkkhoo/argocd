@@ -45,7 +45,7 @@ object-templates-raw: |
           {{hub $annotations | toYaml | indent 4 hub}}
         {{hub- end hub}}
       stringData:
-        {{hub- range $key, $value := ($data | base64dec | fromYaml) hub}}
+        {{hub- range $key, $value := $data | base64dec | fromJson hub}}
         {{hub $key hub}}: {{hub $value hub}}
         {{hub- end hub}}
     {{hub- end hub}}

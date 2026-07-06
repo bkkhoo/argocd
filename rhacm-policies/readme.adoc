@@ -164,27 +164,21 @@ These policies are for global hub only.
 
 // | 00-monitor-policy-report
 // | Inform
-// | `local-cluster` and all OpenShift cluster with `managed-hub` label.
+// | `local-cluster` and all OpenShift clusters with `managed-hub` label.
 // | Monitor PolicyReports that aggregate and display governance and security violations across managed clusters.
 
-| config-argocd-repo-secrets
+| config-sync-global-hub-secrets
 | Enforce
-| All clusters with `managed-hub` label.
-| Ensure ArgoCD repo secrets are distributed to managed hubs' `openshift-gitops` namespace.
+| `local-cluster` and all OpenShift clusters with `managed-hub` label.
+a| Sync global hub secrets (on `rhacm-policies`` namespace) to managed hubs. The global hub secrets must have the `rhacm-policies/sync-hub-secret=yes` label, and following annotations:
 
-| config-openshift-logging-http-secret-hub
-| Enforce
-| `local-cluster` and all OpenShift cluster with `managed-hub` label.
-| Copy OpenShift logging HTTP endpoint authentication secrets to global hub and managed hubs.
-
-| config-metallb-bgp-password-secret-hub
-| Enforce
-| All clusters with `managed-hub` label.
-| Copy MetalLB BGP password secret from global hub to managed hubs.
+- `rhacm-policies/structure`: `simple` - secret data is a dict or, `list` - secret data is a list of dict.
+- `rhacm-policies/target-name`: name of the secret to create in the target managed hub.
+- `rhacm-policies/target-namespace`: namespace to create the secret on the target managed hub.
 
 | monitor-managed-clusters
 | Inform
-| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor ManagedCluster Availability on global hub and managed hubs.
 
 | monitor-managed-hubs-local-cluster
@@ -199,17 +193,17 @@ These policies are for global hub only.
 
 | monitor-openshift-gitops
 | Inform
-| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor OpenShift GitOps deployments.
 
 | monitor-argocd-application-set
 | Inform
-| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor ArgoCD ApplicationSets.
 
 | monitor-rhacs-central
 | Inform
-| `local-cluster` and all OpenShift cluster with `managed-hub` label.
+| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor RHACS Central and SecuredClusters deployments.
 |===
 

@@ -28,7 +28,7 @@ object-templates-raw: |
           {{hub- $annotations := set $annotations $key $value hub}}
         {{hub- end hub}}
       {{hub- end hub}}
-      {{hub- range $repo := $data | base64dec | fromYaml hub}}
+      {{hub- range $repo := $data | base64dec | fromJson hub}}
   - complianceType: musthave
     objectDefinition:
       apiVersion: v1

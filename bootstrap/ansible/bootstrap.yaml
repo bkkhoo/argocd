@@ -1,6 +1,6 @@
 # ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=yes
 # or
-# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=High -e global_hub=yes
+# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=yes
 #
 ---
 - name: bootstrap
@@ -103,28 +103,15 @@
       ansible.builtin.shell:
         cmd: oc create namespace rhacm-policies --dry-run=client -o yaml | oc apply -f -
 
-    # - name: create argocd repo secrets
-    #   loop: "{{ argo_repos }}"
-    #   loop_control:
-    #     label: "{{ item.name }}"
-    #   vars:
-    #     repo_name: "{{ item.name }}"
-    #     repo_type: "{{ item.type }}"
-    #     repo_url: "{{ item.url }}"
-    #     repo_username: "{{ item.username if item.username is defined else 'xX_Xx' }}"
-    #     repo_password: "{{ item.password if item.password is defined else 'xX_Xx' }}"
-    #   ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
-
-    # - name: create openshift logging secrets
-    #   vars:
-    #     _template: openshift-logging-token.yaml
-    #   ansible.builtin.include_tasks: tasks/deploy-secret.yaml
+    - name: ensure local-cluster is labelled with the correct env
+      ansible.builtin.command:
+        cmd: oc label managedclusters.cluster.open-cluster-management.io local-cluster --overwrite env={{ env }}
 
     - name: create secrets
-      loop:
+      loop:     # the data comes from the ansible vault encrypted vars_files
         - template: argocd-repo-secret.yaml
           data: "{{ argo_repos }}"
-        - template: openshift-logging-token.yaml
+        - template: openshift-logging-token-secret.yaml
           data: "{{ openshift_logging_bearer_tokens }}"
         - template: metallb-bgp-password-secret.yaml
           data: "{{ metallb_bpg }}"
