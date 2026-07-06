@@ -5,7 +5,7 @@
 ---
 object-templates-raw: |
   {{- $env := (lookup "cluster.open-cluster-management.io/v1alpha1" "ClusterClaim" "" "env").spec.value | default "prod" }}
-  {{hub range (lookup "v1" "Secret" "rhacm-policies" "" "rhacm-policies/sync-secret=yes").items hub}}
+  {{hub range (lookup "v1" "Secret" "rhacm-policies" "" "rhacm-policies/sync-hub-secret=yes").items hub}}
     {{hub- if eq (index .metadata.annotations "rhacm-policies/structure") "simple" hub}}
       {{- if eq $env "dev" }}
         {{hub- $data := .data.dev hub}}
