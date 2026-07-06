@@ -6,16 +6,28 @@
 object-templates-raw: |
   {{- $env := (lookup "cluster.open-cluster-management.io/v1alpha1" "ClusterClaim" "" "env").spec.value | default "prod" }}
   {{hub range $secret := (lookup "v1" "Secret" "rhacm-policies" "" "rhacm-policies/sync-hub-secret=yes").items hub}}
-    {{- if eq $env "dev" }}
-      {{hub- $data := $secret.data.dev hub}}
-    {{- end }}
-    {{- if eq $env "uat" }}
-      {{hub- $data := $secret.data.uat hub}}
-    {{- end }}
-    {{- if eq $env "prod" }}
-      {{hub- $data := $secret.data.prod hub}}
-    {{- end }}
     {{hub- if eq (index $secret.metadata.annotations "rhacm-policies/structure") "simple" hub}}
+      {{- if eq $env "dev" }}
+        {{hub- $data := $secret.data.dev hub}}
+      {{- end }}
+      {{- if eq $env "uat" }}
+        {{hub- $data := $secret.data.uat hub}}
+      {{- end }}
+      {{- if eq $env "prod" }}
+        {{hub- $data := $secret.data.prod hub}}
+      {{- end }}
+      {{hub- $labels := dict hub}}
+      {{hub- range $key, $value := $secret.metadata.labels hub}}
+        {{hub- if ne (printf "%.15s" $key) "rhacm-policies/" hub}}
+          {{hub- $labels := set $labels $key $value hub}}
+        {{hub- end hub}}
+      {{hub- end hub}}
+      {{hub- $annotations := dict hub}}
+      {{hub- range $key, $value := $secret.metadata.annotations hub}}
+        {{hub- if ne (printf "%.15s" $key) "rhacm-policies/" hub}}
+          {{hub- $annotations := set $annotations $key $value hub}}
+        {{hub- end hub}}
+      {{hub- end hub}}
   - complianceType: musthave
     objectDefinition:
       apiVersion: v1
@@ -24,22 +36,18 @@ object-templates-raw: |
       metadata:
         name: {{hub index $secret.metadata.annotations "rhacm-policies/target-name" hub}}
         namespace: {{hub index $secret.metadata.annotations "rhacm-policies/target-namespace" hub}}
+        {{hub- if $labels hub}}
         labels:
-          {{hub range $key, $value := $secret.metadata.labels hub}}
-            {{hub- if ne (printf "%.15s" $key) "rhacm-policies/" hub}}
-          {{hub $key hub}}: {{hub $value hub}}
-            {{hub- end hub}}
-          {{hub end hub}}
+          {{hub $labels | toYaml | indent 4 hub}}
+        {{hub- end hub}}
+        {{hub- if $annotations hub}}
         annotations:
-          {{hub range $key, $value := $secret.metadata.annotations hub}}
-            {{hub- if ne (printf "%.15s" $key) "rhacm-policies/" hub}}
-          {{hub $key hub}}: {{hub $value hub}}
-            {{hub- end hub}}
-          {{hub end hub}}
+          {{hub $annotations | toYaml | indent 4 hub}}
+        {{hub- end hub}}
       stringData:
-        {{hub range $key, $value := ($data | base64dec | fromYaml) hub}}
+        {{hub- range $key, $value := ($data | base64dec | fromYaml) hub}}
         {{hub $key hub}}: {{hub $value hub}}
-        {{hub end hub}}
+        {{hub- end hub}}
     {{hub- end hub}}
   {{hub end hub}}
 ...
