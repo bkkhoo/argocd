@@ -103,26 +103,36 @@
       ansible.builtin.shell:
         cmd: oc create namespace rhacm-policies --dry-run=client -o yaml | oc apply -f -
 
-    - name: create argocd repo secrets
-      loop: "{{ argo_repos }}"
+    # - name: create argocd repo secrets
+    #   loop: "{{ argo_repos }}"
+    #   loop_control:
+    #     label: "{{ item.name }}"
+    #   vars:
+    #     repo_name: "{{ item.name }}"
+    #     repo_type: "{{ item.type }}"
+    #     repo_url: "{{ item.url }}"
+    #     repo_username: "{{ item.username if item.username is defined else 'xX_Xx' }}"
+    #     repo_password: "{{ item.password if item.password is defined else 'xX_Xx' }}"
+    #   ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
+
+    # - name: create openshift logging secrets
+    #   vars:
+    #     _template: openshift-logging-token.yaml
+    #   ansible.builtin.include_tasks: tasks/deploy-secret.yaml
+
+    - name: create secrets
+      loop:
+        - template: argocd-repo-secret.yaml
+          data: "{{ argo_repos }}"
+        - template: openshift-logging-token.yaml
+          data: "{{ openshift_logging_bearer_tokens }}"
+        - template: metallb-bgp-password-secret.yaml
+          data: "{{ metallb_bpg }}"
       loop_control:
-        label: "{{ item.name }}"
+        label: "{{ item.template }}"
       vars:
-        repo_name: "{{ item.name }}"
-        repo_type: "{{ item.type }}"
-        repo_url: "{{ item.url }}"
-        repo_username: "{{ item.username if item.username is defined else 'xX_Xx' }}"
-        repo_password: "{{ item.password if item.password is defined else 'xX_Xx' }}"
-      ansible.builtin.include_tasks: tasks/argocd-repo-secret.yaml
-
-    - name: create openshift logging secrets
-      vars:
-        _template: openshift-logging-token.yaml
-      ansible.builtin.include_tasks: tasks/deploy-secret.yaml
-
-    - name: create metallb bgp password secret
-      vars:
-        _template: metallb-bgp-password-secret.yaml
+        _template: "{{ item.template }}"
+        _data: "{{ item.data }}"
       ansible.builtin.include_tasks: tasks/deploy-secret.yaml
 
     - name: ensure global-hub app-of-apps is deployed

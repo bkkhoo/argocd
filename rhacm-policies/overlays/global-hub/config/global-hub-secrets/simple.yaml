@@ -1,0 +1,45 @@
+# this template copy simple (not a list) secret (with rhacm-policies/sync-hub-secret=yes):
+#  -from global-hub rhacm-policies namespace
+# - to managed-hub
+# only data pertinent to the managed-hub env (dev/uat/prod) is copied to the managed-hub
+---
+object-templates-raw: |
+  {{- $env := (lookup "cluster.open-cluster-management.io/v1alpha1" "ClusterClaim" "" "env").spec.value | default "prod" }}
+  {{hub range (lookup "v1" "Secret" "rhacm-policies" "" "rhacm-policies/sync-secret=yes").items hub}}
+    {{hub- if eq (index .metadata.annotations "rhacm-policies/structure") "simple" hub}}
+      {{- if eq $env "dev" }}
+        {{hub- $data := .data.dev hub}}
+      {{- end }}
+      {{- if eq $env "uat" }}
+        {{hub- $data := .data.uat hub}}
+      {{- end }}
+      {{- if eq $env "prod" }}
+        {{hub- $data := .data.prod hub}}
+      {{- end }}
+  - complianceType: musthave
+    objectDefinition:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque
+      metadata:
+        name: {{hub index .metadata.annotations "rhacm-policies/target-name" hub}}
+        namespace: {{hub index .metadata.annotations "rhacm-policies/target-namespace" hub}}
+        labels:
+          {{hub range $key, $value := .metadata.labels hub}}
+            {{hub- if ne (printf "%.15s" $key) "rhacm-policies/" hub}}
+          {{hub $key hub}}: {{hub $value hub}}
+            {{hub- end hub}}
+          {{hub end hub}}
+        annotations:
+          {{hub range $key, $value := .metadata.annotations hub}}
+            {{hub- if ne (printf "%.15s" $key) "rhacm-policies/" hub}}
+          {{hub $key hub}}: {{hub $value hub}}
+            {{hub- end hub}}
+          {{hub end hub}}
+      stringData:
+        {{hub range $key, $value := ($data | base64dec | fromYaml) hub}}
+        {{hub $key hub}}: {{hub $value hub}}
+        {{hub end hub}}
+    {{hub- end hub}}
+  {{hub end hub}}
+...

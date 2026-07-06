@@ -1,11 +1,19 @@
-{% for key, value in openshift_logging_bearer_tokens.items() %}
 ---
 apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
-  name: openshift-logging-token-{{ key }}
+  name: openshift-logging-token-all-envs
+  namespace: rhacm-policies
+  labels:
+    rhacm-policies/sync-hub-secret: "yes"
+  annotations:
+    rhacm-policies/structure: simple
+    rhacm-policies/target-name: openshift-logging-token
+    rhacm-policies/target-namespace: rhacm-policies
 stringData:
-  {{ value | to_nice_yaml | indent(width=2, first=False) }}
+{% for env, value in _data.items() %}
+  {{ env }}: |
+    {{ value | to_nice_yaml | indent(width=4, first=False) }}
 {% endfor %}
 ...
