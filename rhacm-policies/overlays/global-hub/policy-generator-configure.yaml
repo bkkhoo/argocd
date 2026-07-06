@@ -46,8 +46,8 @@ policies:
       - gh-config-local-cluster  # local-cluster of the global-hub is also a managed hub
       - gh-config-managed-hubs
     manifests:
-      - path: config/global-hub-secret/simple.yaml
-      - path: config/global-hub-secret/list.yaml
+      - path: config/global-hub-secrets/simple.yaml
+      - path: config/global-hub-secrets/list.yaml
 
   # - name: config-argocd-repo-secrets
   #   description: copy argocd repo secrets from global hub to managed hubs
