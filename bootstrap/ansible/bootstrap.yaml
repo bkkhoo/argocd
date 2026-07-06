@@ -108,14 +108,14 @@
         cmd: oc label managedclusters.cluster.open-cluster-management.io local-cluster --overwrite env={{ env }}
 
     - name: create secrets
-      loop:     # the data comes from the ansible vault encrypted vars_files
+      loop:
         - secret_name: argocd-repo-all-envs
-          labels:
+          labels:                              # labels for the secret; these will be synced to managed hub
             argocd.argoproj.io/secret-type: repository
-          annotations: {}
-          data: "{{ argo_repos }}"
-          target_name: argocd-repo
-          target_namespace: openshift-gitops
+          annotations: {}                      # annotations for the secret; these will be synced to managed hub
+          data: "{{ argo_repos }}"             # the data comes from the ansible vault encrypted vars_files
+          target_name: argocd-repo             # name of the secret to create in the target managed hub
+          target_namespace: openshift-gitops   # namespace to create the secret on the target managed hub
         - secret_name: openshift-logging-token-all-envs
           labels: {}
           annotations: {}

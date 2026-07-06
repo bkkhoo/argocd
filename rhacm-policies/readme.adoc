@@ -170,11 +170,7 @@ These policies are for global hub only.
 | config-sync-global-hub-secrets
 | Enforce
 | `local-cluster` and all OpenShift clusters with `managed-hub` label.
-a| Sync global hub secrets (on `rhacm-policies`` namespace) to managed hubs. The global hub secrets must have the `rhacm-policies/sync-hub-secret=yes` label, and following annotations:
-
-- `rhacm-policies/structure`: `simple` - secret data is a dict or, `list` - secret data is a list of dict.
-- `rhacm-policies/target-name`: name of the secret to create in the target managed hub.
-- `rhacm-policies/target-namespace`: namespace to create the secret on the target managed hub.
+| Sync global hub secrets (with `rhacm-policies/sync-hub-secret: "yes"` label on `rhacm-policies` namespace) to managed hubs.
 
 | monitor-managed-clusters
 | Inform

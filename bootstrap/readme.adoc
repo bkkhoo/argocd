@@ -10,13 +10,7 @@ endif::[]
 
 The link:ansible/bootstrap.yaml[Ansible playbook] deploys and configures OpenShift GitOps, RHACM, and Multicluster Global Hub.
 
-The Ansible playbook also creates secrets in the `rhacm-policies` namespace using the link:ansible/templates/[templates in this folder]. The `config-sync-global-hub-secrets` RHACM governance policy sync these secrets from the global hub to managed hubs, according to the `env` label. These secrets should have:
-
-- the label `rhacm-policies/sync-hub-secret: yes` and
-- the following annotations:
-  ** `rhacm-policies/structure`: `simple` - secret data is a key-value dict or, `list` - secret data is a list of key-value dict.
-  ** `rhacm-policies/target-name`: name of the secret to create in the target managed hub.
-  ** `rhacm-policies/target-namespace`: namespace to create the secret on the target managed hub.
+The Ansible playbook also creates secrets in the `rhacm-policies` namespace using the link:ansible/templates/[templates in this folder]. The `config-sync-global-hub-secrets` RHACM governance policy sync these secrets (with `rhacm-policies/sync-hub-secret: "yes"` label on `rhacm-policies` namespace) from the global hub to managed hubs, according to the `env` label.
 
 The Ansible playbook bootstrap an OpenShift cluster for the following use cases.
 
