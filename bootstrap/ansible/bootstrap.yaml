@@ -115,18 +115,18 @@
           annotations: {}                      # annotations for the secret; these will be synced to managed hub
           data: "{{ argo_repos }}"             # the data comes from the ansible vault encrypted vars_files
           target_name: argocd-repo             # name of the secret to create in the target managed hub
-          target_namespace: openshift-gitops   # namespace to create the secret on the target managed hub
-        - secret_name: openshift-logging-token-all-envs
+          target_namespace: openshift-gitops   # namespace to create the secret on the target managed hub, in addition to rhacm-policies namespace
+        - secret_name: openshift-logging-bearer-tokens-all-envs
           labels: {}
           annotations: {}
           data: "{{ openshift_logging_bearer_tokens }}"
-          target_name: openshift-logging-token
-          target_namespace: rhacm-policies
-        - secret_name: bgp-password-all-envs
+          target_name: openshift-logging-bearer-tokens
+          target_namespace: openshift-logging
+        - secret_name: metallb-bgp-password-all-envs
           labels: {}
           annotations: {}
           data: "{{ metallb_bpg }}"
-          target_name: bgp-password
+          target_name: metallb-bgp-password
           target_namespace: rhacm-policies
       loop_control:
         label: "{{ item.secret_name }}"

@@ -28,6 +28,9 @@ object-templates-raw: |
           {{hub- $annotations := set $annotations $key $value hub}}
         {{hub- end hub}}
       {{hub- end hub}}
+      {{hub- $namespaces := list "rhacm-policies" (index $secret.metadata.annotations "rhacm-policies/target-namespace") hub}}
+      {{hub- $namespaces := $namespaces | uniq hub}}
+      {{hub- range $ns := $namespaces hub}}
   - complianceType: musthave
     objectDefinition:
       apiVersion: v1
@@ -35,7 +38,7 @@ object-templates-raw: |
       type: Opaque
       metadata:
         name: {{hub index $secret.metadata.annotations "rhacm-policies/target-name" hub}}
-        namespace: {{hub index $secret.metadata.annotations "rhacm-policies/target-namespace" hub}}
+        namespace: {{hub $ns hub}}
         {{hub- if $labels hub}}
         labels:
           {{hub $labels | toYaml | indent 4 hub}}
@@ -48,6 +51,7 @@ object-templates-raw: |
         {{hub- range $key, $value := $data | base64dec | fromJson hub}}
         {{hub $key hub}}: {{hub $value hub}}
         {{hub- end hub}}
+      {{hub- end hub}}
     {{hub- end hub}}
   {{hub end hub}}
 ...

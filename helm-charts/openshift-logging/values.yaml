@@ -12,16 +12,16 @@ outputs:
   application:
     url: "https://application.log-receiver.svc:8443/log"
     secret:
-      name: application-log-token
-      key: token
+      name: openshift-logging-bearer-tokens     # rhacm policy will create this secret
+      key: application
   infrastructure:
     url: "https://infrastructure.log-receiver.svc:8443/log"
     secret:
-      name: infrastructure-log-token
-      key: token
+      name: openshift-logging-bearer-tokens
+      key: infrastructure
   audit:
     url: "https://audit.log-receiver.svc:8443/log"
     secret:
-      name: audit-log-token
-      key: token
+      name: openshift-logging-bearer-tokens
+      key: audit
 ...

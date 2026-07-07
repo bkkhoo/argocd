@@ -85,7 +85,7 @@ policies:
     policySets:         # override policyDefaults.policySets
       - base-config-no-local-cluster-no-managed-hub
     manifests:
-      - path: config/openshift-logging/secret.yaml
+      - path: config/openshift-logging-secret.yaml
 
   - name: config-metallb-bgp-password-secret
     description: copy metallb bgp password secret from managed hub to managed clusters
