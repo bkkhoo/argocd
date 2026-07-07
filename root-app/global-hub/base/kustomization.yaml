@@ -19,4 +19,5 @@ resources:
   - ../../../apps/openshift-service-mesh/base
   - ../../../apps/metallb/base
   - ../../../apps/dummy-log-receiver/base
+  - ../../../apps/dummy-helm-chart/base
 ...

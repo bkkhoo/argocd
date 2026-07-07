@@ -80,5 +80,15 @@ a| Deploy the following operators:
 | test-app
 | ApplicationSet
 | All OpenShift clusters without the `managed-hub` label but with the `test-app` label.
-| Deploy dummy test application.
+| Deploy a dummy test application.
+
+| dummy-log-receiver
+| ApplicationSet
+| All OpenShift clusters without the `managed-hub` label but with the `test-app` label.
+| Deploy a dummy log receiver that accepts HTTPS POST requests from the cluster log forwarder on the `/log` endpoint and prints the received JSON payload to stdout. This dummy receiver is for testing the cluster log forwarder.
+
+| dummy-helm-chart
+| ApplicationSet
+| All OpenShift clusters without the `managed-hub` label but with the `test-app` label.
+| Deploy a sample/dummy application from a Helm repository.
 |===

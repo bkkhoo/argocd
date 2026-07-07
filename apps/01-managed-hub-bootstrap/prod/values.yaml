@@ -24,4 +24,6 @@ appProjects:
     sourceRepos:
       - "https://github.com/bkkhoo/argocd.git"
       - "https://github.com/bkkhoo/helm-values.git"
+      - "https://charts.openshift.io"
+      - "https://charts.openshift.io/"
 ...

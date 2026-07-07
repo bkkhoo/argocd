@@ -1,0 +1,49 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dummy-helm-chart
+  namespace: openshift-gitops
+  labels:
+    applications: dummy-helm-chart
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+            - key: managed-hub
+              operator: DoesNotExist
+            - key: dummy-helm-chart
+              operator: Exists
+  template:
+    metadata:
+      name: "{{ name }}-dummy-helm-chart"
+      labels:
+        applications: dummy-helm-chart
+    spec:
+      project: gitops
+      source:
+        repoURL: https://charts.openshift.io
+        chart: samplechart
+        targetRevision: 0.1.2
+      destination:
+        server: "{{ server }}"
+        namespace: dummy-helm-chart
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+      info:
+        - name: env
+          value: any
+        - name: type
+          value: applicationSet
+        - name: target
+          value: clusters with dummy-helm-chart but without managed-hub labels
+...
