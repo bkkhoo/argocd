@@ -1,10 +1,8 @@
 ---
 advertisementMode: l2        # l2 or bgp
 ipAddressRanges: []
-nodeSelectors:
-  - matchExpressions:
-      - key: node-role.kubernetes.io/worker
-        operator: Exists
+nodeSelector:                # one or more labels
+  node-role.kubernetes.io/worker: ""
 
 #### bgp example
 # bgp:

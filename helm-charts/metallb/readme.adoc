@@ -49,15 +49,9 @@ a| Set how IP addresses are advertised externally:
 | Empty list
 | Define the ranges of IP addresses that can be assigned to services.
 
-| nodeSelectors
-a|
-[source,yaml]
-----
-- matchExpressions:
-    - key: node-role.kubernetes.io/worker
-    operator: Exists
-----
-| Specifies a selector, using match expressions and/or match labels, to control which nodes can connect to the BGP peer.
+| nodeSelector
+| `node-role.kubernetes.io/worker: ""`
+| Set one or more node labels to restrict which nodes run the speaker DaemonSet pods.
 
 | bgp.myASN
 | None

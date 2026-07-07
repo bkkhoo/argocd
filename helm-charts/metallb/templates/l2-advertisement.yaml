@@ -11,9 +11,5 @@ metadata:
 spec:
   ipAddressPools:
     - ip-address-pool
-{{- if hasKey .Values "nodeSelectors" }}
-  nodeSelectors:
-{{ .Values.nodeSelectors | toYaml | indent 4 }}
-{{- end }}
 ...
 {{- end }}
