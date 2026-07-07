@@ -1,14 +1,18 @@
 ---
 advertisementMode: l2        # l2 or bgp
 ipAddressRanges: []
-#### example
+nodeSelectors:
+  - matchExpressions:
+      - key: node-role.kubernetes.io/worker
+        operator: Exists
+
+#### bgp example
 # bgp:
 #   myASN: 64513
 #   peerASN: 64512
 #   routerID: 10.10.10.13
 #   keepaliveTime: 30s
 #   holdTime: 90s
-#   passwordSecret: bgp-secret
 #   ebgpMultiHop: false
 #   aggregationLength: 29
 #   communities:

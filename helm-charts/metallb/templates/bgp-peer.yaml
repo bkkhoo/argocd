@@ -1,6 +1,7 @@
 {{- if eq .Values.advertisementMode "bgp" }}
-{{- $bgpSettings := .Values.bgp }}
-{{- range $peer := .Values.bgp.peers }}
+  {{- $bgpSettings := .Values.bgp }}
+  {{- $nodeSelectors :=  index .Values "nodeSelectors" }}
+  {{- range $peer := .Values.bgp.peers }}
 ---
 apiVersion: metallb.io/v1beta2
 kind: BGPPeer
@@ -31,6 +32,10 @@ spec:
   {{- if hasKey $bgpSettings "ebgpMultiHop" }}
   ebgpMultiHop: {{ $bgpSettings.ebgpMultiHop }}
   {{- end }}
-{{- end }}
+  {{- if $nodeSelectors }}
+  nodeSelectors:
+{{ $nodeSelectors | toYaml | indent 4 }}
+  {{- end }}
+  {{- end }}
 ...
 {{- end }}

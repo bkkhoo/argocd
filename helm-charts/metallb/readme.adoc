@@ -49,6 +49,16 @@ a| Set how IP addresses are advertised externally:
 | Empty list
 | Define the ranges of IP addresses that can be assigned to services.
 
+| nodeSelectors
+a|
+[source,yaml]
+----
+- matchExpressions:
+    - key: node-role.kubernetes.io/worker
+    operator: Exists
+----
+| Specifies a selector, using match expressions and/or match labels, to control which nodes can connect to the BGP peer.
+
 | bgp.myASN
 | None
 | Specifies the Autonomous System Number (ASN) for the local end of the BGP session.
