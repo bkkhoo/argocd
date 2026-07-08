@@ -1,7 +1,7 @@
 ---
 namespace: etcd-backup
 pvc:
-  storageClass: gp3-csi
+  # storageClass: gp3-csi
   snapshot:
     name: etcd-snapshot-db-backup
     size: 50Gi

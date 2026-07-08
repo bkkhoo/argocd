@@ -56,8 +56,8 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Namespace to deploy the resources.
 
 | pvc.storageClass
-| gp3-csi
-| The `StorageClass` that `PersistentVolumeClaim` uses to request persistent storage.
+| None
+| Optional; specifies the `StorageClass` used by the `PersistentVolumeClaim` to request persistent storage. If not provided, the default storage class is used. If no default storage class is configured, the etcd backup will fail.
 
 | pvc.snapshot.name
 | etcd-snapshot-db-backup

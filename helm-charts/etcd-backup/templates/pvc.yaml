@@ -11,7 +11,9 @@ spec:
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
+  {{- if .Values.pvc.storageClass }}
   storageClassName: {{ .Values.pvc.storageClass }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -25,5 +27,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
+  {{- if .Values.pvc.storageClass }}
   storageClassName: {{ .Values.pvc.storageClass }}
+  {{- end }}
 ...
