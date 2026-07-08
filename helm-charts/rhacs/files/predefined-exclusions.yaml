@@ -18,13 +18,22 @@ rhacs:
         namespace: "^(rhacs-operator|stackrox)$"
         label:
 
-rhacm:
+rhacm:    # including multicluster global hub
   - name: "rhacm namespaces"
     deployment:
       name: ""
       scope:
         cluster: ""
-        namespace: "^(open-cluster-management.*|hive|hypershift|multicluster-engine|multicluster-global-hub)$"
+        namespace: "^(open-cluster-management.*|hive|hypershift|multicluster-engine|multicluster-global-hub.*)$"
+        label:
+
+etcd-backup:
+  - name: "etcd-backup"
+    deployment:
+      name: "etcd-backup"
+      scope:
+        cluster: ""
+        namespace: "etcd-backup"
         label:
 
 openshift-pipelines:
@@ -46,6 +55,15 @@ openshift-pipelines:
         label:
           key: "app.kubernetes.io/managed-by"
           value: "tekton-pipelines"
+
+openshift-serverless:
+  - name: "openshift-serverless namespaces"
+    deployment:
+      name: ""
+      scope:
+        cluster: ""
+        namespace: "^knative-(eventing|serving|serving-ingress)$"
+        label:
 
 metallb:
   - name: "metal lb namespaces"

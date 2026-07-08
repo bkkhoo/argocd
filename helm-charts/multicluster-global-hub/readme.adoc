@@ -50,6 +50,10 @@ a| Deployment type:
 | multicluster-global-hub
 | Deploy Multicluster Global Hub to this namespace.
 
+| operatorUpdateChannel
+| release-1.8
+| OpenShift operator channel.
+
 | availabilityConfig
 | High
 | Availability configuration specifies deployment replication for improved availability. Options are: `Basic` or `High`.

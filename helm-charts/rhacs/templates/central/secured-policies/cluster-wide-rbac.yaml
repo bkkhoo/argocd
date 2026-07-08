@@ -23,7 +23,7 @@ spec:
     - DEPLOY
   eventSource: NOT_APPLICABLE
   exclusions:
-  {{- $exclusions := list "openshift" "rhacm" "rhacs" "metallb" -}}
+  {{- $exclusions := list "openshift" "rhacm" "rhacs" "etcd-backup" "openshift-serverless" "metallb" -}}
 {{ include "rhacs.setExclusions" (dict "root" $ "exclusions" $exclusions) | indent 4 }}
   scope: []
   severity: MEDIUM_SEVERITY

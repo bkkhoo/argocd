@@ -115,7 +115,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: gp3-csi
+  # storageClassName: gp3-csi
   volumeMode: Filesystem
   volumeName: pv-123
 ---
@@ -148,7 +148,7 @@ spec:
           values:
           - us-east-2b
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: gp3-csi
+  # storageClassName: gp3-csi
   volumeMode: Filesystem
 ---
 apiVersion: route.openshift.io/v1
