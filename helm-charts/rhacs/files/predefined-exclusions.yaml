@@ -73,6 +73,15 @@ metallb:
         cluster: ""
         namespace: "metallb-system"
         label:
+
+keycloak:
+  - name: "keycloak"
+    deployment:
+      name: "rhbk-operator"
+      scope:
+        cluster: ""
+        namespace: "keycloak"
+        label:
 ...
 
 # default-broker
