@@ -157,7 +157,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "100"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  extends: ocp4-moderate
+  extends: ocp4-moderate-node
   title: Tailored ocp4-moderate-node profile
   description: Tailor ocp4-moderate-node profile, removing rules that will result in MANUAL status
   disableRules:
