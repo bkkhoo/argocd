@@ -10,9 +10,9 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 profiles:
 {{- range .Values.complianceScan.profiles }}
-  - name: {{ . }}
-    apiGroup: compliance.openshift.io/v1alpha1
-    kind: Profile
+  - apiGroup: compliance.openshift.io/v1alpha1
+    kind: {{ .kind }}
+    name: {{ .name }}
 {{- end }}
 settingsRef:
   apiGroup: compliance.openshift.io/v1alpha1

@@ -49,8 +49,10 @@ The following table lists the configurable parameters/values of this Helm chart 
 | complianceScan.profiles
 a|[source,yaml]
 ----
-- ocp4-cis
-- ocp4-cis-node
+- kind: TailoredProfile
+  name: ocp4-cis-tailored
+- kind: Profile
+  name: ocp4-cis-node
 ----
 | Specifies which compliance standards to check, such as ocp4-cis (cluster) and ocp4-cis-node (node OS).
 

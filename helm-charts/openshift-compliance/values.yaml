@@ -3,8 +3,10 @@ namespace: openshift-compliance
 complianceScan:
   enable: false
   profiles:
-    - ocp4-cis-tailored       # scan cluster
-    - ocp4-cis-node           # scan nodes
+    - kind: TailoredProfile
+      name: ocp4-cis-tailored            # scan cluster
+    - kind: Profile
+      name: tailored-ocp4-cis-node       # scan nodes
   schedule:
     minHour: 1
     maxHour: 3
