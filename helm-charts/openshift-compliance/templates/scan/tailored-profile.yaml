@@ -145,7 +145,7 @@ spec:
     # - name: ocp4-resource-requests-quota
     #   rationale: tbd, scan FAIL
     # - name: ocp4-scc-limit-container-allowed-capabilities
-      # rationale: tbd, scan FAIL
+    #   rationale: tbd, scan FAIL
 
 ---
 apiVersion: compliance.openshift.io/v1alpha1
