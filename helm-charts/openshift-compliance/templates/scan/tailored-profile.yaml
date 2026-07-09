@@ -9,8 +9,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   extends: ocp4-cis
-  description: Tailored ocp4-cis profile
-  title: Tailor ocp4-cis profile, removing rules that will result in MANUAL status
+  title: Tailored ocp4-cis profile
+  description: Tailor ocp4-cis profile, removing rules that will result in MANUAL status
   disableRules:
     - name: ocp4-accounts-restrict-service-account-tokens
       rationale: MANUAL action required
@@ -69,8 +69,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   extends: ocp4-cis
-  description: Tailored ocp4-cis-node profile
-  title: Tailor ocp4-cis-node profile, removing rules that will result in MANUAL status
+  title: Tailored ocp4-cis-node profile
+  description: Tailor ocp4-cis-node profile, removing rules that will result in MANUAL status
   disableRules: []
 ---
 apiVersion: compliance.openshift.io/v1alpha1
@@ -83,8 +83,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   extends: ocp4-moderate
-  description: Tailored ocp4-moderate profile
-  title: Tailor ocp4-moderate profile, removing rules that will result in MANUAL status
+  title: Tailored ocp4-moderate profile
+  description: Tailor ocp4-moderate profile, removing rules that will result in MANUAL status
   disableRules:
     - name: ocp4-accounts-restrict-service-account-tokens
       rationale: MANUAL action required
@@ -158,8 +158,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   extends: ocp4-moderate
-  description: Tailored ocp4-moderate-node profile
-  title: Tailor ocp4-moderate-node profile, removing rules that will result in MANUAL status
+  title: Tailored ocp4-moderate-node profile
+  description: Tailor ocp4-moderate-node profile, removing rules that will result in MANUAL status
   disableRules:
     - name: ocp4-partition-for-var-log-kube-apiserver
       rationale: MANUAL action required
