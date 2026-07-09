@@ -55,6 +55,9 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git      # operator hub
           targetRevision: main
           path: kustomize-deployments/operator-hub/base
+        - repoURL: https://github.com/bkkhoo/argocd.git      # configure ingress controller tls security profile
+          targetRevision: main
+          path: kustomize-deployments/ingress-controller/base
         - repoURL: https://github.com/bkkhoo/argocd.git      # disable self provisioner
           targetRevision: main
           path: kustomize-deployments/self-provisioner/base

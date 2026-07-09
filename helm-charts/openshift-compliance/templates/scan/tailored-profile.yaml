@@ -1,0 +1,57 @@
+---
+apiVersion: compliance.openshift.io/v1alpha1
+kind: TailoredProfile
+metadata:
+  name: ocp4-cis-tailored
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  extends: ocp4-cis
+  description: Tailored ocp4-cis profile
+  title: Tailor ocp4-cis profile, removing rules that will result in MANUAL status
+  disableRules:
+    - name: ocp4-cis-accounts-restrict-service-account-tokens
+      rationale: MANUAL action required
+    - name: ocp4-cis-accounts-unique-service-account
+      rationale: MANUAL action required
+    - name: ocp4-cis-general-apply-scc
+      rationale: MANUAL action required
+    - name: ocp4-cis-general-default-namespace-use
+      rationale: MANUAL action required
+    - name: ocp4-cis-general-default-seccomp-profile
+      rationale: MANUAL action required
+    - name: ocp4-cis-general-namespaces-in-use
+      rationale: MANUAL action required
+    - name: ocp4-cis-rbac-least-privilege
+      rationale: MANUAL action required
+    - name: ocp4-cis-rbac-limit-cluster-admin
+      rationale: MANUAL action required
+    - name: ocp4-cis-rbac-limit-secrets-access
+      rationale: MANUAL action required
+    - name: ocp4-cis-rbac-pod-creation-access
+      rationale: MANUAL action required
+    - name: ocp4-cis-rbac-wildcard-use
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-drop-container-capabilities
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-limit-ipc-namespace
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-limit-net-raw-capability
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-limit-network-namespace
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-limit-privilege-escalation
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-limit-privileged-containers
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-limit-process-id-namespace
+      rationale: MANUAL action required
+    - name: ocp4-cis-scc-limit-root-containers
+      rationale: MANUAL action required
+    - name: ocp4-cis-secrets-consider-external-storage
+      rationale: MANUAL action required
+    - name: ocp4-cis-secrets-no-environment-variables
+      rationale: MANUAL action required
+...

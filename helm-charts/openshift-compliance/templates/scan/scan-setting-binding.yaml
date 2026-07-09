@@ -6,7 +6,7 @@ metadata:
   name: oc4-cis
   namespace: {{ .Values.namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/sync-wave: "205"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 profiles:
 {{- range .Values.complianceScan.profiles }}

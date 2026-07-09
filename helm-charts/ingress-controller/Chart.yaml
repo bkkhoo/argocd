@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 1.0
+name: openshift-ingress-controller
+description: OpenShift Ingress Controller
+type: application
+version: 1.0
+...

@@ -1,0 +1,18 @@
+---
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: default
+  namespace: openshift-ingress-operator
+spec:
+  tlsSecurityProfile:
+    type: {{ .Values.tlsSecurityProfile.type }}
+    {{- if eq .Values.tlsSecurityProfile.type "Custom" }}
+    custom:
+      ciphers:
+        {{- range .Values.tlsSecurityProfile.custom.ciphers }}
+        - {{ . }}
+        {{- end }}
+      minTLSVersion: {{ .Values.tlsSecurityProfile.custom.minTLSVersion }}
+    {{- end }}
+...

@@ -1,0 +1,60 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Configure OpenShift Ingress Controller TLS Security Profile
+
+The OpenShift ingress controller TLS security profile. TLS security profile defines which TLS ciphers are required by various OpenShift ingress controller. The OpenShift TLS security profiles are based on Mozilla recommended configurations.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-ingress-controller helm-chart/openshift-ingress-controller
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,2,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| tlsSecurityProfile.type
+| Modern
+a| Define which TLS ciphers are required by OpenShift Ingress Controller:
+
+- Old: This profile is intended for use with legacy clients or libraries.
+- Intermediate: This profile is the recommended configuration for the majority of clients. The Intermediate profile requires a minimum TLS version of 1.2.
+- Modern: This profile is intended for use with modern clients that have no need for backwards compatibility. The Modern profile requires a minimum TLS version of 1.3.
+- Custom: This profile allows configuration of custom TLS version and ciphers to use.
+
+| tlsSecurityProfile.custom.ciphers
+a|
+[source,yaml]
+----
+- ECDHE-ECDSA-AES128-GCM-SHA256
+- ECDHE-RSA-AES128-GCM-SHA256
+- ECDHE-ECDSA-CHACHA20-POLY1305
+- ECDHE-RSA-CHACHA20-POLY1305
+----
+| Specify the cipher algorithms that are negotiated during the TLS handshake. This parameter is required when `tlsSecurityProfile.type=Custom`.
+
+| tlsSecurityProfile.custom.minTLSVersion
+| VersionTLS12
+a| Specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. This parameter is required when `tlsSecurityProfile.type=Custom`. The following are configurable:
+
+- VersionTLS10
+- VersionTLS11
+- VersionTLS12
+- VersionTLS13
+|===
