@@ -1,7 +1,7 @@
 ---
 deploymentType: all                  # operator, global-hub, all
 namespace: multicluster-global-hub
-operatorChannel: release-1.8
+operatorChannel: release-1.7
 availabilityConfig: High             # Basic or High
 postgresRetention: 18m               # 18 months; valid time units are "m" and "y"
 ...
