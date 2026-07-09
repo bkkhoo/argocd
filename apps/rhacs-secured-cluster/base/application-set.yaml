@@ -7,6 +7,9 @@ metadata:
   labels:
     applications: rhacs-secured-cluster
 spec:
+  goTemplate: true                     # enable go templating for spec.template field
+  goTemplateOptions:
+    - missingkey=error
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -23,9 +26,18 @@ spec:
                 - local-cluster
             - key: managed-hub
               operator: DoesNotExist
+  templatePatch: |
+    spec:
+      source:
+        helm:
+          valuesObject:
+            clusterLabels:
+              {{- range $key, $value := .metadata.labels }}
+              {{ $key }}: {{ $value }}
+              {{- end }}
   template:
     metadata:
-      name: "{{ name }}-rhacs-secured-cluster"
+      name: "{{ .name }}-rhacs-secured-cluster"
       labels:
         applications: rhacs-secured-cluster
     spec:
@@ -39,9 +51,9 @@ spec:
             - name: deploymentType
               value: secured-cluster
             - name: clusterName
-              value: "{{ name }}"
+              value: "{{ .name }}"
       destination:
-        server: "{{ server }}"
+        server: "{{ .server }}"
         namespace: stackrox
       ignoreDifferences:
         - group: platform.stackrox.io        # rhacm governance policy will set the centralEndpoint

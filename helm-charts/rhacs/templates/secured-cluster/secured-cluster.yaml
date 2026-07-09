@@ -15,5 +15,9 @@ spec:
   admissionControl:
     enforcement: Enabled
     bypass: Disabled
+  {{- if .Values.clusterLabels }}
+  clusterLabels:
+    {{- include "rhacs.setLabels" .Values.clusterLabels | indent 4 }}
+  {{- end }}
 ...
 {{- end }}

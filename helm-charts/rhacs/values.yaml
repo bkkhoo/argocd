@@ -1,11 +1,12 @@
 ---
-deploymentType: all   # all, central, or secure-cluster
+deploymentType: all   # all, central, or secured-cluster
 namespace:
   operator: rhacs-operator
   central: stackrox
   securedCluster: stackrox
   rhacmPolicies: rhacm-policies
 clusterName: DUMMY        # set by argocd using helm values
+clusterLabels: {}
 centralDB:
   resources:
     limits:

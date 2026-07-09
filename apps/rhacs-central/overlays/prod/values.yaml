@@ -15,5 +15,5 @@ central:
     requests:
       cpu: 1500m
       memory: 4Gi
-minimumAccessRole: Admin
+minimumAccessRole: Analyst
 ...

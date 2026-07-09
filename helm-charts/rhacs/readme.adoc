@@ -67,6 +67,10 @@ a| Deployment type:
 | DUMMY
 | Name of the secured cluster.
 
+| clusterLabels
+| {}
+| Labels to apply to the SecuredCluster.
+
 | centralDB.resources.limits.cpu
 | "8"
 | CPU limits for central-db pod.
