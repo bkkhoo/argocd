@@ -33,7 +33,7 @@ spec:
           valuesObject:
             clusterLabels:
               {{- range $key, $value := .metadata.labels }}
-              {{ $key }}: {{ $value }}
+              {{ $key }}: "{{ $value }}"
               {{- end }}
   template:
     metadata:
