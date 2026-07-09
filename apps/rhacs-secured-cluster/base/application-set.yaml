@@ -10,6 +10,15 @@ spec:
   goTemplate: true                     # enable go templating for spec.template field
   goTemplateOptions:
     - missingkey=error
+  templatePatch: |
+    spec:
+      source:
+        helm:
+          valuesObject:
+            clusterLabels:
+              {{- range $key, $value := .metadata.labels }}
+              {{ $key }}: "{{ $value }}"
+              {{- end }}
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -26,15 +35,6 @@ spec:
                 - local-cluster
             - key: managed-hub
               operator: DoesNotExist
-  templatePatch: |
-    spec:
-      source:
-        helm:
-          valuesObject:
-            clusterLabels:
-              {{- range $key, $value := .metadata.labels }}
-              {{ $key }}: "{{ $value }}"
-              {{- end }}
   template:
     metadata:
       name: "{{ .name }}-rhacs-secured-cluster"
