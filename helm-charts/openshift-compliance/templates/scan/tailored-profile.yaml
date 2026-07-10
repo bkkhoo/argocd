@@ -62,20 +62,6 @@ spec:
 apiVersion: compliance.openshift.io/v1alpha1
 kind: TailoredProfile
 metadata:
-  name: tailored-ocp4-cis-node
-  namespace: {{ .Values.namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "100"
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  extends: ocp4-cis-node
-  title: Tailored ocp4-cis-node profile
-  description: Tailor ocp4-cis-node profile, removing rules that will result in MANUAL status
-  disableRules: []
----
-apiVersion: compliance.openshift.io/v1alpha1
-kind: TailoredProfile
-metadata:
   name: tailored-ocp4-moderate
   namespace: {{ .Values.namespace }}
   annotations:
@@ -146,33 +132,32 @@ spec:
     #   rationale: tbd, scan FAIL
     # - name: ocp4-scc-limit-container-allowed-capabilities
     #   rationale: tbd, scan FAIL
-
----
-apiVersion: compliance.openshift.io/v1alpha1
-kind: TailoredProfile
-metadata:
-  name: tailored-ocp4-moderate-node
-  namespace: {{ .Values.namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "100"
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  extends: ocp4-moderate-node
-  title: Tailored ocp4-moderate-node profile
-  description: Tailor ocp4-moderate-node profile, removing rules that will result in MANUAL status
-  disableRules:
-    - name: ocp4-partition-for-var-log-kube-apiserver
-      rationale: MANUAL action required
-    - name: ocp4-partition-for-var-log-oauth-apiserver
-      rationale: MANUAL action required
-    - name: ocp4-partition-for-var-log-openshift-apiserver
-      rationale: MANUAL action required
-    # - name: ocp4-directory-access-var-log-kube-audit
-    #   rationale: tbd, scan FAIL
-    # - name: ocp4-directory-access-var-log-oauth-audit
-    #   rationale: tbd, scan FAIL
-    # - name: ocp4-directory-access-var-log-ocp-audit
-    #   rationale: tbd, scan FAIL
-    # - name: ocp4-reject-unsigned-images-by-default
-    #   rationale: tbd, scan FAIL
+# ---
+# apiVersion: compliance.openshift.io/v1alpha1
+# kind: TailoredProfile
+# metadata:
+#   name: tailored-ocp4-moderate-node
+#   namespace: {{ .Values.namespace }}
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "100"
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# spec:
+#   extends: ocp4-moderate-node
+#   title: Tailored ocp4-moderate-node profile
+#   description: Tailor ocp4-moderate-node profile, removing rules that will result in MANUAL status
+#   disableRules:
+#     - name: ocp4-partition-for-var-log-kube-apiserver
+#       rationale: MANUAL action required
+#     - name: ocp4-partition-for-var-log-oauth-apiserver
+#       rationale: MANUAL action required
+#     - name: ocp4-partition-for-var-log-openshift-apiserver
+#       rationale: MANUAL action required
+#     # - name: ocp4-directory-access-var-log-kube-audit
+#     #   rationale: tbd, scan FAIL
+#     # - name: ocp4-directory-access-var-log-oauth-audit
+#     #   rationale: tbd, scan FAIL
+#     # - name: ocp4-directory-access-var-log-ocp-audit
+#     #   rationale: tbd, scan FAIL
+#     # - name: ocp4-reject-unsigned-images-by-default
+#     #   rationale: tbd, scan FAIL
 ...
