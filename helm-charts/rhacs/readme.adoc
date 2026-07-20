@@ -107,9 +107,13 @@ a| Deployment type:
 | Analyst
 | The default permission level assigned to all users who log in via a specific identity provider.
 
-| postSyncHookImage
-| `registry.redhat.io/openshift4/ose-tools-rhel9:v4.20`
-| The container image to use for ArgoCD PostSync Hook job.
+| postSyncHookImage.name
+| `registry.redhat.io/openshift4/ose-tools-rhel9`
+| The container image name to use for ArgoCD PostSync Hook job.
+
+| postSyncHookImage.tah
+| `v4.20`
+| The container image tag to use for ArgoCD PostSync Hook job.
 |===
 
 == Additional Note

@@ -7,6 +7,9 @@ metadata:
   labels:
     applications: managed-hub-bootstrap
 spec:
+  goTemplate: true                     # enable go templating for spec.template field
+  goTemplateOptions:
+    - missingkey=error
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -25,7 +28,7 @@ spec:
                 - prod
   template:
     metadata:
-      name: "prod-{{ name }}-managed-hub-bootstrap"
+      name: "prod-{{ .name }}-managed-hub-bootstrap"
       labels:
         applications: managed-hub-bootstrap
     spec:
@@ -45,6 +48,8 @@ spec:
           helm:
             valuesObject:
               deploymentType: all
+              postSyncHookImage:
+                tag: 'v{{ index .metadata.labels "openshiftVersion-major-minor" }}'
             valueFiles:    # values files are located relative to the chart path specified in the sources.path
               - ../../apps/01-managed-hub-bootstrap/prod/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
@@ -54,7 +59,7 @@ spec:
           targetRevision: main
           path: apps/00-managed-hub-app-of-apps/overlays/prod
       destination:
-        server: "{{ server }}"
+        server: "{{ .server }}"
         namespace: default     # objects deployed to multiple namespaces
       syncPolicy:
         automated:

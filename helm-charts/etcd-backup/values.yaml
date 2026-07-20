@@ -10,5 +10,7 @@ pvc:
     size: 10Gi
 frequency: 3       # every 3 hours; due to templating limitation can only set 1-9
 retentionDays: 7
-cronjobContainerImage: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+syncHookImage:
+  name: registry.redhat.io/openshift4/ose-tools-rhel9
+  tag: v4.20
 ...

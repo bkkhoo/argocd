@@ -1,0 +1,19 @@
+{{- if eq .Values.advertisementMode "bgp" }}
+---
+apiVersion: metallb.io/v1beta1
+kind: BFDProfile
+metadata:
+  name: bfd-config
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "110"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  receiveInterval: 300
+  transmitInterval: 300
+  detectMultiplier: 3
+  echoMode: false
+  passiveMode: false
+  minimumTtl: 254
+...
+{{- end }}

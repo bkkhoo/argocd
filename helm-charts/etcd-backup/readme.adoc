@@ -83,9 +83,13 @@ The following table lists the configurable parameters/values of this Helm chart 
 | 7
 | Number of days to retain backup data.
 
-| cronjobContainerImage
-| `registry.redhat.io/openshift4/ose-tools-rhel9:v4.20`
-| The container image to use for etcd backup cronjob.
+| syncHookImage.name
+| `registry.redhat.io/openshift4/ose-tools-rhel9`
+| The container image name to use for etcd backup cronjob.
+
+| syncHookImage.tag
+| `v4.20`
+| The container image tag to use for etcd backup cronjob.
 |===
 
 == Additional Notes

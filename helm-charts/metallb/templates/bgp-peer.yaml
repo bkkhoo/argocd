@@ -31,6 +31,7 @@ spec:
   {{- if hasKey $bgpSettings "ebgpMultiHop" }}
   ebgpMultiHop: {{ $bgpSettings.ebgpMultiHop }}
   {{- end }}
+  bfdProfile: bfd-config
   {{- end }}
 ...
 {{- end }}

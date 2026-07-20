@@ -79,6 +79,10 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git      # setup etcd backup cronjob
           targetRevision: main
           path: helm-charts/etcd-backup
+          helm:
+            valuesObject:
+              syncHookImage:
+                tag: 'v{{ index .metadata.labels "openshiftVersion-major-minor" }}'
         - repoURL: https://github.com/bkkhoo/argocd.git      # openshift monitoring stack
           targetRevision: main
           path: helm-charts/openshift-monitoring

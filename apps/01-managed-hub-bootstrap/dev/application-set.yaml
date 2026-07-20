@@ -7,6 +7,9 @@ metadata:
   labels:
     applications: managed-hub-bootstrap
 spec:
+  goTemplate: true                     # enable go templating for spec.template field
+  goTemplateOptions:
+    - missingkey=error
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -25,7 +28,7 @@ spec:
                 - dev
   template:
     metadata:
-      name: "dev-{{ name }}-managed-hub-bootstrap"
+      name: "dev-{{ .name }}-managed-hub-bootstrap"
       labels:
         applications: managed-hub-bootstrap
     spec:
@@ -49,6 +52,8 @@ spec:
           helm:
             valuesObject:
               deploymentType: all
+              postSyncHookImage:
+                tag: 'v{{ index .metadata.labels "openshiftVersion-major-minor" }}'
             valueFiles:
               # referencing values from git repo source[1].ref above
               # even though source[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
@@ -60,7 +65,7 @@ spec:
           targetRevision: main
           path: apps/00-managed-hub-app-of-apps/overlays/dev
       destination:
-        server: "{{ server }}"
+        server: "{{ .server }}"
         namespace: default     # objects deployed to multiple namespaces
       syncPolicy:
         automated:

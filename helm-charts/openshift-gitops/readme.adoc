@@ -240,9 +240,13 @@ a| [source,yaml]
 | Empty list
 | List of AppProjects to create.
 
-| postSyncHookImage
-| `registry.redhat.io/openshift4/ose-tools-rhel9:v4.20`
-| The container image to use for ArgoCD PostSync Hook job.
+| postSyncHookImage.name
+| `registry.redhat.io/openshift4/ose-tools-rhel9`
+| The container image name to use for ArgoCD PostSync Hook job.
+
+| postSyncHookImage.tag
+| `v4.20`
+| The container image tag to use for ArgoCD PostSync Hook job.
 |===
 
 Example `appProjects` parameter:

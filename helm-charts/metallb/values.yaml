@@ -6,9 +6,9 @@ nodeSelector:                # one or more labels
 
 #### bgp example
 # bgp:
-#   myASN: 64513
-#   peerASN: 64512
-#   routerID: 10.10.10.13
+#   myASN: 64512
+#   peerASN: 64511
+#   routerID: 10.113.118.113
 #   keepaliveTime: 30s
 #   holdTime: 90s
 #   ebgpMultiHop: false
@@ -17,8 +17,11 @@ nodeSelector:                # one or more labels
 #     - 65535:65281           # NO_EXPORT
 #     - 65535:65282           # NO_ADVERTISE
 #   peers:
-#     - peerAddress: 10.118.11.1
-#       peerPort: 179
-#     - peerAddress: 10.118.11.2
-#       peerPort: 179
+#     - peerAddress: 10.10.10.30
+#       peerPort: 1793
+#     - peerAddress: 10.10.10.31
+#       peerPort: 1793
+#   bfd:
+#     receiveInterval: 300    # milliseconds
+#     transmitInterval: 300   # milliseconds
 ...

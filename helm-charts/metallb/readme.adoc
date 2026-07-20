@@ -92,4 +92,50 @@ a| Set how IP addresses are advertised externally:
 | bgp.communities
 | Empty list
 | Optional; specifies one or more BGP communities.
+
+| bgp.peers[].peerAddress
+| None
+| The IP address of the BGP peer, which MetalLB uses to establish the BGP session.
+
+| bgp.peers[].peerPort
+| None
+| The TCP port of the BGP peer.
+
+| bfd.receiveInterval
+| 300
+| Minimum interval to receive control packets (default 300ms, range 10-60000ms).
+
+| bfd.transmitInterval
+| 300
+| Minimum interval to send control packets (default 300ms, range 10-60000ms).
 |===
+
+== Misc
+
+Use the following command to check status of BGP sessions; each BGP speaker's output should display `bgpStatus: Established` for its respective peers:
+
+[source,bash]
+----
+oc -n openshift-frr-k8s get bgpsessionstates.frrk8s.metallb.io -o yaml
+----
+
+Displays the status of all BGP peers:
+
+[source,bash]
+----
+oc -n openshift-frr-k8s rsh -c frr <pod-name> vtysh -c "show bgp summary"
+----
+
+Shows detailed information about BGP peers:
+
+[source,bash]
+----
+oc -n openshift-frr-k8s rsh -c frr <pod-name> vtysh -c "show bgp neighbors"
+----
+
+Verifies the status of Bidirectional Forwarding Detection sessions:
+
+[source,bash]
+----
+oc -n openshift-frr-k8s rsh -c frr <pod-name> vtysh -c "show bfd peers"
+----
