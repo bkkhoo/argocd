@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bgp-config
+  namespace: {{ .Values.namespace }}
+data:
+  gobgp.toml: |
+    [global.config]
+      router-id = "192.168.255.1"
+      as = {{ .Values.myASN }}
+      port = {{ .Values.port }}
+
+    [[peer-groups]]
+      [peer-groups.config]
+        peer-group-name = "peer-group"
+        peer-as = {{ .Values.peerASN }}
+        auth-password = "<some-secret-password>"
+      [[peer-groups.afi-safis]]
+        [peer-groups.afi-safis.config]
+          afi-safi-name = "ipv4-unicast"
+
+    [[dynamic-neighbors]]
+      [dynamic-neighbors.config]
+        prefix = "10.10.10.0/24"
+        peer-group = "peer-group"
+...

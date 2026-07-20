@@ -1,0 +1,76 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Deploy Dummy BGP Peer
+
+Deploys GoBGP peer. GoBGP is an open source Border Gateway Protocol (BGP) implementation designed from scratch for modern environment and implemented in a modern programming language, the Go Programming Language.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name dummy-bgp-peer helm-chart/dummy-bgp-peer
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| namespace
+| bgp-peer
+| Deploys GoBGP pods on this namespace
+
+| serviceAccount
+| bgp-peer
+| ServiceAccount to use for the GoBGP pods.
+
+| bgpPeerImage
+| docker.io/jauderho/gobgp:latest
+| GoBGP container image.
+
+| myASN
+| 64511
+| BGP Autonomous System Number for GoBCP.
+
+| peerASN
+| 64512
+| BGP Autonomous System Number BGP peer. A BGP session is classified as iBGP if the `myASN` matches the `peerASN`; otherwise, it is classified as eBGP.
+
+| port
+| 1793
+| TCP port on which GoBGP listens.
+|===
+
+== Misc
+
+Some useful GoBGP commands:
+
+[source,bash]
+----
+# view list of bgp peers
+oc -n bgp-peer rsh <pod-name> gobgp neighbor
+
+# view details of specific bgp peer
+oc -n bgp-peer rsh <pod-name> gobgp neighbor <neighbor-ip>
+
+# view networks (those received from bgp peers and statically added)
+oc -n bgp-peer rsh <pod-name> gobgp global rib
+----
+
+== References
+
+- https://github.com/osrg/gobgp
+- https://hub.docker.com/r/jauderho/gobgp
