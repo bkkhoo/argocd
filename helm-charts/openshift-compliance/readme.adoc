@@ -12,7 +12,7 @@ The OpenShift Compliance Operator uses OpenSCAP to allow administrators to maint
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

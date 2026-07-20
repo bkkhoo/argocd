@@ -12,7 +12,7 @@ The dummy log receiver is a Python webhook backend server that receives JSON log
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

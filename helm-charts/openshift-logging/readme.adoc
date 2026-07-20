@@ -17,7 +17,7 @@ The Helm chart installs the OpenShift Logging operator and configures the Cluste
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

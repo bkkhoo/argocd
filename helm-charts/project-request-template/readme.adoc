@@ -17,7 +17,7 @@ OpenShift Project Request Templates allow administrators to automatically inject
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

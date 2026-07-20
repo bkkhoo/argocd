@@ -12,7 +12,7 @@ Configure the cluster-wide policies for container image imports, registry access
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

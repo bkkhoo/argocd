@@ -12,7 +12,7 @@ Red Hat OpenShift GitOps is a declarative continuous delivery platform based on 
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

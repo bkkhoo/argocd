@@ -12,7 +12,7 @@ Red Hat OpenShift Service Mesh provides an easy way to create a network of deplo
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

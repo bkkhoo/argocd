@@ -12,7 +12,7 @@ Red Hat Advanced Cluster Security (RHACS) is an enterprise-grade, Kubernetes-nat
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

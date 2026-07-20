@@ -12,7 +12,7 @@ RHACM integrates with OpenShift GitOps (ArgoCD) to enable a Hub-and-Spoke archit
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

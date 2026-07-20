@@ -12,11 +12,20 @@ Deploys GoBGP peer. GoBGP is an open source Border Gateway Protocol (BGP) implem
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----
 helm install --name dummy-bgp-peer helm-chart/dummy-bgp-peer
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete dummy-bgp-peer
 ----
 
 == Configuration

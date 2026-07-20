@@ -12,7 +12,7 @@ The OpenShift internal OAuth server allows configuration of access token lifetim
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

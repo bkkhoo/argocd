@@ -25,7 +25,7 @@ The `cluster-backup.sh` script produces two artifacts:
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

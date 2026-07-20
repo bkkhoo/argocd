@@ -12,7 +12,7 @@ The Multicluster Global Hub Operator contains the components of multicluster glo
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----

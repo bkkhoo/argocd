@@ -12,7 +12,7 @@ The Red Hat OpenShift Serverless operator provides a collection of APIs that ena
 
 == Installing the Chart
 
-The install the chart:
+To install the chart:
 
 [source,bash]
 ----
