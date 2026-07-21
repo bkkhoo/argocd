@@ -22,6 +22,6 @@ data:
 
     [[dynamic-neighbors]]
       [dynamic-neighbors.config]
-        prefix = "10.10.10.0/24"
+        prefix = "{{ .Values.dynamicNeighborsPrefix }}"
         peer-group = "peer-group"
 ...
