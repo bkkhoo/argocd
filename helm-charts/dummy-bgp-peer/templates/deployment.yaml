@@ -24,12 +24,12 @@ spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: name
-                operator: In
-                values:
-                - dummy-bgp-peer
+            - labelSelector:
+                matchExpressions:
+                  - key: name
+                    operator: In
+                    values:
+                      - dummy-bgp-peer
             topologyKey: "kubernetes.io/hostname"
       containers:
         - name: dummy-bgp-peer
