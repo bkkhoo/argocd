@@ -5,4 +5,5 @@ bgpPeerImage: docker.io/jauderho/gobgp:latest
 myASN: 64511
 peerASN: 64512
 port: 1793
+dynamicNeighborsPrefix: "10.0.0.0/8"      # this prefix is very wide, only use for lab environment
 ...
