@@ -15,7 +15,7 @@ data:
       [peer-groups.config]
         peer-group-name = "peer-group"
         peer-as = {{ .Values.peerASN }}
-        auth-password = "<some-secret-password>"
+        auth-password = "{{ .Values.authPassword }}"
       [[peer-groups.afi-safis]]
         [peer-groups.afi-safis.config]
           afi-safi-name = "ipv4-unicast"

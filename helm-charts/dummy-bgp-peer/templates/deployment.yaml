@@ -21,6 +21,8 @@ spec:
       labels:
         app: dummy-bgp-peer
     spec:
+      nodeSelector:
+        app: bgp-peer
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
