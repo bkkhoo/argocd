@@ -33,7 +33,7 @@ spec:
               labels:
                 env: prod
                 project-template-override: override     # global-hub does not need project-request-template
-                openshiftVersion-major-minor: 4.20
+                openshiftVersion-major-minor: "4.20"
   template:
     metadata:
       name: "{{ .name }}-cluster-config"
