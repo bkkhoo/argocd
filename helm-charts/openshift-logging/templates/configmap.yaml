@@ -5,6 +5,6 @@ metadata:
   name: cribl-cloud-ca
   namespace: openshift-logging
 data:
-  cribl-stream-ca.crt: |
+  cribl-cloud-ca.crt: |
 {{ .Files.Get "files/cribl-cloud-ca.crt" | indent 4 }}
 ...
