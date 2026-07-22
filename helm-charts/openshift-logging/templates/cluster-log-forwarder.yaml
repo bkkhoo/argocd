@@ -48,8 +48,8 @@ spec:
         insecureSkipVerify: true
         {{- else }}
         ca:
-          key: cribl-stream-ca.crt
-          configMapName: cribl-stream-ca
+          key: cribl-cloud-ca.crt
+          configMapName: cribl-cloud-ca
         {{- end }}
       {{- end }}
     {{- end }}

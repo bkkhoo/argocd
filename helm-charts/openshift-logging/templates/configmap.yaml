@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cribl-stream-ca
+  name: cribl-cloud-ca
   namespace: openshift-logging
 data:
   cribl-stream-ca.crt: |
-{{ .Files.Get "files/cribl-stream-ca.crt" | indent 4 }}
+{{ .Files.Get "files/cribl-cloud-ca.crt" | indent 4 }}
 ...
