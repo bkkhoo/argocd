@@ -67,6 +67,10 @@ The following table lists the configurable parameters/values of this Helm chart 
 | N/A
 | The HTTP request timeout in seconds.
 
+| outputs.insecureSkipVerify
+| false
+| Disable server certificate verification.
+
 | outputs.__<logType>__
 | N/A
 | Type of logs, must be one of `application`, `infrastructure`, or `audit`.
@@ -83,3 +87,65 @@ The following table lists the configurable parameters/values of this Helm chart 
 | N/A
 | Name of the key used to retrieve the value from the referenced secret.
 |===
+
+== Misc
+
+=== Logging to Cribl.Cloud
+
+1. Create API Credential on Cribl UI:
+
+** Click **Cribl** on the top left corner of the UI.
+** Click **API Credential** from the side menu.
+** Click **Add Credential**.
+
+1. Get API token:
++
+[source,bash]
+----
+export CRIBL_API_TOKEN=$(
+curl -X POST 'https://login.cribl.cloud/oauth/token' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "grant_type": "client_credentials",
+  "client_id": "<client-id>",
+  "client_secret": "<client-secret>",
+  "audience": "https://api.cribl.cloud"
+}' | jq -r .access_token)
+----
+
+1. Get Organization ID:
+
+** Click **Organization** from the side menu.
++
+[source,bash]
+----
+export ORG_ID="stoic-gauss-qcj0f23"
+export WORKSPACE="main"
+----
+
+1. Optionally, get CA cert of the worker instance:
++
+[source,bash]
+----
+echo | openssl s_client -showcerts -connect ${WORKSPACE}-${ORG_ID}.cribl.cloud:443 2>/dev/null | \
+  awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' > \
+  cribl-stream-ca.crt
+----
+
+1. Configure HTTP data source:
++
+[source,bash]
+----
+curl -X POST \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --date @files/cribl-data-source.json \
+  https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/default/system/inputs
+----
+
+curl -X POST \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --date @~/git-repos/argocd/helm-charts/openshift-logging/files/cribl-data-source-with-tokens.json \
+  https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/default/system/inputs

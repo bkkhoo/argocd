@@ -9,6 +9,7 @@ resources:
 serviceAccount: log-collector
 outputs:
   httpTimeout: 10
+  insecureSkipVerify: false
   application:
     url: "https://default.main.stoic-gauss-qcj0f23.cribl.cloud:10080/cribl/_bulk"
     secret:

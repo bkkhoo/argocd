@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cribl-stream-ca
+  namespace: openshift-logging
+data:
+  cribl-stream-ca.crt: |
+{{ .Files.Get "files/cribl-stream-ca.crt" | indent 4 }}
+...

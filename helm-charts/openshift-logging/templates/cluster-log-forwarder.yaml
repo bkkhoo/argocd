@@ -43,11 +43,14 @@ spec:
               name: {{ $config.secret.name }}
               key: {{ $config.secret.key }}
         timeout: {{ $outputs.httpTimeout }}
-      #tls:
-      #  # insecureSkipVerify: true
-      #  ca:
-      #    key: service-ca.crt
-      #    configMapName: openshift-service-ca.crt
+      tls:
+        {{- if $outputs.insecureSkipVerify }}
+        insecureSkipVerify: true
+        {{- else }}
+        ca:
+          key: cribl-stream-ca.crt
+          configMapName: cribl-stream-ca
+        {{- end }}
       {{- end }}
     {{- end }}
   pipelines:

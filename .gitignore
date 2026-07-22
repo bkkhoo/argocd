@@ -1,2 +1,3 @@
 .DS_Store
 misc/ansible/vars/clusters.yaml
+helm-charts/openshift-logging/files/cribl-data-source-with-tokens.json
