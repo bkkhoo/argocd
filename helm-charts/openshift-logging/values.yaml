@@ -10,17 +10,17 @@ serviceAccount: log-collector
 outputs:
   httpTimeout: 10
   application:
-    url: "https://application.log-receiver.svc:8443/log"
+    url: "https://default.main.stoic-gauss-qcj0f23.cribl.cloud:10080/cribl/_bulk"
     secret:
       name: openshift-logging-bearer-tokens     # rhacm policy will create this secret
-      key: application
+      key: application                          # with the application, infrastructure, and audit keys
   infrastructure:
-    url: "https://infrastructure.log-receiver.svc:8443/log"
+    url: "https://default.main.stoic-gauss-qcj0f23.cribl.cloud:10080/cribl/_bulk"
     secret:
       name: openshift-logging-bearer-tokens
       key: infrastructure
   audit:
-    url: "https://audit.log-receiver.svc:8443/log"
+    url: "https://default.main.stoic-gauss-qcj0f23.cribl.cloud:10080/cribl/_bulk"
     secret:
       name: openshift-logging-bearer-tokens
       key: audit
