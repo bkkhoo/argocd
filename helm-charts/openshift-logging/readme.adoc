@@ -124,14 +124,24 @@ export ORG_ID="stoic-gauss-qcj0f23"
 export WORKSPACE="main"
 ----
 
-1. Optionally, get CA cert of the worker instance:
+1. Optionally, get CA certificate for Cribl.Cloud:
 +
 [source,bash]
 ----
-echo | openssl s_client -showcerts -connect ${WORKSPACE}-${ORG_ID}.cribl.cloud:443 2>/dev/null | \
-  awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' > \
-  cribl-stream-ca.crt
+curl https://i.pki.goog/r1.pem > cribl-stream-ca.crt
+curl https://i.pki.goog/wr1.pem >> cribl-stream-ca.crt
 ----
++
+[NOTE]
+====
+Generally users do not need to download CA certificate for Cribl.Cloud manually because Cribl.Cloud uses Google Trust Services (GTS) as its Certificate Authority.
+
+To manually download the required certificates:
+
+- visit link:https://pki.goog/repository/[Google Trust Services Root Repository].
+- download the GTS Root R1 certificate in PEM format.
+- download the WR1 intermediate certificate in PEM format.
+====
 
 1. Configure HTTP data source:
 +
