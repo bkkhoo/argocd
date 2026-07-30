@@ -1,0 +1,108 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Logging to Cribl.Cloud
+
+. Create API Credential on Cribl Cloud UI:
+
+** Login to link:https://manage.cribl.cloud/[Cribl Cloud].
+** Click **Cribl** on the top left corner of the UI.
+** Click **API Credential** from the side menu.
+** Click **Add Credential**.
+
+. Get API token:
++
+[source,bash]
+----
+export CRIBL_API_TOKEN=$(
+curl --request POST 'https://login.cribl.cloud/oauth/token' \
+  --header 'Content-Type: application/json' \
+  --data "
+{
+  \"grant_type\": \"client_credentials\",
+  \"client_id\": \"$(cat secrets/client-id)\",
+  \"client_secret\": \"$(cat secrets/client-secret)\",
+  \"audience\": \"https://api.cribl.cloud\"
+}" | jq -r .access_token)
+----
+
+. Get Organization ID:
+
+** Click **Organization** from the side menu.
++
+[source,bash]
+----
+export ORG_ID="stoic-gauss-qcj0f23"
+export WORKSPACE="main"
+export WORKER_GROUP="default"
+----
+
+. Optionally, get CA certificate for Cribl.Cloud:
++
+[source,bash]
+----
+curl https://i.pki.goog/r1.pem > cribl-stream-ca.crt
+curl https://i.pki.goog/wr1.pem >> cribl-stream-ca.crt
+----
++
+[NOTE]
+====
+Generally users do not need to download CA certificate for Cribl.Cloud manually because Cribl.Cloud uses Google Trust Services (GTS) as its Certificate Authority.
+
+To manually download the required certificates:
+
+- visit link:https://pki.goog/repository/[Google Trust Services Root Repository].
+- download the GTS Root R1 certificate in PEM format.
+- download the WR1 intermediate certificate in PEM format.
+====
+
+. Create HTTP data source:
++
+[source,bash]
+----
+curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data @cribl-data-source.json
+----
+
+. Create Cribl Pipeline (the pipeline randomly drops 90% of the events):
++
+[source,bash]
+----
+curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data @pipeline.json
+----
+
+. Create Data Route:
++
+[source,bash]
+----
+curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/routes/default \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data @data-route.json
+----
+
+. Commit and Deploy:
++
+[source,bash]
+----
+COMMIT_ID=$(
+curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/version/commit \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{ "message": "automation@cribl:commit" }' | jq -r .items[0].commit)
+
+curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/products/stream/groups/${WORKER_GROUP}/deploy \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data "{\"version\": \"${COMMIT_ID}\"}"
+----

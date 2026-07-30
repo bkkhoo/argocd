@@ -14,7 +14,7 @@
     - "_csv_name in csv_result.stdout"
     - "'Succeeded' in csv_result.stdout"
   delay: 5
-  retries: 38
+  retries: 68
   ansible.builtin.command:
     cmd: |-
       oc -n {{ _namespace }} get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'

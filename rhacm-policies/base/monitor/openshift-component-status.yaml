@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: ComponentStatus
+metadata:
+  name: controller-manager
+conditions:
+  - message: ok
+    status: "True"
+    type: Healthy
+---
+apiVersion: v1
+kind: ComponentStatus
+metadata:
+  name: scheduler
+conditions:
+  - message: ok
+    status: "True"
+    type: Healthy
+---
+apiVersion: v1
+kind: ComponentStatus
+metadata:
+  name: etcd-0
+conditions:
+  - message: ok
+    status: "True"
+    type: Healthy
+...

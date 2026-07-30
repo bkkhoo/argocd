@@ -1,0 +1,25 @@
+{
+  "id": "drop-90-percent",
+  "conf": {
+    "output": "default",
+    "streamtags": [],
+    "groups": {},
+    "asyncFuncTimeout": 1000,
+    "functions": [
+      {
+        "id": "sampling",
+        "filter": "true",
+        "conf": {
+          "rules": [
+            {
+              "filter": "true",
+              "rate": 10
+            }
+          ]
+        },
+        "final": true
+      }
+    ],
+    "description": "drop 90% of input events"
+  }
+}

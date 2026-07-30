@@ -1,5 +1,5 @@
 {
-  "id": "openshift-http",
+  "id": "in-openshift-http",
   "type": "http",
   "host": "0.0.0.0",
   "port": 10080,
@@ -103,9 +103,6 @@
     }
   ],
   "connections": [
-    {
-      "pipeline": "main",
-      "output": "default"
-    }
+    {}
   ]
 }

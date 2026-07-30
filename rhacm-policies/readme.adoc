@@ -45,6 +45,11 @@ These policies are common to both global hub and managed hubs.
 | All OpenShift clusters.
 | Monitor cluster operators; status should be `Available=true`, `Degraded=false`.
 
+| monitor-openshift-component-status
+| Inform
+| All OpenShift clusters.
+| Monitor health status of cluster components, specifically the scheduler, controller-manager, and etcd nodes.
+
 | monitor-nodes
 | Inform
 | All OpenShift clusters.

@@ -46,7 +46,7 @@ placementBindingDefaults:
 
 policies:
   - name: monitor-managed-clusters
-    description: monitor managedCluster availability
+    description: monitor managedCluster availability on global hub and managed hubs
     complianceType: mustnothave
     manifests:
       - path: monitor/managed-cluster-status.yaml

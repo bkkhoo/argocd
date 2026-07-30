@@ -39,6 +39,12 @@ policies:
     manifests:
       - path: monitor/cluster-operator-status.yaml
 
+  - name: monitor-openshift-component-status
+    description: monitor health status of cluster components, specifically the scheduler, controller-manager, and etcd nodes
+    complianceType: musthave
+    manifests:
+      - path: monitor/openshift-component-status.yaml
+
   - name: monitor-nodes
     description: monitor nodes with memory, disk or pid pressure, or not ready
     complianceType: mustnothave
