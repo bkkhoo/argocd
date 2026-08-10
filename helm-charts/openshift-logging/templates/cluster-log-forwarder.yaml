@@ -23,12 +23,17 @@ spec:
   filters:
     - name: detect-multiline-exception
       type: detectMultilineException
+    - name: custom-labels
+      type: openshiftLabels
+      openshiftLabels:
+        cluster_name: {{ .Values.clusterName }}
+        env: {{ .Values.env }}
   {{- $outputs := .Values.outputs }}
   outputs:
-    {{- range $index, $type := list "application" "infrastructure" "audit" }}
-      {{- if index $outputs $type }}
-        {{- $config := index $outputs $type }}
-    - name: {{ $type }}-log
+  {{- range $tenant := list "application" "infrastructure" "audit" }}
+    {{- if index $outputs $tenant }}
+      {{- $config := index $outputs $tenant }}
+    - name: {{ $tenant }}-output
       type: http
       http:
         url: {{ $config.url }}
@@ -43,26 +48,29 @@ spec:
               name: {{ $config.secret.name }}
               key: {{ $config.secret.key }}
         timeout: {{ $outputs.httpTimeout }}
+        tuning:
+          maxWrite: {{ $outputs.tuning.maxWrite | int }}
       tls:
         {{- if $outputs.insecureSkipVerify }}
         insecureSkipVerify: true
         {{- else }}
         ca:
-          key: cribl-cloud-ca.crt
-          configMapName: cribl-cloud-ca
+          configMapName: {{ $outputs.ca.configMap }}
+          key: {{ $outputs.ca.key }}
         {{- end }}
-      {{- end }}
     {{- end }}
+  {{- end }}
   pipelines:
-    {{- range $index, $type := list "application" "infrastructure" "audit" }}
-      {{- if index $outputs $type }}
-    - name: {{ $type }}-log
+    {{- range $tenant := list "application" "infrastructure" "audit" }}
+      {{- if index $outputs $tenant }}
+    - name: {{ $tenant }}-pipeline
       filterRefs:
         - detect-multiline-exception
+        - custom-labels
       inputRefs:
-        - {{ $type }}
+        - {{ $tenant }}
       outputRefs:
-        - {{ $type }}-log
+        - {{ $tenant }}-output
       {{- end }}
     {{- end }}
 ...

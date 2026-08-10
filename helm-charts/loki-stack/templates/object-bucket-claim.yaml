@@ -1,0 +1,13 @@
+---
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: loki-s3-bucket-obc
+  namespace: openshift-logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  generateBucketName: loki-s3-bucket-obc
+  storageClassName: {{ .Values.lokiStack.objectStorage.storageClassName }}
+...

@@ -1,0 +1,15 @@
+---
+apiVersion: observability.openshift.io/v1alpha1
+kind: UIPlugin
+metadata:
+  name: logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  logging:
+    lokiStack:
+      name: logging-loki-stack
+      namespace: openshift-logging
+  type: Logging
+...

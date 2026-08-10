@@ -72,6 +72,11 @@ a| Deploy the following operators:
 | All OpenShift clusters, excluding `local-cluster` and any cluster with `managed-hub` label.
 | Deploy RHACS SecuredCluster.
 
+| loki-stack
+| ApplicationSet
+| All OpenShift clusters with the `loki-stack` label.
+| Deploy and configure LokiStack (using ODF's S3 compatible object storage) and logging console plugin.
+
 | metallb
 | ApplicationSet
 | All OpenShift clusters without the `managed-hub` label but with the `metallb` label.

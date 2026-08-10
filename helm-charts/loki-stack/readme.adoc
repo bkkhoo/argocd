@@ -1,0 +1,76 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Loki Stack
+
+This Helm chart installs the following operators:
+
+- loki-operator: the operator provides a means for configuring and managing a Loki stack for cluster logging.
+- cluster-observability-operator: the operator designed to deploy and manage various observability tools.
+
+The chart also installs and configures:
+
+- a LokiStack using a S3 compatible object storage provisioned by OpenShift Data Foundation.
+- console plugins for logging.
+
+== Installing the Chart
+
+To install the chart:
+
+[source,bash]
+----
+helm install --name loki-stack helm-chart/loki-stack
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete loki-stack
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,2,6", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| lokiStack.size
+| 1x.small
+| The deployment scale-out size, determining resource allocation and performance capabilities: 1x.demo, 1x.pico, 1x.extra-small, 1x.small, or 1x.medium.
+
+| lokiStack.schemaVersion
+| v13
+| Defines the log storage schema version; v13 recommended from Loki v6.x.
+
+| lokiStack.storageClassName
+| ocs-external-storagecluster-ceph-rbd
+| Specifies the StorageClass used for temporary block storage attached to Ingester and Compactor pods.
+
+| lokiStack.objectStorage.type
+| s3
+| Type of object storage.
+
+| lokiStack.objectStorage.secret
+| loki-s3-bucket
+| Name of a secret in the namespace configured for object storage secrets.
+
+| lokiStack.objectStorage.storageClassName
+| openshift-storage.noobaa.io
+| StorageClass name of the objet storage.
+
+| lokiStack.externalDataSource
+| true
+| Determine whether LokiStack will handle incoming external data. If `true`, the Helm Chart will create the `external-logs-writer` ServiceAccount, and grant it `logging-collector-logs-writer` ClusterRole (the ClusterRole is crated when OpenShift Logging operator is deployed).
+|===

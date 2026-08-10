@@ -1,0 +1,52 @@
+{
+  "id": "http",
+  "description": "openshift http input",
+  "type": "http",
+  "disabled": false,
+  "sendToRoutes": false,
+  "pqEnabled": false,
+  "streamtags": [],
+  "host": "0.0.0.0",
+  "port": 10080,
+  "tls": {
+    "disabled": false,
+    "requestCert": false,
+    "certPath": "$CRIBL_CLOUD_CRT",
+    "minVersion": "TLSv1.2",
+    "privKeyPath": "$CRIBL_CLOUD_KEY"
+  },
+  "maxActiveReq": 256,
+  "maxRequestsPerSocket": 0,
+  "enableProxyHeader": false,
+  "captureHeaders": false,
+  "activityLogSampleRate": 1000,
+  "requestTimeout": 0,
+  "socketTimeout": 0,
+  "keepAliveTimeout": 5,
+  "enableHealthCheck": false,
+  "ipAllowlistRegex": "/.*/",
+  "ipDenylistRegex": "/^$/",
+  "criblAPI": "/cribl",
+  "elasticAPI": "/elastic",
+  "splunkHecAPI": "/services/collector",
+  "splunkHecAcks": false,
+  "authTokensExt": [
+    {
+      "description": "prod application token",
+      "token": "<token>"
+    },
+    {
+      "description": "prod infrastructure token",
+      "token": "<token>"
+    },
+    {
+      "description": "prod audit token",
+      "token": "<token>"
+    }
+  ],
+  "connections": [
+    {
+      "output": "output-router"
+    }
+  ]
+}

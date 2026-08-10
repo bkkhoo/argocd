@@ -43,6 +43,14 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
+| clusterName
+| dummy
+| Name of the cluster; the ClusterLogForwarder adds the `cluster_name=<value>` label to log records.
+
+| env
+| prod
+| Environment of the cluster; the ClusterLogForwarder adds the `env=<value>` label to log records.
+
 | resources.limits.cpu
 | 6
 | The maximum CPU resource the collector pod is allowed to consume; exceeding this limit results in throttling.
@@ -64,12 +72,24 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Name of the ServiceAccount to use to deploy the Forwarder.
 
 | outputs.httpTimeout
-| N/A
+| 10
 | The HTTP request timeout in seconds.
 
 | outputs.insecureSkipVerify
 | false
 | Disable server certificate verification.
+
+| outputs.tuning.maxWrite
+| 1048576
+| Limits the maximum size of log batches sent to outputs.
+
+| outputs.ca.configMap
+| custom-ca-bundle
+| Name of the ConfigMap containing the CA certificate used to verify HTTP endpoint.
+
+| outputs.ca.key
+| ca.crt
+| Key name of the ConfigMap containing the CA certificate used to verify HTTP endpoint.
 
 | outputs.__<logType>__
 | N/A
@@ -80,10 +100,11 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Endpoint URL for log ingestion.
 
 | outputs.__<logType>__.secret.name
-| N/A
+| openshift-logging-bearer-tokens
 | Name of the secret containing the bearer token for authentication.
 
 | outputs.__<logType>__.secret.key
-| N/A
+| audit
 | Name of the key used to retrieve the value from the referenced secret.
+
 |===

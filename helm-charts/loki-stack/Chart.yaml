@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 6.6      # the version depends on openshift catalog source, need not necessary match what is specified here
+name: loki-stack
+description: Loki Stack
+type: application
+version: 1.0
+...

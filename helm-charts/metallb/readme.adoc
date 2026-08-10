@@ -16,7 +16,7 @@ To install the chart:
 
 [source,bash]
 ----
-helm install --name openshift-gitops helm-chart/metallb
+helm install --name metallb helm-chart/metallb
 ----
 
 == Uninstalling the Chart

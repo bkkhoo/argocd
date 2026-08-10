@@ -55,6 +55,17 @@ policySets:
               - OpenShift
           - key: metallb
             operator: Exists
+  - name: base-config-loki-stack
+    description: base config policies for all clusters with loki-stack
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: vendor
+            operator: In
+            values:
+              - OpenShift
+          - key: loki-stack
+            operator: Exists
 
 placementBindingDefaults:
   name: base-config-binding
@@ -93,4 +104,11 @@ policies:
       - base-config-metallb
     manifests:
       - path: config/metallb-bgp-password-secret.yaml
+
+  - name: config-loki-stack-secret
+    description: configure loki stack secret (ODF ObjectBucketClaim)
+    policySets:         # override policyDefaults.policySets
+      - base-config-loki-stack
+    manifests:
+      - path: config/loki-stack-secret.yaml
 ...

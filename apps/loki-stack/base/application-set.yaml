@@ -1,0 +1,49 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: loki-stack
+  namespace: openshift-gitops
+  labels:
+    applications: loki-stack
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+            - key: loki-stack
+              operator: Exists
+  template:
+    metadata:
+      name: "{{ name }}-loki-stack"
+      labels:
+        applications: loki-stack
+    spec:
+      project: gitops
+      source:
+        repoURL: https://github.com/bkkhoo/argocd.git
+        targetRevision: main
+        path: helm-charts/loki-stack
+      destination:
+        server: "{{ server }}"
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+      info:
+        - name: env
+          value: any
+        - name: type
+          value: applicationSet
+        - name: target
+          value: clusters with loki-stack label
+...

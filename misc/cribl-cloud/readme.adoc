@@ -6,41 +6,7 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
-= Logging to Cribl.Cloud
-
-. Create API Credential on Cribl Cloud UI:
-
-** Login to link:https://manage.cribl.cloud/[Cribl Cloud].
-** Click **Cribl** on the top left corner of the UI.
-** Click **API Credential** from the side menu.
-** Click **Add Credential**.
-
-. Get API token:
-+
-[source,bash]
-----
-export CRIBL_API_TOKEN=$(
-curl --request POST 'https://login.cribl.cloud/oauth/token' \
-  --header 'Content-Type: application/json' \
-  --data "
-{
-  \"grant_type\": \"client_credentials\",
-  \"client_id\": \"$(cat secrets/client-id)\",
-  \"client_secret\": \"$(cat secrets/client-secret)\",
-  \"audience\": \"https://api.cribl.cloud\"
-}" | jq -r .access_token)
-----
-
-. Get Organization ID:
-
-** Click **Organization** from the side menu.
-+
-[source,bash]
-----
-export ORG_ID="stoic-gauss-qcj0f23"
-export WORKSPACE="main"
-export WORKER_GROUP="default"
-----
+= Cribl.Cloud Configuration
 
 . Optionally, get CA certificate for Cribl.Cloud:
 +
@@ -61,34 +27,106 @@ To manually download the required certificates:
 - download the WR1 intermediate certificate in PEM format.
 ====
 
-. Create HTTP data source:
+. One time task, create API Credential on Cribl Cloud UI:
+
+* Login to link:https://manage.cribl.cloud/[Cribl Cloud].
+* Click **Products** on the top left corner of the UI.
+* Click **Cribl** from the side menu.
+* Select **API Credential** from the side menu.
+* Click **Add Credential**.
+* Store **Client ID** and **Client Secret** in the files respectively:
+  ** `secrets/client-id`
+  ** `secrets/client-secret`
+
+. Get Organization ID:
++
+* Click **Products** on the top left corner of the UI.
+* Click **Organization** from the side menu.
+* Set environment variable:
++
+[source,bash]
+----
+export ORG_ID="stoic-gauss-qcj0f23"
+export WORKSPACE="main"
+export WORKER_GROUP="default"
+----
+
+. Get API token:
++
+[source,bash]
+----
+export CRIBL_API_TOKEN=$(
+curl --request POST 'https://login.cribl.cloud/oauth/token' \
+  --header 'Content-Type: application/json' \
+  --data "
+{
+  \"grant_type\": \"client_credentials\",
+  \"client_id\": \"$(cat secrets/client-id)\",
+  \"client_secret\": \"$(cat secrets/client-secret)\",
+  \"audience\": \"https://api.cribl.cloud\"
+}" | jq -r .access_token)
+----
++
+[NOTE]
+====
+The token is valid for 1 day only.
+====
+
+. Create Cribl Stream secret:
++
+[source,bash]
+----
+curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data "{
+    \"id\": \"openshift-loki-log-collector-token-111\",
+    \"secretType\": \"text\",
+    \"value\": \"$(oc -n openshift-logging create token external-logs-writer --duration=8760h)\",
+    \"description\": \"oc -n openshift-logging create token external-logs-writer --duration=8760h\"
+  }"
+----
++
+[NOTE]
+====
+- OpenShift LokiStack uses bearer token to authenticate/authorize logs ingestion. The ServiceAccount token must be granted the `logging-collector-logs-writer` ClusterRole.
+- The link:../../helm-charts/loki-stack/templates/rbac.yaml[Helm chart template] create the ServiceAccount and ClusterRoleBinding to grant the required privileges.
+====
+
+. Create Cribl Stream pipelines:
++
+[source,bash]
+----
+for p in drop-90-percent application infrastructure audit; do
+  curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines \
+    --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --data @pipeline/${p}.json
+  echo ""
+done
+----
+
+. Create Cribl Stream HTTP data destinations:
++
+[source,bash]
+----
+for d in output-router application infrastructure audit; do
+  curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/outputs \
+    --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --data @destination/${d}.json
+  echo ""
+done
+----
+
+. Create Cribl Stream HTTP data source:
 +
 [source,bash]
 ----
 curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs \
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
   --header "Content-Type: application/json" \
-  --data @cribl-data-source.json
-----
-
-. Create Cribl Pipeline (the pipeline randomly drops 90% of the events):
-+
-[source,bash]
-----
-curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines \
-  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
-  --header "Content-Type: application/json" \
-  --data @pipeline.json
-----
-
-. Create Data Route:
-+
-[source,bash]
-----
-curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/routes/default \
-  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
-  --header "Content-Type: application/json" \
-  --data @data-route.json
+  --data @source/http.json
 ----
 
 . Commit and Deploy:

@@ -1,0 +1,25 @@
+{
+  "id": "out-output-router",
+  "type": "router",
+  "systemFields": [
+    "log_type"
+  ],
+  "streamtags": [],
+  "rules": [
+    {
+      "final": false,
+      "filter": "log_type == 'application'",
+      "output": "out-openshift-lokistack-application"
+    },
+    {
+      "final": false,
+      "filter": "log_type == 'infrastructure'",
+      "output": "out-openshift-lokistack-infrastructure"
+    },
+    {
+      "final": false,
+      "filter": "log_type == 'audit'",
+      "output": "out-openshift-lokistack-audit"
+    }
+  ]
+}

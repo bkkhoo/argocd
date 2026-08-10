@@ -1,0 +1,32 @@
+---
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: logging-loki-stack
+  namespace: openshift-logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  managementState: Managed
+  tenants:
+    mode: openshift-logging
+  limits:
+    global:
+      queries:
+        queryTimeout: 3m
+  storage:
+    schemas:
+      - version: {{ .Values.lokiStack.schemaVersion }}
+        effectiveDate: "2020-10-11"
+    secret:
+      name: {{ .Values.lokiStack.objectStorage.secret }}
+      type: {{ .Values.lokiStack.objectStorage.type }}
+    tls:
+      caName: openshift-service-ca.crt
+      caKey: service-ca.crt
+  hashRing:
+    type: memberlist
+  size: {{ .Values.lokiStack.size }}
+  storageClassName: {{ .Values.lokiStack.storageClassName }}
+...

@@ -1,6 +1,7 @@
 {
   "id": "drop-90-percent",
   "conf": {
+    "description": "drop 90% of input",
     "output": "default",
     "streamtags": [],
     "groups": {},
@@ -16,10 +17,8 @@
               "rate": 10
             }
           ]
-        },
-        "final": true
+        }
       }
-    ],
-    "description": "drop 90% of input events"
+    ]
   }
 }

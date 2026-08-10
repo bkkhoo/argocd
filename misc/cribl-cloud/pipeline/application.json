@@ -1,0 +1,75 @@
+{
+  "id": "application-label-log",
+  "conf": {
+    "description": "label application log",
+    "functions": [
+      {
+        "id": "eval",
+        "description": "add cluster name, cluster env, cluster sector, namespace labels; disables pod and container name labels because of high cardinality",
+        "filter": "true",
+        "conf": {
+          "printUndefineds": false,
+          "add": [
+            {
+              "disabled": false,
+              "name": "__labels",
+              "value": "{}"
+            },
+            {
+              "disabled": false,
+              "name": "__labels.log_type",
+              "value": "__e.log_type"
+            },
+            {
+              "name": "__labels.cluster_name",
+              "value": "__e.openshift && __e.openshift.labels ? __e.openshift.labels.cluster_name : null"
+            },
+            {
+              "disabled": false,
+              "name": "__labels.cluster_env",
+              "value": "__e.openshift && __e.openshift.labels ? __e.openshift.labels.env : null"
+            },
+            {
+              "disabled": false,
+              "name": "__labels.cluster_sector",
+              "value": "__e.openshift && __e.openshift.labels ? __e.openshift.labels.sector : null"
+            },
+            {
+              "disabled": false,
+              "name": "__labels.node_name",
+              "value": "__e.hostname ? __e.hostname : null"
+            },
+            {
+              "disabled": false,
+              "name": "__labels.kubernetes_namespace_name",
+              "value": "__e.kubernetes && __e.kubernetes.namespace_name ? __e.kubernetes.namespace_name : null"
+            },
+            {
+              "disabled": true,
+              "name": "__labels.kubernetes_pod_name",
+              "value": "__e.kubernetes && __e.kubernetes.pod_name ? __e.kubernetes.pod_name : null"
+            },
+            {
+              "disabled": true,
+              "name": "__labels.kubernetes_contaiber_name",
+              "value": "__e.kubernetes && __e.kubernetes.container_name ? __e.kubernetes.container_name : null"
+            }
+          ],
+          "remove": [
+            "openshift",
+            "kubernetes.namespace_id",
+            "kubernetes.pod_id",
+            "kubernetes.container_id",
+            "kubernetes.namespace_labels.kubernetes_io_metadata_name",
+            "kubernetes.namespace_labels.pod-security_kubernetes_io*",
+            "kubernetes.namespace_labels.olm_operatorgroup_uid*"
+          ],
+          "keep": []
+        }
+      }
+    ],
+    "streamtags": [],
+    "groups": {},
+    "output": "default"
+  }
+}

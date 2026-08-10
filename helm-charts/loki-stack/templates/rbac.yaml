@@ -1,0 +1,56 @@
+{{- if .Values.lokiStack.externalDataSource }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: external-logs-writer
+  namespace: openshift-logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cribl-stream-logs-writer
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: logging-collector-logs-writer
+subjects:
+  - kind: ServiceAccount
+    name: external-logs-writer
+    namespace: openshift-logging
+---
+
+
+
+
+TOKEN=$(oc create token -n openshift-logging external-logs-writer)
+curl -k -H "Authorization: Bearer $TOKEN" \
+     -H "Content-Type: application/json" \
+     -X POST "https://logging-loki-stack-openshift-logging.apps.cluster-8lzp9.dyn.redhatworkshops.io/api/logs/v1/application/loki/api/v1/push" \
+     --data-raw '{"streams": [{"stream": {"log_type":"application","kubernetes_namespace_name":"default"}, "values": [ [ "'$(date +%s%N)'", "test application log message" ] ]}]}'
+
+
+
+
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cribl-stream-logs-writer-application
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-logging-write-application-logs
+subjects:
+  - kind: ServiceAccount
+    name: external-logs-writer
+    namespace: openshift-logging
+...
+{{- end }}
