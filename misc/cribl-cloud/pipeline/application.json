@@ -1,46 +1,48 @@
 {
-  "id": "application-label-log",
+  "id": "application-log-transform",
   "conf": {
-    "description": "label application log",
+    "description": "transform application log",
     "functions": [
       {
         "id": "eval",
-        "description": "add cluster name, cluster env, cluster sector, namespace labels; disables pod and container name labels because of high cardinality",
+        "description": "add labels; pod_and and container_name labels disabled because of high cardinality",
         "filter": "true",
         "conf": {
           "printUndefineds": false,
           "add": [
             {
-              "disabled": false,
               "name": "__labels",
               "value": "{}"
             },
             {
-              "disabled": false,
               "name": "__labels.log_type",
               "value": "__e.log_type"
+            },
+            {
+              "name": "__labels.log_source",
+              "value": "__e.log_source"
             },
             {
               "name": "__labels.cluster_name",
               "value": "__e.openshift && __e.openshift.labels ? __e.openshift.labels.cluster_name : null"
             },
             {
-              "disabled": false,
               "name": "__labels.cluster_env",
               "value": "__e.openshift && __e.openshift.labels ? __e.openshift.labels.env : null"
             },
             {
-              "disabled": false,
               "name": "__labels.cluster_sector",
               "value": "__e.openshift && __e.openshift.labels ? __e.openshift.labels.sector : null"
             },
             {
-              "disabled": false,
               "name": "__labels.node_name",
               "value": "__e.hostname ? __e.hostname : null"
             },
             {
-              "disabled": false,
+              "name": "__labels.level",
+              "value": "__e.level"
+            },
+            {
               "name": "__labels.kubernetes_namespace_name",
               "value": "__e.kubernetes && __e.kubernetes.namespace_name ? __e.kubernetes.namespace_name : null"
             },
@@ -51,10 +53,23 @@
             },
             {
               "disabled": true,
-              "name": "__labels.kubernetes_contaiber_name",
+              "name": "__labels.kubernetes_container_name",
               "value": "__e.kubernetes && __e.kubernetes.container_name ? __e.kubernetes.container_name : null"
             }
           ],
+          "remove": [],
+          "keep": []
+        },
+        "final": false,
+        "disabled": false
+      },
+      {
+        "id": "eval",
+        "description": "remove fields that are not useful",
+        "filter": "true",
+        "conf": {
+          "printUndefineds": false,
+          "add": [],
           "remove": [
             "openshift",
             "kubernetes.namespace_id",
@@ -62,10 +77,26 @@
             "kubernetes.container_id",
             "kubernetes.namespace_labels.kubernetes_io_metadata_name",
             "kubernetes.namespace_labels.pod-security_kubernetes_io*",
-            "kubernetes.namespace_labels.olm_operatorgroup_uid*"
+            "kubernetes.namespace_labels.olm_operatorgroup_uid*",
+            "kubernetes.annotations['alm-examples']"
           ],
           "keep": []
-        }
+        },
+        "final": false,
+        "disabled": false
+      },
+      {
+        "id": "code",
+        "description": "remove annotations that are not useful, pattern matching",
+        "filter": "true",
+        "conf": {
+          "maxNumOfIterations": 5000,
+          "activeLogSampleRate": 1000,
+          "useUniqueLogChannel": true,
+          "code": "const anns = __e['kubernetes'] && __e['kubernetes']['annotations'];\n\nif (anns) {\n  Object.keys(anns).forEach(k => {\n    if (k.startsWith('k8s.ovn.org/pod-networks') ||\n        k.startsWith('k8s.v1.cni.cncf.io/network-status') ||\n        k.startsWith('olm') ||\n        k.startsWith('operator') ||\n        k.startsWith('features.operators')) {\n      delete anns[k];\n    }\n  });\n}"
+        },
+        "final": false,
+        "disabled": false
       }
     ],
     "streamtags": [],

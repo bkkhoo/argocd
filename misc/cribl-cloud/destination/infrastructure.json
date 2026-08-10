@@ -10,7 +10,7 @@
   ],
   "authType": "textSecret",
   "textSecret": "openshift-loki-log-collector-token",
-  "pipeline": "infrastructure-label-log",
+  "pipeline": "infrastructure-log-transform",
   "messageFormat": "protobuf",
   "compress": true,
   "extraHttpHeaders": [],
