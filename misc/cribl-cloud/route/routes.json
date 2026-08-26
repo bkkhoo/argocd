@@ -1,0 +1,40 @@
+{
+  "id": "default",
+  "groups": {},
+  "comments": [],
+  "routes": [
+    {
+      "id": "in-raw-http",
+      "name": "openshift-cluster-log-forwarder-raw-http",
+      "description": "input events from OpenShift ClusterLogForwarder",
+      "filter": "__inputId=='http_raw:in-raw-http'",
+      "pipeline": "passthru",
+      "enableOutputExpression": false,
+      "output": "out-output-router",
+      "disabled": false,
+      "final": true
+    },
+    {
+      "id": "in-http",
+      "name": "openshift-cluster-log-forwarder-http",
+      "description": "input events from OpenShift ClusterLogForwarder",
+      "filter": "__inputId.startsWith('http:http:')",
+      "pipeline": "passthru",
+      "enableOutputExpression": false,
+      "output": "out-output-router",
+      "disabled": false,
+      "final": true
+    },
+    {
+      "id": "in-prometheus-rw",
+      "name": "prometheus-remote-write",
+      "description": "input metrics from premetheus remote write",
+      "filter": "__inputId=='prometheus_rw:in-prometheus-rw'",
+      "pipeline": "passthru",
+      "enableOutputExpression": false,
+      "output": "default",
+      "disabled": false,
+      "final": true
+    }
+  ]
+}

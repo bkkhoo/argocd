@@ -18,17 +18,17 @@ outputs:
     configMap: custom-ca-bundle
     key: ca.crt
   application:
-    url: https://default.main.stoic-gauss-qcj0f23.cribl.cloud:20001/cribl/_bulk
+    url: https://default.main.stoic-gauss-qcj0f23.cribl.cloud:10080/cribl/_bulk
     secret:
       name: openshift-logging-bearer-tokens     # rhacm policy will create this secret
       key: application                          # with the application, infrastructure, and audit keys
   infrastructure:
-    url: https://default.main.stoic-gauss-qcj0f23.cribl.cloud:20002/cribl/_bulk
+    url: https://default.main.stoic-gauss-qcj0f23.cribl.cloud:10080/cribl/_bulk
     secret:
       name: openshift-logging-bearer-tokens
       key: infrastructure
   audit:
-    url: https://default.main.stoic-gauss-qcj0f23.cribl.cloud:20003/cribl/_bulk
+    url: https://default.main.stoic-gauss-qcj0f23.cribl.cloud:10080/cribl/_bulk
     secret:
       name: openshift-logging-bearer-tokens
       key: audit

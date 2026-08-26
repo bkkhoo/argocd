@@ -6,25 +6,46 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
-= Cribl.Cloud Configuration
+= Overview
+
+The following outlines the Cribl.Cloud configuration:
+
+- Create Cribl HTTP and Raw HTTP Sources to accept logs forwarded by the OpenShift `ClusterLogForwarder`:
+  ** Configure OpenShift `ClusterLogForwarder` output to use `ndjson` format when forwarding to Cribl HTTP Source:
+     *** `ClusterLogForwarder` aggregates (with `ndjson`, each event json objects are separated by newline) and compresses (gzip) logs into a single giant batch by default rather than forwarding individually.
+     *** Cribl HTTP Source is protocol-ware and explicitly has no Event Breaker support; its can accept multiple newline-delimited JSON event objects, treating each NDJSON line as an event.
+  ** Configure OpenShift `ClusterLogForwarder` output to use `json` format when forwarding to Cribl Raw HTTP Source:
+     *** `ClusterLogForwarder` aggregates and compresses (gzip) logs into a single giant batch (e.g., `[{"@timestamp":...},{"@timestamp":...}...]`) by default rather than forwarding individually.
+     *** Cribl Raw HTTP Source treats the batch as raw input and assigns everything to `_raw` field.
+     *** Configure a Cribl Event Breaker to break the aggregated logs in the `_raw` field back into individual log events inside Cribl.
+- Route logs to data destinations (OpenShift LokiStack and Cribl Data Lake) based on the `log_type` field.
+- Process events/logs with Cribl Pipelines to:
+  ** Add labels for Loki indexing.
+  ** Remove fields (such as namespace, pod, and container IDs).
+  ** Drop GET, LIST, and WATCH audit events, unless they are for `Secrets` resource.
+  ** Drop successful actions (response code 200, 201) on `SubjectAccessReviews`, `TokenReviews` and `Leases` audit events.
+  ** Apply a 20% sample rate to INFO, DEBUG application and infrastructure logs.
+
+== Cribl.Cloud Configuration
 
 . Optionally, get CA certificate for Cribl.Cloud:
 +
 [source,bash]
 ----
-curl https://i.pki.goog/r1.pem > cribl-stream-ca.crt
-curl https://i.pki.goog/wr1.pem >> cribl-stream-ca.crt
+curl https://i.pki.goog/r1.pem > cribl-cloud-ca.crt
+curl https://i.pki.goog/wr1.pem >> cribl-cloud-ca.crt
 ----
 +
 [NOTE]
 ====
-Generally users do not need to download CA certificate for Cribl.Cloud manually because Cribl.Cloud uses Google Trust Services (GTS) as its Certificate Authority.
+Generally, users do not need to download CA certificates for Cribl.Cloud manually because Cribl.Cloud uses Google Trust Services (GTS) as its Certificate Authority.
 
 To manually download the required certificates:
 
-- visit link:https://pki.goog/repository/[Google Trust Services Root Repository].
-- download the GTS Root R1 certificate in PEM format.
-- download the WR1 intermediate certificate in PEM format.
+- Visit the link:https://pki.goog/repository/[Google Trust Services Root Repository].
+- Download and store the following CA certificates:
+  ** The GTS Root R1 certificate in PEM format.
+  ** The WR1 intermediates/subordinate certificate in PEM format.
 ====
 
 . One time task, create API Credential on Cribl Cloud UI:
@@ -61,8 +82,8 @@ curl --request POST 'https://login.cribl.cloud/oauth/token' \
   --data "
 {
   \"grant_type\": \"client_credentials\",
-  \"client_id\": \"$(cat secrets/client-id)\",
-  \"client_secret\": \"$(cat secrets/client-secret)\",
+  \"client_id\": \"$(cat secrets/cribl-client-id)\",
+  \"client_secret\": \"$(cat secrets/cribl-client-secret)\",
   \"audience\": \"https://api.cribl.cloud\"
 }" | jq -r .access_token)
 ----
@@ -72,32 +93,56 @@ curl --request POST 'https://login.cribl.cloud/oauth/token' \
 The token is valid for 1 day only.
 ====
 
-. Create Cribl Stream secret:
+. Create Cribl Stream Secrets (the secrets are used on data sources and destinations for authentication/authorization):
 +
 [source,bash]
 ----
 curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets \
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
   --header "Content-Type: application/json" \
-  --data "{
-    \"id\": \"openshift-loki-log-collector-token-111\",
-    \"secretType\": \"text\",
-    \"value\": \"$(oc -n openshift-logging create token external-logs-writer --duration=8760h)\",
-    \"description\": \"oc -n openshift-logging create token external-logs-writer --duration=8760h\"
-  }"
+  --data "
+{
+  \"id\": \"openshift-loki-log-collector-token\",
+  \"secretType\": \"text\",
+  \"value\": \"$(oc -n openshift-logging create token external-logs-writer --duration=8760h)\",
+  \"description\": \"oc -n openshift-logging create token external-logs-writer --duration=8760h\"
+}"
+
+curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data "
+{
+  \"id\": \"openshift-s3-auth\",
+  \"secretType\": \"keypair\",
+  \"apiKey\": \"$(cat secrets/openshift-s3-auth.json | jq -r .awsApiKey)\",
+  \"secretKey\": \"$(cat secrets/openshift-s3-auth.json | jq -r .awsSecretKey)\",
+  \"description\": \"api key and secret key for openshift s3 bucket\"
+}"
+
+curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data "
+{
+  \"id\": \"prometheus-remote-write-token\",
+  \"secretType\": \"text\",
+  \"value\": \"$(cat secrets/prometheus-remote-write-token)\",
+  \"description\": \"prometheus remote write bearer token\"
+}"
 ----
 +
 [NOTE]
 ====
-- OpenShift LokiStack uses bearer token to authenticate/authorize logs ingestion. The ServiceAccount token must be granted the `logging-collector-logs-writer` ClusterRole.
-- The link:../../helm-charts/loki-stack/templates/rbac.yaml[Helm chart template] create the ServiceAccount and ClusterRoleBinding to grant the required privileges.
+- OpenShift LokiStack uses a bearer token to authenticate and authorize log ingestion. The associated ServiceAccount token must be granted the `logging-collector-logs-writer` ClusterRole.
+- This link:../../helm-charts/loki-stack/templates/rbac.yaml[Helm chart template] creates the ServiceAccount and ClusterRoleBinding to grant the required privileges.
 ====
 
-. Create Cribl Stream pipelines:
+. Create Cribl Stream Pipelines:
 +
 [source,bash]
 ----
-for p in drop-90-percent application infrastructure audit; do
+for p in application infrastructure audit raw-http-remove-fields; do
   curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json" \
@@ -106,11 +151,11 @@ for p in drop-90-percent application infrastructure audit; do
 done
 ----
 
-. Create Cribl Stream HTTP data destinations:
+. Create Cribl Stream Data Destinations:
 +
 [source,bash]
 ----
-for d in output-router application infrastructure audit; do
+for d in output-router application infrastructure audit cribl-data-lake openshift-s3; do
   curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/outputs \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json" \
@@ -119,14 +164,44 @@ for d in output-router application infrastructure audit; do
 done
 ----
 
-. Create Cribl Stream HTTP data source:
+. Create Cribl Stream Event Breaker Ruleset:
 +
 [source,bash]
 ----
-curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs \
+curl --request POST "https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/lib/breakers" \
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
   --header "Content-Type: application/json" \
-  --data @source/http.json
+  --data @event-breaker/break-json-array.json
+----
+
+. Create Cribl Stream Data Sources:
++
+[source,bash]
+----
+for s in http raw-http prometheus-remote-write; do
+  curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs \
+    --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+    --header "Content-Type: application/json" \
+    --data @source/${s}.json
+  echo ""
+done
+----
++
+[NOTE]
+====
+- Neither HTTP nor Raw HTTP sources (as of Cribl.Cloud v4.19.2) support using Cribl Stream Secrets to manage auth/bearer tokens; these tokens are stored directly within the source configuration.
+- Edit the `http.json` and `raw-http.json` files to include the correct tokens before executing the `curl` command.
+- Do not commit files containing sensitive tokens to Git.
+====
+
+. Create Cribl Stream Routes:
++
+[source,bash]
+----
+curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/routes/default \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data @route/routes.json
 ----
 
 . Commit and Deploy:
@@ -143,4 +218,81 @@ curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/products/
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
   --header "Content-Type: application/json" \
   --data "{\"version\": \"${COMMIT_ID}\"}"
+
+curl --request POST  https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/version/commit \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"message": "commit configuration changes"}'
 ----
+
+== Remove the Cribl.Cloud Configuration
+
+[source,bash]
+----
+export ORG_ID="stoic-gauss-qcj0f23"
+export WORKSPACE="main"
+export WORKER_GROUP="default"
+
+export CRIBL_API_TOKEN=$(
+curl --request POST 'https://login.cribl.cloud/oauth/token' \
+  --header 'Content-Type: application/json' \
+  --data "
+{
+  \"grant_type\": \"client_credentials\",
+  \"client_id\": \"$(cat secrets/cribl-client-id)\",
+  \"client_secret\": \"$(cat secrets/cribl-client-secret)\",
+  \"audience\": \"https://api.cribl.cloud\"
+}" | jq -r .access_token)
+
+curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/routes/default \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '
+{
+  "id": "default",
+  "groups": {},
+  "comments": [],
+  "routes": [
+    {
+      "id": "default",
+      "name": "default",
+      "pipeline": "passthru",
+      "output": "default"
+    }
+  ]
+}'
+
+for s in http in-raw-http in-prometheus-rw; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs/${s} \
+    --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+    --header "Content-Type: application/json"
+  echo ""
+done
+
+curl --request DELETE "https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/lib/breakers/break-json-array" \
+  --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+  --header "Content-Type: application/json"
+
+for d in out-output-router out-openshift-lokistack-application out-openshift-lokistack-infrastructure out-openshift-lokistack-audit out-cribl-lake out-openshift-s3; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/outputs/${d} \
+    --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+    --header "Content-Type: application/json"
+  echo ""
+done
+
+for p in application-log-transform infrastructure-log-transform audit-log-transform raw-http-remove-fields; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines/${p} \
+    --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+    --header "Content-Type: application/json"
+  echo ""
+done
+
+for s in openshift-loki-log-collector-token openshift-s3-auth prometheus-remote-write-token; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets/${s} \
+    --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
+    --header "Content-Type: application/json"
+  echo ""
+done
+----
+
+tells a JSON Array Event Breaker which field in each unrolled array element should become Cribl’s canonical event timestamp

@@ -1,0 +1,43 @@
+{
+  "id": "unpack-bulk-events",
+  "conf": {
+    "description": "pre-process event with concatenated json objects in _raw field",
+    "asyncFuncTimeout": 1000,
+    "functions": [
+      {
+        "id": "unroll",
+        "description": "unpack concatenated json objects in _raw field into individual events, store each event in the json_event key",
+        "filter": "_raw !== undefined",
+        "disabled": false,
+        "conf": {
+          "srcExpr": "_raw.replace(/}\\s*{/g, '}\\n{').split(/\\n/)",
+          "dstField": "json_event"
+        }
+      },
+      {
+        "id": "eval",
+        "description": "copies top-level fields from json_event into the current cribl event; drop the extra json_event and _raw fields",
+        "filter": "true",
+        "disabled": false,
+        "conf": {
+          "printUndefineds": false,
+          "add": [
+            {
+              "value": "Object.assign(__e, JSON.parse(json_event))",
+              "name": ""
+            }
+          ],
+          "remove": [
+            "json_event",
+            "_raw"
+          ]
+        }
+      }
+    ],
+    "streamtags": [
+      "openshift-logging"
+    ],
+    "groups": {},
+    "output": "default"
+  }
+}

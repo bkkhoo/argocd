@@ -1,8 +1,9 @@
 ---
 lokiStack:
-  size: 1x.small         # 1x.demo, 1x.pico, 1x.extra-small, 1x.small, 1x.medium
-  schemaVersion: v13     # v13 recommended from Loki v6.x
+  size: 1x.small             # 1x.demo, 1x.pico, 1x.extra-small, 1x.small, 1x.medium
+  schemaVersion: v13         # v13 recommended from Loki v6.x
   storageClassName: ocs-external-storagecluster-ceph-rbd
+  retentionDays: 7           # the number of days logs are kept
   objectStorage:
     type: s3
     secret: loki-s3-bucket

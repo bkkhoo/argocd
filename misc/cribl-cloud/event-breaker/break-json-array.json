@@ -1,0 +1,29 @@
+{
+  "id": "break-json-array",
+  "description": "event breaker rules to break list of json data",
+  "tags": "custom,json",
+  "minRawLength": 256,
+  "rules": [
+    {
+      "name": "json-array",
+      "type": "json_array",
+      "condition": "true",
+      "jsonTimeField": "@timestamp",
+      "timestampAnchorRegex": "/^/",
+      "timestamp": {
+        "type": "auto",
+        "length": 150
+      },
+      "timestampTimezone": "local",
+      "timestampEarliest": "-420weeks",
+      "timestampLatest": "+1week",
+      "maxEventBytes": 1024000,
+      "disabled": false,
+      "parserEnabled": false,
+      "shouldUseDataRaw": false,
+      "jsonExtractAll": true,
+      "eventBreakerRegex": "/[\\n\\r]+(?!\\s)/",
+      "fieldsToRemove": []
+    }
+  ]
+}

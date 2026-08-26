@@ -1,18 +1,19 @@
 {
   "id": "http",
-  "description": "openshift http input",
+  "description": "openshift clusterlogLogForwarder http output",
   "type": "http",
   "disabled": false,
-  "sendToRoutes": false,
-  "pqEnabled": false,
-  "streamtags": [],
+  "sendToRoutes": true,
   "host": "0.0.0.0",
   "port": 10080,
+  "pqEnabled": false,
+  "streamtags": [
+    "openshift-logging"
+  ],
   "tls": {
     "disabled": false,
-    "requestCert": false,
-    "certPath": "$CRIBL_CLOUD_CRT",
     "minVersion": "TLSv1.2",
+    "certPath": "$CRIBL_CLOUD_CRT",
     "privKeyPath": "$CRIBL_CLOUD_KEY"
   },
   "maxActiveReq": 256,
@@ -33,20 +34,18 @@
   "authTokensExt": [
     {
       "description": "prod application token",
-      "token": "<token>"
+      "token": "eyJhbG..."
     },
     {
       "description": "prod infrastructure token",
-      "token": "<token>"
+      "token": "eyJhbG..."
     },
     {
       "description": "prod audit token",
-      "token": "<token>"
+      "token": "eyJhbG..."
     }
   ],
   "connections": [
-    {
-      "output": "output-router"
-    }
+    {}
   ]
 }

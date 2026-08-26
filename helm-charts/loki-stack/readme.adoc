@@ -58,6 +58,10 @@ The following table lists the configurable parameters/values of this Helm chart 
 | ocs-external-storagecluster-ceph-rbd
 | Specifies the StorageClass used for temporary block storage attached to Ingester and Compactor pods.
 
+| lokiStack.retentionDays
+| 7
+| Defines the maximum retention period (in days) for all log streams in the cluster.
+
 | lokiStack.objectStorage.type
 | s3
 | Type of object storage.

@@ -1,0 +1,65 @@
+{
+  "id": "in-raw-http",
+  "description": "openshift clusterlogLogForwarder http output",
+  "type": "http_raw",
+  "disabled": false,
+  "sendToRoutes": true,
+  "host": "0.0.0.0",
+  "port": 20000,
+  "pqEnabled": false,
+  "streamtags": [
+    "openshift-logging"
+  ],
+  "tls": {
+    "disabled": false,
+    "minVersion": "TLSv1.2",
+    "certPath": "$CRIBL_CLOUD_CRT",
+    "privKeyPath": "$CRIBL_CLOUD_KEY"
+  },
+  "breakerRulesets": [
+    "break-json-array"
+  ],
+  "pipeline": "raw-http-remove-fields",
+  "maxActiveReq": 256,
+  "maxRequestsPerSocket": 0,
+  "enableProxyHeader": false,
+  "captureHeaders": false,
+  "activityLogSampleRate": 1000,
+  "requestTimeout": 0,
+  "socketTimeout": 0,
+  "keepAliveTimeout": 5,
+  "enableHealthCheck": false,
+  "ipAllowlistRegex": "/.*/",
+  "ipDenylistRegex": "/^$/",
+  "staleChannelFlushMs": 10000,
+  "allowedPaths": [
+    "/cribl"
+  ],
+  "allowedMethods": [
+    "POST"
+  ],
+  "accessControlAllowOrigin": [],
+  "accessControlAllowHeaders": [],
+  "accessControlAllowMethods": [
+    "OPTIONS",
+    "POST"
+  ],
+  "accessControlAllowCredentials": false,
+  "authTokensExt": [
+    {
+      "description": "prod application token",
+      "token": "eyJhbG..."
+    },
+    {
+      "description": "prod infrastructure token",
+      "token": "eyJhbG..."
+    },
+    {
+      "description": "prod audit token",
+      "token": "eyJhbG..."
+    }
+  ],
+  "connections": [
+    {}
+  ]
+}

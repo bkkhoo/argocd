@@ -1,0 +1,32 @@
+{
+  "id": "raw-http-remove-fields",
+  "conf": {
+    "description": "remove unwanted fields from raw http input",
+    "asyncFuncTimeout": 1000,
+    "functions": [
+      {
+        "id": "eval",
+        "filter": "true",
+        "conf": {
+          "printUndefineds": false,
+          "keep": [],
+          "remove": [
+            "cribl_breaker",
+            "clientip",
+            "source",
+            "host",
+            "headers",
+            "method",
+            "path",
+            "_raw"
+          ]
+        }
+      }
+    ],
+    "streamtags": [
+      "openshift-logging"
+    ],
+    "groups": {},
+    "output": "default"
+  }
+}

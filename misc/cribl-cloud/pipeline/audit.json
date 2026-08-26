@@ -7,6 +7,7 @@
         "id": "eval",
         "description": "add labels",
         "filter": "true",
+        "disabled": false,
         "conf": {
           "printUndefineds": false,
           "add": [
@@ -43,20 +44,28 @@
               "value": "__e.verb && __e.verb ? __e.verb: null"
             },
             {
+              "name": "__labels.namespace",
+              "value": "__e.objectRef ? __e.objectRef.namespace : null"
+            },
+            {
               "name": "__labels.resource",
               "value": "__e.objectRef ? __e.objectRef.resource : 'nonResource'"
+            },
+            {
+              "name": "__labels.response_status",
+              "value": "__e.responseStatus && __e.responseStatus.code ? __e.responseStatus.code: null"
             }
           ],
           "remove": [],
           "keep": []
         },
-        "final": false,
-        "disabled": false
+        "final": false
       },
       {
         "id": "eval",
         "description": "remove fields that are not useful",
         "filter": "true",
+        "disabled": false,
         "conf": {
           "printUndefineds": false,
           "add": [],
@@ -72,19 +81,20 @@
           ],
           "keep": []
         },
-        "final": false,
-        "disabled": false
+        "final": false
       },
       {
         "id": "drop",
-        "description": "drop get, list, watch event, unless its for secret",
-        "filter": "['get', 'list', 'watch'].includes(verb) && objectRef.resource != 'secret'",
+        "description": "drop get, list, watch event, unless its for secret; drop non-2XX subjectaccessreviews, tokenreviews, and leases event",
+        "filter": "(['get', 'list', 'watch'].includes(verb) && objectRef.resource != 'secrets') || (['subjectaccessreviews', 'tokenreviews', 'leases'].includes(objectRef.resource) && (responseStatus.code == 200 || responseStatus.code == 201))",
+        "disabled": false,
         "conf": {},
-        "final": true,
-        "disabled": false
+        "final": true
       }
     ],
-    "streamtags": [],
+    "streamtags": [
+      "openshift-logging"
+    ],
     "groups": {},
     "output": "default"
   }

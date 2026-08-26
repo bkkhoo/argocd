@@ -7,6 +7,7 @@
         "id": "eval",
         "description": "add labels; pod_and and container_name labels disabled because of high cardinality",
         "filter": "true",
+        "disabled": false,
         "conf": {
           "printUndefineds": false,
           "add": [
@@ -60,13 +61,13 @@
           "remove": [],
           "keep": []
         },
-        "final": false,
-        "disabled": false
+        "final": false
       },
       {
         "id": "eval",
         "description": "remove fields that are not useful",
         "filter": "true",
+        "disabled": false,
         "conf": {
           "printUndefineds": false,
           "add": [],
@@ -82,24 +83,40 @@
           ],
           "keep": []
         },
-        "final": false,
-        "disabled": false
+        "final": false
       },
       {
         "id": "code",
         "description": "remove annotations that are not useful, pattern matching",
         "filter": "true",
+        "disabled": false,
         "conf": {
           "maxNumOfIterations": 5000,
           "activeLogSampleRate": 1000,
           "useUniqueLogChannel": true,
           "code": "const anns = __e['kubernetes'] && __e['kubernetes']['annotations'];\n\nif (anns) {\n  Object.keys(anns).forEach(k => {\n    if (k.startsWith('k8s.ovn.org/pod-networks') ||\n        k.startsWith('k8s.v1.cni.cncf.io/network-status') ||\n        k.startsWith('olm') ||\n        k.startsWith('operator') ||\n        k.startsWith('features.operators')) {\n      delete anns[k];\n    }\n  });\n}"
         },
-        "final": false,
-        "disabled": false
+        "final": false
+      },
+      {
+        "id": "sampling",
+        "description": "retain only 20% of debug/info/default(event with not level) event",
+        "filter": "['info', 'debug', 'default'].includes(level.toLowerCase())",
+        "disabled": false,
+        "conf": {
+          "rules": [
+            {
+              "filter": "true",
+              "rate": 5
+            }
+          ]
+        },
+        "final": true
       }
     ],
-    "streamtags": [],
+    "streamtags": [
+      "openshift-logging"
+    ],
     "groups": {},
     "output": "default"
   }

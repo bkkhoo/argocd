@@ -1,21 +1,24 @@
 {
   "id": "out-openshift-lokistack-infrastructure",
   "type": "loki",
-  "url": "https://logging-loki-stack-openshift-logging.apps.cluster-qj5st.dyn.redhatworkshops.io/api/logs/v1/infrastructure",
+  "description": "openshift lokistack infrastructure logs",
+  "url": "https://logging-loki-stack-openshift-logging.apps.cluster-f526q.dyn.redhatworkshops.io/api/logs/v1/infrastructure",
+  "messageFormat": "protobuf",
+  "compress": true,
+  "authType": "textSecret",
+  "textSecret": "openshift-loki-log-collector-token",
+  "pipeline": "infrastructure-log-transform",
   "labels": [
     {
       "name": "log_type",
       "value": "infrastructure"
     }
   ],
-  "authType": "textSecret",
-  "textSecret": "openshift-loki-log-collector-token",
-  "pipeline": "infrastructure-log-transform",
-  "messageFormat": "protobuf",
-  "compress": true,
-  "extraHttpHeaders": [],
   "systemFields": [],
-  "streamtags": [],
+  "streamtags": [
+    "openshift-logging"
+  ],
+  "extraHttpHeaders": [],
   "concurrency": 10,
   "maxPayloadSizeKB": 4096,
   "maxPayloadEvents": 0,

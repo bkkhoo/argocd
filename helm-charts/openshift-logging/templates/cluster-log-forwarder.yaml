@@ -38,9 +38,9 @@ spec:
       http:
         url: {{ $config.url }}
         method: POST
-        format: json
+        format: ndjson
         headers:
-          content-type: application/json
+          Content-Type: "application/x-ndjson"
         authentication:
           token:
             from: secret
@@ -65,7 +65,9 @@ spec:
       {{- if index $outputs $tenant }}
     - name: {{ $tenant }}-pipeline
       filterRefs:
+        {{- if ne $tenant "audit" }}
         - detect-multiline-exception
+        {{- end }}
         - custom-labels
       inputRefs:
         - {{ $tenant }}

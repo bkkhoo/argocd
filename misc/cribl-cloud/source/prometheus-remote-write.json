@@ -1,0 +1,35 @@
+{
+  "id": "in-prometheus-rw",
+  "type": "prometheus_rw",
+  "disabled": false,
+  "sendToRoutes": true,
+  "authType": "textSecret",
+  "textSecret": "prometheus-remote-write",
+  "host": "0.0.0.0",
+  "port": 20010,
+  "pqEnabled": false,
+  "streamtags": [
+    "openshift-metrics"
+  ],
+  "tls": {
+    "disabled": false,
+    "minVersion": "TLSv1.2",
+    "certPath": "$CRIBL_CLOUD_CRT",
+    "privKeyPath": "$CRIBL_CLOUD_KEY"
+  },
+  "maxActiveReq": 256,
+  "maxRequestsPerSocket": 0,
+  "enableProxyHeader": false,
+  "captureHeaders": false,
+  "activityLogSampleRate": 100,
+  "requestTimeout": 0,
+  "socketTimeout": 0,
+  "keepAliveTimeout": 5,
+  "enableHealthCheck": false,
+  "ipAllowlistRegex": "/.*/",
+  "ipDenylistRegex": "/^$/",
+  "prometheusAPI": "/write",
+  "connections": [
+    {}
+  ]
+}
