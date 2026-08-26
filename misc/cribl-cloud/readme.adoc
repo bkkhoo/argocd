@@ -142,11 +142,11 @@ curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER
 +
 [source,bash]
 ----
-for p in application infrastructure audit raw-http-remove-fields; do
+for pipeline in application infrastructure audit raw-http-remove-fields; do
   curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json" \
-    --data @pipeline/${p}.json
+    --data @pipeline/${pipeline}.json
   echo ""
 done
 ----
@@ -155,11 +155,11 @@ done
 +
 [source,bash]
 ----
-for d in output-router application infrastructure audit cribl-data-lake openshift-s3; do
+for dest in output-router application infrastructure audit cribl-data-lake openshift-s3; do
   curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/outputs \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json" \
-    --data @destination/${d}.json
+    --data @destination/${dest}.json
   echo ""
 done
 ----
@@ -178,11 +178,11 @@ curl --request POST "https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKE
 +
 [source,bash]
 ----
-for s in http raw-http prometheus-remote-write; do
+for src in http raw-http prometheus-remote-write; do
   curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json" \
-    --data @source/${s}.json
+    --data @source/${src}.json
   echo ""
 done
 ----
@@ -262,8 +262,8 @@ curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKE
   ]
 }'
 
-for s in http in-raw-http in-prometheus-rw; do
-  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs/${s} \
+for src in http in-raw-http in-prometheus-rw; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/inputs/${src} \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json"
   echo ""
@@ -273,26 +273,24 @@ curl --request DELETE "https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WOR
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
   --header "Content-Type: application/json"
 
-for d in out-output-router out-openshift-lokistack-application out-openshift-lokistack-infrastructure out-openshift-lokistack-audit out-cribl-lake out-openshift-s3; do
-  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/outputs/${d} \
+for dest in out-output-router out-openshift-lokistack-application out-openshift-lokistack-infrastructure out-openshift-lokistack-audit out-cribl-lake out-openshift-s3; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/outputs/${dest} \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json"
   echo ""
 done
 
-for p in application-log-transform infrastructure-log-transform audit-log-transform raw-http-remove-fields; do
-  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines/${p} \
+for pipeline in application-log-transform infrastructure-log-transform audit-log-transform raw-http-remove-fields; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/pipelines/${pipeline} \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json"
   echo ""
 done
 
-for s in openshift-loki-log-collector-token openshift-s3-auth prometheus-remote-write-token; do
-  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets/${s} \
+for secret in openshift-loki-log-collector-token openshift-s3-auth prometheus-remote-write-token; do
+  curl --request DELETE https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets/${secret} \
     --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
     --header "Content-Type: application/json"
   echo ""
 done
 ----
-
-tells a JSON Array Event Breaker which field in each unrolled array element should become Cribl’s canonical event timestamp
