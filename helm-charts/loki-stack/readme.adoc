@@ -76,5 +76,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 | lokiStack.externalDataSource
 | true
-| Determine whether LokiStack will handle incoming external data. If `true`, the Helm Chart will create the `external-logs-writer` ServiceAccount, and grant it `logging-collector-logs-writer` ClusterRole (the ClusterRole is crated when OpenShift Logging operator is deployed).
+| Determine whether LokiStack will handle incoming external data. If `true`, the Helm Chart will create the `external-logs-writer` ServiceAccount, ClusterRole and ClusterRoleBinding respectively to grant the ServiceAccount privileges to write application, infrastructure, and audit logs to the LokiStack
+
+Note: the `external-logs-writer` ClusterRole grants the same privileges as the `logging-collector-logs-write` ClusterRole (which is deployed by OpenShift Logging operator).
 |===
