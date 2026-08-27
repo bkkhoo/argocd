@@ -1,0 +1,15 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= About this ApplicationSet
+
+This ApplicationSet deploys OpenShift Logging Operator and configures ClusterLogForwarder.
+
+The link:./base/[base] deployment is for deploying OpenShift Logging to global-hub (in-cluster) and clusters that it manages (managed-hubs and regular managed cluster).
+
+The link:./overlays/managed-hub[managed-hub] overlay is for deploying OpenShift Logging to clusters managed by the managed-hubs; the ApplicationSet does not include in-cluster.

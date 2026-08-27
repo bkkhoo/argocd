@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+patches:
+    # for managed-hubs, do not deploy openshift logging to in-cluster (the managed hub itself)
+    # openshift logging is deployed by the base deployment (global-hub)
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: ApplicationSet
+      name: openshift-logging
+    patch: |
+      - op: remove
+        path: /spec/generators/1
+...
