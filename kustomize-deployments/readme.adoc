@@ -14,7 +14,7 @@ endif::[]
 | Name | Description
 
 | etcd-encryption
-| Configure ETCD Encryption (AES-GCM), and audit log policy (WriteRequestBodies).
+| Configure ETCD Encryption (AES-GCM), and audit log policy (Default).
 
 | motd
 | Configuration to ensure that users see a standardized security or maintenance notification before gaining access to the cluster via the CLI or web console.

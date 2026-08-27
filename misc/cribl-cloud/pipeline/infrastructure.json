@@ -100,14 +100,14 @@
       },
       {
         "id": "sampling",
-        "description": "retain only 20% of debug/info/default(event with not level) event",
+        "description": "retain only 210% of debug/info/default(event with not level) event",
         "filter": "['info', 'debug', \"default\"].includes(level.toLowerCase())",
         "disabled": false,
         "conf": {
           "rules": [
             {
               "filter": "true",
-              "rate": 5
+              "rate": 10
             }
           ]
         },

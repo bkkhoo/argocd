@@ -5,7 +5,7 @@ metadata:
   name: cluster
 spec:
   audit:
-    profile: WriteRequestBodies
+    profile: Default
   encryption:
     type: aesgcm
 ...
