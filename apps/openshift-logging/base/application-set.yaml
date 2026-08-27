@@ -37,7 +37,7 @@ spec:
           path: helm-charts/openshift-logging
           helm:
             valuesObject:
-              clusterName: '{{ or (index .metadata.labels "cluster-name") null }}'
+              clusterName: '{{ or (index .metadata.labels "name") null }}'
               env: '{{ or (index .metadata.labels "env") "prod" }}'
               sector: '{{ or (index .metadata.labels "sector") null }}'
             valueFiles:

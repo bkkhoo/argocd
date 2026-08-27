@@ -19,6 +19,10 @@
     cmd: |-
       oc -n {{ _namespace }} get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
+- name: pause for 10 seconds
+  ansible.builtin.pause:
+    seconds: 5
+
 - name: "ensure {{ _instance.kind }} instance is deployed"
   ansible.builtin.shell: >-
     helm template {{ playbook_dir }}/../../helm-charts/{{ _helm_chart }} {{ _instance.helm_options }} | oc apply -f -
