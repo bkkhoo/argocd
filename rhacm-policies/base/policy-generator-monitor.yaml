@@ -118,6 +118,7 @@ policies:
         - "open-cluster-management*"
         - "knative-*"
         - keycloak
+        - assisted-installer
       include:
         - "*"
     manifests:

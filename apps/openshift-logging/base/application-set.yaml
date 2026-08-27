@@ -37,9 +37,9 @@ spec:
           path: helm-charts/openshift-logging
           helm:
             valuesObject:
-              clusterName: '{{ or (index .metadata.labels "name") null }}'
+              clusterName: '{{ or (index .metadata.labels "name") "undefined" }}'
               env: '{{ or (index .metadata.labels "env") "prod" }}'
-              sector: '{{ or (index .metadata.labels "sector") null }}'
+              sector: '{{ or (index .metadata.labels "sector") "undefined" }}'
             valueFiles:
               # referencing values from git repo source[0].ref above
               # even though source[0].ref.path is specified, the $helmValues still represents the root of the source with ref field

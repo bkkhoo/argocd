@@ -3,8 +3,10 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 status:
   conditions:
-  - type: ErrorOccurred
-    status: "False"
-  - type: ResourcesUpToDate
-    status: "True"
+    - type: ErrorOccurred
+      status: "False"
+    - type: ResourcesUpToDate
+      status: "True"
+  health:
+    status: Healthy
 ...

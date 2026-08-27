@@ -89,7 +89,7 @@ policies:
     description: monitor rhacs central and securedClusters deployments
     complianceType: musthave
     manifests:
-      - path: monitor/rhacs-central//operator-subscription-status.yaml
+      - path: monitor/rhacs-central/operator-subscription-status.yaml
       - path: monitor/rhacs-central/deployment-status.yaml
 
   # - name: 00-monitor-policy-report      # 00- prefix for the policy name for sorting use
