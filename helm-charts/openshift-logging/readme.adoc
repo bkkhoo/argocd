@@ -44,12 +44,16 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Description
 
 | clusterName
-| dummy
+| null
 | Name of the cluster; the ClusterLogForwarder adds the `cluster_name=<value>` label to log records.
 
 | env
 | prod
 | Environment of the cluster; the ClusterLogForwarder adds the `env=<value>` label to log records.
+
+| sector
+| null
+| Sector of the cluster; the ClusterLogForwarder adds the `sector=<value>` label to log records.
 
 | resources.limits.cpu
 | 6

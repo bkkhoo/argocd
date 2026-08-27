@@ -1,6 +1,7 @@
 ---
-clusterName: dummy
+clusterName: null
 env: prod
+sector: null
 resources:
   limits:
     cpu: "6"

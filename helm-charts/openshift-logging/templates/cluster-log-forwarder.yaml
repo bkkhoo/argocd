@@ -28,6 +28,7 @@ spec:
       openshiftLabels:
         cluster_name: {{ .Values.clusterName }}
         env: {{ .Values.env }}
+        sector: {{ .Values.sector }}
   {{- $outputs := .Values.outputs }}
   outputs:
   {{- range $tenant := list "application" "infrastructure" "audit" }}
