@@ -24,7 +24,7 @@ The following outlines the Cribl.Cloud configuration:
   ** Remove fields (such as namespace, pod, and container IDs).
   ** Drop GET, LIST, and WATCH audit events, unless they are for `Secrets` resource.
   ** Drop successful actions (response code 200, 201) on `SubjectAccessReviews`, `TokenReviews` and `Leases` audit events.
-  ** Apply a 10% sample rate to INFO, DEBUG application and infrastructure logs.
+  ** Apply a 10% sample rate to INFO/DEBUG/TRACE application and infrastructure logs.
 
 == Cribl.Cloud Configuration
 
