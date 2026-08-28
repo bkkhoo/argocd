@@ -4,9 +4,9 @@ kind: ApplicationSet
 status:
   conditions:
     - type: ErrorOccurred
+      status: "True"
+    - type: ParametersGenerated
       status: "False"
     - type: ResourcesUpToDate
-      status: "True"
-  health:
-    status: Healthy
+      status: "False"
 ...

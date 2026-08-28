@@ -78,7 +78,7 @@ policies:
 
   - name: monitor-argocd-application-set
     description: monitor argocd applicationSets
-    complianceType: musthave
+    complianceType: mustnothave
     namespaceSelector:
       include:
         - openshift-gitops
