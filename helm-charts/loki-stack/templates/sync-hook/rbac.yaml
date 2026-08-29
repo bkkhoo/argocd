@@ -26,6 +26,7 @@ rules:
       - secrets
     resourceNames:
       - {{ .Values.lokiStack.objectStorage.secret }}-obc
+      - {{ .Values.lokiStack.objectStorage.secret }}
     verbs:
       - get
       - list

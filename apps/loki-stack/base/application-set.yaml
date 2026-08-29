@@ -23,10 +23,10 @@ spec:
         elements:
           - name: in-cluster
             server: https://kubernetes.default.svc
-        selector:
-          matchExpressions:
-            - key: loki-stack
-              operator: Exists
+      selector:
+        matchExpressions:
+          - key: loki-stack
+            operator: Exists
   template:
     metadata:
       name: "{{ name }}-loki-stack"
