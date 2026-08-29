@@ -23,20 +23,23 @@ rules:
       - ""
     resources:
       - configmaps
+      - secrets
     verbs:
       - get
       - list
+  - apiGroups:
+      - ""
+    resources:       # cannot restrict create requests by resourceNames
+      - secrets
+    verbs:
+      - create
   - apiGroups:
       - ""
     resources:
       - secrets
     resourceNames:
       - {{ .Values.lokiStack.objectStorage.secret }}
-      - {{ .Values.lokiStack.objectStorage.secret }}-obc
     verbs:
-      - get
-      - list
-      - create
       - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
