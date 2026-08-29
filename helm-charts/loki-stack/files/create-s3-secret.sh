@@ -2,6 +2,11 @@
 
 MAX_ATTEMPTS=10
 
+echo ${NAMESPACE}
+echo ${CONFIGMAP_NAME}
+echo ${SECRET_NAME}
+echo ${S3_BUCKET_SECRET_NAME}
+
 command1="oc -n ${NAMESPACE} get configmap ${CONFIGMAP_NAME}"
 command2="oc -n ${NAMESPACE} get secret ${SECRET_NAME}"
 continue=0
