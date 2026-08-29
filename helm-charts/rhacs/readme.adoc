@@ -111,7 +111,7 @@ a| Deployment type:
 | `registry.redhat.io/openshift4/ose-tools-rhel9`
 | The container image name to use for ArgoCD PostSync Hook job.
 
-| postSyncHookImage.tah
+| postSyncHookImage.tag
 | `v4.20`
 | The container image tag to use for ArgoCD PostSync Hook job.
 |===

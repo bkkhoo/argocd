@@ -9,4 +9,8 @@ lokiStack:
     secret: loki-s3-bucket
     storageClassName: openshift-storage.noobaa.io
   externalDataSource: true
+namespace: openshift-logging
+syncHookImage:
+  name: registry.redhat.io/openshift4/ose-tools-rhel9
+  tag: v4.20
 ...

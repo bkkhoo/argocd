@@ -10,6 +10,6 @@ spec:
   logging:
     lokiStack:
       name: logging-loki-stack
-      namespace: openshift-logging
+      namespace: {{ .Values.namespace }}
   type: Logging
 ...

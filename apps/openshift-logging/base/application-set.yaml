@@ -20,15 +20,6 @@ spec:
               operator: In
               values:
                 - OpenShift
-    - list:
-        elements:
-          - name: global-hub
-            server: https://kubernetes.default.svc
-            metadata:                 # set labels for goTemplate
-              labels:
-                name: global-hub
-                env: prod
-                sector: cti
   template:
     metadata:
       name: "{{ .name }}-openshift-logging"

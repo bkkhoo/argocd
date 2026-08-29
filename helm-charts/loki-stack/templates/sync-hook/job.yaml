@@ -1,0 +1,44 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: loki-stack-sync-hook
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "105"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
+spec:
+  activeDeadlineSeconds: 600      # max duration the job is allowed to run
+  template:
+    spec:
+      containers:
+        - name: create-s3-secret
+          image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - /scripts/create-s3-secret.sh
+          env:
+            - name: NAMESPACE
+              value: {{ .Values.namespace }}
+            - name: CONFIGMAP_NAME
+              value: {{ .Values.lokiStack.objectStorage.secret }}-obc
+            - name: SECRET_NAME
+              value: {{ .Values.lokiStack.objectStorage.secret }}-obc
+            - name: S3_BUCKET_SECRET_NAME
+              value: {{ .Values.lokiStack.objectStorage.secret }}
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: loki-stack-sync-hook
+            defaultMode: 0755
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: loki-stack-sync-hook
+      terminationGracePeriodSeconds: 30
+...

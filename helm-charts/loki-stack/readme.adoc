@@ -68,7 +68,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 | lokiStack.objectStorage.secret
 | loki-s3-bucket
-| Name of a secret in the namespace configured for object storage secrets.
+| Name of a secret in the namespace configured for object storage secrets. ArgoCD Sync hok will create this secret.
 
 | lokiStack.objectStorage.storageClassName
 | openshift-storage.noobaa.io
@@ -79,4 +79,16 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Determine whether LokiStack will handle incoming external data. If `true`, the Helm Chart will create the `external-logs-writer` ServiceAccount, ClusterRole and ClusterRoleBinding respectively to grant the ServiceAccount privileges to write application, infrastructure, and audit logs to the LokiStack
 
 Note: the `external-logs-writer` ClusterRole grants the same privileges as the `logging-collector-logs-write` ClusterRole (which is deployed by OpenShift Logging operator).
+
+| namespace
+| openshift-logging
+| Namespace to deploy LokiStack.
+
+| syncHookImage.name
+| registry.redhat.io/openshift4/ose-tools-rhel9
+| The container image name to use for ArgoCD Sync Hook job.
+
+| syncHookImage.tag
+| v4.20
+| The container image tag to use for ArgoCD Sync Hook job.
 |===

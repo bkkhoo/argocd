@@ -2,7 +2,7 @@
   "id": "out-openshift-lokistack-application",
   "type": "loki",
   "description": "openshift lokistack application logs",
-  "url": "https://logging-loki-stack-openshift-logging.apps.cluster-j755w.dyn.redhatworkshops.io/api/logs/v1/application",
+  "url": "https://logging-loki-stack-openshift-logging.apps.cluster-56lzt.dyn.redhatworkshops.io/api/logs/v1/application",
   "messageFormat": "protobuf",
   "compress": true,
   "authType": "textSecret",

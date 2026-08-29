@@ -4,7 +4,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: rhacs-post-sync-hook
-  namespace: {{ .Values.namespace.central }}
   annotations:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/hook: PostSync
@@ -74,7 +73,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: rhacs-post-sync-hook
-  namespace: {{ .Values.namespace.central }}
   annotations:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/hook: PostSync
