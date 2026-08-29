@@ -1,8 +1,12 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:    # deploy these to all managed hub regardless of environment
+# deploy these to all managed hub regardless of environment
+resources:
+  # apps that target in-cluster only
   - ../../../apps/rhacm-policies/overlays/managed-hub
+
+  # all clusters
   - ../../../apps/cluster-config/base
   - ../../../apps/openshift-logging/overlays/managed-hub
   - ../../../apps/openshift-compliance/base
