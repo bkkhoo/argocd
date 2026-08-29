@@ -1,6 +1,7 @@
 ---
 lokiStack:
   name: logging-loki-stack
+  namespace: openshift-logging
   size: 1x.small             # 1x.demo, 1x.pico, 1x.extra-small, 1x.small, 1x.medium
   schemaVersion: v13         # v13 recommended from Loki v6.x
   storageClassName: ocs-external-storagecluster-ceph-rbd
@@ -10,7 +11,6 @@ lokiStack:
     secret: loki-s3-bucket
     storageClassName: openshift-storage.noobaa.io
   externalDataSource: true
-namespace: openshift-logging
 syncHookImage:
   name: registry.redhat.io/openshift4/ose-tools-rhel9
   tag: v4.20

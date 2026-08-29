@@ -9,7 +9,7 @@ metadata:
 spec:
   logging:
     lokiStack:
-      name: {{ .Values.lokistack.name }}
-      namespace: {{ .Values.lokistack.namespace }}
+      name: {{ .Values.lokiStack.name }}
+      namespace: {{ .Values.lokiStack.namespace }}
   type: Logging
 ...

@@ -2,8 +2,8 @@
 apiVersion: loki.grafana.com/v1
 kind: LokiStack
 metadata:
-  name: {{ .Values.lokistack.name }}
-  namespace: {{ .Values.lokistack.namespace }}
+  name: {{ .Values.lokiStack.name }}
+  namespace: {{ .Values.lokiStack.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
