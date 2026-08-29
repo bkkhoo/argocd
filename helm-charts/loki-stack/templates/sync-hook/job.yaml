@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: loki-stack-sync-hook
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.lokistack.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/hook: Sync
@@ -22,10 +22,10 @@ spec:
             - /scripts/create-s3-secret.sh
           env:
             - name: NAMESPACE
-              value: {{ .Values.namespace }}
-            - name: CONFIGMAP_NAME
+              value: {{ .Values.lokistack.namespace }}
+            - name: OBC_CONFIGMAP_NAME
               value: {{ .Values.lokiStack.objectStorage.secret }}-obc
-            - name: SECRET_NAME
+            - name: OBC_SECRET_NAME
               value: {{ .Values.lokiStack.objectStorage.secret }}-obc
             - name: S3_BUCKET_SECRET_NAME
               value: {{ .Values.lokiStack.objectStorage.secret }}

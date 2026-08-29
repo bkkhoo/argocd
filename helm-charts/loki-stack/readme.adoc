@@ -46,6 +46,14 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
+| lokiStack.name
+| logging-loki-stack
+| Name of the LokiStack instance.
+
+| lokiStack.namespace
+| openshift-logging
+| Namespace to deploy the LokiStack instance.
+
 | lokiStack.size
 | 1x.small
 | The deployment scale-out size, determining resource allocation and performance capabilities: 1x.demo, 1x.pico, 1x.extra-small, 1x.small, or 1x.medium.
@@ -79,10 +87,6 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Determine whether LokiStack will handle incoming external data. If `true`, the Helm Chart will create the `external-logs-writer` ServiceAccount, ClusterRole and ClusterRoleBinding respectively to grant the ServiceAccount privileges to write application, infrastructure, and audit logs to the LokiStack
 
 Note: the `external-logs-writer` ClusterRole grants the same privileges as the `logging-collector-logs-write` ClusterRole (which is deployed by OpenShift Logging operator).
-
-| namespace
-| openshift-logging
-| Namespace to deploy LokiStack.
 
 | syncHookImage.name
 | registry.redhat.io/openshift4/ose-tools-rhel9

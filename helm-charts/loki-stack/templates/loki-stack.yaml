@@ -2,10 +2,10 @@
 apiVersion: loki.grafana.com/v1
 kind: LokiStack
 metadata:
-  name: logging-loki-stack
-  namespace: {{ .Values.namespace }}
+  name: {{ .Values.lokistack.name }}
+  namespace: {{ .Values.lokistack.namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "110"
+    argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   managementState: Managed

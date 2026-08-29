@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: loki-stack-sync-hook
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.lokistack.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/hook: Sync
@@ -13,7 +13,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: loki-stack-sync-hook
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.lokistack.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/hook: Sync
@@ -30,6 +30,9 @@ rules:
       - ""
     resources:
       - secrets
+    resourceNames:
+      - {{ .Values.lokiStack.objectStorage.secret }}
+      - {{ .Values.lokiStack.objectStorage.secret }}-obc
     verbs:
       - get
       - list
@@ -40,7 +43,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: loki-stack-sync-hook
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.lokistack.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/hook: Sync
@@ -52,5 +55,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: loki-stack-sync-hook
-    namespace: {{ .Values.namespace }}
+    namespace: {{ .Values.lokistack.namespace }}
 ...

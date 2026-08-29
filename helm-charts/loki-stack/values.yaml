@@ -1,5 +1,6 @@
 ---
 lokiStack:
+  name: logging-loki-stack
   size: 1x.small             # 1x.demo, 1x.pico, 1x.extra-small, 1x.small, 1x.medium
   schemaVersion: v13         # v13 recommended from Loki v6.x
   storageClassName: ocs-external-storagecluster-ceph-rbd
