@@ -16,6 +16,7 @@ resources:
   - ../../../apps/cluster-config/base
   - ../../../apps/mandatory-operators/base
   - ../../../apps/openshift-logging/overlays/global-hub
+  - ../../../apps/loki-stack/base
   - ../../../apps/openshift-serverless/base
   - ../../../apps/openshift-service-mesh/base
   - ../../../apps/metallb/base
