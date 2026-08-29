@@ -2,17 +2,14 @@
 
 MAX_ATTEMPTS=10
 
-echo ${NAMESPACE}
-echo ${CONFIGMAP_NAME}
-echo ${SECRET_NAME}
-echo ${S3_BUCKET_SECRET_NAME}
-
 command1="oc -n ${NAMESPACE} get configmap ${CONFIGMAP_NAME}"
 command2="oc -n ${NAMESPACE} get secret ${SECRET_NAME}"
+
 continue=0
 attempt=0
 echo  "Waiting for ObjectBucketClaim configMap and secret..."
 while [ ${attempt} -lt ${MAX_ATTEMPTS} ]; do
+  ${command1} && ${command2} && echo "Both succeeded" || echo "At least one failed"
   if $command1 &> /dev/null && $command2 &> /dev/null; then
     continue=1
     break
