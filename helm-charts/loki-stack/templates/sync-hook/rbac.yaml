@@ -23,7 +23,6 @@ rules:
       - ""
     resources:
       - secrets
-      - configmaps
     verbs:
       - get
       - list
@@ -31,9 +30,9 @@ rules:
       - ""
     resources:
       - secrets
-    resourceNames:
-      - {{ .Values.lokiStack.objectStorage.secret }}
     verbs:
+      - get
+      - list
       - create
       - delete
 ---
