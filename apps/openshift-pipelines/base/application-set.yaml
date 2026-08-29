@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: mandatory-operators
+  name: openshift-pipelines
   namespace: openshift-gitops
   labels:
-    applications: mandatory-operators
+    applications: openshift-pipelines
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
@@ -28,34 +28,18 @@ spec:
             server: https://kubernetes.default.svc
   template:
     metadata:
-      name: "{{ name }}-mandatory-operators"
+      name: "{{ name }}-openshift-pipelines"
       labels:
-        applications: mandatory-operators
+        applications: openshift-pipelines
     spec:
       project: gitops
-      sources:
-        - repoURL: https://github.com/bkkhoo/argocd.git
-          targetRevision: main
-          path: kustomize-deployments/openshift-pipelines/base/
-        - repoURL: https://github.com/bkkhoo/argocd.git
-          targetRevision: main
-          path: helm-charts/openshift-compliance/
-          helm:
-            valuesObject:
-              complianceScan:
-                enable: false
-        - repoURL: https://github.com/bkkhoo/argocd.git
-          targetRevision: main
-          path: kustomize-deployments/openshift-web-terminal/base/
+      source:
+        repoURL: https://github.com/bkkhoo/argocd.git
+        targetRevision: main
+        path: kustomize-deployments/openshift-pipelines/base/
       destination:
         server: "{{ server }}"
         namespace: default
-      ignoreDifferences:
-        - group: compliance.openshift.io      # the ScanSetting schedule has random values
-          kind: ScanSetting
-          name: raw-result-on-worker
-          jsonPointers:
-            - /schedule
       syncPolicy:
         automated:
           prune: true

@@ -24,6 +24,8 @@ rules:
     resources:
       - configmaps
       - secrets
+    resourceNames:
+      - {{ .Values.lokiStack.objectStorage.secret }}-obc
     verbs:
       - get
       - list

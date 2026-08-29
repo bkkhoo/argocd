@@ -37,15 +37,25 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Cluster configurations (disable self provisioner, enable etcd encryption, set project request template, etc.).
 
-| mandatory-operators
+| openshift-logging
 | ApplicationSet
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
-a| Deploy the following operators:
+| Deploy OpenShift Logging operator, and configure ClusterLogForwarder.
 
-- OpenShift Logging
-- OpenShift Compliance
-- OpenShift Pipelines
-- OpenShift Web Terminal
+| openshift-compliance
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
+| Deploy OpenShift Compliance operator, and optional configure compliance scan.
+
+| openshift-pipelines
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
+| Deploy OpenShift Pipelines operator.
+
+| openshift-web-terminal
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
+| Deploy OpenShift Web Terminal operator.
 
 | openshift-serverless
 | ApplicationSet

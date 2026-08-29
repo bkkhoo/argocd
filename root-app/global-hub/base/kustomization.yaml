@@ -14,8 +14,10 @@ resources:
   # all clusters
   - ../../../apps/rhacs-secured-cluster/overlays/prod
   - ../../../apps/cluster-config/base
-  - ../../../apps/mandatory-operators/base
   - ../../../apps/openshift-logging/overlays/global-hub
+  - ../../../apps/openshift-compliance/base
+  - ../../../apps/openshift-pipelines/base
+  - ../../../apps/openshift-web-terminal/base
   - ../../../apps/loki-stack/base
   - ../../../apps/openshift-serverless/base
   - ../../../apps/openshift-service-mesh/base
