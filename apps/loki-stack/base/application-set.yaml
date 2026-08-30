@@ -13,20 +13,20 @@ spec:
     - clusters:
         selector:
           matchExpressions:
-            - key: vendor
-              operator: In
-              values:
-                - OpenShift
+            # - key: vendor
+            #   operator: In
+            #   values:
+            #     - OpenShift
             - key: loki-stack
               operator: Exists
-    - list:
-        elements:
-          - name: in-cluster
-            server: https://kubernetes.default.svc
-      selector:
-        matchExpressions:
-          - key: loki-stack
-            operator: Exists
+    # - list:
+    #     elements:
+    #       - name: in-cluster
+    #         server: https://kubernetes.default.svc
+    #   selector:
+    #     matchExpressions:
+    #       - key: loki-stack
+    #         operator: Exists
   template:
     metadata:
       name: "{{ name }}-loki-stack"
