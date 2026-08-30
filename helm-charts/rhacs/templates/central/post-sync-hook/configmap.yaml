@@ -8,7 +8,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
 data:
   create-crs.sh: |
 {{ .Files.Get "files/create-crs.sh" | indent 4 }}

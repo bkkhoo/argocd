@@ -22,6 +22,8 @@ spec:
                 - OpenShift
             - key: managed-hub
               operator: DoesNotExist
+            - key: metallb
+              operator: Exists
   template:
     metadata:
       name: "{{ .name }}-metallb"
