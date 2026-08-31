@@ -13,10 +13,10 @@ spec:
     - clusters:
         selector:
           matchExpressions:
-            - key: vendor
-              operator: In
-              values:
-                - OpenShift
+            # - key: vendor
+            #   operator: In
+            #   values:
+            #     - OpenShift
             - key: loki-stack
               operator: Exists
   template:
