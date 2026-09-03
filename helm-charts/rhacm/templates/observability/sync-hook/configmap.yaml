@@ -10,7 +10,7 @@ metadata:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
 data:
-  create-s3-secret.sh: |
+  create-mco-secrets.sh: |
 {{ .Files.Get "files/create-mco-secrets.sh" | indent 4 }}
 ...
 {{- end }}
