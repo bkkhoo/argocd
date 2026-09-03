@@ -18,6 +18,8 @@ spec:
           value: all
         - name: clusterName
           value: local-cluster
+      valueFiles:
+        - ../../apps/rhacs-central/overlays/dev/values.yaml
   destination:
     name: in-cluster
     namespace: stackrox

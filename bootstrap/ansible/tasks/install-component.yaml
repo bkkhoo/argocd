@@ -21,7 +21,7 @@
 
 - name: pause for 10 seconds
   ansible.builtin.pause:
-    seconds: 5
+    seconds: 10
 
 - name: "ensure {{ _instance.kind }} instance is deployed"
   ansible.builtin.shell: >-

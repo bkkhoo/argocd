@@ -161,6 +161,7 @@
       when: not (global_hub | bool)
       ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-managed-hub-app-of-apps/overlays/{{ env }}
 
+    # for global-hub, deploy mco with this playbook; for managed-hubs, mco deploy by as part of argocd bootstrap appset
     - name: ensure multi-cluster-observability is deployed
       when: global_hub | bool
       ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/multi-cluster-observability/base
