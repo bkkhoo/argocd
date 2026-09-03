@@ -28,6 +28,7 @@ rules:
     resourceNames:
       - {{ .Values.observability.objectStorage.name }}-obc
       - {{ .Values.observability.objectStorage.name }}
+      - {{ .Values.observability.objectStorage.caSecret }}
       - openshift-service-ca.crt
     verbs:
       - get
