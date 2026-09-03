@@ -39,7 +39,7 @@ spec:
           path: helm-charts/rhacm
           helm:
             valuesObject:
-              deploymentType: all
+              deploymentType: "operator+mch"    # deploy rhacm without observability
               availabilityConfig: High
               disableHubSelfManagement: true
         - repoURL: https://github.com/bkkhoo/helm-values.git
@@ -53,7 +53,7 @@ spec:
             valuesObject:
               deploymentType: all
               postSyncHookImage:
-                tag: 'v{{ index .metadata.labels "openshiftVersion-major-minor" }}'
+                tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
             valueFiles:
               # referencing values from git repo source[1].ref
               # even though source[1].ref.path is specified, the $helmValues still represents the root of the source with ref field

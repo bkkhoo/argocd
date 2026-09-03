@@ -8,7 +8,9 @@ ifdef::env-github[]
 endif::[]
 = Advanced Cluster Management for Kubernetes
 
-Red Hat Advanced Cluster Management for Kubernetes (RHACM) provides the multicluster hub, a central management console for managing multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. Administrators can use the hub to manage the life cycle of Kubernetes-based clusters.
+Red Hat Advanced Cluster Management for Kubernetes (RHACM) provides a multicluster hub, a central management console for administering multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. Administrators can use the hub to manage the lifecycle of these clusters.
+
+The Helm chart installs the RHACM operator, a MultiClusterHub instance, and a MultiClusterObservability instance. Note that this configuration requires OpenShift Data Foundation to provide S3 object storage.
 
 == Installing the Chart
 
@@ -42,9 +44,12 @@ The following table lists the configurable parameters/values of this Helm chart 
 | all
 a| Deployment type:
 
-- `operator`: deploy operator only
-- `multicluster-hub`: deploy `MultiClusterHub` instance only
-- `all`: deploy operator and `MultiClusterHub` instance
+- `operator`: deploy operator only.
+- `mch`: deploy `MultiClusterHub` instance only.
+- `mco`: deploy `MultiClusterObservability` instance only.
+- `operator+mch`: deploy operator and `MultiClusterHub`.
+- `operator+mco`: deploy operator and `MultiClusterObservability`.
+- `all`: deploy operator, `MultiClusterHub` instance and `MultiClusterObservability` instance.
 
 | rhacmNamespace
 | open-cluster-management
@@ -61,6 +66,38 @@ a| Deployment type:
 | disableHubSelfManagement
 | false
 | Configuration setting in Red Hat Advanced Cluster Management (RHACM) that controls whether the hub cluster automatically manages itself.
+
+| observability.namespace
+| open-cluster-management-observability
+| Dedicated namespace for Multi Cluster Observability components.
+
+| observability.instanceSize
+| default
+| Select a predefined size profile for the observability stack (default, minimal, small, medium, large, xlarge, 2xlarge, or 4xlarge).
+
+| observability.objectStorage.name
+| observability-rhacm-s3
+| The name of the Secret containing object storage configuration.
+
+| observability.objectStorage.storageClassName
+| openshift-storage.noobaa.io
+| The key within that Secret that holds the specific storage configuration file.
+
+| observability.objectStorage.insecureSkipVerify
+| false
+| Controls whether a client verifies the server's certificate chain and host name.
+
+| observability.objectStorage.caSecret
+| object-storage-ca
+| The name of the Secret containing TLS certificates contains the CA certificate that signed the certificate used by the object storage endpoint.
+
+| syncHookImage.name
+| registry.redhat.io/openshift4/ose-tools-rhel9
+| The container image name to use for ArgoCD Sync Hook job.
+
+| syncHookImage.tag
+| v4.20
+| The container image tag to use for ArgoCD Sync Hook job.
 |===
 
 [NOTE]

@@ -1,6 +1,6 @@
 ---
 apiVersion: v2
-appVersion: 2.16      # the version depends on openshift catalog source, need not necessary match what is specified here
+appVersion: 2.17      # the version depends on openshift catalog source, need not necessary match what is specified here
 name: rhacm
 description: Advanced Cluster Management for Kubernetes
 type: application

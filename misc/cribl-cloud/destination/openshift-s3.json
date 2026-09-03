@@ -2,7 +2,7 @@
   "id": "out-openshift-s3",
   "type": "s3",
   "description": "odf s3 object store",
-  "endpoint": "https://s3-openshift-storage.apps.cluster-9dd9w.dyn.redhatworkshops.io",
+  "endpoint": "https://s3-openshift-storage.apps.cluster-p2jwr.dyn.redhatworkshops.io",
   "region": "",
   "bucket": "misc-s3-bucket-obc-e1b7b539-a907-49c9-a28b-493a138140b4",
   "awsAuthenticationMethod": "secret",

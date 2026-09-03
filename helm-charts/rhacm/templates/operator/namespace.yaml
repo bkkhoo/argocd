@@ -1,4 +1,4 @@
-{{- if has .Values.deploymentType (list "operator" "all") }}
+{{- if has .Values.deploymentType (list "operator" "operator+mch" "operator+mco" "all") }}
 ---
 apiVersion: v1
 kind: Namespace

@@ -1,0 +1,20 @@
+{{- if has .Values.deploymentType (list "mco" "operator+mco" "all") }}
+---
+apiVersion: observability.open-cluster-management.io/v1beta2
+kind: MultiClusterObservability
+metadata:
+  name: observability
+  annotations:
+    argocd.argoproj.io/sync-wave: "210"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  instanceSize: {{ .Values.observability.instanceSize }}
+  observabilityAddonSpec: {}
+  storageConfig:
+    metricObjectStorage:
+      name: {{ .Values.observability.objectStorage.name }}
+      key: thanos.yaml
+      tlsSecretName: {{ .Values.observability.objectStorage.caSecret }}
+      tlsSecretMountPath: /etc/s3-buckets/certs
+...
+{{- end }}

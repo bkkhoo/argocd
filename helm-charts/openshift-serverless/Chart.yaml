@@ -1,6 +1,6 @@
 ---
 apiVersion: v2
-appVersion: 1.0
+appVersion: 1.38
 name: openshift-serverless
 description: OpenShift Serverless
 type: application

@@ -7,6 +7,7 @@ metadata:
   labels:
     applications: loki-stack
 spec:
+  goTemplate: true                     # enable go templating for spec.template field
   syncPolicy:
     preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
   generators:
@@ -21,7 +22,7 @@ spec:
               operator: Exists
   template:
     metadata:
-      name: "{{ name }}-loki-stack"
+      name: "{{ .name }}-loki-stack"
       labels:
         applications: loki-stack
     spec:
@@ -30,8 +31,12 @@ spec:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
         path: helm-charts/loki-stack
+        helm:
+          valuesObject:
+            syncHookImage:
+              tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
       destination:
-        server: "{{ server }}"
+        server: "{{ .server }}"
         namespace: default
       syncPolicy:
         automated:

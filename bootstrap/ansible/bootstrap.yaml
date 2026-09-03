@@ -42,7 +42,7 @@
           name:  multiclusterhub
           namespace: open-cluster-management
           helm_options: >-
-            --set deploymentType=multicluster-hub
+            --set deploymentType=mch
             --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
             --set disableHubSelfManagement=false
           status: Running
@@ -160,4 +160,8 @@
     - name: ensure managed-hub app-of-apps is deployed
       when: not (global_hub | bool)
       ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-managed-hub-app-of-apps/overlays/{{ env }}
+
+    - name: ensure multi-cluster-observability is deployed
+      when: global_hub | bool
+      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/multi-cluster-observability/base
 ...

@@ -39,7 +39,7 @@ spec:
           path: helm-charts/rhacm
           helm:
             valuesObject:
-              deploymentType: all
+              deploymentType: "operator+mch"    # deploy rhacm without observability
               availabilityConfig: High
               disableHubSelfManagement: true
         - repoURL: https://github.com/bkkhoo/argocd.git
@@ -49,7 +49,7 @@ spec:
             valuesObject:
               deploymentType: all
               postSyncHookImage:
-                tag: 'v{{ index .metadata.labels "openshiftVersion-major-minor" }}'
+                tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
             valueFiles:    # values files are located relative to the chart path specified in the sources.path
               - ../../apps/01-managed-hub-bootstrap/prod/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git

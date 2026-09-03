@@ -1,0 +1,13 @@
+{{- if has .Values.deploymentType (list "mco" "operator+mco" "all") }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.observability.namespace }}
+  labels:
+     argocd.argoproj.io/managed-by: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+spec: {}
+...
+{{- end }}

@@ -1,0 +1,16 @@
+{{- if has .Values.deploymentType (list "mco" "operator+mco" "all") }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: observability-sync-hook
+  namespace: {{ .Values.observability.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "205"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
+data:
+  create-s3-secret.sh: |
+{{ .Files.Get "files/create-s3-secret.sh" | indent 4 }}
+...
+{{- end }}

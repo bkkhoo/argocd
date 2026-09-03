@@ -23,11 +23,11 @@ spec:
           env:
             - name: NAMESPACE
               value: {{ .Values.lokiStack.namespace }}
-            - name: OBC_CONFIGMAP_NAME
+            - name: OBC_CONFIGMAP
               value: {{ .Values.lokiStack.objectStorage.secret }}-obc
-            - name: OBC_SECRET_NAME
+            - name: OBC_SECRET
               value: {{ .Values.lokiStack.objectStorage.secret }}-obc
-            - name: S3_BUCKET_SECRET_NAME
+            - name: S3_BUCKET_SECRET
               value: {{ .Values.lokiStack.objectStorage.secret }}
           volumeMounts:
             - name: scripts

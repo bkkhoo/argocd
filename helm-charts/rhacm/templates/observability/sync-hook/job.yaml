@@ -1,0 +1,54 @@
+{{- if has .Values.deploymentType (list "mco" "operator+mco" "all") }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: observability-sync-hook
+  namespace: {{ .Values.observability.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "205"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
+spec:
+  activeDeadlineSeconds: 600      # max duration the job is allowed to run
+  template:
+    spec:
+      containers:
+        - name: create-mco-secrets
+          image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - /scripts/create-mco-secrets.sh
+          env:
+            - name: NAMESPACE
+              value: {{ .Values.observability.namespace }}
+            - name: OBC_CONFIGMAP
+              value: {{ .Values.observability.objectStorage.name }}-obc
+            - name: OBC_SECRET
+              value: {{ .Values.observability.objectStorage.name }}-obc
+            - name: THANOS_OBJECT_STORAGE_SECRET
+              value: {{ .Values.observability.objectStorage.name }}
+            - name: INSECURE_SKIP_VERIFY
+              value: {{ .Values.observability.objectStorage.insecureSkipVerify }}
+            - name: CA_CONFIGMAP
+              value: openshift-service-ca.crt
+            - name: CA_KEY
+              value: service-ca.crt
+            - name: OBJECT_STORAGE_CA_SECRET
+              value: {{ .Values.observability.objectStorage.caSecret }}
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: observability-sync-hook
+            defaultMode: 0755
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: observability-sync-hook
+      terminationGracePeriodSeconds: 30
+...
+{{- end }}

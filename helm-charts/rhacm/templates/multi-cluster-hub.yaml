@@ -1,4 +1,4 @@
-{{- if has .Values.deploymentType (list "multicluster-hub" "all") }}
+{{- if has .Values.deploymentType (list "mch" "operator+mch" "all") }}
 ---
 apiVersion: operator.open-cluster-management.io/v1
 kind: MultiClusterHub

@@ -1,7 +1,18 @@
 ---
-deploymentType: all             # operator, multicluster-hub, all
+deploymentType: all             # operator, mch, mco, operator+mch, operator+mch, all
 rhacmNamespace: open-cluster-management
 operatorChannel: release-2.17
 availabilityConfig: High        # Basic or High
 disableHubSelfManagement: false
+observability:
+  namespace: open-cluster-management-observability
+  instanceSize: default
+  objectStorage:
+    name: observability-rhacm-s3
+    storageClassName: openshift-storage.noobaa.io
+    insecureSkipVerify: false
+    caSecret: object-storage-ca
+syncHookImage:
+  name: registry.redhat.io/openshift4/ose-tools-rhel9
+  tag: v4.20
 ...
