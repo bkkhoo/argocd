@@ -5,8 +5,7 @@ metadata:
   name: cluster-monitoring-config
   namespace: openshift-monitoring
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true
-    argocd.argoproj.io/compare-options: IncludeMutationWebhook=true
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
 data:
   config.yaml: |
     enableUserWorkload: {{ .Values.enableUserWorkload }}
@@ -39,8 +38,7 @@ metadata:
   name: user-workload-monitoring-config
   namespace: openshift-user-workload-monitoring
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true
-    argocd.argoproj.io/compare-options: IncludeMutationWebhook=true
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
 data:
   config.yaml: |
     prometheus:
