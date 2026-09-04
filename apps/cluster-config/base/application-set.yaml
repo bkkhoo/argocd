@@ -102,12 +102,27 @@ spec:
           namespace: etcd-backup
           jsonPointers:
             - /spec/schedule
+        - group: ""
+          kind: ConfigMap
+          name: cluster-monitoring-config
+          namespace: openshift-monitoring
+          jsonPointers:
+            - /data
+          # jqPathExpressions:
+          #   - '.data[config\.yaml].alertmanagerMain.volumeClaimTemplate.metadata'
+          #   - '.data[config\.yaml].alertmanagerMain.volumeClaimTemplate.status'
+          #   - '.data[config\.yaml].nodeExporter'
+          #   - '.data[config\.yaml].prometheusK8s.additionalAlertmanagerConfigs'
+          #   - '.data[config\.yaml].prometheusK8s.externalLabels'
+          #   - '.data[config\.yaml].prometheusK8s.volumeClaimTemplate.metadata'
+          #   - '.data[config\.yaml].prometheusK8s.volumeClaimTemplate.status'
       syncPolicy:
         automated:
           prune: false            # the config here modify pre-existing resources that are part of openshift
           selfHeal: true          # do not delete the resources when they are no longer defined in git
         syncOptions:
           - CreateNamespace=true
+          - RespectIgnoreDifferences=true
       info:
         - name: env
           value: any
