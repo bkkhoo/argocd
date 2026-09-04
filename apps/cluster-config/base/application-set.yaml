@@ -106,9 +106,8 @@ spec:
           kind: ConfigMap
           name: cluster-monitoring-config
           namespace: openshift-monitoring
-          managedFieldsManagers:
-            - observability-operator
-            - cluster-monitoring-operator
+          jsonPointers:
+            - /data/config.yaml
           # jqPathExpressions:
           #   # ignore fields injected inside the config.yaml string by rhacm mco
           #   - .data["config.yaml"] | fromyaml | .nodeExporter
@@ -122,9 +121,8 @@ spec:
           kind: ConfigMap
           name: user-workload-monitoring-config
           namespace: openshift-user-workload-monitoring
-          managedFieldsManagers:
-            - observability-operator
-            - user-workload-monitoring-operator
+          jsonPointers:
+            - /data/config.yaml
           # jqPathExpressions:
           #   # ignore fields injected inside the config.yaml string by rhacm mco
           #   - .data["config.yaml"] | fromyaml | .prometheus.additionalAlertmanagerConfigs
