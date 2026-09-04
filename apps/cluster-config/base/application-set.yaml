@@ -102,6 +102,12 @@ spec:
           namespace: etcd-backup
           jsonPointers:
             - /spec/schedule
+        - group: ""
+          kind: ConfigMap
+          name: cluster-monitoring-config
+          namespace: openshift-monitoring
+          managedFieldsManagers:
+            - endpoint-monitoring-operator
       syncPolicy:
         automated:
           prune: false            # the config here modify pre-existing resources that are part of openshift
