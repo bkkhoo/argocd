@@ -25,6 +25,7 @@
         install: true
         namespace: openshift-gitops-operator
         csv_name: openshift-gitops-operator
+        validation_webhook: {}                  # the operator does not have validation webhook
         instance:
           kind: argocds.argoproj.io
           name: openshift-gitops
@@ -37,6 +38,9 @@
         install: true
         namespace: open-cluster-management
         csv_name: advanced-cluster-management
+        validation_webhook:                     # the operator has a validation webhook, have to ensure that the pods backing
+          namespace: open-cluster-management    # the webhook are Running
+          selector: name=multiclusterhub-operator
         instance:
           kind: multiclusterhubs.operator.open-cluster-management.io
           name:  multiclusterhub
@@ -50,6 +54,7 @@
         install: "{{ global_hub }}"
         namespace: multicluster-global-hub
         csv_name: multicluster-global-hub
+        validation_webhook: {}                  # the operator does not have validation webhook
         instance:
           kind: multiclusterglobalhubs.operator.open-cluster-management.io
           name: multiclusterglobalhub
@@ -79,6 +84,7 @@
         _namespace: "{{ item.namespace }}"
         _csv_name: "{{ item.csv_name }}"
         _instance: "{{ item.instance }}"
+        _validation_webhook: "{{ item.validation_webhook }}"
       when:
         - item.install | bool
       ansible.builtin.include_tasks: tasks/install-component.yaml

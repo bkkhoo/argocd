@@ -19,9 +19,18 @@
     cmd: |-
       oc -n {{ _namespace }} get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
-- name: pause for 10 seconds
-  ansible.builtin.pause:
-    seconds: 10
+- name: "ensure validation webhook pods for {{ _csv_name }} are Running"
+  when: _validation_webhook
+  register: pod_result
+  failed_when: false       # ignore return code
+  until:
+    - pod_result.stdout == ""
+    - pod_result.rc == 1
+  delay: 3
+  retries: 10
+  ansible.builtin.shell:
+    cmd: |-
+      oc -n {{ _validation_webhook.namespace }} get pod --selector {{ _validation_webhook.selector }} --no-headers | grep -v Running
 
 - name: "ensure {{ _instance.kind }} instance is deployed"
   ansible.builtin.shell: >-
