@@ -4,6 +4,8 @@ kind: ConfigMap
 metadata:
   name: cluster-monitoring-config
   namespace: openshift-monitoring
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 data:
   config.yaml: |
     enableUserWorkload: {{ .Values.enableUserWorkload }}
@@ -35,6 +37,8 @@ kind: ConfigMap
 metadata:
   name: user-workload-monitoring-config
   namespace: openshift-user-workload-monitoring
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 data:
   config.yaml: |
     prometheus:
