@@ -106,26 +106,32 @@ spec:
           kind: ConfigMap
           name: cluster-monitoring-config
           namespace: openshift-monitoring
-          jqPathExpressions:
-            # ignore fields injected inside the config.yaml string by rhacm mco
-            - .data["config.yaml"] | fromyaml | .nodeExporter
-            - .data["config.yaml"] | fromyaml | .prometheusK8s.additionalAlertmanagerConfigs
-            - .data["config.yaml"] | fromyaml | .prometheusK8s.externalLabels
-            - .data["config.yaml"] | fromyaml | .prometheusK8s.volumeClaimTemplate.metadata
-            - .data["config.yaml"] | fromyaml | .prometheusK8s.volumeClaimTemplate.status
-            - .data["config.yaml"] | fromyaml | .alertmanagerMain.volumeClaimTemplate.metadata
-            - .data["config.yaml"] | fromyaml | .alertmanagerMain.volumeClaimTemplate.status
+          managedFieldsManagers:
+            - observability-operator
+            - cluster-monitoring-operator
+          # jqPathExpressions:
+          #   # ignore fields injected inside the config.yaml string by rhacm mco
+          #   - .data["config.yaml"] | fromyaml | .nodeExporter
+          #   - .data["config.yaml"] | fromyaml | .prometheusK8s.additionalAlertmanagerConfigs
+          #   - .data["config.yaml"] | fromyaml | .prometheusK8s.externalLabels
+          #   - .data["config.yaml"] | fromyaml | .prometheusK8s.volumeClaimTemplate.metadata
+          #   - .data["config.yaml"] | fromyaml | .prometheusK8s.volumeClaimTemplate.status
+          #   - .data["config.yaml"] | fromyaml | .alertmanagerMain.volumeClaimTemplate.metadata
+          #   - .data["config.yaml"] | fromyaml | .alertmanagerMain.volumeClaimTemplate.status
         - group: ""
           kind: ConfigMap
           name: user-workload-monitoring-config
           namespace: openshift-user-workload-monitoring
-          jqPathExpressions:
-            # ignore fields injected inside the config.yaml string by rhacm mco
-            - .data["config.yaml"] | fromyaml | .prometheus.additionalAlertmanagerConfigs
-            - .data["config.yaml"] | fromyaml | .prometheus.volumeClaimTemplate.metadata
-            - .data["config.yaml"] | fromyaml | .prometheus.volumeClaimTemplate.status
-            - .data["config.yaml"] | fromyaml | .thanosRuler.volumeClaimTemplate.metadata
-            - .data["config.yaml"] | fromyaml | .thanosRuler.volumeClaimTemplate.status
+          managedFieldsManagers:
+            - observability-operator
+            - user-workload-monitoring-operator
+          # jqPathExpressions:
+          #   # ignore fields injected inside the config.yaml string by rhacm mco
+          #   - .data["config.yaml"] | fromyaml | .prometheus.additionalAlertmanagerConfigs
+          #   - .data["config.yaml"] | fromyaml | .prometheus.volumeClaimTemplate.metadata
+          #   - .data["config.yaml"] | fromyaml | .prometheus.volumeClaimTemplate.status
+          #   - .data["config.yaml"] | fromyaml | .thanosRuler.volumeClaimTemplate.metadata
+          #   - .data["config.yaml"] | fromyaml | .thanosRuler.volumeClaimTemplate.status
       syncPolicy:
         automated:
           prune: false            # the config here modify pre-existing resources that are part of openshift
