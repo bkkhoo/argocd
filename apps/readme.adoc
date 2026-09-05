@@ -42,6 +42,11 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Deploy OpenShift Logging operator, and configure ClusterLogForwarder.
 
+| openshift-monitoring
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label and the `in-cluster`.
+| Configure OpenShift Monitoring components.
+
 | multi-cluster-observability
 | Application
 | in-cluster

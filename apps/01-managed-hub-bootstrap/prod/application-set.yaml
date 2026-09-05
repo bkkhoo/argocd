@@ -39,7 +39,7 @@ spec:
           path: helm-charts/rhacm
           helm:
             valuesObject:
-              deploymentType: "operator+mch"    # deploy rhacm without observability
+              deploymentType: all    # deploy rhacm with observability
               availabilityConfig: High
               disableHubSelfManagement: true
         - repoURL: https://github.com/bkkhoo/argocd.git

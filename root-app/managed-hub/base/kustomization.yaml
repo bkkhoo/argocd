@@ -9,6 +9,7 @@ resources:
   # all clusters
   - ../../../apps/cluster-config/base
   - ../../../apps/openshift-logging/overlays/managed-hub
+  - ../../../apps/openshift-monitoring/base
   - ../../../apps/openshift-compliance/base
   - ../../../apps/openshift-pipelines/base
   - ../../../apps/openshift-web-terminal/base

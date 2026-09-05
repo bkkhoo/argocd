@@ -84,10 +84,7 @@ spec:
             valuesObject:
               syncHookImage:
                 tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
-        - repoURL: https://github.com/bkkhoo/argocd.git      # openshift monitoring stack
-          targetRevision: main
-          path: helm-charts/openshift-monitoring
-        - repoURL: https://github.com/bkkhoo/argocd.git     # project request template
+        - repoURL: https://github.com/bkkhoo/argocd.git      # project request template
           targetRevision: main
           path: helm-charts/project-request-template
           helm:

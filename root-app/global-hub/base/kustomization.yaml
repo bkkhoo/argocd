@@ -15,6 +15,7 @@ resources:
   - ../../../apps/rhacs-secured-cluster/overlays/prod
   - ../../../apps/cluster-config/base
   - ../../../apps/openshift-logging/overlays/global-hub
+  - ../../../apps/openshift-monitoring/base
   - ../../../apps/openshift-compliance/base
   - ../../../apps/openshift-pipelines/base
   - ../../../apps/openshift-web-terminal/base
