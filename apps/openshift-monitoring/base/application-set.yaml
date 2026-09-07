@@ -39,6 +39,19 @@ spec:
         path: helm-charts/openshift-monitoring
       destination:
         server: "{{ server }}"
+      ignoreDifferences:
+        - group: ""
+          kind: ConfigMap
+          name: cluster-monitoring-config
+          namespace: openshift-monitoring
+          managedFieldsManagers:
+            - endpoint-observability-operator
+        - group: ""
+          kind: ConfigMap
+          name: user-workload-monitoring-config
+          namespace: openshift-user-workload-monitoring
+          managedFieldsManagers:
+            - endpoint-observability-operator
       syncPolicy:
         automated:
           prune: false            # the config here modify pre-existing resources that are part of openshift
