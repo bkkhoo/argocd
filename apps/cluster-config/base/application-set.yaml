@@ -105,14 +105,14 @@ spec:
           namespace: etcd-backup
           jsonPointers:
             - /spec/volumeName
-            - /status
+            - /status/phase
         - group: ""          # do not track the pvc status, the cronjob that uses the pvc is not scheduled to run immediately
           kind: PersistentVolumeClaim
           name: etcd-static-resources-backup
           namespace: etcd-backup
           jsonPointers:
             - /spec/volumeName
-            - /status
+            - /status/phase
       syncPolicy:
         automated:
           prune: false            # the config here modify pre-existing resources that are part of openshift
