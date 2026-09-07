@@ -12,6 +12,7 @@ data:
     prometheusK8s:
       retention: {{ .Values.platform.prometheusK8s.retention }}
       volumeClaimTemplate:
+        metadata: {}
         spec:
           {{- if hasKey .Values "storageClass" }}
           storageClassName: {{ .Values.storageClass }}
@@ -20,9 +21,11 @@ data:
           resources:
             requests:
               storage: {{ .Values.platform.prometheusK8s.storage }}
+        status: {}
     alertmanagerMain:
       enableUserAlertmanagerConfig: {{ .Values.enableUserWorkload }}
       volumeClaimTemplate:
+        metadata: {}
         spec:
           {{- if hasKey .Values "storageClass" }}
           storageClassName: {{ .Values.storageClass }}
@@ -30,6 +33,18 @@ data:
           resources:
             requests:
               storage: {{ .Values.platform.alertmanagerMain.storage }}
+        status: {}
+    nodeExporter:
+      collectors:
+        buddyinfo: {}
+        cpufreq: {}
+        ksmd: {}
+        mountstats: {}
+        netclass: {}
+        netdev: {}
+        processes: {}
+        systemd: {}
+        tcpstat: {}
 {{- if .Values.enableUserWorkload }}
 ---
 apiVersion: v1
@@ -44,6 +59,7 @@ data:
     prometheus:
       retention: {{ .Values.userWorkload.prometheus.retention }}
       volumeClaimTemplate:
+        metadata: {}
         spec:
           {{- if hasKey .Values "storageClass" }}
           storageClassName: {{ .Values.storageClass }}
@@ -51,9 +67,11 @@ data:
           resources:
             requests:
               storage: {{ .Values.userWorkload.prometheus.storage }}
+        status: {}
     thanosRuler:
       retention: {{ .Values.userWorkload.thanosRuler.retention }}
       volumeClaimTemplate:
+        metadata: {}
         spec:
           {{- if hasKey .Values "storageClass" }}
           storageClassName: {{ .Values.storageClass }}
@@ -61,5 +79,6 @@ data:
           resources:
             requests:
               storage: {{ .Values.userWorkload.thanosRuler.storage }}
+        status: {}
 {{- end }}
 ...
