@@ -8,7 +8,30 @@ metadata:
     argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
 data:
   config.yaml: |
+    alertmanagerMain:
+      enableUserAlertmanagerConfig: {{ .Values.enableUserWorkload }}
+      volumeClaimTemplate:
+        metadata: {}
+        spec:
+          {{- if hasKey .Values "storageClass" }}
+          storageClassName: {{ .Values.storageClass }}
+          {{- end }}
+          resources:
+            requests:
+              storage: {{ .Values.platform.alertmanagerMain.storage }}
+        status: {}
     enableUserWorkload: {{ .Values.enableUserWorkload }}
+    nodeExporter:
+      collectors:
+        buddyinfo: {}
+        cpufreq: {}
+        ksmd: {}
+        mountstats: {}
+        netclass: {}
+        netdev: {}
+        processes: {}
+        systemd: {}
+        tcpstat: {}
     prometheusK8s:
       retention: {{ .Values.platform.prometheusK8s.retention }}
       volumeClaimTemplate:
@@ -22,29 +45,6 @@ data:
             requests:
               storage: {{ .Values.platform.prometheusK8s.storage }}
         status: {}
-    alertmanagerMain:
-      enableUserAlertmanagerConfig: {{ .Values.enableUserWorkload }}
-      volumeClaimTemplate:
-        metadata: {}
-        spec:
-          {{- if hasKey .Values "storageClass" }}
-          storageClassName: {{ .Values.storageClass }}
-          {{- end }}
-          resources:
-            requests:
-              storage: {{ .Values.platform.alertmanagerMain.storage }}
-        status: {}
-    nodeExporter:
-      collectors:
-        buddyinfo: {}
-        cpufreq: {}
-        ksmd: {}
-        mountstats: {}
-        netclass: {}
-        netdev: {}
-        processes: {}
-        systemd: {}
-        tcpstat: {}
 {{- if .Values.enableUserWorkload }}
 ---
 apiVersion: v1
