@@ -6,6 +6,7 @@ metadata:
   name: etcd-backup-sync-hook
   namespace: {{ .Values.namespace }}
   annotations:
+    argocd.argoproj.io/sync-wave: "10"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
 spec:

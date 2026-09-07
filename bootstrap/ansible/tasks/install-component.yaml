@@ -17,20 +17,36 @@
   retries: 68
   ansible.builtin.command:
     cmd: |-
-      oc -n {{ _namespace }} get csv -o jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+      oc -n {{ _namespace }} get csv --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
-- name: "ensure validation webhook pods for {{ _csv_name }} are Running"
+- name: "ensure validation webhook pods for {{ _csv_name }} are in Running state"
   when: _validation_webhook
   register: pod_result
-  failed_when: false       # ignore return code
-  until:
-    - pod_result.stdout == ""
-    - pod_result.rc == 1
+  failed_when: false     # ignore return code
+  until:                 # must have more than 0 pod, and number of Running pods must equal to total number of pods
+    - pod_result.stdout_lines| length != 0
+    - (pod_result.stdout_lines | select("search", "Running") | length) == (pod_result.stdout_lines| length)
   delay: 3
-  retries: 10
-  ansible.builtin.shell:
+  retries: 13
+  ansible.builtin.command:
     cmd: |-
-      oc -n {{ _validation_webhook.namespace }} get pod --selector {{ _validation_webhook.selector }} --no-headers | grep -v Running
+      oc -n {{ _validation_webhook.namespace }} get pod --selector {{ _validation_webhook.pod_selector }} --no-headers
+
+- name: "ensure validation webhook endpoints for {{ _csv_name }} in serving state"
+  when: _validation_webhook
+  register: eps_result
+  failed_when: false     # ignore return code
+  until:                 # command must be successful; must have more than one endpoint; all endpoints must be in serving state
+    - eps_result.rc == 0
+    - '"," in eps_result.stdout'
+    - '"false" not in eps_result.stdout'
+  delay: 3
+  retries: 13
+  ansible.builtin.command:
+    cmd: |-
+      oc -n {{ _validation_webhook.namespace }} get endpointslices.discovery.k8s.io
+      --selector {{ _validation_webhook.ep_selector }}
+      --no-headers --output custom-columns=":endpoints[*].conditions.serving"
 
 - name: "ensure {{ _instance.kind }} instance is deployed"
   ansible.builtin.shell: >-
@@ -43,5 +59,6 @@
   retries: 108
   ansible.builtin.command:
     cmd: >-
-      oc {{ "-n " + _instance.namespace if _instance.namespace else "" }} get {{ _instance.kind }} {{ _instance.name }} -o jsonpath="{.status.phase}"
+      oc {{ "-n " + _instance.namespace if _instance.namespace else "" }} get {{ _instance.kind }} {{ _instance.name }}
+      --output jsonpath="{.status.phase}"
 ...

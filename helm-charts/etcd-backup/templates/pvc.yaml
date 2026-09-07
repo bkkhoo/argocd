@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.pvc.snapshot.name }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   resources:
     requests:
@@ -20,6 +22,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.pvc.staticResources.name }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   resources:
     requests:

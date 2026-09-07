@@ -38,9 +38,10 @@
         install: true
         namespace: open-cluster-management
         csv_name: advanced-cluster-management
-        validation_webhook:                     # the operator has a validation webhook, have to ensure that the pods backing
-          namespace: open-cluster-management    # the webhook are Running
-          selector: name=multiclusterhub-operator
+        validation_webhook:                     # the operator has a validation webhook, ensure that the webhook service
+          namespace: open-cluster-management    # endpoints are ready
+          pod_selector: name=multiclusterhub-operator
+          ep_selector: kubernetes.io/service-name=multiclusterhub-operator-webhook
         instance:
           kind: multiclusterhubs.operator.open-cluster-management.io
           name:  multiclusterhub

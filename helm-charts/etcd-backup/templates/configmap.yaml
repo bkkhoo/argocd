@@ -4,6 +4,8 @@ kind: ConfigMap
 metadata:
   name: etcd-backup
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 data:
   etcd-backup.sh: |
 {{ .Files.Get "files/etcd-backup.sh" | indent 4 }}

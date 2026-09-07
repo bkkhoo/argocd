@@ -6,6 +6,8 @@ kind: CronJob
 metadata:
   name: etcd-backup
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   schedule: "{{ $randomMinute }} {{ $startHour }}-23/{{ .Values.frequency }} * * *"
   successfulJobsHistoryLimit: 1
