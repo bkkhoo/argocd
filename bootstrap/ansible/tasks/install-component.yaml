@@ -1,5 +1,5 @@
 ---
-- name: "ensure {{ _helm_chart }} operator is deployed"
+- name: "ensure {{ _helm_chart }} is deployed"
   when:
   register: csv_result
   ansible.builtin.shell:

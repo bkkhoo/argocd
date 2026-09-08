@@ -76,15 +76,18 @@ The following configurations are added to minimize **OutOfSync** state:
   ** `alertmanagerMain.volumeClaimTemplate.metadata`
   ** `alertmanagerMain.volumeClaimTemplate.status`
   ** `nodeExporter`
-  ** `prometheusK8s.additionalAlertmanagerConfigs`
-  ** `prometheusK8s.externalLabels`
   ** `prometheusK8s.volumeClaimTemplate.metadata`
   ** `prometheusK8s.volumeClaimTemplate.status`
 - link:./templates/user-workload-configmap.yaml[user workload ConfigMap] (`user-workload-monitoring-config` in `openshift-user-workload-monitoring` namespace):
-  ** `prometheus.additionalAlertmanagerConfigs`
   ** `prometheus.volumeClaimTemplate.metadata`
   ** `prometheus.volumeClaimTemplate.status`
   ** `thanosRuler.volumeClaimTemplate.metadata`
   ** `thanosRuler.volumeClaimTemplate.status`
 
-There is no easy way to work around the **OutOfSync** issue, as some of the injected configurations are dynamic.
+There is no easy way to work around the **OutOfSync** issue, as some of the injected configurations are dynamic, e.g.:
+
+- link:./templates/platform-workload-configmap.yaml[platform workload ConfigMap] (`cluster-monitoring-config` in `openshift-monitoring` namespace):
+  ** `prometheusK8s.additionalAlertmanagerConfigs`
+  ** `prometheusK8s.externalLabels`
+- link:./templates/user-workload-configmap.yaml[user workload ConfigMap] (`user-workload-monitoring-config` in `openshift-user-workload-monitoring` namespace):
+  ** `prometheus.additionalAlertmanagerConfigs`

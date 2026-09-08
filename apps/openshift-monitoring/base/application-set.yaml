@@ -45,13 +45,19 @@ spec:
           name: cluster-monitoring-config
           namespace: openshift-monitoring
           managedFieldsManagers:
+            - cluster-monitoring-operator
+            - endpoint-monitoring-operator
             - endpoint-observability-operator
+            - prometheus-operator
         - group: ""
           kind: ConfigMap
           name: user-workload-monitoring-config
           namespace: openshift-user-workload-monitoring
           managedFieldsManagers:
+            - cluster-monitoring-operator
+            - endpoint-monitoring-operator
             - endpoint-observability-operator
+            - prometheus-operator
       syncPolicy:
         automated:
           prune: false            # the config here modify pre-existing resources that are part of openshift
@@ -66,3 +72,5 @@ spec:
         - name: target
           value: in-cluster and clusters without managed-hub label
 ...
+
+system:serviceaccount:open-cluster-management-addon-observability:endpoint-observability-operator-sa
