@@ -68,26 +68,93 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 == Interaction with RHACM Multi Cluster Observability
 
-When Red Hat Advanced Cluster Management (RHACM) enables the observability service on OpenShift clusters, the observability endpoint operator automatically updates the OpenShift Monitoring ConfigMaps. The injected configuration causes the openshift-monitoring ArgoCD Application to become **OutOfSync**.
+When Red Hat Advanced Cluster Management (RHACM) enables the observability service (MultiClusterObservability) on OpenShift clusters, the observability endpoint operator automatically creates or updates (merges) the openshift-monitoring ConfigMaps (`cluster-monitoring-config` in `openshift-monitoring` namespace and `user-workload-monitoring-config` in `openshift-user-workload-monitoring` namespace) to include additional configuration:
 
-The following configurations are added to minimize **OutOfSync** state:
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    nodeExporter:
+      collectors:
+        buddyinfo: {}
+        cpufreq: {}
+        ksmd: {}
+        mountstats: {}
+        netclass: {}
+        netdev: {}
+        processes: {}
+        systemd: {}
+        tcpstat: {}
+    prometheusK8s:
+      additionalAlertmanagerConfigs:
+      - apiVersion: v2
+        bearerToken:
+          key: token
+          name: observability-alertmanager-accessor-a8579bd428b74b80b63
+        scheme: https
+        staticConfigs:
+        - alertmanager-open-cluster-management-observability.apps.cluster-rvsq9.dyn.redhatworkshops.io
+        tlsConfig:
+          ca:
+            key: service-ca.crt
+            name: hub-alertmanager-router-ca-a8579bd428b74b80b63
+          insecureSkipVerify: false
+      externalLabels:
+        managed_cluster: 724b1219-4b4c-4a72-9b78-e9058050796c
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-workload-monitoring-config
+  namespace: openshift-user-workload-monitoring
+data:
+  config.yaml: |
+    prometheus:
+      additionalAlertmanagerConfigs:
+      - apiVersion: v2
+        bearerToken:
+          key: token
+          name: observability-alertmanager-accessor-a8579bd428b74b80b63
+        scheme: https
+        staticConfigs:
+        - alertmanager-open-cluster-management-observability.apps.cluster-rvsq9.dyn.redhatworkshops.io
+        tlsConfig:
+          ca:
+            key: service-ca.crt
+            name: hub-alertmanager-router-ca-a8579bd428b74b80b63
+          insecureSkipVerify: false
+----
 
-- link:./templates/platform-workload-configmap.yaml[platform workload ConfigMap] (`cluster-monitoring-config` in `openshift-monitoring` namespace):
-  ** `alertmanagerMain.volumeClaimTemplate.metadata`
-  ** `alertmanagerMain.volumeClaimTemplate.status`
-  ** `nodeExporter`
-  ** `prometheusK8s.volumeClaimTemplate.metadata`
-  ** `prometheusK8s.volumeClaimTemplate.status`
-- link:./templates/user-workload-configmap.yaml[user workload ConfigMap] (`user-workload-monitoring-config` in `openshift-user-workload-monitoring` namespace):
-  ** `prometheus.volumeClaimTemplate.metadata`
-  ** `prometheus.volumeClaimTemplate.status`
-  ** `thanosRuler.volumeClaimTemplate.metadata`
-  ** `thanosRuler.volumeClaimTemplate.status`
+The additional configuration above would cause the link:../../apps/openshift-monitoring/[openshift-monitoring ArgoCD application] to become **OutOfSync**, as the link:./templates/configmap.yaml[manifests pushed by the ArgoCD application] differ from the fields injected by the observability endpoint operator.
 
-There is no easy way to work around the **OutOfSync** issue, as some of the injected configurations are dynamic, e.g.:
+To prevent the openshift-monitoring ArgoCD application from entering an **OutOfSync** state, add the following annotation to the openshift-monitoring ConfigMaps:
 
-- link:./templates/platform-workload-configmap.yaml[platform workload ConfigMap] (`cluster-monitoring-config` in `openshift-monitoring` namespace):
-  ** `prometheusK8s.additionalAlertmanagerConfigs`
-  ** `prometheusK8s.externalLabels`
-- link:./templates/user-workload-configmap.yaml[user workload ConfigMap] (`user-workload-monitoring-config` in `openshift-user-workload-monitoring` namespace):
-  ** `prometheus.additionalAlertmanagerConfigs`
+[source,yaml]
+----
+annotations:
+  argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+----
+
+And includes the following `ignoreDifferences` configuration to the openshift-monitoring ArgoCD application:
+[source,yaml]
+----
+ignoreDifferences:
+  - group: ""
+    kind: ConfigMap
+    name: cluster-monitoring-config
+    namespace: openshift-monitoring
+    managedFieldsManagers:
+      - endpoint-monitoring-operator
+  - group: ""
+    kind: ConfigMap
+    name: user-workload-monitoring-config
+    namespace: openshift-user-workload-monitoring
+    managedFieldsManagers:
+      - endpoint-monitoring-operator
+----

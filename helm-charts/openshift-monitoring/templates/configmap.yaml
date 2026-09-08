@@ -11,7 +11,6 @@ data:
     alertmanagerMain:
       enableUserAlertmanagerConfig: {{ .Values.enableUserWorkload }}
       volumeClaimTemplate:
-        metadata: {}
         spec:
           resources:
             requests:
@@ -19,23 +18,10 @@ data:
           {{- if hasKey .Values "storageClass" }}
           storageClassName: {{ .Values.storageClass }}
           {{- end }}
-        status: {}
     enableUserWorkload: {{ .Values.enableUserWorkload }}
-    nodeExporter:
-      collectors:
-        buddyinfo: {}
-        cpufreq: {}
-        ksmd: {}
-        mountstats: {}
-        netclass: {}
-        netdev: {}
-        processes: {}
-        systemd: {}
-        tcpstat: {}
     prometheusK8s:
       retention: {{ .Values.platform.prometheusK8s.retention }}
       volumeClaimTemplate:
-        metadata: {}
         spec:
           resources:
             requests:
@@ -44,5 +30,36 @@ data:
           storageClassName: {{ .Values.storageClass }}
           {{- end }}
           volumeMode: Filesystem
-        status: {}
+{{- if .Values.enableUserWorkload }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-workload-monitoring-config
+  namespace: openshift-user-workload-monitoring
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+data:
+  config.yaml: |
+    prometheus:
+      retention: {{ .Values.userWorkload.prometheus.retention }}
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: {{ .Values.userWorkload.prometheus.storage }}
+          {{- if hasKey .Values "storageClass" }}
+          storageClassName: {{ .Values.storageClass }}
+          {{- end }}
+    thanosRuler:
+      retention: {{ .Values.userWorkload.thanosRuler.retention }}
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: {{ .Values.userWorkload.thanosRuler.storage }}
+          {{- if hasKey .Values "storageClass" }}
+          storageClassName: {{ .Values.storageClass }}
+          {{- end }}
 ...
+{{- end }}
