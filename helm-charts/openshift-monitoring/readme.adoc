@@ -65,3 +65,26 @@ The following table lists the configurable parameters/values of this Helm chart 
 | 10Gi
 | Define specific storage resource requests for persistent volumes of the Thanos Ruler instance responsible for monitoring user workloads.
 |===
+
+== Interaction with RHACM Multi Cluster Observability
+
+When Red Hat Advanced Cluster Management (RHACM) enables the observability service on OpenShift clusters, the observability endpoint operator automatically updates the OpenShift Monitoring ConfigMaps. The injected configuration causes the openshift-monitoring ArgoCD Application to become **OutOfSync**.
+
+The following configurations are added to minimize **OutOfSync** state:
+
+- link:./templates/platform-workload-configmap.yaml[platform workload ConfigMap] (`cluster-monitoring-config` in `openshift-monitoring` namespace):
+  ** `alertmanagerMain.volumeClaimTemplate.metadata`
+  ** `alertmanagerMain.volumeClaimTemplate.status`
+  ** `nodeExporter`
+  ** `prometheusK8s.additionalAlertmanagerConfigs`
+  ** `prometheusK8s.externalLabels`
+  ** `prometheusK8s.volumeClaimTemplate.metadata`
+  ** `prometheusK8s.volumeClaimTemplate.status`
+- link:./templates/user-workload-configmap.yaml[user workload ConfigMap] (`user-workload-monitoring-config` in `openshift-user-workload-monitoring` namespace):
+  ** `prometheus.additionalAlertmanagerConfigs`
+  ** `prometheus.volumeClaimTemplate.metadata`
+  ** `prometheus.volumeClaimTemplate.status`
+  ** `thanosRuler.volumeClaimTemplate.metadata`
+  ** `thanosRuler.volumeClaimTemplate.status`
+
+There is no easy way to work around the **OutOfSync** issue, as some of the injected configurations are dynamic.

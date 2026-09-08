@@ -13,12 +13,9 @@ This ApplicationSet configures OpenShift Monitoring to deploy:
 - the `cluster-monitoring-config` ConfigMap in the `openshift-monitoring` namespace.
 - the `user-workload-monitoring-config` ConfigMap in the `openshift-user-workload-monitoring` namespace.
 
-When Red Hat Advanced Cluster Management (RHACM) enables the observability service on OpenShift clusters, the observability endpoint operator automatically updates the ConfigMaps above to:
-
-- enable user workload monitoring.
-- inject Alert Manager configurations.
-
 [IMPORTANT]
 ====
-The injected configuration, when RHACM observability service is enabled, would cause the ArgoCD Application to be **OutOfSync**.
+When Red Hat Advanced Cluster Management (RHACM) enables the observability service on OpenShift clusters, the observability endpoint operator automatically updates the OpenShift Monitoring ConfigMaps.
+
+The injected configuration causes the openshift-monitoring ArgoCD Application to become **OutOfSync**.
 ====

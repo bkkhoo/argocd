@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+data:
+  config.yaml: |
+    alertmanagerMain:
+      enableUserAlertmanagerConfig: {{ .Values.enableUserWorkload }}
+      volumeClaimTemplate:
+        metadata: {}
+        spec:
+          resources:
+            requests:
+              storage: {{ .Values.platform.alertmanagerMain.storage }}
+          {{- if hasKey .Values "storageClass" }}
+          storageClassName: {{ .Values.storageClass }}
+          {{- end }}
+        status: {}
+    enableUserWorkload: {{ .Values.enableUserWorkload }}
+    nodeExporter:
+      collectors:
+        buddyinfo: {}
+        cpufreq: {}
+        ksmd: {}
+        mountstats: {}
+        netclass: {}
+        netdev: {}
+        processes: {}
+        systemd: {}
+        tcpstat: {}
+    prometheusK8s:
+      retention: {{ .Values.platform.prometheusK8s.retention }}
+      volumeClaimTemplate:
+        metadata: {}
+        spec:
+          resources:
+            requests:
+              storage: {{ .Values.platform.prometheusK8s.storage }}
+          {{- if hasKey .Values "storageClass" }}
+          storageClassName: {{ .Values.storageClass }}
+          {{- end }}
+          volumeMode: Filesystem
+        status: {}
+...
