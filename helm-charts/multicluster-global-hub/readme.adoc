@@ -42,9 +42,9 @@ The following table lists the configurable parameters/values of this Helm chart 
 | all
 a| Deployment type:
 
-- `operator`: deploy operator only
-- `global-hub`: deploy `MulticlusterGlobalHub` instance only
-- `all`: deploy operator and `MulticlusterGlobalHub` instance
+- `operator`: deploy operator.
+- `global-hub`: deploy `MulticlusterGlobalHub` service.
+- `all`: deploy operator and `MulticlusterGlobalHub` service.
 
 | namespace
 | multicluster-global-hub

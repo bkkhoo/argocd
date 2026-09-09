@@ -131,6 +131,11 @@ data:
           insecureSkipVerify: false
 ----
 
+[IMPORTANT]
+====
+When the observability service is enabled on the hub cluster, the observability endpoint operator also applies configuration updates to the openshift-monitoring ConfigMaps of the managed clusters.
+====
+
 The additional configuration above would cause the link:../../apps/openshift-monitoring/[openshift-monitoring ArgoCD application] to become **OutOfSync**, as the link:./templates/configmap.yaml[manifests pushed by the ArgoCD application] differ from the fields injected by the observability endpoint operator.
 
 To prevent the openshift-monitoring ArgoCD application from entering an **OutOfSync** state, add the following annotation to the openshift-monitoring ConfigMaps:

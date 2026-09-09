@@ -42,10 +42,10 @@ The following table lists the configurable parameters/values of this Helm chart 
 | all
 a| Deployment type:
 
-  - `operator`: deploy operator only
-  - `central`: deploy operator and `Central` instance only
-  - `secured-cluster`: deploy operator and `SecuredCluster` instance only
-  - `all`: deploy operator, `Central` and `SecuredCluster` instances.
+  - `operator`: deploy operator.
+  - `central`: deploy operator and `Central` service.
+  - `secured-cluster`: deploy operator and `SecuredCluster` service.
+  - `all`: deploy operator, `Central` and `SecuredCluster` services.
 
 | namespace.operator
 | rhacs-operator

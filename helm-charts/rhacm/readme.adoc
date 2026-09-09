@@ -44,12 +44,11 @@ The following table lists the configurable parameters/values of this Helm chart 
 | all
 a| Deployment type:
 
-- `operator`: deploy operator only.
-- `mch`: deploy `MultiClusterHub` instance only.
-- `mco`: deploy `MultiClusterObservability` instance only.
-- `operator+mch`: deploy operator and `MultiClusterHub`.
-- `operator+mco`: deploy operator and `MultiClusterObservability`.
-- `all`: deploy operator, `MultiClusterHub` instance and `MultiClusterObservability` instance.
+- `operator`: deploy operator.
+- `mch`: deploy `MultiClusterHub` service.
+- `mco`: deploy `MultiClusterObservability` service.
+- `operator+mco`: deploy operator and `MultiClusterObservability` service.
+- `all`: deploy operator, `MultiClusterHub` and `MultiClusterObservability` services.
 
 | rhacmNamespace
 | open-cluster-management

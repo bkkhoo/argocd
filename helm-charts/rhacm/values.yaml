@@ -1,5 +1,5 @@
 ---
-deploymentType: all             # operator, mch, mco, operator+mch, operator+mch, all
+deploymentType: all             # operator, mch, mco, operator+mch, all
 rhacmNamespace: open-cluster-management
 operatorChannel: release-2.17
 availabilityConfig: High        # Basic or High

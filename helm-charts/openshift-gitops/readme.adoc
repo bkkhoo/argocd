@@ -42,9 +42,9 @@ The following table lists the configurable parameters/values of this Helm chart 
 | all
 a| Deployment type:
 
-- `operator`: deploy operator only
-- `argocd`: deploy `ArgoCD` instance only
-- `all`: deploy operator and `ArgoCD` instance
+- `operator`: deploy operator.
+- `argocd`: deploy `ArgoCD` service.
+- `all`: deploy operator and `ArgoCD` service.
 
 | namespace.operator
 | openshift-gitops-operator
