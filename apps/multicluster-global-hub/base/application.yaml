@@ -18,6 +18,14 @@ spec:
   destination:
     name: in-cluster
     namespace: multicluster-global-hub
+  ignoreDifferences:
+    - group: search.open-cluster-management.io       # the etcd-backup cronjob schedule has random values
+      kind: Search
+      name: search-v2-operator
+      namespace: open-cluster-management
+      jsonPointers:
+        - /metadata/labels
+        - /spec
   syncPolicy:
     automated:
       prune: false

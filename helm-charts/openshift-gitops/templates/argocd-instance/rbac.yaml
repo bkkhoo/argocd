@@ -52,6 +52,15 @@ rules:
       - create
       - update
       - patch
+  - apiGroups:
+      - search.open-cluster-management.io
+    resources:
+      - searches
+    verbs:
+      - get
+      - list
+      - update
+      - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
