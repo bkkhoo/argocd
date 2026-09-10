@@ -68,3 +68,17 @@ a| Deployment type:
 - This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
 - The other `DeploymentType` options are for automation (such as Ansible or bash scripts), where the operator must be deployed first and the instance can only be deployed after the operator's CSV reaches the `Succeeded` phase.
 ====
+
+== Multi Cluster Global Hub Search
+
+Global Hub Search is a feature within Red Hat Advanced Cluster Management for Kubernetes (RHACM). It extends RHACM's native resource search capabilities to operate across multi-tiered, large-scale hub environments. Instead of connecting to each cluster individually, Global Hub Search allows administrators to search for resources across the entire fleet of clusters from the Global Hub.
+
+[NOTE]
+====
+As of RHACM v2.17:
+
+- Global Hub Search is a Technology Preview feature.
+- The Global Hub Search API is provided by RHACM's `MultiClusterHub`.
+- The Global Hub Search feature is enabled by adding the `global-search-preview="true"` annotation to the `search-v2-operator Search` resource in the `open-cluster-management` namespace. This will change when the Global Hub Search feature is promoted to General Availability.
+- The RHACM operator does not configure RBAC permissions correctly (see link:https://redhat.atlassian.net/browse/ACM-43077[ACM-43077] for details). The link:./templates/global-search/rbac.yaml[template] provides a workaround.
+====

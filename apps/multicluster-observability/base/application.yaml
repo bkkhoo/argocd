@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 00-multi-cluster-observability            # prefix Application name with 00 for sorting purpose
+  name: 00-multicluster-observability            # prefix Application name with 00 for sorting purpose
   namespace: openshift-gitops
   labels:
-    applications: multi-cluster-observability
+    applications: multicluster-observability
 spec:
   project: gitops
   source:
@@ -17,7 +17,7 @@ spec:
         deploymentType: mco
   destination:
     name: in-cluster
-    namespace: openshift-gitops
+    namespace: open-cluster-management-observability
   syncPolicy:
     automated:
       prune: true

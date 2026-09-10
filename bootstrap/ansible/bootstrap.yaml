@@ -51,20 +51,20 @@
             --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
             --set disableHubSelfManagement=false
           status: Running
-      - helm_chart: multicluster-global-hub
-        install: "{{ global_hub }}"
-        namespace: multicluster-global-hub
-        csv_name: multicluster-global-hub
-        validation_webhook: {}                  # the operator does not have validation webhook
-        instance:
-          kind: multiclusterglobalhubs.operator.open-cluster-management.io
-          name: multiclusterglobalhub
-          namespace: multicluster-global-hub
-          helm_options: >-
-            --set deploymentType=global-hub
-            --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
-            --set postgresRetention={{ _context[config]['postgresRetention'] }}
-          status: Running
+      # - helm_chart: multicluster-global-hub
+      #   install: "{{ global_hub }}"
+      #   namespace: multicluster-global-hub
+      #   csv_name: multicluster-global-hub
+      #   validation_webhook: {}                  # the operator does not have validation webhook
+      #   instance:
+      #     kind: multiclusterglobalhubs.operator.open-cluster-management.io
+      #     name: multiclusterglobalhub
+      #     namespace: multicluster-global-hub
+      #     helm_options: >-
+      #       --set deploymentType=global-hub
+      #       --set availabilityConfig={{ _context[config]['availabilityConfig'] }}
+      #       --set postgresRetention={{ _context[config]['postgresRetention'] }}
+      #     status: Running
   vars_files:
     - argocd-repo-vault-encrypted.yaml                # this file is encrypted with ansible-vault
     - openshift-logging-token-vault-encrypted.yaml    # this file is encrypted with ansible-vault
@@ -110,9 +110,15 @@
       ansible.builtin.shell:
         cmd: oc create namespace rhacm-policies --dry-run=client -o yaml | oc apply -f -
 
-    - name: ensure local-cluster is labelled with the correct env
+    - name: ensure local-cluster is labeled with the correct env
       ansible.builtin.command:
         cmd: oc label managedclusters.cluster.open-cluster-management.io local-cluster --overwrite env={{ env }}
+
+    # ################
+    # # this is probably not required when global-search GA
+    # - name: ensure global-search is enabled
+    #   ansible.builtin.command:
+    #     cmd: oc -n open-cluster-management annotate searches.search.open-cluster-management.io search-v2-operator global-search-preview="true"
 
     - name: ensure global hub secrets exist
       loop:
@@ -168,8 +174,8 @@
       when: not (global_hub | bool)
       ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-managed-hub-app-of-apps/overlays/{{ env }}
 
-    # for global-hub, deploy mco with this playbook; for managed-hubs, mco deploy by as part of argocd bootstrap appset
-    - name: ensure multi-cluster-observability is deployed
-      when: global_hub | bool
-      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/multi-cluster-observability/base
+    # # for global-hub, deploy mco with this playbook; for managed-hubs, mco deploy by as part of argocd bootstrap appset
+    # - name: ensure multicluster-observability is deployed
+    #   when: global_hub | bool
+    #   ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/multicluster-observability/base
 ...

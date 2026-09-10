@@ -1,0 +1,34 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 00-multicluster-global-hub           # prefix Application name with 00 for sorting purpose
+  namespace: openshift-gitops
+  labels:
+    applications: multicluster-global-hub
+  # annotations:
+  #   argocd.argoproj.io/sync-wave: "9999"     # ensure this resource is deployed after managed-hub bootstrap complete
+  #   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  project: gitops
+  source:
+    repoURL: https://github.com/bkkhoo/argocd.git
+    path: helm-charts/multicluster-global-hub
+    targetRevision: main
+  destination:
+    name: in-cluster
+    namespace: multicluster-global-hub
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  info:
+    - name: env
+      value: prod
+    - name: type
+      value: application
+    - name: target
+      value: in-cluster
+...
