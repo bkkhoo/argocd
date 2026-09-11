@@ -48,11 +48,11 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 | lokiStack.name
 | logging-loki-stack
-| Name of the LokiStack instance.
+| Name of the LokiStack service.
 
 | lokiStack.namespace
 | openshift-logging
-| Namespace to deploy the LokiStack instance.
+| Namespace to deploy the LokiStack service.
 
 | lokiStack.size
 | 1x.small

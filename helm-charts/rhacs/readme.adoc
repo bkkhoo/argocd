@@ -129,5 +129,5 @@ The secret and configMap created by the ArgoCD PostSync hook facilitate the dist
 [NOTE]
 ====
 - This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
-- The other `DeploymentType` options are for automation (such as Ansible or bash scripts), where the operator must be deployed first and the instance can only be deployed after the operator's CSV reaches the `Succeeded` phase.
+- The other `DeploymentType` options are for automated tasks (such as Ansible or bash scripts), where the operator must be deployed first, and the service can only be deployed after the operator's CSV reaches the Succeeded phase.
 ====

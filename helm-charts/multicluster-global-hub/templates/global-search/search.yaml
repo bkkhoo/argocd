@@ -1,4 +1,3 @@
-{{- if has .Values.deploymentType (list "global-hub" "all") }}
 ---
 apiVersion: search.open-cluster-management.io/v1alpha1
 kind: Search
@@ -10,4 +9,3 @@ metadata:
     argocd.argoproj.io/sync-wave: "105"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 ...
-{{- end }}

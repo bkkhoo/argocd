@@ -4,7 +4,7 @@ kind: Kustomization
 # deploy these to all managed hub regardless of environment
 resources:
   # apps that target in-cluster only
-  - ../../../apps/rhacm-policies/overlays/managed-hub
+  - ../../../apps/00-rhacm-policies/overlays/managed-hub
 
   # all clusters
   - ../../../apps/cluster-config/base

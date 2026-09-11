@@ -1,4 +1,3 @@
-{{- if has .Values.deploymentType (list "global-hub" "all") }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -39,4 +38,3 @@ subjects:
     name: search-api-sa
     namespace: open-cluster-management
 ...
-{{- end }}

@@ -1,4 +1,3 @@
-{{- if has .Values.deploymentType (list "operator" "all") }}
 ---
 apiVersion: v1
 kind: Namespace
@@ -8,4 +7,3 @@ metadata:
      argocd.argoproj.io/managed-by: openshift-gitops
 spec: {}
 ...
-{{- end }}

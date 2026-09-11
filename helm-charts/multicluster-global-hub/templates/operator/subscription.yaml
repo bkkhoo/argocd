@@ -1,4 +1,3 @@
-{{- if has .Values.deploymentType (list "operator" "all") }}
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -24,4 +23,3 @@ spec:
   #       key: node-role.kubernetes.io/infra
   #       value: reserved
 ...
-{{- end }}

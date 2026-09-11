@@ -1,0 +1,66 @@
+---
+- name: ensure rhacm operator is deployed
+  when:
+  register: csv_result
+  ansible.builtin.shell:
+    cmd: >-
+      helm template {{ playbook_dir }}/../../helm-charts/rhacm
+      --set deploymentType=operator
+      | oc apply --filename -
+
+- name: ensure advanced-cluster-management csv status is Succeeded
+  register: csv_result
+  until:
+    - "'advanced-cluster-management' in csv_result.stdout"
+    - "'Succeeded' in csv_result.stdout"
+  delay: 5
+  retries: 68
+  ansible.builtin.command:
+    cmd: |-
+      oc -n open-cluster-management get csv --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+
+- name: ensure validation webhook pods for advanced-cluster-management are in Running state
+  register: pod_result
+  failed_when: false     # ignore return code
+  until:                 # must have more than 0 pod, and number of Running pods must equal to total number of pods
+    - pod_result.stdout_lines| length != 0
+    - (pod_result.stdout_lines | select("search", "Running") | length) == (pod_result.stdout_lines| length)
+  delay: 3
+  retries: 13
+  ansible.builtin.command:
+    cmd: |-
+      oc -n open-cluster-management get pod --selector name=multiclusterhub-operator --no-headers
+
+- name: ensure validation webhook endpoints for advanced-cluster-management in serving state
+  register: eps_result
+  failed_when: false     # ignore return code
+  until:                 # command must be successful; must have more than one endpoint; all endpoints must be in serving state
+    - eps_result.rc == 0
+    - '"," in eps_result.stdout'
+    - '"false" not in eps_result.stdout'
+  delay: 3
+  retries: 13
+  ansible.builtin.command:
+    cmd: |-
+      oc -n open-cluster-management get endpointslices.discovery.k8s.io
+      --selector kubernetes.io/service-name=multiclusterhub-operator-webhook
+      --no-headers --output custom-columns=":endpoints[*].conditions.serving"
+
+- name: ensure multiclusterhubs service is deployed
+  ansible.builtin.shell: >-
+    helm template {{ playbook_dir }}/../../helm-charts/rhacm
+    --set deploymentType=mch
+    --set disableHubSelfManagement=false
+    --set availabilityConfig={{ _ha_environ["availabilityConfig"] }}
+    | oc apply --filename -
+
+- name: ensure multiclusterhubs service reach Running/Available phase
+  register: service_result
+  until: "'Running' in service_result.stdout"
+  delay: 5
+  retries: 108
+  ansible.builtin.command:
+    cmd: >-
+      oc -n open-cluster-management get multiclusterhubs.operator.open-cluster-management.io multiclusterhub
+      --output jsonpath="{.status.phase}"
+...

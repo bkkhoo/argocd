@@ -38,14 +38,6 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Default
 | Description
 
-| deploymentType
-| all
-a| Deployment type:
-
-- `operator`: deploy operator.
-- `global-hub`: deploy `MulticlusterGlobalHub` service.
-- `all`: deploy operator and `MulticlusterGlobalHub` service.
-
 | namespace
 | multicluster-global-hub
 | Deploy Multicluster Global Hub to this namespace.
@@ -62,12 +54,6 @@ a| Deployment type:
 | 18m
 | Defines how long to keep the data in the postgres database. Valid time units are `m` and `y`.
 |===
-
-[NOTE]
-====
-- This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
-- The other `DeploymentType` options are for automation (such as Ansible or bash scripts), where the operator must be deployed first and the instance can only be deployed after the operator's CSV reaches the `Succeeded` phase.
-====
 
 == Multi Cluster Global Hub Search
 

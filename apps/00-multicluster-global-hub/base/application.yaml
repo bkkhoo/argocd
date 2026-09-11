@@ -2,13 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 00-multicluster-global-hub           # prefix Application name with 00 for sorting purpose
+  name: 00-multicluster-global-hub                # prefix Application name with 00 for sorting purpose
   namespace: openshift-gitops
   labels:
     applications: multicluster-global-hub
-  # annotations:
-  #   argocd.argoproj.io/sync-wave: "9999"     # ensure this resource is deployed after managed-hub bootstrap complete
-  #   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   project: gitops
   source:
@@ -19,7 +16,7 @@ spec:
     name: in-cluster
     namespace: multicluster-global-hub
   ignoreDifferences:
-    - group: search.open-cluster-management.io       # the etcd-backup cronjob schedule has random values
+    - group: search.open-cluster-management.io    # only interested to annotate the search resource
       kind: Search
       name: search-v2-operator
       namespace: open-cluster-management

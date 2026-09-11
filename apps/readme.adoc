@@ -52,6 +52,11 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | in-cluster
 | Deploy and configure Multi Cluster Observability, the App assumes that the Red Hat Advanced Cluster Management for Kubernetes (RHACM) operator is already deployed.
 
+| multicluster-global-hub
+| Application
+| in-cluster/global-hub
+| Deploy and configure Multi Cluster Global Hub.
+
 | openshift-compliance
 | ApplicationSet
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.

@@ -1,0 +1,38 @@
+---
+- name: ensure openshift-gitops operator is deployed
+  when:
+  register: csv_result
+  ansible.builtin.shell:
+    cmd: >-
+      helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops
+      --set deploymentType=operator
+      | oc apply --filename -
+
+- name: ensure openshift-gitops-operator csv status is Succeeded
+  register: csv_result
+  until:
+    - "'openshift-gitops-operator' in csv_result.stdout"
+    - "'Succeeded' in csv_result.stdout"
+  delay: 5
+  retries: 68
+  ansible.builtin.command:
+    cmd: |-
+      oc -n openshift-gitops-operator get csv --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+
+- name: ensure argocds service is deployed
+  ansible.builtin.shell: >-
+    helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops
+    --set deploymentType=argocd
+    --values {{ _ha_environ["gitOpsValuesFile"] }}
+    | oc apply --filename -
+
+- name: ensure argocds service reach Running/Available phase
+  register: service_result
+  until: "'Available' in service_result.stdout"
+  delay: 5
+  retries: 108
+  ansible.builtin.command:
+    cmd: >-
+      oc -n openshift-gitops get argocds.argoproj.io openshift-gitops
+      --output jsonpath="{.status.phase}"
+...
