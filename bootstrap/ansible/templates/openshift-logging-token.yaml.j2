@@ -1,0 +1,20 @@
+{% for env, data in openshift_logging_bearer_tokens.items() %}
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: {{ env }}-openshift-logging-bearer-tokens
+  namespace: rhacm-policies
+  labels:
+    sync-secret/env: {{ env }}
+    sync-secret/type: global-hub
+    sync-secret/app: openshift-logging
+  annotations:
+    sync-secret/aux: sync       # also sync to target namespace, in addition to rhacm-policies namespace
+    sync-secret/target-name: openshift-logging-bearer-tokens
+    sync-secret/target-namespace: openshift-logging
+stringData:
+  {{ data | to_nice_yaml | indent(2) }}
+{%- endfor %}
+...

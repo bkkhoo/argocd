@@ -43,6 +43,30 @@
     {
       "description": "prod audit token",
       "token": "eyJhbG..."
+    },
+    {
+      "description": "uat application token",
+      "token": "eyJhbG..."
+    },
+    {
+      "description": "uat infrastructure token",
+      "token": "eyJhbG..."
+    },
+    {
+      "description": "uat audit token",
+      "token": "eyJhbG..."
+    },
+    {
+      "description": "dev application token",
+      "token": "eyJhbG..."
+    },
+    {
+      "description": "dev infrastructure token",
+      "token": "eyJhbG..."
+    },
+    {
+      "description": "dev audit token",
+      "token": "eyJhbG..."
     }
   ],
   "connections": [

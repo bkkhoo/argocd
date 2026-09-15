@@ -1,0 +1,23 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= About the templates
+
+These policies sync secrets from global hub to managed hubs' `rhacm-policies` namespace, preserving the labels, annotations and data of the corresponding source secrets on global hub, except for the `sync-secret/type` label. The `sync-secret/type` label is set to `sync-secret/type=managed-hub` (from `sync-secret/type=global-hub`) when the secret is synced to target managed hub cluster.
+
+In a multi-tier RHACM deployment with Multicluater Global Hub, self-management on the the managed hub cluster is disabled (by setting `disableHubSelfManagement: true` in the MultiClusterHub custom resource). This setting disables the automatic importing of the local/hub cluster as a managed cluster, i.e., no `local-cluster` on the manage hub, and thus no policy enforcement capabilities  on the managed hub cluster itself.
+
+Policy enforcement for the managed hub cluster will be performed from the global hub. The `sync-secret/aux: sync` annotation ensure that global hub sync the secrets to the target namespace (`sync-secret/target-namespace`), in addition to the `rhacm-policies` namespace
+
+[NOTE]
+====
+RHACM processes Hub templates and Local templates in two distinct phases:
+
+- Phase 1 (Hub Cluster): RHACM resolves only delimiters marked with `{{hub ... hub}}`. It strips these tags and replaces them with raw literal strings.
+- Phase 2 (Managed Cluster): The local governance agent receives the modified policy and evaluates standard `{{ ... }}` blocks.
+====

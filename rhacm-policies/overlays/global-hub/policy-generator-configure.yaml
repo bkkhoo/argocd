@@ -16,36 +16,90 @@ policyDefaults:
   controls:
     - CM-02 Baseline Configuration
   remediationAction: enforce
-  policySets:
-    - gh-config-managed-hubs
+  policySets: []
+    # - gh-config-managed-hubs
   severity: medium
 policySets:
-  - name: gh-config-local-cluster
-    description: global hub config policies for local-cluster
-    placement:
-      labelSelector:
-        matchExpressions:
-          - key: name
-            operator: In
-            values:
-              - local-cluster
-  - name: gh-config-managed-hubs
-    description: global hub config policies for all managed hubs
+  # - name: gh-config-local-cluster
+  #   description: global hub config policies for local-cluster
+  #   placement:
+  #     labelSelector:
+  #       matchExpressions:
+  #         - key: name
+  #           operator: In
+  #           values:
+  #             - local-cluster
+  # - name: gh-config-managed-hubs
+  #   description: global hub config policies for all managed hubs
+  #   placement:
+  #     labelSelector:
+  #       matchExpressions:
+  #         - key: managed-hub
+  #           operator: Exists
+  - name: gh-config-dev-managed-hubs
+    description: global hub config policies for all dev managed hubs
     placement:
       labelSelector:
         matchExpressions:
           - key: managed-hub
             operator: Exists
+          - key: env
+            operator: In
+            values:
+              - dev
+  - name: gh-config-uat-managed-hubs
+    description: global hub config policies for all uat managed hubs
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: managed-hub
+            operator: Exists
+          - key: env
+            operator: In
+            values:
+              - uat
+  - name: gh-config-prod-managed-hubs
+    description: global hub config policies for all prod managed hubs
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: managed-hub
+            operator: Exists
+          - key: env
+            operator: In
+            values:
+              - prod
 placementBindingDefaults:
   name: gh-config-binding
 
 policies:
-  - name: config-sync-global-hub-secrets
-    description: sync global hub secrets to managed hubs
+  - name: config-sync-secrets-dev-managed-hub
+    description: sync global hub secrets to dev managed hubs
     policySets:         # override policyDefaults.policySets
-      - gh-config-local-cluster  # local-cluster of the global-hub is also a managed hub
-      - gh-config-managed-hubs
+      - gh-config-dev-managed-hubs
     manifests:
-      - path: config/global-hub-secrets/dict.yaml
-      - path: config/global-hub-secrets/list.yaml
+      - path: config/global-hub-secret-sync/dev-managed-hub-sync-secret.yaml
+
+  - name: config-sync-secrets-uat-managed-hub
+    description: sync global hub secrets to uat managed hubs
+    policySets:         # override policyDefaults.policySets
+      - gh-config-uat-managed-hubs
+    manifests:
+      - path: config/global-hub-secret-sync/uat-managed-hub-sync-secret.yaml
+
+  - name: config-sync-secrets-prod-managed-hub
+    description: sync global hub secrets to prod managed hubs
+    policySets:         # override policyDefaults.policySets
+      - gh-config-prod-managed-hubs
+    manifests:
+      - path: config/global-hub-secret-sync/prod-managed-hub-sync-secret.yaml
+
+  # - name: config-sync-global-hub-secrets
+  #   description: sync global hub secrets to managed hubs
+  #   policySets:         # override policyDefaults.policySets
+  #     - gh-config-local-cluster  # local-cluster of the global-hub is also a managed hub
+  #     - gh-config-managed-hubs
+  #   manifests:
+  #     - path: config/global-hub-secrets/dict.yaml
+  #     - path: config/global-hub-secrets/list.yaml
 ...

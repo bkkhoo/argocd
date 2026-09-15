@@ -20,7 +20,7 @@ Deploys OpenShift GitOps, RHACM, and Multicluster Global Hub.
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=yes
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=yes --ask-vault-password
 ----
 
 == Regular RHACM Use Case (Managed Hubs -> Managed Clusters)
@@ -31,19 +31,19 @@ Deploys OpenShift GitOps and RHACM.
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=no -e env=dev
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=no -e env=dev --ask-vault-password
 ----
 
 `uat` env:
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=uat
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=uat --ask-vault-password
 ----
 
 `prod`` env:
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=prod
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=prod --ask-vault-password
 ----
