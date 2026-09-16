@@ -36,8 +36,8 @@ policySets:
   #       matchExpressions:
   #         - key: managed-hub
   #           operator: Exists
-  - name: gh-config-dev-managed-hubs
-    description: global hub config policies for all dev managed hubs
+  - name: gh-config-dev-hubs
+    description: global hub config policies for all dev hubs
     placement:
       labelSelector:
         matchExpressions:
@@ -47,8 +47,8 @@ policySets:
             operator: In
             values:
               - dev
-  - name: gh-config-uat-managed-hubs
-    description: global hub config policies for all uat managed hubs
+  - name: gh-config-uat-hubs
+    description: global hub config policies for all uat hubs
     placement:
       labelSelector:
         matchExpressions:
@@ -58,8 +58,8 @@ policySets:
             operator: In
             values:
               - uat
-  - name: gh-config-prod-managed-hubs
-    description: global hub config policies for all prod managed hubs
+  - name: gh-config-prod-hubs
+    description: global hub config policies for all prod hubs
     placement:
       labelSelector:
         matchExpressions:
@@ -73,27 +73,28 @@ placementBindingDefaults:
   name: gh-config-binding
 
 policies:
-  - name: config-sync-secrets-dev-managed-hub
-    description: sync global hub secrets to dev managed hubs
+  - name: config-sync-secrets-dev-hub
+    description: sync global hub secrets to dev hubs
     policySets:         # override policyDefaults.policySets
-      - gh-config-dev-managed-hubs
+      - gh-config-dev-hubs
     manifests:
-      - path: config/global-hub-secret-sync/dev-managed-hub-sync-secret.yaml
+      - path: config/sync-secret/dev-hub-sync-secret.yaml
 
-  - name: config-sync-secrets-uat-managed-hub
-    description: sync global hub secrets to uat managed hubs
+  - name: config-sync-secrets-uat-hub
+    description: sync global hub secrets to uat hubs
     policySets:         # override policyDefaults.policySets
-      - gh-config-uat-managed-hubs
+      - gh-config-uat-hubs
     manifests:
-      - path: config/global-hub-secret-sync/uat-managed-hub-sync-secret.yaml
+      - path: config/sync-secret/uat-hub-sync-secret.yaml
 
-  - name: config-sync-secrets-prod-managed-hub
-    description: sync global hub secrets to prod managed hubs
+  - name: config-sync-secrets-prod-hub
+    description: sync global hub secrets to prod hubs
     policySets:         # override policyDefaults.policySets
-      - gh-config-local-cluster  # local-cluster of the global-hub is also a managed hub; global-hub is a prod cluster
-      - gh-config-prod-managed-hubs
+      - gh-config-prod-hubs
+      # should only have one local-cluster (which is the global-hub), which is also a hub; global-hub is a prod cluster
+      - gh-config-local-cluster
     manifests:
-      - path: config/global-hub-secret-sync/prod-managed-hub-sync-secret.yaml
+      - path: config/sync-secret/prod-hub-sync-secret.yaml
 
   # - name: config-sync-global-hub-secrets
   #   description: sync global hub secrets to managed hubs

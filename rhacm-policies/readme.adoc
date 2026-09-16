@@ -172,19 +172,19 @@ These policies are for global hub only.
 // | `local-cluster` and all OpenShift clusters with `managed-hub` label.
 // | Monitor PolicyReports that aggregate and display governance and security violations across managed clusters.
 
-| config-sync-secrets-dev-managed-hub
+| config-sync-secrets-dev-hub
 | Enforce
-| All clusters with `managed-hub` and `env=dev` labels.
+| All dev (`env=dev`) hub clusters (`managed-hub`).
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: dev` labels) to managed hubs.
 
-| config-sync-secrets-uat-managed-hub
+| config-sync-secrets-uat-hub
 | Enforce
-| All clusters with `managed-hub` and `env=uat` labels.
+| All uat (`env=uat`) hub clusters (`managed-hub`).
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: uat` labels) to managed hubs.
 
-| config-sync-secrets-prod-managed-hub
+| config-sync-secrets-prod-hub
 | Enforce
-| All clusters with `managed-hub` and `env=prod` labels.
+| All prod (`env=prod`) hub clusters (`global-hub` or `managed-hub`).
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: prod` labels) to managed hubs.
 
 | monitor-managed-clusters

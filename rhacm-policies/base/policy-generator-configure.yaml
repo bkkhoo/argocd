@@ -94,16 +94,16 @@ policies:
     description: copy openshift logging http endpoint authentication secrets to all clusters, except hub clusters
     complianceType: musthave
     policySets:         # override policyDefaults.policySets
-      - base-config-no-local-cluster-no-managed-hub
+      - base-config-no-local-cluster-no-managed-hub    # exclude all hub clusters
     manifests:
-      - path: config/openshift-logging-secret.yaml
+      - path: config/sync-secret/openshift-logging-secret.yaml
 
   - name: config-metallb-bgp-password-secret
     description: copy metallb bgp password secret from managed hub to managed clusters
     policySets:         # override policyDefaults.policySets
       - base-config-metallb
     manifests:
-      - path: config/metallb-bgp-password-secret.yaml
+      - path: config/sync-secret/metallb-bgp-password-secret.yaml
 
   - name: config-loki-stack-secret
     description: configure loki stack secret (ODF ObjectBucketClaim)
