@@ -20,15 +20,15 @@ policyDefaults:
     # - gh-config-managed-hubs
   severity: medium
 policySets:
-  # - name: gh-config-local-cluster
-  #   description: global hub config policies for local-cluster
-  #   placement:
-  #     labelSelector:
-  #       matchExpressions:
-  #         - key: name
-  #           operator: In
-  #           values:
-  #             - local-cluster
+  - name: gh-config-local-cluster
+    description: global hub config policies for local-cluster
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: name
+            operator: In
+            values:
+              - local-cluster
   # - name: gh-config-managed-hubs
   #   description: global hub config policies for all managed hubs
   #   placement:
