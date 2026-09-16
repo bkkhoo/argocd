@@ -7,6 +7,8 @@ disableHubSelfManagement: false
 observability:
   namespace: open-cluster-management-observability
   instanceSize: default
+  namespaceRightSizingRecommendation: true
+  virtualizationRightSizingRecommendation: true
   objectStorage:
     name: observability-rhacm-s3
     storageClassName: openshift-storage.noobaa.io

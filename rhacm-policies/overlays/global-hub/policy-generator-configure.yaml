@@ -90,6 +90,7 @@ policies:
   - name: config-sync-secrets-prod-managed-hub
     description: sync global hub secrets to prod managed hubs
     policySets:         # override policyDefaults.policySets
+      - gh-config-local-cluster  # local-cluster of the global-hub is also a managed hub; global-hub is a prod cluster
       - gh-config-prod-managed-hubs
     manifests:
       - path: config/global-hub-secret-sync/prod-managed-hub-sync-secret.yaml

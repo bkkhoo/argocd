@@ -74,6 +74,14 @@ a| Deployment type:
 | default
 | Select a predefined size profile for the observability stack (default, minimal, small, medium, large, xlarge, 2xlarge, or 4xlarge).
 
+| observability.namespaceRightSizingRecommendation
+| true
+| Enable/Disable namespace right-sizing recommendation capabilities for the Analytics.
+
+| observability.virtualizationRightSizingRecommendation
+| true
+| Enable/Disable virtualization right-sizing recommendation capabilities for the Analytics.
+
 | observability.objectStorage.name
 | observability-rhacm-s3
 | The name of the Secret containing object storage configuration.

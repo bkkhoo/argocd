@@ -8,6 +8,13 @@ metadata:
     argocd.argoproj.io/sync-wave: "210"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
+  capabilities:
+    platform:
+      analytics:
+        namespaceRightSizingRecommendation:
+          enabled: {{ .Values.observability.namespaceRightSizingRecommendation }}
+        virtualizationRightSizingRecommendation:
+          enabled: {{ .Values.observability.virtualizationRightSizingRecommendation }}
   instanceSize: {{ .Values.observability.instanceSize }}
   observabilityAddonSpec: {}
   storageConfig:
