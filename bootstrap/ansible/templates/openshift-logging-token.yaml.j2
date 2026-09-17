@@ -10,6 +10,7 @@ metadata:
     sync-secret/env: {{ env }}
     sync-secret/type: global-hub
     sync-secret/app: openshift-logging
+    app.kubernetes.io/managed-by: rhacm
   annotations:
     sync-secret/aux: sync       # also sync to target namespace, in addition to rhacm-policies namespace
     sync-secret/target-name: openshift-logging-bearer-tokens
