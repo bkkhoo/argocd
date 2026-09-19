@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = OpenShift Serverless
 
-The Red Hat OpenShift Serverless operator provides a collection of APIs that enables containers, microservices and functions to run "serverless". Serverless applications can scale up and down (to zero) on demand and be triggered by a number of event sources.
+This Helm Chart deploys OpenShift Serverless. OpenShift Serverless operator provides a collection of APIs that enables containers, microservices and functions to run "serverless". Serverless applications can scale up and down (to zero) on demand and be triggered by a number of event sources.
 
 == Installing the Chart
 

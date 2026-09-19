@@ -74,5 +74,5 @@ spec:
         - name: type
           value: applicationSet
         - name: target
-          value: not local-cluster and clusters without managed-hub label
+          value: none hub clusters (not local-cluster and not managed-hubs)
 ...

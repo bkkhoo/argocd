@@ -46,7 +46,7 @@
       --selector kubernetes.io/service-name=multiclusterhub-operator-webhook
       --no-headers --output custom-columns=":endpoints[*].conditions.serving"
 
-- name: ensure multiclusterhubs service is deployed
+- name: ensure MultiClusterHub service is deployed
   ansible.builtin.shell: >-
     helm template {{ playbook_dir }}/../../helm-charts/rhacm
     --set deploymentType=mch
@@ -54,7 +54,7 @@
     --set availabilityConfig={{ _ha_environ["availabilityConfig"] }}
     | oc apply --filename -
 
-- name: ensure multiclusterhubs service reach Running/Available phase
+- name: ensure MultiClusterHub service reach Running phase
   register: service_result
   until: "'Running' in service_result.stdout"
   delay: 5

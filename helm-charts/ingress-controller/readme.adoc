@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Configure OpenShift Ingress Controller TLS Security Profile
 
-The OpenShift ingress controller TLS security profile. TLS security profile defines which TLS ciphers are required by various OpenShift ingress controller. The OpenShift TLS security profiles are based on Mozilla recommended configurations.
+The Helm Chart configures OpenShift ingress controller TLS security profile. TLS security profile defines which TLS ciphers are required by various OpenShift ingress controller. The OpenShift TLS security profiles are based on Mozilla recommended configurations.
 
 == Installing the Chart
 

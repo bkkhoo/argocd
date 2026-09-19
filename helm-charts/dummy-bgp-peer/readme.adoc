@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Deploy Dummy BGP Peer
 
-Deploys GoBGP peer. GoBGP is an open source Border Gateway Protocol (BGP) implementation designed from scratch for modern environment and implemented in a modern programming language, the Go Programming Language.
+This Helm Chart deploys GoBGP peer. GoBGP is an open source Border Gateway Protocol (BGP) implementation designed from scratch for modern environment and implemented in a modern programming language, the Go Programming Language.
 
 == Installing the Chart
 

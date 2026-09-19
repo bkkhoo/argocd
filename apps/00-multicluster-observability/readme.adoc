@@ -8,4 +8,4 @@ ifdef::env-github[]
 endif::[]
 = Overview
 
-The Helm chart referred by the App only deploys Multi Cluster Observability, the App/chart assumes that the Red Hat Advanced Cluster Management for Kubernetes (RHACM) operator is already deployed.
+The Helm chart referred to by the App only deploys MultiCluster Observability; the App and chart assume that the Red Hat Advanced Cluster Management for Kubernetes (RHACM) operator is already deployed.

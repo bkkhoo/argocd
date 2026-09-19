@@ -39,7 +39,7 @@ spec:
         path: kustomize-deployments/openshift-web-terminal/base/
       destination:
         server: "{{ server }}"
-        namespace: default
+        namespace: openshift-operators
       syncPolicy:
         automated:
           prune: true

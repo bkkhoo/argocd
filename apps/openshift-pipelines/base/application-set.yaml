@@ -39,7 +39,6 @@ spec:
         path: kustomize-deployments/openshift-pipelines/base/
       destination:
         server: "{{ server }}"
-        namespace: default
       syncPolicy:
         automated:
           prune: true

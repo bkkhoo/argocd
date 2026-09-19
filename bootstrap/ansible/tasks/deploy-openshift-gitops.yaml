@@ -19,14 +19,14 @@
     cmd: |-
       oc -n openshift-gitops-operator get csv --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
-- name: ensure argocds service is deployed
+- name: ensure argoCD service is deployed
   ansible.builtin.shell: >-
     helm template {{ playbook_dir }}/../../helm-charts/openshift-gitops
     --set deploymentType=argocd
     --values {{ _ha_environ["gitOpsValuesFile"] }}
     | oc apply --filename -
 
-- name: ensure argocds service reach Running/Available phase
+- name: ensure argoCD service reach Available phase
   register: service_result
   until: "'Available' in service_result.stdout"
   delay: 5

@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = ETCD Backup
 
-etcd is the key-value store for OpenShift, which persists the state of all resource objects.
+This Helm Chart deploys a CronJob that backup etcd data. etcd is the key-value store for OpenShift, which persists the state of all resource objects.
 
 OpenShift provides two primary methods for etcd backup: automated backups via the `EtcdBackup` operator and manual or cronjob-based backups using the `cluster-backup.sh` script. This Helm chart uses the cronjob-based backup method to backup etcd data to two `PersistentVolumeClaims`.
 

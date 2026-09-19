@@ -12,5 +12,5 @@ The link:../../apps/00-global-hub-app-of-apps/base/application.yaml[Global Hub A
 
 [NOTE]
 ====
-Multicluster Global Hub manages managed hubs for all environments (dev, uat and prod), no overlays required.
+MultiCluster Global Hub manages managed hubs for all environments (dev, uat and prod), no overlays required.
 ====

@@ -14,5 +14,5 @@ The link:base/application.yaml[Global Hub ArgoCD app-of-apps] monitors and auto-
 
 [NOTE]
 ====
-Multicluster Global Hub manages managed hubs for all environments (dev, uat and prod), no overlays required.
+MultiCluster Global Hub manages managed hubs for all environments (dev, uat and prod), no overlays required.
 ====

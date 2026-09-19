@@ -2,7 +2,7 @@
 apiVersion: v2
 appVersion: 1.8       # the version depends on openshift catalog source, need not necessary match what is specified here
 name: multicluster-global-hub
-description: Multicluster Global Hub
+description: MultiCluster Global Hub
 type: application
 version: 1.0
 ...

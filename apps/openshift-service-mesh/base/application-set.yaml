@@ -37,7 +37,6 @@ spec:
             version: "2"
       destination:
         server: "{{ server }}"
-        namespace: default
       syncPolicy:
         automated:
           prune: true

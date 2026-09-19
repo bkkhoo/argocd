@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 00-rhacm-policies
+  name: 00-rhacm-policies                   # prefix Application name with 00 for sorting purpose
   namespace: openshift-gitops
   labels:
     applications: rhacm-policies

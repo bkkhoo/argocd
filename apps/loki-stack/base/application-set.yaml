@@ -37,7 +37,7 @@ spec:
               tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
       destination:
         server: "{{ .server }}"
-        namespace: default
+        namespace: openshift-logging
       syncPolicy:
         automated:
           prune: true

@@ -6,9 +6,9 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
-= Multicluster Global Hub
+= MultiCluster Global Hub
 
-The Multicluster Global Hub Operator contains the components of multicluster global hub. The Operator deploys all of the required components for global multicluster management. The components include `multicluster-global-hub-manager` and `multicluster-global-hub-grafana` in the global hub cluster and `multicluster-global-hub-agent` in the managed hub clusters. The Operator also deploys the strimzi kafka and crunchy postgres if external kafka and postgres are not provided.
+This Helm Chart deploys MultiCluster Global Hub. The MultiCluster Global Hub Operator contains the components of MultiCluster Global Hub. The Operator deploys all of the required components for global multi cluster management. The components include `multicluster-global-hub-manager` and `multicluster-global-hub-grafana` in the global hub cluster and `multicluster-global-hub-agent` in the managed hub clusters. The Operator also deploys the strimzi kafka and crunchy postgres if external kafka and postgres are not provided.
 
 == Installing the Chart
 
@@ -40,7 +40,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 | namespace
 | multicluster-global-hub
-| Deploy Multicluster Global Hub to this namespace.
+| Deploy MultiCluster Global Hub to this namespace.
 
 | operatorUpdateChannel
 | release-1.8
@@ -55,7 +55,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Defines how long to keep the data in the postgres database. Valid time units are `m` and `y`.
 |===
 
-== Multi Cluster Global Hub Search
+== MultiCluster Global Hub Search
 
 Global Hub Search is a feature within Red Hat Advanced Cluster Management for Kubernetes (RHACM). It extends RHACM's native resource search capabilities to operate across multi-tiered, large-scale hub environments. Instead of connecting to each cluster individually, Global Hub Search allows administrators to search for resources across the entire fleet of clusters from the Global Hub.
 

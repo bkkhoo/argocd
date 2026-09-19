@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Bootstrap Hub Cluster
 
-The link:ansible/bootstrap.yaml[Ansible playbook] deploys and configures OpenShift GitOps, RHACM, and Multicluster Global Hub.
+The link:ansible/bootstrap.yaml[Ansible playbook] deploys and configures OpenShift GitOps, RHACM, and MultiCluster Global Hub.
 
 The Ansible playbook also creates secrets in the `rhacm-policies` namespace using the link:ansible/templates/[templates in this folder]. The `config-sync-global-hub-secrets` RHACM governance policy sync these secrets (with `rhacm-policies/sync-hub-secret: "yes"` label on `rhacm-policies` namespace) from the global hub to managed hubs, according to the `env` label.
 
@@ -16,7 +16,7 @@ The Ansible playbook bootstrap an OpenShift cluster for the following use cases.
 
 == MultiCluster Global Hub Use Case (Global Hub -> Managed Hubs -> Managed Clusters)
 
-Deploys OpenShift GitOps, RHACM, and Multicluster Global Hub.
+Deploys OpenShift GitOps, RHACM, and MultiCluster Global Hub.
 
 [source,bash]
 ----

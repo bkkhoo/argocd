@@ -10,7 +10,7 @@ endif::[]
 
 [IMPORTANT]
 ====
-The `dev`, `uat`, and `prod` folders are not kustomize overlays. Setting those folders as overlays will result in the following error when a parent kustomize deployment include multiple overlays, as in `root-app/global-hub/base/kustomization.yaml`.
+The `dev`, `uat`, and `prod` folders are **NOT** kustomize overlays. Setting those folders as overlays will result in the following error when a parent kustomize deployment include multiple overlays, as in `root-app/global-hub/base/kustomization.yaml`.
 +
 [source,console]
 ----
@@ -20,7 +20,7 @@ Error: accumulating resources: accumulation err='accumulating resources from '..
 
 ArgoCD manages an application's Helm chart values through multiple mechanisms, each with a specific use case and precedence level:
 
-- helm repository values.yaml (lowest)
+- Helm repository values.yaml (lowest)
 - valueFiles (last file listed wins)
 - values (inline YAML string)
 - valuesObject (inline YAML object)

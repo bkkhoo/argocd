@@ -17,7 +17,6 @@ policyDefaults:
     - CM-02 Baseline Configuration
   remediationAction: enforce
   policySets: []
-    # - gh-config-managed-hubs
   severity: medium
 policySets:
   - name: gh-config-local-cluster
@@ -29,13 +28,6 @@ policySets:
             operator: In
             values:
               - local-cluster
-  # - name: gh-config-managed-hubs
-  #   description: global hub config policies for all managed hubs
-  #   placement:
-  #     labelSelector:
-  #       matchExpressions:
-  #         - key: managed-hub
-  #           operator: Exists
   - name: gh-config-dev-hubs
     description: global hub config policies for all dev hubs
     placement:
@@ -91,17 +83,8 @@ policies:
     description: sync global hub secrets to prod hubs
     policySets:         # override policyDefaults.policySets
       - gh-config-prod-hubs
-      # should only have one local-cluster (which is the global-hub), which is also a hub; global-hub is a prod cluster
+      # the entire multi cluster setup should only have one local-cluster (which is the global-hub), which is a prod hub cluster
       - gh-config-local-cluster
     manifests:
       - path: config/sync-secret/prod-hub-sync-secret.yaml
-
-  # - name: config-sync-global-hub-secrets
-  #   description: sync global hub secrets to managed hubs
-  #   policySets:         # override policyDefaults.policySets
-  #     - gh-config-local-cluster  # local-cluster of the global-hub is also a managed hub
-  #     - gh-config-managed-hubs
-  #   manifests:
-  #     - path: config/global-hub-secrets/dict.yaml
-  #     - path: config/global-hub-secrets/list.yaml
 ...

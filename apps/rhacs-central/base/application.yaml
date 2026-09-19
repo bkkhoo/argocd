@@ -33,7 +33,7 @@ spec:
     - name: env
       value: prod
     - name: type
-      value: applicationSet
+      value: application
     - name: target
       value: in-cluster
 ...

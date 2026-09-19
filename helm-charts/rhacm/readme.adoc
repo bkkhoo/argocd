@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Advanced Cluster Management for Kubernetes
 
-Red Hat Advanced Cluster Management for Kubernetes (RHACM) provides a multicluster hub, a central management console for administering multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. Administrators can use the hub to manage the lifecycle of these clusters.
+This Helm Chart deploys Red Hat Advanced Cluster Management for Kubernetes (RHACM). RHACM provides a MultiCluster hub, a central management console for administering multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. Administrators can use the hub to manage the lifecycle of these clusters.
 
 The Helm chart installs the RHACM operator, a MultiClusterHub service, and a MultiClusterObservability service. Note that this configuration requires OpenShift Data Foundation to provide S3 object storage.
 
@@ -68,7 +68,7 @@ a| Deployment type:
 
 | observability.namespace
 | open-cluster-management-observability
-| Dedicated namespace for Multi Cluster Observability components.
+| Dedicated namespace for MultiCluster Observability components.
 
 | observability.instanceSize
 | default

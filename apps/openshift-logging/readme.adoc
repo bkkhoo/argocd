@@ -10,6 +10,35 @@ endif::[]
 
 This ApplicationSet deploys OpenShift Logging Operator and configures ClusterLogForwarder.
 
-The link:./base/[base] deployment is for deploying OpenShift Logging to global-hub (in-cluster) and clusters that it manages (managed-hubs and regular managed cluster).
+The link:./overlays/global-hub[global-hub] deployment is for deploying OpenShift Logging to global-hub (`in-cluster`) and clusters that it manages (managed-hubs and regular managed clusters).
 
-The link:./overlays/managed-hub[managed-hub] overlay is for deploying OpenShift Logging to clusters managed by the managed-hubs; the ApplicationSet does not include in-cluster.
+The link:./overlays/managed-hub[managed-hub] overlay is for deploying OpenShift Logging to clusters managed by the managed-hubs; the ApplicationSet does not include `in-cluster`.
++
+[NOTE]
+====
+The `ClusterLogForwarder` configuration includes the following `openshiftLabels` filter settings, which apply custom key-value labels (`cluster_name`, `env`, and `sector`) to log records as they pass through a forwarding pipeline:
+
+[source,yaml]
+----
+spec:
+  filters:
+    - name: custom-labels
+      type: openshiftLabels
+      openshiftLabels:
+        cluster_name: <cluster-name>
+        env: <env>
+        sector: <sector>
+----
+
+On the managed-hub's RHACM deployment, the `MultiClusterHub` custom resource is configured as follows (disabling self-management so RHACM does not manage itself or create a `local-cluster` resource):
+
+[source,yaml]
+----
+spec:
+  disableHubSelfManagement: true
+----
+
+By default (`cluster.inClusterEnabled: "true"` in the ArgoCD configuration), ArgoCD automatically registers its local hosting cluster as the `in-cluster` connection, enabling local application deployments without requiring external credentials.
+
+However, cluster names like `local-cluster` or `in-cluster` act merely as placeholders rather than unique identifiers for the managed-hub. Managing the ArgoCD deployment directly from the global-hub preserves the unique name of the managed-hub (which is registered as a `ManagedCluster` on the global-hub), making the `cluster_name` label on forwarder log records accurate and meaningful across the multi-cluster environment.
+====

@@ -27,6 +27,21 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 - link:/root-app/managed-hub/overlays/uat[uat]
 - link:/root-app/managed-hub/overlays/prod[prod]
 
+| 00-multicluster-global-hub
+| Application
+| in-cluster/global-hub
+| Deploy and configure MultiCluster Global Hub.
+
+| 00-multicluster-observability
+| Application
+| in-cluster
+| Deploy and configure MultiCluster Observability, the App assumes that the Red Hat Advanced Cluster Management for Kubernetes (RHACM) operator is already deployed.
+
+| 00-rhacm-policies
+| Application
+| in-cluster
+| Deploy RHACM Governance Policies to global-hub and managed-hubs.
+
 | 01-managed-hub-bootstrap
 | ApplicationSet
 | All OpenShift clusters with `managed-hub` label and `env` label (set to `dev`, `uat`, or `prod`).
@@ -46,16 +61,6 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | ApplicationSet
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Configure OpenShift Monitoring components.
-
-| multicluster-observability
-| Application
-| in-cluster
-| Deploy and configure Multi Cluster Observability, the App assumes that the Red Hat Advanced Cluster Management for Kubernetes (RHACM) operator is already deployed.
-
-| multicluster-global-hub
-| Application
-| in-cluster/global-hub
-| Deploy and configure Multi Cluster Global Hub.
 
 | openshift-compliance
 | ApplicationSet
@@ -81,11 +86,6 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | ApplicationSet
 | All OpenShift clusters without the `managed-hub` label but with the `openshift-service-mesh` label.
 | Deploy OpenShift Service Mesh.
-
-| rhacm-policies
-| Application
-| in-cluster
-| Deploy RHACM Governance Policies to global-hub and managed-hubs.
 
 | rhacs-central
 | Application

@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Configure OpenShift oAuth Token Timeout
 
-The OpenShift internal OAuth server allows configuration of access token lifetime and inactivity timeouts via the OAuth Custom Resource (CR) and OAuthClient objects.
+This Helm Chart configures OAuth server access token timeout. The OpenShift internal OAuth server allows configuration of access token lifetime and inactivity timeouts via the OAuth Custom Resource (CR) and OAuthClient objects.
 
 == Installing the Chart
 

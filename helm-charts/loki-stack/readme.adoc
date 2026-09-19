@@ -8,14 +8,14 @@ ifdef::env-github[]
 endif::[]
 = Loki Stack
 
-This Helm chart installs the following operators:
+This Helm Chart deploys the following operators:
 
 - loki-operator: the operator provides a means for configuring and managing a Loki stack for cluster logging.
-- cluster-observability-operator: the operator designed to deploy and manage various observability tools.
+- cluster-observability-operator: the operator is designed to deploy and manage various observability tools.
 
 The chart also installs and configures:
 
-- a LokiStack using a S3 compatible object storage provisioned by OpenShift Data Foundation.
+- LokiStack using a S3 compatible object storage provisioned by OpenShift Data Foundation.
 - console plugins for logging.
 
 == Installing the Chart

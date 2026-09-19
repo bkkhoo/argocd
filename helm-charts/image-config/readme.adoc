@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Configure OpenShift Monitoring
 
-Configure the cluster-wide policies for container image imports, registry access, and trust configurations, allowing administrators to restrict which registries can be used for importing images or pulling container runtime images.
+The Helm Chart configures the cluster-wide policies for container image imports, registry access, and trust configurations, allowing administrators to restrict which registries can be used for importing images or pulling container runtime images.
 
 == Installing the Chart
 

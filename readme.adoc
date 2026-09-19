@@ -10,16 +10,16 @@ endif::[]
 
 The App of Apps pattern leverages ArgoCD declarative approach by creating one parent/root ArgoCD application that contains manifests defining other ArgoCD applications. This creates a hierarchical structure where the parent/root application monitors a Git repository containing application definitions, automatically creating, updating, or deleting child applications based on changes to these manifests.
 
-This diagram illustrates how different components (Multicluster Global Hub, Red Hat Advanced Cluster Managed, and OpenShift GitOps) integrate to deliver high-scale multicluster management. The parent/root application is the link:apps/00-global-hub-app-of-apps/[global-hub-app-of-apps ArgoCD application], which automatically syncs manifests from GitHub to managed hubs and managed clusters.
+This diagram illustrates how different components (MultiCluster Global Hub, Red Hat Advanced Cluster Managed, and OpenShift GitOps) integrate to deliver high-scale multi cluster management. The parent/root application is the link:apps/00-global-hub-app-of-apps/[global-hub-app-of-apps ArgoCD application], which automatically syncs manifests from GitHub to managed hubs and managed clusters.
 
-image::./images/multicluster-global-hub.png[Multicluster Global Hub]
+image::./images/multicluster-global-hub.png[MultiCluster Global Hub]
 
 == Terminology
 
 [cols="1,4"]
 |===
 | Global Hub
-| Multicluster Global Hub is a component of RHACM that enables the management of multiple hub clusters from a single central control plane.  It is designed for high-scale environments where a single hub cannot effectively manage the volume of clusters, allowing administrators to divide clusters into groups, each managed by a specific managed hub, while the global hub aggregates and monitors data across all of them.
+| MultiCluster Global Hub is a component of RHACM that enables the management of multiple hub clusters from a single central control plane.  It is designed for high-scale environments where a single hub cannot effectively manage the volume of clusters, allowing administrators to divide clusters into groups, each managed by a specific managed hub, while the global hub aggregates and monitors data across all of them.
 
 | Managed Hub
 | RHACM hub clusters that are imported into the global hub. They manage their own local clusters and synchronize state, policy compliance, and inventory data back to the global hub via the multicluster-global-hub-agent.
@@ -107,11 +107,12 @@ a| The `local-cluster` is a reserved namespace and resource in RHACM that repres
             └── uat
 ----
 
-=== Repository Contents
+== Repository Contents
 
 - link:apps/[ArgoCD Application and ApplicationSets]
 - link:helm-charts/[Helm Charts]
 - link:kustomize-deployments/[Kustomize Deployments]
+- link:rhacm-policies/[RHACM Policies (policy generator)]
 
 == Usage
 

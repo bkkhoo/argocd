@@ -1,0 +1,24 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= About this Kustomize Deployment
+
+By default, the API server stores plain-text representations of resources into etcd, with no at-rest encryption. Enable etcd encryption to provide an additional layer of data security. The following API server resources are encrypted:
+
+- Secrets
+- ConfigMaps
+- Routes
+- OAuth access tokens
+- OAuth authorize tokens
+
+The etcd data is encrypted using AES-GCM with a random nonce and a 32-byte key. The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to help decrypt older backups and provide an extra layer of data recovery safety.
+
+[NOTE]
+====
+No overlays are necessary since the configuration is the same for all environments (`dev`, `uat`, or `prod`).
+====

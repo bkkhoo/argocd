@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Configure OpenShift Monitoring
 
-Configure the preinstalled OpenShift Monitoring stack.
+This Helm Chart configures the preinstalled OpenShift Monitoring stack.
 
 == Installing the Chart
 
@@ -66,7 +66,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 | Define specific storage resource requests for persistent volumes of the Thanos Ruler service responsible for monitoring user workloads.
 |===
 
-== Interaction with RHACM Multi Cluster Observability
+== Interaction with RHACM MultiCluster Observability
 
 When Red Hat Advanced Cluster Management (RHACM) enables the observability service (MultiClusterObservability) on OpenShift clusters, the observability endpoint operator automatically creates or updates (merges) the openshift-monitoring ConfigMaps (`cluster-monitoring-config` in `openshift-monitoring` namespace and `user-workload-monitoring-config` in `openshift-user-workload-monitoring` namespace) to include additional configuration:
 

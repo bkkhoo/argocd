@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = OpenShift Project Request Template
 
-OpenShift Project Request Templates allow administrators to automatically inject resources into every new project created by users. This ensures consistent governance and resource limits across the cluster without manual intervention for each namespace. The following resources are injected:
+This Helm Chart configures OpenShift Project Request Templates, which allows administrators to automatically inject resources into every new project created by users. This ensures consistent governance and resource limits across the cluster without manual intervention for each namespace. The following resources are injected:
 
 - `RoleBinding`: grant project/namespace admin privileges to user.
 - `NetworkPolicies`: the network policy deny all ingress traffic.

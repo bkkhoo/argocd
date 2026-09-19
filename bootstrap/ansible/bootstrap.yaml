@@ -62,58 +62,13 @@
         cmd: oc label managedclusters.cluster.open-cluster-management.io local-cluster --overwrite env={{ env }}
 
     - name: ensure global hub secret manifests are deployed
-      loop:
+      loop:      # the templates made used of variables from the vars_files
         - openshift-logging-token
         - argocd-repo-secret
         - metallb-bgp-password
       ansible.builtin.command:
         cmd: "oc apply --filename -"
         stdin: "{{ lookup('template', 'templates/'+item+'.yaml.j2') }}"
-
-    # - name: ensure global hub secrets exist
-    #   loop:
-    #     - secret_name: argocd-repo-all-envs
-    #       labels:                              # labels for the secret; these will be synced to managed hub
-    #         argocd.argoproj.io/secret-type: repository
-    #       annotations: {}                      # annotations for the secret; these will be synced to managed hub
-    #       data: "{{ argo_repos }}"             # the data comes from the ansible vault encrypted vars_files
-    #       target_name: argocd-repo             # name of the secret to create in the target managed hub
-    #       target_namespace: openshift-gitops   # namespace to create the secret on the target managed hub, in addition to rhacm-policies namespace
-    #     - secret_name: openshift-logging-bearer-tokens-all-envs
-    #       labels: {}
-    #       annotations: {}
-    #       data: "{{ openshift_logging_bearer_tokens }}"
-    #       target_name: openshift-logging-bearer-tokens
-    #       target_namespace: openshift-logging
-    #     - secret_name: metallb-bgp-password-all-envs
-    #       labels: {}
-    #       annotations: {}
-    #       data: "{{ metallb_bgp }}"
-    #       target_name: metallb-bgp-password
-    #       target_namespace: rhacm-policies
-    #   loop_control:
-    #     label: "{{ item.secret_name }}"
-    #   vars:
-    #     _secret_name: "{{ item.secret_name }}"
-    #     _labels: "{{ item.labels }}"
-    #     _annotations: "{{ item.annotations }}"
-    #     _data: "{{ item.data }}"
-    #     _target_name: "{{ item.target_name }}"
-    #     _target_namespace: "{{ item.target_namespace }}"
-    #     _template: global-hub-secret.yaml.j2
-    #   ansible.builtin.include_tasks: tasks/deploy-secret.yaml
-
-    # # assuming the repos requires access token for access
-    # # even though the rhacm policy config-sync-global-hub-secrets will sync the secrets into openshift-gitops namespace
-    # # have to create the argocd repo secrets here 1st, since the rhacm policy cannot be deployed without the access token in the secrets
-    # # this issue does not exist for managed hubs, since the rhacm policy config-sync-global-hub-secrets would have sync the argocd
-    # # repo secrets as soon as the openshift-gitops namespace is created by the managed-hub-bootstrap app
-    # - name: ensure argocd repo secrets exist
-    #   vars:
-    #     _secret_name: argocd-repos
-    #     _repos: "{{ argo_repos[env] }}"
-    #     _template: argocd-repo-secret.yaml.j2
-    #   ansible.builtin.include_tasks: tasks/deploy-secret.yaml
 
     - name: ensure global-hub app-of-apps is deployed
       when: global_hub | bool

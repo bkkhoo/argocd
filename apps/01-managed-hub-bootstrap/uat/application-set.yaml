@@ -55,7 +55,7 @@ spec:
               postSyncHookImage:
                 tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
             valueFiles:
-              # referencing values from git repo source[1].ref
+              # referencing values from git repo sources[1].ref
               # even though source[1].ref.path is specified, the $helmValues still represents the root of the source with ref field
               - $helmValues/openshift-gitops/uat/values.yaml
         - repoURL: https://github.com/bkkhoo/argocd.git
@@ -66,7 +66,6 @@ spec:
           path: apps/00-managed-hub-app-of-apps/overlays/uat
       destination:
         server: "{{ .server }}"
-        namespace: default     # objects deployed to multiple namespaces
       syncPolicy:
         automated:
           prune: true

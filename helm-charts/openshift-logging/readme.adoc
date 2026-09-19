@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = OpenShift Logging
 
-The Red Hat OpenShift Logging Operator orchestrates log collection and forwarding to Red Had managed log stores and other third-party receivers.
+This Helm Chart deploys OpenShift Logging. OpenShift Logging Operator orchestrates log collection and forwarding to Red Had managed log stores and other third-party receivers.
 
 The Helm chart installs the OpenShift Logging operator and configures the ClusterLogForwarder to forward application, infrastructure, and audit log records to an HTTP endpoint using the POST method. It also configures the ClusterLogForwarder to authenticate with the HTTP endpoint using a bearer token stored in a Kubernetes Secret. Administrators must create this secret either:
 
