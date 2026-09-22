@@ -84,12 +84,13 @@ spec:
             valuesObject:
               syncHookImage:
                 tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
-        - repoURL: https://github.com/bkkhoo/argocd.git      # project request template
-          targetRevision: main
-          path: helm-charts/kubelet-eviction
-          helm:
-            valuesObject:
-              env: 'v{{ or (index .metadata.labels "env") "prod" }}'
+        ######### disable for now, config cause node reboot
+        # - repoURL: https://github.com/bkkhoo/argocd.git      # kubelet eviction
+        #   targetRevision: main
+        #   path: helm-charts/kubelet-eviction
+        #   helm:
+        #     valuesObject:
+        #       env: 'v{{ or (index .metadata.labels "env") "prod" }}'
         - repoURL: https://github.com/bkkhoo/argocd.git      # project request template
           targetRevision: main
           path: helm-charts/project-request-template
