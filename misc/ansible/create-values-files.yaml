@@ -45,6 +45,10 @@
         _username: "{{ item.value.username }}"
         _password: "{{ item.value.password }}"
         _labels: "{{ item.value.labels }}"
+      when:
+        - _url is defined
+        - _url is not none
+        - _url | trim | length > 0
       ansible.builtin.include_tasks: tasks/setup-import-cluster-values.yaml
 
     - name: change to {{ (clusters | dict2items)[0].key }} context

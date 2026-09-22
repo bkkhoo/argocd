@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Red Hat Advanced Cluster Security for Kubernetes
 
-This Helm Chart deploys Red Hat Advanced Cluster Security (RHACS). RHACS is an enterprise-grade, Kubernetes-native security platform that provides comprehensive threat detection, policy enforcement, and compliance management for containerized applications. RHACS integrates security into the cloud-native development lifecycle, enabling organizations to secure workloads across multiple Kubernetes-based clusters.
+This Helm chart deploys Red Hat Advanced Cluster Security (RHACS). RHACS is an enterprise-grade, Kubernetes-native security platform that provides comprehensive threat detection, policy enforcement, and compliance management for containerized applications. RHACS integrates security into the cloud-native development lifecycle, enabling organizations to secure workloads across multiple Kubernetes-based clusters.
 
 == Installing the Chart
 

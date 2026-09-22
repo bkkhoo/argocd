@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Configure OpenShift Monitoring
 
-This Helm Chart configures the preinstalled OpenShift Monitoring stack.
+This Helm chart configures the preinstalled OpenShift Monitoring stack.
 
 == Installing the Chart
 

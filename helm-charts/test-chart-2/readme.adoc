@@ -1,0 +1,11 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Dummy Helm Chart 2
+
+This is a dummy Helm chart. This chart and the accompanying chart, `test-chart-1`, are used by the link:../../kustomize-deployments/test-app[test-app] Kustomize deployment to demonstrate how to leverage Helm charts with Kustomize.

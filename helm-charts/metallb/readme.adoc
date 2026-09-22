@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Metal LB
 
-This Helm Chart deploys MetalLB. MetalLB is a load-balancer implementation for bare-metal Kubernetes clusters that uses standard routing protocols. This Helm chart installs and configures MetalLB in Layer 2 or BGP mode. Currently, only IPv4 address assignment is supported by this Helm chart.
+This Helm chart deploys MetalLB. MetalLB is a load-balancer implementation for bare-metal Kubernetes clusters that uses standard routing protocols. This Helm chart installs and configures MetalLB in Layer 2 or BGP mode. Currently, only IPv4 address assignment is supported by this Helm chart.
 
 == Installing the Chart
 

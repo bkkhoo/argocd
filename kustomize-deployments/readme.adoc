@@ -39,4 +39,7 @@ endif::[]
 
 | self-provisioner
 | Disable the `self-provisioner` role.
+
+| test-app
+| Dummy configuration that demonstrates integrating Helm charts with Kustomize.
 |===

@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Loki Stack
 
-This Helm Chart deploys the following operators:
+This Helm chart deploys the following operators:
 
 - loki-operator: the operator provides a means for configuring and managing a Loki stack for cluster logging.
 - cluster-observability-operator: the operator is designed to deploy and manage various observability tools.
@@ -84,7 +84,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 
 | lokiStack.externalDataSource
 | true
-| Determine whether LokiStack will handle incoming external data. If `true`, the Helm Chart will create the `external-logs-writer` ServiceAccount, ClusterRole and ClusterRoleBinding respectively to grant the ServiceAccount privileges to write application, infrastructure, and audit logs to the LokiStack
+| Determine whether LokiStack will handle incoming external data. If `true`, the Helm chart will create the `external-logs-writer` ServiceAccount, ClusterRole and ClusterRoleBinding respectively to grant the ServiceAccount privileges to write application, infrastructure, and audit logs to the LokiStack
 
 Note: the `external-logs-writer` ClusterRole grants the same privileges as the `logging-collector-logs-write` ClusterRole (which is deployed by OpenShift Logging operator).
 

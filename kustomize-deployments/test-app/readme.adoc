@@ -1,0 +1,19 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Dummy Kustomize App
+
+This is a dummy configuration that integrates Helm charts with Kustomize, demonstrating how to leverage Helm's extensive package ecosystem while utilizing Kustomize's declarative overlay and patching capabilities for environment-specific customization. This is primarily achieved through the `helmCharts` field in `kustomization.yaml`, which instructs Kustomize to download, render, and output the chart manifests as part of the build process.
+
+To leverage Helm charts with Kustomize, the Helm plugin must be enabled (via the `--enable-helm` option) when running the `kustomize build` command. In an OpenShift GitOps deployment, enable the Helm plugin in the ArgoCD custom resource as follows:
+
+[source,yaml]
+----
+spec:
+  kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
+----

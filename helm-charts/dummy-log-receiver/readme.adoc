@@ -8,7 +8,7 @@ ifdef::env-github[]
 endif::[]
 = Dummy Log Receiver
 
-THis Helm Chart deploys a log receiver. The log receiver is a Python webhook backend server that receives JSON logs via HTTP POST. The server accepts POST requests over HTTPS, retrieves the JSON payload, and emits it to stdout. This Helm chart deploys three instances of the log receiver: one for application, infrastructure, and audit logs, respectively. The endpoints use certificates and keys issued by the OpenShift Service Certificate Authority.
+THis Helm chart deploys a log receiver. The log receiver is a Python webhook backend server that receives JSON logs via HTTP POST. The server accepts POST requests over HTTPS, retrieves the JSON payload, and emits it to stdout. This Helm chart deploys three instances of the log receiver: one for application, infrastructure, and audit logs, respectively. The endpoints use certificates and keys issued by the OpenShift Service Certificate Authority.
 
 == Installing the Chart
 
