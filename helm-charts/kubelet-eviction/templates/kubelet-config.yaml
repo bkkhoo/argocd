@@ -23,8 +23,8 @@ spec:
     evictionPressureTransitionPeriod: "5m"
     evictionMaxPodGracePeriod: 120
     imageMinimumGCAge: "5m"
-    imageGCHighThresholdPercent: "85"
-    imageGCLowThresholdPercent: "80"
+    imageGCHighThresholdPercent: 85
+    imageGCLowThresholdPercent: 80
     maxPods: 500
     kubeAPIQPS: 100
     kubeAPIBurst: 200
