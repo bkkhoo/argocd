@@ -1,0 +1,31 @@
+
+# To apply the KubeletConfig to all nodes:
+# - label all MachineConfigPool with a common label, and
+# - change .spec.machineConfigPoolSelector.matchLabels property to match that common label.
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: worker-kubeconfig
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/worker: ""
+  tlsSecurityProfile:
+    type: Intermediate
+    intermediate: {}
+  kubeletConfig:
+    {{- include "kubelet.evictionProfile" (dict "root" $ "env" .Values.env) | indent 4 }}
+    autoSizingReserved: true
+    evictionPressureTransitionPeriod: "5m"
+    evictionMaxPodGracePeriod: "120"
+    imageMinimumGCAge: "5m"
+    imageGCHighThresholdPercent: "85"
+    imageGCLowThresholdPercent: "80"
+    maxPods: 500
+    kubeAPIQPS: 100
+    kubeAPIBurst: 200
+...

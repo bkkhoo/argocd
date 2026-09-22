@@ -1,0 +1,47 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Configure Kubelet Eviction
+
+Kubelet eviction is a node-level self-defense mechanism where the kubelet proactively terminates pods to reclaim resources like memory, disk space, or inodes when they fall below defined thresholds. This process, known as node-pressure eviction, ensures cluster stability by preventing nodes from becoming unresponsive or crashing due to resource starvation.
+
+The kubelet actively monitors node resources and evicts pods when resource pressure occurs. It uses two types of thresholds:
+
+- **Hard eviction thresholds** trigger immediate pod termination with no grace period.
+- **Soft eviction thresholds** require the condition to persist for a specified grace period before eviction begins, allowing for transient spikes.
+
+When reclaiming node-level resources (like deleting dead containers or unused images) is insufficient, the kubelet evicts end-user pods based on their Quality of Service (QoS) class and Priority:
+
+- **BestEffort** pods are evicted first.
+- **Burstable** pods exceeding their resource requests are next.
+- **Guaranteed** pods are evicted last, though they may be removed if system daemons exceed reserved allocations and node stability is at risk.
+
+This Helm chart configures kubelet eviction settings, offering two eviction profiles selected via the `env` cluster label:
+
+- `dev` environments usually experience high churn, temporary pods, and frequent image pushes. This profile focuses on aggressive disk garbage collection to prevent the disk from filling up, paired with lower memory buffers so nodes can run densely packed workloads.
+- `uat` and `prod` environments require proactive safety margins. The eviction thresholds should trigger early enough to give the kubelet room to gracefully terminate pods, allow the cluster autoscaler to scale nodes, or move traffic to healthy nodes before the kernel's Out-Of-Memory (OOM) killer triggers or node disk lockups occur.
+
+== Installing the Chart
+
+The install the chart:
+
+[source,bash]
+----
+helm install --name openshift-image-config helm-chart/kubelet-eviction
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| env
+| prod
+| Environment of the OpenShift cluster.
+|===
