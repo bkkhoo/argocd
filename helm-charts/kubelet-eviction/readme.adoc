@@ -26,6 +26,30 @@ This Helm chart configures kubelet eviction settings, offering two eviction prof
 - `dev` environments usually experience high churn, temporary pods, and frequent image pushes. This profile focuses on aggressive disk garbage collection to prevent the disk from filling up, paired with lower memory buffers so nodes can run densely packed workloads.
 - `uat` and `prod` environments require proactive safety margins. The eviction thresholds should trigger early enough to give the kubelet room to gracefully terminate pods, allow the cluster autoscaler to scale nodes, or move traffic to healthy nodes before the kernel's Out-Of-Memory (OOM) killer triggers or node disk lockups occur.
 
+[IMPORTANT]
+====
+For control plane nodes, modifying or tightening kubelet eviction thresholds should be avoided; the defaults are sufficient, and tuning eviction there is risky.
+
+Control plane nodes run etcd, kube-apiserver, kube-scheduler, kube-controller-manager, openshift-apiserver, and the OpenShift operators. Evicting any of these can render the cluster unusable. The kubelet's eviction manager doesn't distinguish **critical** pods — it evicts by QoS class, and a disk-pressure event on a master can cascade into a full control plane outage.
+
+If master node disks are filling up due to old control plane images or container logs, tune image garbage collection without touching pod eviction thresholds. The following shows an example configuration:
+
+[source,yaml]
+----
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: master-kubeconfig
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/master: ""
+  kubeletConfig:
+    imageGCHighThresholdPercent: 85
+    imageGCLowThresholdPercent: 80
+----
+====
+
 == Installing the Chart
 
 The install the chart:

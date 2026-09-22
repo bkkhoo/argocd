@@ -21,7 +21,7 @@ spec:
     {{- include "kubelet.evictionProfile" (dict "root" $ "env" .Values.env) | indent 4 }}
     autoSizingReserved: true
     evictionPressureTransitionPeriod: "5m"
-    evictionMaxPodGracePeriod: "120"
+    evictionMaxPodGracePeriod: 120
     imageMinimumGCAge: "5m"
     imageGCHighThresholdPercent: "85"
     imageGCLowThresholdPercent: "80"
