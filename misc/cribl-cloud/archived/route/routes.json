@@ -28,7 +28,7 @@
     {
       "id": "in-prometheus-rw",
       "name": "prometheus-remote-write",
-      "description": "input metrics from premetheus remote write",
+      "description": "input metrics from prometheus remote write",
       "filter": "__inputId=='prometheus_rw:in-prometheus-rw'",
       "pipeline": "passthru",
       "enableOutputExpression": false,

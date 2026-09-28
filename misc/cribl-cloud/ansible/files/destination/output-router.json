@@ -1,0 +1,31 @@
+{
+  "id": "out-output-router",
+  "type": "router",
+  "description": "route event base on log_type",
+  "systemFields": [],
+  "streamtags": [
+    "openshift-logging"
+  ],
+  "rules": [
+    {
+      "final": true,
+      "filter": "log_type == 'application'",
+      "output": "out-openshift-lokistack-application"
+    },
+    {
+      "final": true,
+      "filter": "log_type == 'infrastructure'",
+      "output": "out-openshift-lokistack-infrastructure"
+    },
+    {
+      "final": false,
+      "filter": "log_type == 'audit'",
+      "output": "out-openshift-lokistack-audit"
+    },
+    {
+      "final": true,
+      "filter": "log_type == 'audit' && ['subjectaccessreviews', 'tokenreviews', 'leases'].includes(objectRef.resource) && !['get', 'list', 'watch'].includes(verb)",
+      "output": "out-cribl-lake"
+    }
+  ]
+}

@@ -23,6 +23,7 @@
           "printUndefineds": false,
           "add": [
             {
+              "disabled": false,
               "value": "Object.assign(__e, JSON.parse(json_event))",
               "name": ""
             }

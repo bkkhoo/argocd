@@ -116,13 +116,11 @@ a| The `local-cluster` is a reserved namespace and resource in RHACM that repres
 
 == Usage
 
-=== MultiCluster Global Hub Use Case
-
 This is a use case where a MultiCluster Global Hub manages a number of RHACM managed hub clusters, and each managed hub cluster manages a number of manageClusters.
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml --extra-vars config=basic --extra-vars global_hub=yes --ask-vault-password
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml --extra-vars config=basic --ask-vault-password
 ----
 
 The ansible playbook performs the following on the global Hub cluster:
@@ -130,41 +128,22 @@ The ansible playbook performs the following on the global Hub cluster:
 - Deploys RHACM.
 - DeploysOpenShift GitOps.
 - Enable RHACM integration with OpenShift GitOps.
-- Deploys MultiCluster Global Hub.
 - Deploys global hub app-of-apps (`root-app/global-hub/base`); the app-of-apps, in turn deploys:
-** app-of-apps for managed hub (`root-app/managed-hub/overlays/<dev|uat|prod>`) to dev/uat/prod managed hubs:
-*** `dev` managed hubs labels: `managed-hub=yes`, `env=dev`.
-*** `uat` managed hubs labels: `managed-hub=yes`, `env=uat`.
-*** `prod` managed hubs labels: `managed-hub=yes`, `env=prod`.
-** RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`.
-** cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc, to `local-cluster`.
-** other ArgoCD applications to `local-cluster`.
+  ** MultiCluster Global Hub.
+  ** MultiCluster Observability.
+  ** app-of-apps for managed hub (`root-app/managed-hub/overlays/<dev|uat|prod>`) to dev/uat/prod managed hubs:
+     *** `dev` managed hubs labels: `managed-hub=yes`, `env=dev`.
+     *** `uat` managed hubs labels: `managed-hub=yes`, `env=uat`.
+     *** `prod` managed hubs labels: `managed-hub=yes`, `env=prod`.
+  ** RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`.
+  ** cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc, to `local-cluster`.
+  ** other ArgoCD applications to `local-cluster`.
 
 [NOTE]
 ====
 - Make sure to run playbook from host with `oc` and `helm` command line tools.
-- Make sure to `oc login` to the OpenShift cluster with `custer-admin` privileges before running the Ansible playbook.
+- Make sure to `oc login` to the OpenShift cluster with `cluster-admin` privileges before running the Ansible playbook.
 ====
-
-=== Regular RHACM Use Case
-
-This is a use case where a regular RHACM hub cluster manages a number of manageClusters.
-
-[source,bash]
-----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml --ask-vault-password \
-  --extra-vars config=ha --extra-vars global_hub=no --extra-vars env=prod
-----
-
-The ansible playbook performs the following on the managed hub cluster:
-
-- Deploys RHACM.
-- Deploys OpenShift GitOps.
-- Enable RHACM integration with OpenShift GitOps.
-- deploys managed hub app-of-apps (`root-app/managed-hub/overlays/<dev|uat|prod>`) to dev/uat/prod managed hubs; the app-of-apps, in turn deploys:
-** RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`.
-** cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc, to managed clusters.
-** other ArgoCD applications to managed clusters.
 
 == Implementation Considerations
 

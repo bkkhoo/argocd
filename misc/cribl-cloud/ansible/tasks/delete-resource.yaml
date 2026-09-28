@@ -1,0 +1,21 @@
+---
+- name: "get resource: {{ _resource_name }}"
+  register: get_response
+  ansible.builtin.uri:
+    url: "{{ _base_url }}{{ _endpoint }}/{{ _resource_name }}"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    status_code: 200, 404
+
+- name: "delete resource: {{ _resource_name }}"
+  when: get_response.status == 200
+  ansible.builtin.uri:
+    url: "{{ _base_url }}{{ _endpoint }}/{{ _resource_name }}"
+    method: DELETE
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    status_code: 200
+...

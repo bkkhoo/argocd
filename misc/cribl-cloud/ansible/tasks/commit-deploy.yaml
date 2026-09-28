@@ -1,0 +1,40 @@
+---
+- name: commit changes
+  register: commit_response
+  ansible.builtin.uri:
+    url: "{{ _base_url }}/api/v1/version/commit"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    body_format: json
+    body:
+       message: "automation@cribl:commit"
+    status_code: 200, 201
+
+- name: deploy changes
+  when: commit_response.json['items'][0].commit
+  register: deploy_response
+  ansible.builtin.uri:
+    url: "{{ _base_url }}/api/v1/products/stream/groups/{{ cribl.worker_group }}/deploy"
+    method: PATCH
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    body_format: json
+    body:
+      version: "{{ commit_response.json['items'][0].commit }}"
+    status_code: 200
+
+- name: version control commit
+  ansible.builtin.uri:
+    url: "{{ _base_url }}/api/v1/version/commit"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    body_format: json
+    body:
+       message: "version control commit"
+    status_code: 200, 201
+...

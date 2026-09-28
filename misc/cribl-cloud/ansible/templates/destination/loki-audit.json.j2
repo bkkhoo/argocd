@@ -1,0 +1,84 @@
+{
+  "id": "out-openshift-lokistack-audit",
+  "type": "loki",
+  "description": "openshift lokistack audit logs",
+  "url": "{{ loki_stack_url.audit }}",
+  "messageFormat": "protobuf",
+  "compress": true,
+  "authType": "textSecret",
+  "textSecret": "openshift-loki-log-collector-token",
+  "pipeline": "audit-log-transform",
+  "labels": [
+    {
+      "name": "log_type",
+      "value": "audit"
+    }
+  ],
+  "systemFields": [],
+  "streamtags": [
+    "openshift-logging"
+  ],
+  "extraHttpHeaders": [],
+  "concurrency": 10,
+  "maxPayloadSizeKB": 4096,
+  "maxPayloadEvents": 0,
+  "rejectUnauthorized": true,
+  "timeoutSec": 30,
+  "flushPeriodSec": 15,
+  "useRoundRobinDns": false,
+  "failedRequestLoggingMode": "none",
+  "safeHeaders": [],
+  "responseRetrySettings": [
+    {
+      "httpStatus": 408,
+      "initialBackoff": 250,
+      "backoffRate": 2,
+      "maxBackoff": 10000
+    },
+    {
+      "httpStatus": 429,
+      "initialBackoff": 1000,
+      "backoffRate": 2,
+      "maxBackoff": 10000
+    },
+    {
+      "httpStatus": 500,
+      "initialBackoff": 250,
+      "backoffRate": 2,
+      "maxBackoff": 10000
+    },
+    {
+      "httpStatus": 502,
+      "initialBackoff": 250,
+      "backoffRate": 2,
+      "maxBackoff": 10000
+    },
+    {
+      "httpStatus": 503,
+      "initialBackoff": 250,
+      "backoffRate": 2,
+      "maxBackoff": 10000
+    },
+    {
+      "httpStatus": 504,
+      "initialBackoff": 250,
+      "backoffRate": 2,
+      "maxBackoff": 10000
+    },
+    {
+      "httpStatus": 509,
+      "initialBackoff": 250,
+      "backoffRate": 2,
+      "maxBackoff": 10000
+    }
+  ],
+  "timeoutRetrySettings": {
+    "timeoutRetry": true,
+    "initialBackoff": 1000,
+    "backoffRate": 2,
+    "maxBackoff": 10000
+  },
+  "responseHonorRetryAfterHeader": true,
+  "enableDynamicHeaders": true,
+  "onBackpressure": "block"
+}

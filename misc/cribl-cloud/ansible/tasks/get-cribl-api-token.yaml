@@ -1,0 +1,19 @@
+---
+- name: authenticate with cribl
+  register: api_response
+  ansible.builtin.uri:
+    url: https://login.cribl.cloud/oauth/token
+    method: POST
+    headers:
+      Content-Type: application/json
+    body_format: json
+    body:
+      grant_type: client_credentials
+      audience: https://api.cribl.cloud
+      client_id: "{{ _client_id }}"
+      client_secret: "{{ _client_secret }}"
+
+- name: retrieve cribl api token
+  ansible.builtin.set_fact:
+    cribl_api_token: "{{ api_response.json.access_token }}"
+...

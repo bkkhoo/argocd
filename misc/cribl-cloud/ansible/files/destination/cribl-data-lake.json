@@ -1,0 +1,43 @@
+{
+  "id": "out-cribl-lake",
+  "type": "cribl_lake",
+  "description": "cribl data lake",
+  "storageLocationId": "cribl_lake",
+  "destPath": "openshift-audit",
+  "baseFileName": "`CriblOut`",
+  "compress": "gzip",
+  "systemFields": [],
+  "streamtags": [
+    "openshift-logging"
+  ],
+  "stagePath": "$CRIBL_HOME/state/outputs/staging",
+  "addIdToStagePath": true,
+  "removeEmptyDirs": true,
+  "fileNameSuffix": "`.${C.env[\"CRIBL_WORKER_ID\"]}.${__format}${__compression === \"gzip\" ? \".gz\" : \"\"}`",
+  "maxFileSizeMB": 64,
+  "maxFileOpenTimeSec": 300,
+  "maxFileIdleTimeSec": 300,
+  "maxOpenFiles": 250,
+  "headerLine": "",
+  "writeHighWaterMark": 64,
+  "onBackpressure": "block",
+  "deadletterEnabled": false,
+  "onDiskFullBackpressure": "block",
+  "forceCloseOnShutdown": true,
+  "retrySettings": {
+    "enabled": true,
+    "initialBackoffMs": 10000,
+    "backoffMultiplier": 2,
+    "maxBackoffMs": 60000,
+    "jitterPercent": 25
+  },
+  "orphans": {
+    "disabled": false,
+    "periodMin": 10
+  },
+  "dynamicDataset": false,
+  "maxClosingFilesToBackpressure": 250,
+  "maxConcurrentFileParts": 1,
+  "emptyDirCleanupSec": 300,
+  "directoryBatchSize": 1000
+}

@@ -1,6 +1,6 @@
-# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=yes --ask-vault-password
+# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha --ask-vault-password
 # or
-# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=yes --ask-vault-password
+# ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic --ask-vault-password
 #
 ---
 - name: bootstrap
@@ -8,8 +8,7 @@
   connection: local
   gather_facts: false
   vars:
-    config: basic                 # basic or ha
-    global_hub: yes
+    config: ha                 # basic or ha
     env: prod
     ha_environ:
       basic:
@@ -70,11 +69,6 @@
         cmd: "oc apply --filename -"
         stdin: "{{ lookup('template', 'templates/'+item+'.yaml.j2') }}"
 
-    - name: ensure global-hub app-of-apps is deployed
-      when: global_hub | bool
-      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-global-hub-app-of-apps/base
-
     - name: ensure managed-hub app-of-apps is deployed
-      when: not (global_hub | bool)
-      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-managed-hub-app-of-apps/overlays/{{ env }}
+      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-global-hub-app-of-apps/base
 ...

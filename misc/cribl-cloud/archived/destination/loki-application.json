@@ -1,17 +1,17 @@
 {
-  "id": "out-openshift-lokistack-infrastructure",
+  "id": "out-openshift-lokistack-application",
   "type": "loki",
-  "description": "openshift lokistack infrastructure logs",
-  "url": "https://logging-loki-stack-openshift-logging.apps.cluster-4hzhr.dyn.redhatworkshops.io/api/logs/v1/infrastructure",
+  "description": "openshift lokistack application logs",
+  "url": "https://logging-loki-stack-openshift-logging.apps.cluster-kd26l.dyn.redhatworkshops.io/api/logs/v1/application",
   "messageFormat": "protobuf",
   "compress": true,
   "authType": "textSecret",
   "textSecret": "openshift-loki-log-collector-token",
-  "pipeline": "infrastructure-log-transform",
+  "pipeline": "application-log-transform",
   "labels": [
     {
       "name": "log_type",
-      "value": "infrastructure"
+      "value": "application"
     }
   ],
   "systemFields": [],

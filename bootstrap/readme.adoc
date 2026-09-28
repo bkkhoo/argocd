@@ -8,42 +8,27 @@ ifdef::env-github[]
 endif::[]
 = Bootstrap Hub Cluster
 
-The link:ansible/bootstrap.yaml[Ansible playbook] deploys and configures OpenShift GitOps, RHACM, and MultiCluster Global Hub.
+The link:ansible/bootstrap.yaml[Ansible playbook] deploys and configures OpenShift GitOps and Red Hat Advanced Cluster Management for Kubernetes (RHACM).
 
-The Ansible playbook also creates secrets in the `rhacm-policies` namespace using the link:ansible/templates/[templates in this folder]. The `config-sync-global-hub-secrets` RHACM governance policy sync these secrets (with `rhacm-policies/sync-hub-secret: "yes"` label on `rhacm-policies` namespace) from the global hub to managed hubs, according to the `env` label.
+The Ansible playbook also creates secrets in the `rhacm-policies` namespace using the templates in the link:ansible/templates[ansible/templates folder]:
 
-The Ansible playbook bootstrap an OpenShift cluster for the following use cases.
+- On the global hub, the RHACM governance policies in the link:../rhacm-policies/overlays/global-hub/config/sync-secret[global-hub/config/sync-secret folder] sync these secrets from the global hub to the managed hubs.
 
-== MultiCluster Global Hub Use Case (Global Hub -> Managed Hubs -> Managed Clusters)
+- On the managed hubs, the RHACM governance policies in the link:../rhacm-policies/base/config/sync-secret/openshift-logging-secret.yaml[base/config/sync-secret folder] sync these secrets (synced from the global hub) from the managed hubs to the managed clusters.
 
-Deploys OpenShift GitOps, RHACM, and MultiCluster Global Hub.
+The Ansible playbook bootstraps an OpenShift cluster for MultiCluster Global Hub Use Case (Global Hub -> Managed Hubs -> Managed Clusters).
 
-[source,bash]
-----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=yes --ask-vault-password
-----
+== Create/Update secrets
 
-== Regular RHACM Use Case (Managed Hubs -> Managed Clusters)
+- update link:./ansible/vars/openshift-logging-token-vault-encrypted.yaml[openshift-logging-token-vault-encrypted.yaml] (note: the file is encrypted); see link:./ansible/vars/_example-openshift-logging-token.yaml[_example-openshift-logging-token.yaml] for the format of the file.
+- update link:./ansible/vars/argocd-repo-vault-encrypted.yaml[argocd-repo-vault-encrypted.yaml] (note: the file is encrypted); see link:./ansible/vars/_example-argocd-repo.yaml[_example-argocd-repo.yaml] for the format of the file.
+- update link:./ansible/vars/metallb-bgp-password-vault-encrypted.yaml[metallb-bgp-password-vault-encrypted.yaml] (note: the file is encrypted); see link:./ansible/vars/_example-openshift-logging-token.yaml[_example-openshift-logging-token.yaml] for the format of the file.
 
-Deploys OpenShift GitOps and RHACM.
+== Run bootstrap Ansible Playbook
 
-`dev` env:
-
-[source,bash]
-----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=basic -e global_hub=no -e env=dev --ask-vault-password
-----
-
-`uat` env:
+Deploys OpenShift GitOps, RHACM and link:../apps/00-global-hub-app-of-apps/base[global hub app of apps].
 
 [source,bash]
 ----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=uat --ask-vault-password
-----
-
-`prod`` env:
-
-[source,bash]
-----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml -e config=ha -e global_hub=no -e env=prod --ask-vault-password
+ansible-playbook -i localhost, ansible/bootstrap.yaml --extra-vars config=ha --ask-vault-password
 ----

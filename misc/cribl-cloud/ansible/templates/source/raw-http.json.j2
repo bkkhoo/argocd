@@ -48,15 +48,39 @@
   "authTokensExt": [
     {
       "description": "prod application token",
-      "token": "eyJhbG..."
+      "token": "{{ openshift_logging_bearer_tokens.prod.application }}"
     },
     {
       "description": "prod infrastructure token",
-      "token": "eyJhbG..."
+      "token": "{{ openshift_logging_bearer_tokens.prod.infrastructure }}"
     },
     {
       "description": "prod audit token",
-      "token": "eyJhbG..."
+      "token": "{{ openshift_logging_bearer_tokens.prod.audit }}"
+    },
+    {
+      "description": "uat application token",
+      "token": "{{ openshift_logging_bearer_tokens.uat.application }}"
+    },
+    {
+      "description": "uat infrastructure token",
+      "token": "{{ openshift_logging_bearer_tokens.uat.infrastructure }}"
+    },
+    {
+      "description": "uat audit token",
+      "token": "{{ openshift_logging_bearer_tokens.uat.audit }}"
+    },
+    {
+      "description": "dev application token",
+      "token": "{{ openshift_logging_bearer_tokens.dev.application }}"
+    },
+    {
+      "description": "dev infrastructure token",
+      "token": "{{ openshift_logging_bearer_tokens.dev.infrastructure }}"
+    },
+    {
+      "description": "dev audit token",
+      "token": "{{ openshift_logging_bearer_tokens.dev.audit }}"
     }
   ],
   "connections": [

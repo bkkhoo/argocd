@@ -1,0 +1,140 @@
+# ansible-playbook -i localhost, misc/cribl-cloud/ansible/unconfigure-cribl.yaml
+---
+- name: configure cribl
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - cribl-secrets-vault-encrypted.yaml                     # this file is encrypted with ansible-vault
+    - openshift-logging-token-vault-encrypted.yaml           # this file is encrypted with ansible-vault
+  vars:
+    cribl_cloud_base_url: "https://{{ cribl.workspace }}-{{ cribl.org_id }}.cribl.cloud"
+
+  tasks:
+    - name: get cribl api token
+      vars:
+        _client_id: "{{ cribl.client_id }}"
+        _client_secret: "{{ cribl.client_secret }}"
+      ansible.builtin.import_tasks: tasks/get-cribl-api-token.yaml
+
+    - name: get openshift loki log writer token
+      register: loki_token
+      ansible.builtin.command:
+        cmd: oc -n openshift-logging create token external-logs-writer --duration=8760h
+
+    - name: create/update secrets
+      loop_control:
+        label: "{{ item.payload.id }}"
+      loop:
+        - payload:
+            id: openshift-loki-log-collector-token
+            secretType: text
+            value: "{{ loki_token.stdout }}"
+            description: oc -n openshift-logging create token external-logs-writer --duration=8760h
+        - payload:
+            id: openshift-s3-auth
+            secretType: keypair
+            apiKey: "{{ openshift_s3.api_key }}"
+            secretKey: "{{ openshift_s3.secret_key }}"
+            description: api key and secret key for openshift s3 bucket
+        - payload:
+            id: prometheus-remote-write-token
+            secretType: text
+            value: "{{ prometheus_rw_token }}"
+            description: prometheus remote write bearer token
+      vars:
+        _base_url: "{{ cribl_cloud_base_url }}"
+        _endpoint: "/api/v1/m/{{ cribl.worker_group }}/system/secrets"
+        _api_token: "{{ cribl_api_token }}"
+        _resource_name: "{{ item.payload.id }}"
+        _payload: "{{ item.payload }}"
+      ansible.builtin.include_tasks: tasks/create-update-resource.yaml
+
+    - name: create/update pipelines
+      loop_control:
+        label: "{{ item.id }}"
+      loop:
+        - id: application-log-transform
+          payload: "{{ lookup('file', 'files/pipeline/application.json') }}"
+        - id: infrastructure-log-transform
+          payload: "{{ lookup('file', 'files/pipeline/infrastructure.json') }}"
+        - id: audit-log-transform
+          payload: "{{ lookup('file', 'files/pipeline/audit.json') }}"
+        - id: raw-http-remove-fields
+          payload: "{{ lookup('file', 'files/pipeline/raw-http-remove-fields.json') }}"
+        - id: unpack-bulk-events
+          payload: "{{ lookup('file', 'files/pipeline/unpack-bulk-events.json') }}"
+      vars:
+        _base_url: "{{ cribl_cloud_base_url }}"
+        _endpoint: "/api/v1/m/{{ cribl.worker_group }}/pipelines"
+        _api_token: "{{ cribl_api_token }}"
+        _resource_name: "{{ item.id }}"
+        _payload: "{{ item.payload }}"
+      ansible.builtin.include_tasks: tasks/create-update-resource.yaml
+
+    - name: create/update data destinations
+      loop_control:
+        label: "{{ item.id }}"
+      loop:
+        - id: out-output-router
+          payload: "{{ lookup('file', 'files/destination/output-router.json') }}"
+        - id: out-openshift-lokistack-application
+          payload: "{{ lookup('template', 'templates/destination/loki-application.json.j2') }}"
+        - id: out-openshift-lokistack-infrastructure
+          payload: "{{ lookup('template', 'templates/destination/loki-infrastructure.json.j2') }}"
+        - id: out-openshift-lokistack-audit
+          payload: "{{ lookup('template', 'templates/destination/loki-audit.json.j2') }}"
+        - id: out-cribl-lake
+          payload: "{{ lookup('file', 'files/destination/cribl-data-lake.json') }}"
+        - id: out-openshift-s3
+          payload: "{{ lookup('template', 'templates/destination/openshift-s3.json.j2') }}"
+      vars:
+        _base_url: "{{ cribl_cloud_base_url }}"
+        _endpoint: "/api/v1/m/{{ cribl.worker_group }}/system/outputs"
+        _api_token: "{{ cribl_api_token }}"
+        _resource_name: "{{ item.id }}"
+        _payload: "{{ item.payload }}"
+      ansible.builtin.include_tasks: tasks/create-update-resource.yaml
+
+    - name: create/update event breaker ruleset
+      vars:
+        _base_url: "{{ cribl_cloud_base_url }}"
+        _endpoint: "/api/v1/m/{{ cribl.worker_group }}/lib/breakers"
+        _api_token: "{{ cribl_api_token }}"
+        _resource_name: break-json-array
+        _payload: "{{ lookup('file', 'files/event-breaker/break-json-array.json') }}"
+      ansible.builtin.include_tasks: tasks/create-update-resource.yaml
+
+    - name: create/update data sources
+      loop_control:
+        label: "{{ item.id }}"
+      loop:
+        - id: http
+          payload: "{{ lookup('template', 'templates/source/http.json.j2') }}"
+        - id: in-raw-http
+          payload: "{{ lookup('template', 'templates/source/raw-http.json.j2') }}"
+        - id: in-prometheus-rw
+          payload: "{{ lookup('template', 'templates/source/prometheus-remote-write.json.j2') }}"
+      vars:
+        _base_url: "{{ cribl_cloud_base_url }}"
+        _endpoint: "/api/v1/m/{{ cribl.worker_group }}/system/inputs"
+        _api_token: "{{ cribl_api_token }}"
+        _resource_name: "{{ item.id }}"
+        _payload: "{{ item.payload }}"
+      ansible.builtin.include_tasks: tasks/create-update-resource.yaml
+
+    - name: create/update data routes
+      vars:
+        _base_url: "{{ cribl_cloud_base_url }}"
+        _endpoint: "/api/v1/m/{{ cribl.worker_group }}/routes"
+        _api_token: "{{ cribl_api_token }}"
+        _resource_name: default
+        _payload: "{{ lookup('file', 'files/route/routes.json') }}"
+      ansible.builtin.include_tasks: tasks/create-update-resource.yaml
+
+    - name: commit and deploy changes
+      vars:
+        _base_url: "{{ cribl_cloud_base_url }}"
+        _api_token: "{{ cribl_api_token }}"
+      ansible.builtin.import_tasks: tasks/commit-deploy.yaml
+...

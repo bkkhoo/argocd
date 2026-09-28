@@ -1,0 +1,37 @@
+---
+- name: "get resource: {{ _resource_name }}"
+  register: get_response
+  ansible.builtin.uri:
+    url: "{{ _base_url }}{{ _endpoint }}/{{ _resource_name }}"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    status_code: 200, 404
+
+- name: "create resource: {{ _resource_name }}"
+  register: post_response
+  when: get_response.status == 404
+  ansible.builtin.uri:
+    url: "{{ _base_url }}{{ _endpoint }}"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    body_format: json
+    body: "{{ _payload }}"
+    status_code: 200, 201
+
+- name: "update resource: {{ _resource_name }}"
+  register: patch_response
+  when: get_response.status == 200
+  ansible.builtin.uri:
+    url: "{{ _base_url }}{{ _endpoint }}/{{ _resource_name }}"
+    method: PATCH
+    headers:
+      Authorization: "Bearer {{ _api_token }}"
+      Content-Type: application/json
+    body_format: json
+    body: "{{ _payload }}"
+    status_code: 200, 201
+...
