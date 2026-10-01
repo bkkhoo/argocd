@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "etcd-backup helm chart values schema",
+  "description": "configuration values for etcd-backup helm chart",
+  "type": "object",
+  "properties": {
+    "namespace": {
+      "type": "string"
+    },
+    "pvc": {
+      "type": "object",
+      "properties": {
+        "storageClass": {
+          "type": "string"
+        },
+        "snapshot": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            }
+          }
+        },
+        "staticResources": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "frequency": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9
+    },
+    "retentionDays": {
+      "type": "integer",
+      "minimum": 3
+    },
+    "syncHookImage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,14 +1,14 @@
 ---
-clusterName: null
+clusterName: ""
 env: prod
-sector: null
+sector: ""
 resources:
-  limits:
-    cpu: "6"
-    memory: 2Gi
   requests:
     cpu: 500m
     memory: 64Mi
+  limits:
+    cpu: "6"
+    memory: 2Gi
 serviceAccount: log-collector
 outputs:
   httpTimeout: 10

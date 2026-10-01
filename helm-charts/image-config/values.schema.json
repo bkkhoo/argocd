@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "image-config helm chart values schema",
+  "description": "configuration values for image-config helm chart",
+  "type": "object",
+  "properties": {
+    "additionalRegistries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

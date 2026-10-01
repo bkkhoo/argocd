@@ -11,8 +11,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "110"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  myASN: {{ $bgpSettings.myASN }}
-  peerASN: {{ $bgpSettings.peerASN }}
+  myASN: {{ int $bgpSettings.myASN }}
+  peerASN: {{ int $bgpSettings.peerASN }}
   peerAddress: {{ $peer.peerAddress }}
   {{- if hasKey $peer "peerPort" }}
   peerPort: {{ $peer.peerPort }}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "loki-stack helm chart values schema",
+  "description": "configuration values for loki-stack helm chart",
+  "type": "object",
+  "properties": {
+    "lokiStack": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string",
+          "enum": ["1x.demo", "1x.pico", "1x.extra-small", "1x.small", "1x.medium"]
+        },
+        "schemaVersion": {
+          "type": "string",
+          "enum": ["v11", "v12", "v13"]
+        },
+        "storageClassName": {
+          "type": "string"
+        },
+        "retentionDays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "objectStorage": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "secret": {
+              "type": "string"
+            },
+            "storageClassName": {
+              "type": "string"
+            }
+          }
+        },
+        "externalDataSource": {
+          "type": "boolean"
+        }
+      }
+    },
+    "syncHookImage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

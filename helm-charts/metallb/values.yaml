@@ -4,10 +4,10 @@ ipAddressRanges: []
 nodeSelector:                # one or more labels
   node-role.kubernetes.io/worker: ""
 
-#### bgp example
+### bgp example
 # bgp:
 #   myASN: 64512
-#   peerASN: 64511
+#   peerASN: 64513
 #   routerID: 10.113.118.113
 #   keepaliveTime: 30s
 #   holdTime: 90s

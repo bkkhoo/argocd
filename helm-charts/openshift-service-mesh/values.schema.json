@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "openshift-service-mesh helm chart values schema",
+  "description": "configuration values for openshift-service-mesh helm chart",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 2
+    }
+  }
+}

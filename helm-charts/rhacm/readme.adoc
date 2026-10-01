@@ -60,11 +60,11 @@ a| Deployment type:
 
 | availabilityConfig
 | High
-| Availability configuration specifies deployment replication for improved availability. Options are: `Basic` or `High`.
+| Availability configuration specifies deployment replication for improved availability. Options are: `Basic` (deploys components with a replicaCount of 1) or `High` (deploys hub cluster components with a replicaCount of 2). This configuration applies also to both MultiClusterHub and MultiClusterObservability services.
 
 | disableHubSelfManagement
 | false
-| Configuration setting in Red Hat Advanced Cluster Management (RHACM) that controls whether the hub cluster automatically manages itself.
+| Configuration setting that controls whether the hub cluster automatically manages itself.
 
 | observability.namespace
 | open-cluster-management-observability
@@ -72,7 +72,7 @@ a| Deployment type:
 
 | observability.instanceSize
 | default
-| Select a predefined size profile for the observability stack (default, minimal, small, medium, large, xlarge, 2xlarge, or 4xlarge).
+| Select a predefined size profile for the observability stack (`default`, `minimal`, `small`, `medium`, `large`, `xlarge`, `2xlarge`, or `4xlarge`).
 
 | observability.namespaceRightSizingRecommendation
 | true

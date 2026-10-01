@@ -18,6 +18,6 @@ evictionSoftGracePeriod:
   nodefs.available: "1m"
   nodefs.inodesFree: "1m"
   imagefs.available: "1m"
-  imagefs.inodesFree: "m"
+  imagefs.inodesFree: "1m"
   pid.available: "1m"
 ...

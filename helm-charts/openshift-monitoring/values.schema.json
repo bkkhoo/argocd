@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "openshift-monitoring helm chart values schema",
+  "description": "configuration values for openshift-monitoring helm chart",
+  "type": "object",
+  "properties": {
+    "enableUserWorkload": {
+      "type": "boolean"
+    },
+    "storageClass": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "object",
+      "properties": {
+        "alertmanagerMain": {
+          "type": "object",
+          "properties": {
+            "storage": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        },
+        "prometheusK8s": {
+          "type": "object",
+          "properties": {
+            "retention": {
+              "type": "string",
+              "pattern": "^[0-9]+[mhdwy]$"
+            },
+            "storage": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        }
+      }
+    },
+    "userWorkload": {
+      "type": "object",
+      "properties": {
+        "prometheus": {
+          "type": "object",
+          "properties": {
+            "retention": {
+              "type": "string",
+              "pattern": "^[0-9]+[mhdwy]$"
+            },
+            "storage": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        },
+        "thanosRuler": {
+          "type": "object",
+          "properties": {
+            "retention": {
+              "type": "string",
+              "pattern": "^[0-9]+[mhdwy]$"
+            },
+            "storage": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

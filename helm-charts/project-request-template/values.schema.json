@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "project-request-template helm chart values schema",
+  "description": "configuration values for project-request-template helm chart",
+  "type": "object",
+  "properties": {
+    "projectTemplateOverride": {
+      "type": "string",
+      "enum": ["true", "false"]
+    },
+    "resourceQuota": {
+      "type": "object",
+      "properties": {
+        "requests": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        }
+      }
+    },
+    "limitRange": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        },
+        "defaultRequest": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        },
+        "max": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        },
+        "min": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "rhacs helm chart values schema",
+  "description": "configuration values for rhacs helm chart",
+  "type": "object",
+  "properties": {
+    "deploymentType": {
+      "type": "string",
+      "enum": ["all", "central", "secured-cluster"]
+    },
+    "namespace": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "string"
+        },
+        "central": {
+          "type": "string"
+        },
+        "securedCluster": {
+          "type": "string"
+        },
+        "rhacmPolicies": {
+          "type": "string"
+        }
+      }
+    },
+    "clusterName": {
+      "type": "string"
+    },
+    "clusterLabels": {
+      "type": "object"
+    },
+    "central": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "centralDB": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "minimumAccessRole": {
+      "type": "string",
+      "enum": ["Admin", "Analyst", "None"]
+    },
+    "postSyncHookImage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

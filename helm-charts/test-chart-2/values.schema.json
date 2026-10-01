@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "serviceAccount": {
+      "type": "string"
+    },
+    "labels": {
+      "type": "object",
+      "properties": {
+        "app": {
+          "type": "string"
+        },
+        "env": {
+          "type": "string",
+          "enum": ["dev", "uat", "prod"]
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "properties": {
+        "CONFIG_FILE": {
+          "type": "string"
+        },
+        "HOME": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

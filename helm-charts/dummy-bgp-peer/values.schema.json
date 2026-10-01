@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "dummy-bgp-peer helm chart values schema",
+  "description": "configuration values for dummy-bgp-peer helm chart",
+  "type": "object",
+  "properties": {
+    "namespace": {
+      "type": "string"
+    },
+    "serviceAccount": {
+      "type": "string"
+    },
+    "bgpPeerImage": {
+      "type": "string"
+    },
+    "myASN": {
+      "type": "integer",
+      "anyOf": [
+        { "minimum": 1, "maximum": 64495 },
+        { "minimum": 64512, "maximum": 65534 },
+        { "minimum": 131072, "maximum": 4199999999 },
+        { "minimum": 4200000000, "maximum": 4294967294 }
+      ]
+    },
+    "peerASN": {
+      "type": "integer",
+      "anyOf": [
+        { "minimum": 1, "maximum": 64495 },
+        { "minimum": 64512, "maximum": 65534 },
+        { "minimum": 131072, "maximum": 4199999999 },
+        { "minimum": 4200000000, "maximum": 4294967294 }
+      ]
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "authPassword": {
+      "type": "string",
+      "minLength": 8
+    },
+    "dynamicNeighborsPrefix": {
+      "type": "string"
+    }
+  }
+}

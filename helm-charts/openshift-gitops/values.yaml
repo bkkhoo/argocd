@@ -9,55 +9,55 @@ server:
     minReplicas: 2
     maxReplicas: 5
   resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
     requests:
       cpu: 250m
       memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
 dex:
   resources:
-    limits:
-      cpu: "1"
-      memory: 512Mi
     requests:
       cpu: 250m
       memory: 128Mi
+    limits:
+      cpu: "1"
+      memory: 512Mi
 repo:
   replicas: 3
   resources:
-    limits:
-      cpu: "1"
-      memory: 1Gi
     requests:
       cpu: 500m
       memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
   rhacmPolicyGeneratorImage: registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16
 applicationSet:
   resources:
-    limits:
-      cpu: "2"
-      memory: 1Gi
     requests:
       cpu: 250m
       memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 1Gi
 redis:
   ha:
     enabled: true
     resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
       requests:
         cpu: 250m
         memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
   resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
     requests:
       cpu: 250m
       memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
 controller:
   sharding:
     enabled: true
@@ -67,12 +67,12 @@ controller:
     # consistent-hashing: uses a consistent hashing algorithm with bounded loads to equalize distribution while minimizing the reshuffling of clusters when shards or clusters are added or removed, recommended for dynamic environments.
     algorithm: consistent-hashing
   resources:
-    limits:
-      cpu: "4"
-      memory: 8Gi
     requests:
       cpu: "1"
       memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
 disableAdmin: false
 rbac:
   defaultPolicy: ""        # example: role:admin, role:readonly
@@ -86,7 +86,13 @@ localUsers:
     role: "role:admin"
 tls:
   customCA: "custom-ca.crt"
-appProjects: []
+appProjects:
+  - name: gitops
+    sourceRepos:
+      - "https://github.com/bkkhoo/argocd.git"
+      - "https://github.com/bkkhoo/helm-values.git"
+      - "https://charts.openshift.io"
+      - "https://charts.openshift.io/"
 postSyncHookImage:
   name: registry.redhat.io/openshift4/ose-tools-rhel9
   tag: v4.20

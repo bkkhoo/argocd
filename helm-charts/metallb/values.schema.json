@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "metallb helm chart values schema",
+  "description": "configuration values for metallb helm chart",
+  "type": "object",
+  "properties": {
+    "advertisementMode": {
+      "type": "string",
+      "enum": ["l2", "bgp"]
+    },
+    "ipAddressRanges": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nodeSelector": {
+      "type": "object",
+      "properties": {
+        "node-role.kubernetes.io/worker": {
+          "type": "string"
+        }
+      }
+    },
+    "bgp": {
+      "type": "object",
+      "properties": {
+        "myASN": {
+          "type": "integer",
+          "anyOf": [
+            { "minimum": 1, "maximum": 64495 },
+            { "minimum": 64512, "maximum": 65534 },
+            { "minimum": 131072, "maximum": 4199999999 },
+            { "minimum": 4200000000, "maximum": 4294967294 }
+          ]
+        },
+        "peerASN": {
+          "type": "integer",
+          "anyOf": [
+            { "minimum": 1, "maximum": 64495 },
+            { "minimum": 64512, "maximum": 65534 },
+            { "minimum": 131072, "maximum": 4199999999 },
+            { "minimum": 4200000000, "maximum": 4294967294 }
+          ]
+        },
+        "routerID": {
+          "type": "string",
+          "format": "ipv4"
+        },
+        "keepaliveTime": {
+          "type": "string"
+        },
+        "holdTime": {
+          "type": "string"
+        },
+        "ebgpMultiHop": {
+          "type": "boolean"
+        },
+        "aggregationLength": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 32
+        },
+        "communities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "peers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "peerAddress": {
+                "type": "string",
+                "format": "ipv4"
+              },
+              "peerPort": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535
+              }
+            }
+          }
+        },
+        "bfd": {
+          "type": "object",
+          "properties": {
+            "receiveInterval": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 60000
+            },
+            "transmitInterval": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 60000
+            }
+          }
+        }
+      }
+    }
+  }
+}

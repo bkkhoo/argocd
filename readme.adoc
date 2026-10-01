@@ -16,7 +16,7 @@ image::./images/multicluster-global-hub.png[MultiCluster Global Hub]
 
 == Terminology
 
-[cols="1,4"]
+[cols="1,6"]
 |===
 | Global Hub
 | MultiCluster Global Hub is a component of RHACM that enables the management of multiple hub clusters from a single central control plane.  It is designed for high-scale environments where a single hub cannot effectively manage the volume of clusters, allowing administrators to divide clusters into groups, each managed by a specific managed hub, while the global hub aggregates and monitors data across all of them.
@@ -30,10 +30,19 @@ image::./images/multicluster-global-hub.png[MultiCluster Global Hub]
 | `local-cluster`
 a| The `local-cluster` is a reserved namespace and resource in RHACM that represents the hub cluster when it is managed by itself. By default, RHACM automatically imports and manages the hub cluster as the `local-cluster`, allowing for a unified view of the entire fleet from a single console.
 
-**Note**: The managed hub's `local-cluster` is disabled when the managed hub is imported to the global hub in default mode.
+[NOTE]
+====
+The managed hub's `local-cluster` is disabled when the managed hub is imported to the global hub in default mode.
+====
 
 | `in-cluster`
 | When ArgoCD is installed within an OpenShift/Kubernetes cluster, it automatically registers that specific cluster as the `in-cluster` connection, allowing it to deploy applications to itself without additional configuration. This local cluster is distinguished from remote clusters by the absence of a corresponding Secret resource with the `argocd.argoproj.io/secret-type: cluster` label; therefore, standard label selectors targeting this label will exclude the local cluster.
+
+| ArgoCD Applications
+| The fundamental building blocks of ArgoCD GitOps workflows, that represent individual deployable units, defining the relationship between a source references (repository URL, revision, path) and destination references (cluster server, namespace) along with synchronization policies like automated syncing, pruning, and self-healing.
+
+| ArgoCD ApplicationSets
+| An ApplicationSet is a custom resource in ArgoCD that automates the generation and management of multiple ArgoCD Application resources from a single template. An ApplicationSet uses generators to automatically spin up, update, or delete dozens or hundreds of Applications at scale.
 |===
 
 == Repository Folders

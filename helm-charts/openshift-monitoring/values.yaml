@@ -2,11 +2,11 @@
 enableUserWorkload: true
 # storageClass: gp3-csi
 platform:
+  alertmanagerMain:
+    storage: 10Gi
   prometheusK8s:
     retention: 7d              # default 15d
     storage: 20Gi
-  alertmanagerMain:
-    storage: 10Gi
 userWorkload:
   prometheus:
     retention: 24h             # default 4h

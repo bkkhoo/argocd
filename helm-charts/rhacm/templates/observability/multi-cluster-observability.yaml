@@ -7,7 +7,9 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "210"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    observability.open-cluster-management.io/right-sizing-capable: v1
 spec:
+  availabilityConfig: {{ .Values.availabilityConfig }}
   capabilities:
     platform:
       analytics:
@@ -15,6 +17,13 @@ spec:
           enabled: {{ .Values.observability.namespaceRightSizingRecommendation }}
         virtualizationRightSizingRecommendation:
           enabled: {{ .Values.observability.virtualizationRightSizingRecommendation }}
+      metrics:
+        default:
+          enabled: true
+    userWorkloads:
+      metrics:
+        default:
+          enabled: true
   instanceSize: {{ .Values.observability.instanceSize }}
   observabilityAddonSpec: {}
   storageConfig:

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "kubelet-eviction helm chart values schema",
+  "description": "configuration values for kubelet-eviction helm chart",
+  "type": "object",
+  "properties": {
+    "env": {
+      "type": "string",
+      "enum": ["dev", "uat", "prod"]
+    }
+  }
+}

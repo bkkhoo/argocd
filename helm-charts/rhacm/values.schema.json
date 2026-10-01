@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "rhacm helm chart values schema",
+  "description": "configuration values for rhacm helm chart",
+  "type": "object",
+  "properties": {
+    "deploymentType": {
+      "type": "string",
+      "enum": ["operator", "mch", "mco", "operator+mch", "all"]
+    },
+    "rhacmNamespace": {
+      "type": "string"
+    },
+    "operatorChannel": {
+      "type": "string"
+    },
+    "availabilityConfig": {
+      "type": "string",
+      "enum": ["Basic", "High"]
+    },
+    "disableHubSelfManagement": {
+      "type": "boolean"
+    },
+    "observability": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "instanceSize": {
+          "type": "string",
+          "enum": ["default", "minimal", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge"]
+        },
+        "namespaceRightSizingRecommendation": {
+          "type": "boolean"
+        },
+        "virtualizationRightSizingRecommendation": {
+          "type": "boolean"
+        },
+        "objectStorage": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "storageClassName": {
+              "type": "string"
+            },
+            "insecureSkipVerify": {
+              "type": "boolean"
+            },
+            "caSecret": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "syncHookImage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

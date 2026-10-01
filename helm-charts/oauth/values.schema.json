@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "oauth helm chart values schema",
+  "description": "configuration values for oauth helm chart",
+  "type": "object",
+  "properties": {
+    "env": {
+      "type": "string",
+      "enum": ["dev", "uat", "prod"]
+    },
+    "accessTokenMaxAgeSeconds": {
+      "type": "object",
+      "properties": {
+        "dev": {
+          "type": "integer"
+        },
+        "prod": {
+          "type": "integer"
+        },
+        "uat": {
+          "type": "integer"
+        }
+      }
+    },
+    "accessTokenInactivityTimeout": {
+      "type": "object",
+      "properties": {
+        "dev": {
+          "type": "string",
+          "pattern": "^[0-9]+[smh]$"
+        },
+        "prod": {
+          "type": "string",
+          "pattern": "^[0-9]+[smh]$"
+        },
+        "uat": {
+          "type": "string",
+          "pattern": "^[0-9]+[smh]$"
+        }
+      }
+    }
+  }
+}

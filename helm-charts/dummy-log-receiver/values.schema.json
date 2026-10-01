@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "dummy-log-receiver helm chart values schema",
+  "description": "configuration values for dummy-log-receiver helm chart",
+  "type": "object",
+  "properties": {
+    "namespace": {
+      "type": "string"
+    },
+    "serviceAccount": {
+      "type": "string"
+    },
+    "labels": {
+      "type": "object",
+      "properties": {
+        "app": {
+          "type": "string"
+        },
+        "env": {
+          "type": "string",
+          "enum": ["dev", "uat", "prod"]
+        }
+      }
+    },
+    "loggingImage": {
+      "type": "string"
+    }
+  }
+}

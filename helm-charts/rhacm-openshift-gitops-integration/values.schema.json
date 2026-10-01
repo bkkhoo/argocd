@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "rhacm-openshift-gitops-integration helm chart values schema",
+  "description": "configuration values for rhacm-openshift-gitops-integration helm chart",
+  "type": "object",
+  "properties": {
+    "namespace": {
+      "type": "string"
+    }
+  }
+}

@@ -56,13 +56,6 @@ a|[source,yaml]
 ----
 | Specifies which compliance standards to check, such as ocp4-cis (cluster) and ocp4-cis-node (node OS).
 
-| complianceScan.schedule.minHour
-| 1
-| Schedules scans to run at random time between `minHour` and `maxHour`. Acceptable value 0 - 9.
-
-| complianceScan.schedule.maxHour
-| 3 | Default scan start between 1:00am and 3:59am. Acceptable value 0 - 9.
-
 | complianceScan.roles
 a|[source,yaml]
 ----
@@ -70,6 +63,14 @@ a|[source,yaml]
 - worker
 ----
 | Defines which node roles to scan
+
+| complianceScan.schedule.minHour
+| 1
+| Schedules scans to run at random time between `minHour` and `maxHour`. Acceptable value 0 - 9.
+
+| complianceScan.schedule.maxHour
+| 3
+| Default scan start between 1:00am and 3:59am. Acceptable value 0 - 9.
 |===
 
 [NOTE]

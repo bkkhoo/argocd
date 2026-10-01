@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ingress-controller helm chart values schema",
+  "description": "configuration values for ingress-controller helm chart",
+  "type": "object",
+  "properties": {
+    "tlsSecurityProfile": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["Old", "Intermediate", "Modern", "Custom"]
+        },
+        "custom": {
+          "type": "object",
+          "properties": {
+            "ciphers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minTLSVersion": {
+              "type": "string",
+              "enum": ["VersionTLS10", "VersionTLS11", "VersionTLS12", "VersionTLS13"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

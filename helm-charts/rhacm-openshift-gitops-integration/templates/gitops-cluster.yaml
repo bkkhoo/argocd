@@ -3,17 +3,17 @@ apiVersion: apps.open-cluster-management.io/v1beta1
 kind: GitOpsCluster
 metadata:
   name: gitops-clusters
-  namespace: openshift-gitops
+  namespace: {{ .Values.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "400"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   argoServer:
     cluster: local-cluster
-    argoNamespace: openshift-gitops
+    argoNamespace: {{ .Values.namespace }}
   placementRef:
     apiVersion: cluster.open-cluster-management.io/v1beta1
     kind: Placement
     name: gitops-clusters
-    namespace: openshift-gitops
+    namespace: {{ .Values.namespace }}
 ...

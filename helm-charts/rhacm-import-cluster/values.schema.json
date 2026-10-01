@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "rhacm-import-cluster helm chart values schema",
+  "description": "configuration values for rhacm-import-cluster helm chart",
+  "type": "object",
+  "properties": {
+    "clusterName": {
+      "type": "string"
+    },
+    "clusterURL": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "clusterAuthToken": {
+      "type": "string",
+      "minLength": 8
+    },
+    "clusterSet": {
+      "type": "string"
+    },
+    "clusterLabels": {
+      "type": "object",
+      "properties": {
+        "env": {
+          "type": "string",
+          "enum": ["dev", "uat", "prod"]
+        },
+        "managed-hub": {
+          "type": "string",
+          "enum": ["yes", "no"]
+        }
+      }
+    }
+  }
+}

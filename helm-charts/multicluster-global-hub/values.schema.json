@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "multicluster-global-hub helm chart values schema",
+  "description": "configuration values for multicluster-global-hub helm chart",
+  "type": "object",
+  "properties": {
+    "namespace": {
+      "type": "string"
+    },
+    "operatorChannel": {
+      "type": "string"
+    },
+    "availabilityConfig": {
+      "type": "string",
+      "enum": ["Basic", "High"]
+    },
+    "postgresRetention": {
+      "type": "string",
+      "pattern": "^[0-9]+[my]$"
+    }
+  }
+}
