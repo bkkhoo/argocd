@@ -9,7 +9,6 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
     observability.open-cluster-management.io/right-sizing-capable: v1
 spec:
-  availabilityConfig: {{ .Values.availabilityConfig }}
   capabilities:
     platform:
       analytics:

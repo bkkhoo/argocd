@@ -1,4 +1,4 @@
-# ansible-playbook -i localhost, misc/cribl-cloud/ansible/configure-cribl.yaml
+# ansible-playbook -i localhost, misc/cribl-cloud/ansible/unconfigure-cribl.yaml
 ---
 - name: unconfigure cribl
   hosts: localhost
