@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 1.0
+name: operator-hub
+description: Enable/Disable the default OpenShift Operator Hub catalog sources
+type: application
+version: 1.0
+...

@@ -6,11 +6,11 @@ metadata:
 spec:
   sources:
     - name: redhat-operators
-      disabled: false
+      disabled: {{ .Values.disableRedhatOperators }}
     - name: certified-operators
-      disabled: false
+      disabled: {{ .Values.disableCertifiedOperators }}
     - name: community-operators
-      disabled: false
+      disabled: {{ .Values.disableCommunityOperators }}
     - name: redhat-marketplace
-      disabled: true
+      disabled: {{ .Values.disableRedhatMarketplace }}
 ...

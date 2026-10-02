@@ -1,0 +1,61 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Operator Hub
+
+This Helm chart manages the default OpenShift OperatorHub catalog sources by enabling or disabling the following catalogs:
+
+- Red Hat Operators
+- Certified Operators
+- Community Operators
+- Red Hat Marketplace
+
+== Installing the Chart
+
+To install the chart:
+
+[source,bash]
+----
+helm install --name operator-hub helm-chart/operator-hub
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete operator-hub
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| disableRedhatOperators
+| false
+| Enable or disable Red Hat operators.
+
+| disableCertifiedOperators
+| false
+| Enable or disable Certified operators.
+
+| disableCommunityOperators
+| false
+| Enable or disable Community operators.
+
+| disableRedhatMarketplace
+| true
+| Enable or disable Red Hat Marketplace.
+|===

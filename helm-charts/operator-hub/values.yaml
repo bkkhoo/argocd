@@ -1,0 +1,6 @@
+---
+disableRedhatOperators: false
+disableCertifiedOperators: false
+disableCommunityOperators: false
+disableRedhatMarketplace: true
+...

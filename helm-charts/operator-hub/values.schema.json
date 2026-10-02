@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "operator-hub helm chart values schema",
+  "description": "configuration values for operator-hub helm chart",
+  "type": "object",
+  "properties": {
+    "disableCertifiedOperators": {
+      "type": "boolean"
+    },
+    "disableCommunityOperators": {
+      "type": "boolean"
+    },
+    "disableRedhatMarketplace": {
+      "type": "boolean"
+    },
+    "disableRedhatOperators": {
+      "type": "boolean"
+    }
+  }
+}
