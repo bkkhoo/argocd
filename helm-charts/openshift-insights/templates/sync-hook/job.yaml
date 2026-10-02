@@ -22,7 +22,7 @@ spec:
             - /script/disable-insights.sh
           env:
             - name: INSIGHTS_ENTRY
-            - value: {{ .Values.insightsEntry }}
+              value: {{ .Values.insightsEntry }}
           volumeMounts:
             - name: script
               mountPath: /script
