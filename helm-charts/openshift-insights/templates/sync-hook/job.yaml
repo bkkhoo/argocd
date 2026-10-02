@@ -1,0 +1,38 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: insights-sync-hook
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
+spec:
+  activeDeadlineSeconds: 600      # max duration the job is allowed to run
+  template:
+    spec:
+      containers:
+        - name: disable-insights
+          image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - /script/disable-insights.sh
+          env:
+            - name: INSIGHTS_ENTRY
+            - value: {{ .Values.insightsEntry }}
+          volumeMounts:
+            - name: script
+              mountPath: /script
+      volumes:
+        - name: script
+          configMap:
+            name: disable-insights
+            defaultMode: 0755
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: insights-sync-hook
+      terminationGracePeriodSeconds: 30
+...

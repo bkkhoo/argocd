@@ -1,0 +1,69 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= OpenShift Insights
+
+This Helm chart disables OpenShift Insights remote health reporting by removing the `cloud.openshift.com` entry from the `pull-secret` Secret in the `openshift-config` namespace.
+
+Customers can opt out of remote health and usage data reporting. Red Hat strongly recommends leaving health and usage reporting enabled for pre-production and test clusters even if it is necessary to opt out for production clusters. This allows Red Hat to proactively monitor qualifying OpenShift Container Platform environments and react more rapidly to product issues.
+
+Some of the consequences of opting out of connected clusters are:
+
+- Red Hat will not be able to monitor the success of product upgrades or the health of the clusters without a support case being opened.
+- Red Hat will not be able to use configuration data to better triage customer support cases and identify which configurations customers find important.
+- OpenShift Cluster Manager will not show data about the clusters, including health and usage information.
+- Subscription entitlement information must be manually entered via `console.redhat.com` without the benefit of automatic usage reporting.
+
+[NOTE]
+====
+
+- After reporting health and usage data has been disabled, manually register the cluster on the link:https://console.redhat.com/openshift/register[Red Hat Hybrid Cloud Console].
+- Use the following command to retrieve the cluster ID:
++
+[source,bash]
+----
+oc get clusterversions.config.openshift.io version -o jsonpath="{.spec.clusterID}"
+----
+====
+
+== Installing the Chart
+
+To install the chart:
+
+[source,bash]
+----
+helm install --name openshift-insights helm-chart/openshift-insights
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| namespace
+| disable-insights
+| The namespace to deploy the resources.
+
+| syncHookImage.name
+| registry.redhat.io/openshift4/ose-tools-rhel9
+| The container image name to use for ArgoCD Sync Hook job.
+
+| syncHookImage.tag
+| v4.20
+| The container image tag to use for ArgoCD Sync Hook job.
+|===
+
+== References
+
+- https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/support/remote-health-monitoring-with-connected-clusters#insights-operator-new-pull-secret_remote-health-reporting
+- https://manuvaldi.github.io/openshift-disconnected-workshop/openshift-disconnected-workshop/08-Insights-and-Telemetry.html

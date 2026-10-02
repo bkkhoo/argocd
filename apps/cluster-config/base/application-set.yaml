@@ -62,9 +62,13 @@ spec:
         - repoURL: https://github.com/bkkhoo/argocd.git      # disable self provisioner
           targetRevision: main
           path: kustomize-deployments/self-provisioner/base
-        - repoURL: https://github.com/bkkhoo/argocd.git      # disable openshift insights and telemetry services
+        - repoURL: https://github.com/bkkhoo/argocd.git      # disable openshift insights remote health reporting
           targetRevision: main
-          path: kustomize-deployments/openshift-insights/base
+          path: helm-charts/openshift-insights
+          helm:
+            valuesObject:
+              syncHookImage:
+                tag: 'v{{ or (index .metadata.labels "openshiftVersion-major-minor") "4.20" }}'
         - repoURL: https://github.com/bkkhoo/argocd.git      # openshift samples operator managementState=Removed
           targetRevision: main
           path: kustomize-deployments/openshift-samples/base
