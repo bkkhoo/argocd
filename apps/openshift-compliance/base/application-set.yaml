@@ -36,7 +36,7 @@ spec:
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: helm-charts/openshift-compliance/
+        path: helm-charts/openshift-compliance
         helm:
           valuesObject:
             complianceScan:

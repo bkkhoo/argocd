@@ -1,0 +1,27 @@
+---
+namespace: openshift-pipelines
+profile: all                # all, basic, lite
+addon:
+  pipelineTemplates: true
+  resolverTasks: true
+  communityResolverTasks: false
+  resolverStepActions: true
+pipeline:
+  await-sidecar-readiness: true
+  disable-creds-init: true
+  enable-custom-tasks: true
+  performance:
+    replicas: 3
+    threads-per-controller: 16
+    kube-api-qps: 25
+    kube-api-burst: 50
+result:
+  retention:
+    default: "7d"
+    failed: "14d"
+  performance:
+    replicas: 2
+tektonPruner:
+  successfulHistoryLimit: 5
+  failedHistoryLimit: 5
+...

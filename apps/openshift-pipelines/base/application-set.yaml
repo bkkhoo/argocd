@@ -36,7 +36,7 @@ spec:
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: kustomize-deployments/openshift-pipelines/base/
+        path: helm-charts/openshift-pipelines
       destination:
         server: "{{ server }}"
       syncPolicy:

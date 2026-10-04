@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "openshift-pipeline helm chart values schema",
+  "description": "configuration values for openshift-pipeline helm chart",
+  "type": "object",
+  "properties": {
+    "namespace": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "string",
+      "enum": ["all", "basic", "lite"]
+    },
+    "addon": {
+      "type": "object",
+      "properties": {
+        "communityResolverTasks": {
+          "type": "boolean"
+        },
+        "pipelineTemplates": {
+          "type": "boolean"
+        },
+        "resolverStepActions": {
+          "type": "boolean"
+        },
+        "resolverTasks": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pipeline": {
+      "type": "object",
+      "properties": {
+        "await-sidecar-readiness": {
+          "type": "boolean"
+        },
+        "disable-creds-init": {
+          "type": "boolean"
+        },
+        "enable-custom-tasks": {
+          "type": "boolean"
+        },
+        "performance": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": "integer",
+              "minimum": 2
+            },
+            "threads-per-controller": {
+              "type": "integer",
+              "minimum": 2
+            },
+            "kube-api-qps": {
+              "type": "integer",
+              "minimum": 5
+            },
+            "kube-api-burst": {
+              "type": "integer",
+              "minimum": 10
+            }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "retention": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "string",
+              "pattern": "^[0-9]+[hd]$"
+            },
+            "failed": {
+              "type": "string",
+              "pattern": "^[0-9]+[hd]$"
+            }
+          }
+        },
+        "performance": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 10
+            }
+          }
+        }
+      }
+    },
+    "tektonPruner": {
+      "type": "object",
+      "properties": {
+        "failedHistoryLimit": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "successfulHistoryLimit": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

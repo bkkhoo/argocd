@@ -36,7 +36,7 @@ spec:
       source:
         repoURL: https://github.com/bkkhoo/argocd.git
         targetRevision: main
-        path: kustomize-deployments/openshift-web-terminal/base/
+        path: kustomize-deployments/openshift-web-terminal/base
       destination:
         server: "{{ server }}"
         namespace: openshift-operators

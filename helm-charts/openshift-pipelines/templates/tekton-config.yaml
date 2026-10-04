@@ -1,0 +1,77 @@
+{{- $randomHour := substr 0 1 (seq 0 6 | nospace | shuffle) }}
+{{- $randomMinute := mod (randNumeric 2 | atoi) 59 }}
+{{- if gt (add .Values.tektonPruner.successfulHistoryLimit .Values.tektonPruner.failedHistoryLimit) 100 }}
+{{- fail "The sum of tektonPruner.successfulHistoryLimit and tektonPruner.failedHistoryLimit must be less than 100" }}
+{{- end }}
+---
+apiVersion: operator.tekton.dev/v1alpha1
+kind: TektonConfig
+metadata:
+  name: config
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  targetNamespace: {{ .Values.namespace }}
+  profile: {{ .Values.profile }}
+  addon:
+    params:
+      - name: pipelineTemplates
+        value: "{{ .Values.addon.pipelineTemplates }}"
+      - name: resolverTasks
+        value: "{{ or .Values.addon.resolverTasks .Values.addon.pipelineTemplates }}"
+      - name: communityResolverTasks
+        value: "{{ .Values.addon.communityResolverTasks }}"
+      - name: resolverStepActions
+        value: "{{ .Values.addon.resolverStepActions }}"
+  dashboard:
+    readonly: false
+  pipeline:
+    await-sidecar-readiness: {{ index .Values.pipeline "await-sidecar-readiness" }}
+    disable-creds-init: {{ index .Values.pipeline "disable-creds-init" }}
+    disable-home-env-overwrite: true
+    default-service-account: pipeline
+    disable-working-directory-overwrite: true
+    enable-api-fields: "beta"
+    enable-custom-tasks: {{ index .Values.pipeline "enable-custom-tasks" }}
+    enable-provenance-in-status: true
+    metrics.pipelinerun.duration-type: histogram
+    metrics.pipelinerun.level: pipeline
+    metrics.taskrun.duration-type: histogram
+    metrics.taskrun.level: task
+    performance:
+      disable-ha: false
+      replicas: {{ .Values.pipeline.performance.replicas }}
+      threads-per-controller: {{ index .Values.pipeline.performance "threads-per-controller" }}
+      kube-api-qps: {{ index .Values.pipeline.performance "kube-api-qps" }}
+      kube-api-burst: {{ index .Values.pipeline.performance "kube-api-burst" }}
+  result:
+    disabled: false
+    is_external_db: false
+    route_tls_termination: reencrypt
+    performance:
+      disable-ha: false
+      statefulset-ordinals: true
+      replicas: {{ .Values.result.performance.replicas }}
+    options:
+      configMaps:
+        config-results-retention-policy:
+          data:
+            runAt: "{{ $randomMinute }} {{ $randomHour }} * * *"
+            defaultRetention: "{{ .Values.result.retention.default }}"
+            policies: |
+              - name: "retain-critical-failures"
+                selector:
+                  matchStatuses:
+                    - Failed
+                retention: "{{ .Values.result.retention.failed }}"
+  pruner:
+    disabled: true
+  tektonpruner:
+    disabled: false
+    global-config:
+      enforcedConfigLevel: global
+      ttlSecondsAfterFinished: 10800
+      historyLimit: {{ add .Values.tektonPruner.successfulHistoryLimit .Values.tektonPruner.failedHistoryLimit }}
+      successfulHistoryLimit: {{ .Values.tektonPruner.successfulHistoryLimit }}
+      failedHistoryLimit: {{ .Values.tektonPruner.failedHistoryLimit }}
+...

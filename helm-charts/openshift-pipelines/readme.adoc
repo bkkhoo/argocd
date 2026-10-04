@@ -1,0 +1,185 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= OpenShift Serverless
+
+This Helm chart deploys OpenShift Pipelines. OpenShift Pipelines is an open-source, Kubernetes-native framework for building Continuous Integration and Continuous Delivery (CI/CD) pipelines. It automates and standardizes application builds, tests, and deployments across Kubernetes environments.
+
+== Installing the Chart
+
+To install the chart:
+
+[source,bash]
+----
+helm install --name openshift-pipelines helm-chart/openshift-pipelines
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete openshift-pipelines
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| namespace
+| openshift-pipelines
+| Namespace to deploy the OpenShift Pipelines components.
+
+| profile
+| all
+a| This allows user to choose which components to install on the cluster:
+
+- `all`: Installs all components, including `TektonPipeline`, `TektonTrigger`, `TektonResult`, and `TektonChain`.
+- `basic`: Installs only `TektonPipeline` and `TektonTrigger` components.
+- `lite`: Installs only the `TektonPipeline` component for minimal pipeline execution.
+
+| addon.pipelineTemplates
+| true
+| Enable/Disable the installation and update of pre-configured reference pipelines for common application stacks.
+
+| addon.resolverTasks
+| true
+| Enable/Disable the installation and update of a set of out-of-the-box, cluster-scoped `Task` resources maintained by Red Hat.
+
+| addon.communityResolverTasks
+| false
+| Enable/Disable the installation and update of community-contributed `Task` resources from the openshift-pipelines/tektoncd-catalog into `openshift-pipelines`.
+
+| addon.resolverStepActions
+| true
+| Enable/Disable the installation and update of `StepAction` resources into `openshift-pipelines`. A `StepAction` is a reusable, scriptable unit of work that a Step can reference via `step.ref`.
+
+| pipeline.await-sidecar-readiness
+| true
+| Controls whether the Tekton controller waits for sidecar containers to be running before starting the first step of a TaskRun. Sidecars to provide auxiliary support to the primary step containers, such as running logging daemons, service mesh proxy, or services that update files on shared volumes. Setting this to `false` can lead to unexpected behavior with tasks using sidecars or in clusters with injected sidecars.
+
+| pipeline.enable-custom-tasks
+| true
+| Controls whether the `PipelineTasks` can reference custom task controllers via taskRef (with a custom apiVersion/kind) or embed a custom task spec inline using taskSpec with customSpec.
+
+| pipeline.disable-creds-init
+| true
+a| Controls whether Tekton's built-in credential initialization is active:
+
+- `true`: Tekton skips `creds-init` container initialization entirely; credentials must be supplied explicitly, e.g. through Workspaces, environment variables, or volumes.
+- `false`: Tekton inspects the pod's service account, checks for matching credentials (e.g., .dockerconfigjson or SSH keys), and mounts them automatically into steps.
+
+| pipeline.performance.replicas
+| 3
+| Defines the number of pods created to process controller operations in High Availability (HA) mode.
+
+| pipeline.performance.threads-per-controller
+| 16
+| Defines the number of threads (goroutines) the controller uses to process its work queue.
+
+| pipeline.performance.kube-api-qps
+| 25
+| Defines the maximum queries per second allowed to the Kubernetes API server. This value is multiplied by 2 internally by the controller.
+
+| pipeline.performance.kube-api-burst
+| 50
+| Defines the maximum burst for throttling API requests to the Kubernetes API server. This value is multiplied by 2 internally by the controller.
+
+| result.retention.default
+| 7d
+| Defines the fallback retention period for results when no specific policy matches. It accepts a number (days) or a duration string (e.g., "30d", "24h").
+
+
+| result.retention.failed
+| 14d
+| Defines the fallback retention period for results when no specific policy matches. It accepts a number (days) or a duration string (e.g., "30d", "24h").
+
+
+| result.performance.replicas
+| 2
+| Controls the number of replicas for the Tekton Results Watcher Controller. Note that the chart enables StatefulSet Ordinals mode for the Tekton Results Watcher Controller to ensure that the load is evenly distributed across replicas, and the number of buckets is enforced to match the number of replicas.
+
+| tektonPruner.successfulHistoryLimit
+| 5
+| Set maximum number of successful runs to retain.
+
+| tektonPruner.failedHistoryLimit
+| 5
+| Set maximum number of failed runs to retain.
+|===
+
+== Additional Notes on TektonConfig
+
+=== Addon
+
+- Enabling `pipelineTemplates` requires `resolverTasks` to be set to `true` because the templates reference standard cluster build tasks.
+- The chart automatically set `resolverTasks` to `true` if `pipelineTemplates` is set to `true`.
+- `resolverTasks` is a replacement for `clusterTasks`, which has been deprecated because of security risks, lack of built-in versioning, and management difficulties.
+- `communityResolverTasks` is a replacement for `communityClusterTasks`, which has been deprecated because of security risks, lack of built-in versioning, and management difficulties.
+
+=== Pipeline Controller Sizing guidelines
+
+[cols="2,1,1,1", options="header"]
+|===
+| Scale
+| threads-per-controller
+| kube-api-qps
+| kube-api-burst
+
+| Small (< 100 runs/day)
+| 2 (default)
+| 5
+| 10
+
+| Medium (100–1000)
+| 16
+| 25
+| 50
+
+| Large (> 1000)
+| 32
+| 50
+| 100
+
+| High-concurrency
+| 64
+| 100
+| 200
+|===
+
+[NOTE]
+====
+- Each goroutine pulls work items (`PipelineRun`/`TaskRun` reconciliations) from the pipeline controller's work queue.
+- A higher `threads-per-controller` value results in more parallel reconciliation, improving throughput under load.
+- More parallel reconciliation increases memory usage and could cause the controller pods to be OOMKilled when they are pushed to the limit.
+====
+
+=== Tekton Results
+
+Tekton Results is a specialized service designed for long-term storage, grouping, and querying of execution data, decoupling historical record-keeping from the real-time Pipeline controller. It alleviates the performance overhead of storing CI/CD history in Kubernetes etcd by offloading completed `PipelineRun` and `TaskRun` data to a dedicated database backend.
+
+The chart configures Tekton Results with an internal PostgreSQL database for persistent storage. It defaults to a 1Gi `PersistentVolumeClaim`, which is typically sufficient for basic environments and accommodates roughly 100,000 pipeline runs.
+
+Data retention is managed by the Retention Policy Agent, which prunes old records according to configurable policies:
+
+- Failed runs: Retained for the duration specified by `result.retention.failed` Helm value (default: 14 days).
+- Fallback retention: Specified by `result.retention.default` Helm value (default: 7 days).
+- Pruning: Handled by a CronJob scheduled at a random time between 12:00 AM and 7:00 AM.
+
+=== Pruner and TektonPruner
+
+The chart enables the event-driven **Tekton Pruner**, which uses a Kubernetes controller to automatically clean up completed `PipelineRun` and `TaskRun` resources based on configurable time-based (TTL) or history-based policies. The legacy CronJob-based **Pruner** is disabled, as both pruners cannot be enabled simultaneously.
+
+The chart adds `tektonPruner.successfulHistoryLimit` and `tektonPruner.failedHistoryLimit` and use it to configure `historyLimit` which must be equal to or less than 100.
