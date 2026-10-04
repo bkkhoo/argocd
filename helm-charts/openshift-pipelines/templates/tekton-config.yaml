@@ -28,9 +28,7 @@ spec:
   pipeline:
     await-sidecar-readiness: {{ index .Values.pipeline "await-sidecar-readiness" }}
     disable-creds-init: {{ index .Values.pipeline "disable-creds-init" }}
-    disable-home-env-overwrite: true
     default-service-account: pipeline
-    disable-working-directory-overwrite: true
     enable-api-fields: "beta"
     enable-custom-tasks: {{ index .Values.pipeline "enable-custom-tasks" }}
     enable-provenance-in-status: true
