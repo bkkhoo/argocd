@@ -10,6 +10,7 @@ metadata:
   name: config
   annotations:
     argocd.argoproj.io/sync-wave: "15"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   targetNamespace: {{ .Values.namespace }}
   profile: {{ .Values.profile }}
