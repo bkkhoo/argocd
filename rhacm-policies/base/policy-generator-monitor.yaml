@@ -72,6 +72,12 @@ policies:
     manifests:
       - path: monitor/rhacs-secured-cluster-status.yaml
 
+  - name: monitor-tekton-config-status
+    description: monitor OpenShift Pipelines components status are ready
+    complianceType: musthave
+    manifests:
+      - path: monitor/tekton-config-status.yaml
+
   - name: monitor-role-with-wildcard-permissions
     description: detect namespaced Role with wildcard permissions
     complianceType: mustnothave

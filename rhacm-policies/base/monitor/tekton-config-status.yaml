@@ -1,0 +1,12 @@
+---
+apiVersion: operator.tekton.dev/v1alpha1
+kind: TektonConfig
+metadata:
+  name: config
+status:
+  conditions:
+    - type: ComponentsReady
+      status: "True"
+    - type: Ready
+      status: "True"
+...

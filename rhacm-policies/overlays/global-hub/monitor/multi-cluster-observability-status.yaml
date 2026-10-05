@@ -1,0 +1,11 @@
+---
+apiVersion: observability.open-cluster-management.io/v1beta2
+kind: MultiClusterObservability
+metadata:
+  name: observability
+status:
+  conditions:
+    - type: Ready
+      status: 'True'
+      reason: Ready
+...

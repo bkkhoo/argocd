@@ -1,0 +1,19 @@
+---
+apiVersion: search.open-cluster-management.io/v1alpha1
+kind: Search
+metadata:
+  name: search-v2-operator
+  namespace: open-cluster-management
+status:
+  conditions:
+  - type: Ready--search-postgres
+    status: "True"
+  - type: Ready--search-collector
+    status: "True"
+  - type: Ready--search-api
+    status: "True"
+  - type: Ready--search-indexer
+    status: "True"
+  - type: GlobalSearchReady
+    status: "True"
+...

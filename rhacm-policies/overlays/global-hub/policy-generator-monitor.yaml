@@ -51,6 +51,13 @@ policies:
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
+  - name: monitor-multi-cluster-hub-status
+    description: monitor multi cluster hub on global hub and managed hubs
+    complianceType: musthave
+    severity: high
+    manifests:
+      - path: monitor/multi-cluster-hub-status.yaml
+
   - name: monitor-managed-hubs-local-cluster
     description: monitor managed hub with local-cluster; no managed hub should have local-cluster
     complianceType: mustnothave
@@ -66,6 +73,37 @@ policies:
       - gh-monitor-managed-hubs
     manifests:
       - path: monitor/multicluster-global-hub-agent-status.yaml
+
+  - name: monitor-multi-cluster-observability-status
+    description: monitor multi cluster observability on global hub and managed hubs
+    complianceType: musthave
+    severity: high
+    manifests:
+      - path: monitor/multi-cluster-observability-status.yaml
+
+  - name: monitor-global-hub-kafka-status
+    description: monitor kafka on global hub
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-local-cluster
+    manifests:
+      - path: monitor/global-hub-kafka-status.yaml
+
+  - name: monitor-global-search-status
+    description: monitor global search on global hub
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-local-cluster
+    manifests:
+      - path: monitor/global-search-status.yaml
+
+  - name: monitor-search-status
+    description: monitor search on managed hubs
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-managed-hubs
+    manifests:
+      - path: monitor/global-search-status.yaml
 
   - name: monitor-openshift-gitops
     description: monitor openshift gitops deployments

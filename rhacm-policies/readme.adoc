@@ -16,113 +16,96 @@ RHACM governance policies, the polices are deployed to **global hub** and **mana
 
 These policies are common to both global hub and managed hubs.
 
-[cols="2,1,3,3", options="header"]
+[cols="2,1,3", options="header"]
 |===
-| Policy | Remediation Action | Placement | Description
+| Policy | Remediation Action | Description
 
 | config-remove-kubeadmin
 | Enforce
-| All OpenShift clusters.
 | Ensure `kubeadmin` user is removed.
 
 | config-rhacs-secured-cluster
 | Enforce
-| All OpenShift clusters, except `local-cluster` and cluster with `managed-hub` label.
 | Deploy RHACS operator, SecuredCluster and cluster registration secret.
 
 | config-openshift-logging-http-secret
 | Enforce
-| All OpenShift clusters, except hub clusters (`local-cluster` and cluster with `managed-hub` label).
 | Copy OpenShift logging HTTP endpoint authentication secrets to all clusters.
 
 | config-metallb-bgp-password-secret
 | Enforce
-| All clusters with `metallb` label.
 | Copy MetalLB BGP password secret from managed hub to managed clusters.
 
 | config-loki-stack-secret
 | Enforce
-| All OpenShift clusters.
 | Configure Loki stack secret, if ODF ObjectBucketClaim Secret and ConfigMap exist.
 
 | monitor-cluster-operators
 | Inform
-| All OpenShift clusters.
 | Monitor cluster operators; status should be `Available=true`, `Degraded=false`.
 
 | monitor-nodes
 | Inform
-| All OpenShift clusters.
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
 
 | monitor-control-plane-node-schedulable
 | Inform
-| All OpenShift clusters.
 | Monitor control plane nodes that are schedulable.
 
 | monitor-etcd-encryption
 | Inform
-| All OpenShift clusters.
 | Verify that ETCD encryption has completed.
 
 | monitor-cluster-log-forwarder
 | Inform
-| All OpenShift clusters.
 | Monitor cluster log forwarder status is ready.
 
 | monitor-rhacs-secured-clusters
 | Inform
-| All OpenShift clusters.
 | Monitor RHACS SecuredCluster deployments.
+
+| monitor-tekton-config-status
+| Inform
+| Monitor OpenShift Pipelines components status are ready
 
 | monitor-role-with-wildcard-permissions
 | Inform
-| All OpenShift clusters.
 | Detect namespaced Role with wildcard permissions (`apiGroups: ["*"]`, `resources: ["*"]`, `verbs: ["*"]`).
 
 | monitor-privileges-scc-binding
 | Inform
-| All OpenShift clusters.
 | Monitor for namespaces with RoleBindings that grant access to `privileged` Security Context Constraint.
 
 | monitor-terminating-namespaces
 | Inform
-| All OpenShift clusters.
 | Monitor for namespaces stuck in the Terminating state.
 
 | monitor-install-plans
 | Inform
-| All OpenShift clusters.
 | Monitor InstallPlans that are pending approval.
 
 | monitor-pod-using-default-service-account
 | Inform
-| All OpenShift clusters.
 | Monitor pods using the default service account.
 
 | monitor-pod-with-more-than-200-restarts
 | Inform
-| All OpenShift clusters.
 | Monitor pods with more than 200 restarts.
 
 | monitor-container-oom-killed
 | Inform
-| All OpenShift clusters.
 | Monitor for containers that exceed their defined memory limit and are killed by the Linux kernel's Out-Of-Memory killer (`OOMKilled`).
 
 | monitor-container-crash-loop-backoff
 | Inform
-| All OpenShift clusters.
 | Monitor for containers that are repeatedly crashing and restarting (`CrashLoopBackOff`).
 
 | monitor-container-image-pull-backoff
 | Inform
-| All OpenShift clusters.
 | Monitor for pods where the kubelet repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
 
 | monitor-persistent-volume
 | Inform
-| All OpenShift clusters.
 a| Monitor PersistentVolume (PV) state:
 
 - `Failed`: PV failed to be correctly recycled or deleted after being released from a claim.
@@ -130,32 +113,26 @@ a| Monitor PersistentVolume (PV) state:
 
 | monitor-persistent-volume-claim
 | Inform
-| All OpenShift clusters.
 | Monitor PersistentVolumeClaims that are not in `Bound` state.
 
 | monitor-default-storage-class
 | Inform
-| All OpenShift clusters.
 | Monitor to ensure only one default StorageClass.
 
 | monitor-operator-group
 | Inform
-| All OpenShift clusters.
 | Monitor namespaces that have more than one OperatorGroup.
 
 | monitor-failed-cronjob
 | Inform
-| All OpenShift clusters.
 | Monitor CronJobs  that failed their last scheduled run.
 
 | monitor-openshift-route
 | Inform
-| All OpenShift clusters.
 | Monitor OpenShift routes that are not admitted, such as when `spec.host` is already claimed by another route in the cluster.
 
 | certificate-status
 | Inform
-| All OpenShift clusters.
 | Monitor TLS certificates of namespaces (openshift-gitops, openshift-ingress, openshift-ingress-operator, openshift-pipelines, stackrox); triggers a violation if a certificate expires in 15 days or fewer.
 |===
 
@@ -163,9 +140,9 @@ a| Monitor PersistentVolume (PV) state:
 
 These policies are for global hub only.
 
-[cols="2,1,3,3", options="header"]
+[cols="2,1,3", options="header"]
 |===
-| Policy | Remediation Action | Placement | Description
+| Policy | Remediation Action | Description
 
 // | 00-monitor-policy-report
 // | Inform
@@ -174,47 +151,54 @@ These policies are for global hub only.
 
 | config-sync-secrets-dev-hub
 | Enforce
-| All dev (`env=dev`) hub clusters (`managed-hub`).
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: dev` labels) to managed hubs.
 
 | config-sync-secrets-uat-hub
 | Enforce
-| All uat (`env=uat`) hub clusters (`managed-hub`).
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: uat` labels) to managed hubs.
 
 | config-sync-secrets-prod-hub
 | Enforce
-| All prod (`env=prod`) hub clusters (`global-hub` or `managed-hub`).
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: prod` labels) to managed hubs.
+
+| multi-cluster-hub-status
+| Inform
+| Monitor multi cluster hub on global hub and managed hubs
 
 | monitor-managed-clusters
 | Inform
-| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor ManagedCluster Availability on global hub and managed hubs.
 
 | monitor-managed-hubs-local-cluster
 | Inform
-| All OpenShift clusters with `managed-hub` label.
 | Monitor managed hub with `local-cluster`; no managed hub should have `local-cluster`.
 
 | monitor-multicluster-global-hub-agent
 | Inform
-| All clusters with `managed-hub` label.
 | Monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster.
+
+| multi-cluster-observability-status
+| Inform
+| Monitor multi cluster observability on global hub and managed hubs.
+
+| global-search-status
+| Inform
+| Monitor global search on global hub.
+
+| search-status
+| Inform
+| Monitor search on managed hubs.
 
 | monitor-openshift-gitops
 | Inform
-| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor OpenShift GitOps deployments.
 
 | monitor-argocd-application-set
 | Inform
-| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor ArgoCD ApplicationSets.
 
 | monitor-rhacs-central
 | Inform
-| `local-cluster` and all OpenShift clusters with `managed-hub` label.
 | Monitor RHACS Central and SecuredClusters deployments.
 |===
 
@@ -222,8 +206,8 @@ These policies are for global hub only.
 
 These policies are for managed hubs only.
 
-[cols="2,1,3,3", options="header"]
+[cols="2,1,3", options="header"]
 |===
-| Policy | Remediation Action | Placement | Description
+| Policy | Remediation Action | Description
 
 |===

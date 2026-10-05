@@ -1,0 +1,15 @@
+---
+apiVersion: operator.open-cluster-management.io/v1
+kind: MultiClusterHub
+metadata:
+  name: multiclusterhub
+  namespace: open-cluster-management
+status:
+  conditions:
+    - type: Complete
+      status: "True"
+      reason: ComponentsAvailable
+  mceVersionCompliance:
+    isCompliant: true
+  phase: Running
+...

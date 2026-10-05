@@ -1,0 +1,29 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: multicluster-global-hub
+status:
+  conditions:
+    - type: Ready
+      status: "True"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  namespace: multicluster-global-hub
+status:
+  conditions:
+    - type: Ready
+      status: "True"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  namespace: multicluster-global-hub
+status:
+  conditions:
+    - type: Ready
+      status: "True"
+...
