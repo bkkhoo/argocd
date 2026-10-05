@@ -1,0 +1,29 @@
+---
+apiVersion: operator.open-cluster-management.io/v1alpha4
+kind: MulticlusterGlobalHub
+metadata:
+  name: multiclusterglobalhub
+  namespace: multicluster-global-hub
+status:
+  components:
+    kafka:
+      type: Available
+      status: "True"
+    multicluster-global-hub-grafana:
+      type: Available
+      status: "True"
+    multicluster-global-hub-manager:
+      type: Available
+      status: "True"
+    multicluster-global-hub-postgresql:
+      type: Available
+      status: "True"
+  conditions:
+    - type: Ready
+      status: "True"
+    - type: ACMResourceReady
+      status: "True"
+    - type: Database
+      status: "True"
+  phase: Running
+...

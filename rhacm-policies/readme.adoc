@@ -169,23 +169,31 @@ These policies are for global hub only.
 | Inform
 | Monitor ManagedCluster Availability on global hub and managed hubs.
 
+| monitor-multi-cluster-hub-status
+| Inform
+| Monitor MultiClusterHub on global hub and managed hubs.
+
 | monitor-managed-hubs-local-cluster
 | Inform
-| Monitor managed hub with `local-cluster`; no managed hub should have `local-cluster`.
+| Monitor managed hub with `local-cluster`, no managed hub should have `local-cluster`.
+
+| monitor-global-hub
+| Inform
+| Monitor MulticlusterGlobalHub components.
 
 | monitor-multicluster-global-hub-agent
 | Inform
 | Monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster.
 
-| multi-cluster-observability-status
+| monitor-multi-cluster-observability-status
 | Inform
 | Monitor multi cluster observability on global hub and managed hubs.
 
-| global-search-status
+| monitor-global-search-status
 | Inform
 | Monitor global search on global hub.
 
-| search-status
+| monitor-search-status
 | Inform
 | Monitor search on managed hubs.
 

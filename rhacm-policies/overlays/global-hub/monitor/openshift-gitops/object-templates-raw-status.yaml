@@ -43,9 +43,7 @@ object-templates-raw: |
   {{- end }}
   {{- if $argocd.spec.ha.enabled }}
     {{- $redis_ss := lookup "apps/v1" "StatefulSet" "openshift-gitops" "openshift-gitops-application-controller" }}
-    {{- $replicas := $redis_ss.status.replicas }}
-    {{- $ready_replicas := $redis_ss.status.readyReplicas }}
-    {{- if ne $replicas $ready_replicas }}
+    {{- if ne $redis_ss.status.replicas $redis_ss.status.readyReplicas }}
   - complianceType: mustnothave
     objectDefinition:
       apiVersion: apps/v1
@@ -54,8 +52,11 @@ object-templates-raw: |
         name: openshift-gitops-redis-ha-server
         namespace: openshift-gitops
       status:
-        readyReplicas: {{ $ready_replicas }}
-        replicas: {{ $replicas }}
+        availableReplicas: {{ $redis_ss.status.availableReplicas }}
+        currentReplicas: {{ $redis_ss.status.currentReplicas }}
+        readyReplicas: {{ $redis_ss.status.readyReplicas }}
+        replicas: {{ $redis_ss.status.replicas }}
+        updatedReplicas: {{ $redis_ss.status.updatedReplicas }}
     {{- end }}
   {{- end }}
 ...

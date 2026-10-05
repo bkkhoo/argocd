@@ -66,8 +66,18 @@ policies:
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
 
+  - name: monitor-global-hub
+    description: monitor multicluster global hub components
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-local-cluster
+    manifests:
+      - path: monitor/multicluster-global-hub/multicluster-global-hub-status.yaml
+      - path: monitor/multicluster-global-hub/kafka-status.yaml
+      - path: monitor/multicluster-global-hub/postgresql-stateful-set-status.yaml
+
   - name: monitor-multicluster-global-hub-agent
-    description: monitor multicluster global hub agent
+    description: monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
       - gh-monitor-managed-hubs
@@ -80,14 +90,6 @@ policies:
     severity: high
     manifests:
       - path: monitor/multi-cluster-observability-status.yaml
-
-  - name: monitor-global-hub-kafka-status
-    description: monitor kafka on global hub
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - gh-monitor-local-cluster
-    manifests:
-      - path: monitor/global-hub-kafka-status.yaml
 
   - name: monitor-global-search-status
     description: monitor global search on global hub

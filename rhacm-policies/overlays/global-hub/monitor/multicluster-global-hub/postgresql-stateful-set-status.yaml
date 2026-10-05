@@ -1,0 +1,21 @@
+# statefulSets status:
+#   violation if status.readyReplicas != status.replicas
+---
+object-templates-raw: |
+  {{- $sql_ss := lookup "apps/v1" "StatefulSet" "multicluster-global-hub" "multicluster-global-hub-postgresql" }}
+  {{- if ne $sql_ss.status.replicas $sql_ss.status.readyReplicas }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: multicluster-global-hub-postgresql
+        namespace: multicluster-global-hub
+      status:
+        availableReplicas: {{ $sql_ss.status.availableReplicas }}
+        currentReplicas: {{ $sql_ss.status.currentReplicas }}
+        readyReplicas: {{ $sql_ss.status.readyReplicas }}
+        replicas: {{ $sql_ss.status.replicas }}
+        updatedReplicas: {{ $sql_ss.status.updatedReplicas }}
+  {{- end }}
+...
