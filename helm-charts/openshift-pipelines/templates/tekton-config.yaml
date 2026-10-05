@@ -51,6 +51,7 @@ spec:
       disable-ha: false
       statefulset-ordinals: true
       replicas: {{ .Values.result.performance.replicas }}
+      buckets: {{ .Values.result.performance.replicas }}
     options:
       configMaps:
         config-results-retention-policy:

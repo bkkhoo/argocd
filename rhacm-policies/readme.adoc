@@ -135,6 +135,14 @@ a| Monitor PersistentVolume (PV) state:
 | Inform
 | Monitor OpenShift routes that are not admitted, such as when `spec.host` is already claimed by another route in the cluster.
 
+| monitor-metallb-status
+| Inform
+| Monitor metallb status.
+
+| monitor-metallb-nearly-depleted-ip-address-pool
+| Inform
+| Monitor metallb IpAddressPools that are 80% or more assigned.
+
 | certificate-status
 | Inform
 | Monitor TLS certificates of namespaces (openshift-gitops, openshift-ingress, openshift-ingress-operator, openshift-pipelines, stackrox); triggers a violation if a certificate expires in 15 days or fewer.

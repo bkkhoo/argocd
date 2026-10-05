@@ -79,7 +79,7 @@ policies:
     policySets:           # override policyDefaults.policySets
       - gh-monitor-managed-hubs
     manifests:
-      - path: monitor/global-search-status.yaml
+      - path: monitor/search-status.yaml
 
   - name: monitor-global-hub
     description: monitor multicluster global hub components

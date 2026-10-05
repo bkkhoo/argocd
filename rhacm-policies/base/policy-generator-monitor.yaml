@@ -29,6 +29,13 @@ policySets:
             operator: In
             values:
               - OpenShift
+  - name: base-monitor-metallb
+    description: monitoring policies for clusters with metallb deployed
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: metallb
+            operator: Exists
 placementBindingDefaults:
   name: base-monitor-binding
 
@@ -211,4 +218,20 @@ policies:
         - "*"
     manifests:
       - path: monitor/route-status.yaml
+
+  - name: monitor-metallb-status
+    description: monitor metallb status
+    complianceType: musthave
+    policySets:         # override policyDefaults.policySets
+      - base-monitor-metallb
+    manifests:
+      - path: monitor/metallb/metallb-status.yaml
+      - path: monitor/metallb/frr-node-state.yaml
+
+  - name: monitor-metallb-nearly-depleted-ip-address-pool
+    description: monitor metallb ip address pools that are 80% or more assigned
+    policySets:         # override policyDefaults.policySets
+      - base-monitor-metallb
+    manifests:
+      - path: monitor/metallb/ip-address-pool.yaml
 ...

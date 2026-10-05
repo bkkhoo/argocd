@@ -1,6 +1,8 @@
 # flag pod with more than 200 restarts
+# using variable $restarts_threshold to make update easier
 ---
 object-templates-raw: |
+  {{- $restarts_threshold := 200 }}
   {{- $pods := dict }}
   {{- range (lookup "v1" "Pod" "" "").items }}
     {{- $namespace := .metadata.namespace }}
@@ -10,7 +12,7 @@ object-templates-raw: |
     {{- range $container_statuses }}
       {{- $restart_count = add $restart_count .restartCount }}
     {{- end }}
-    {{- if gt $restart_count 200 }}
+    {{- if gt $restart_count $restarts_threshold }}
   - complianceType: mustnothave
     objectDefinition:
       apiVersion: v1

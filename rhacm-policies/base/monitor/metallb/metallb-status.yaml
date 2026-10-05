@@ -1,0 +1,15 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: MetalLB
+metadata:
+  name: metallb
+  namespace: metallb-system
+status:
+  conditions:
+    - type: Available
+      status: "True"
+    - type: Progressing
+      status: "False"
+    - type: Degraded
+      status: "False"
+...

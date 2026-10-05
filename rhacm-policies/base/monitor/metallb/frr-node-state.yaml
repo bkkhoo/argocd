@@ -1,0 +1,22 @@
+---
+apiVersion: frrk8s.metallb.io/v1beta1
+kind: FRRNodeState
+status:
+  lastConversionResult: success
+  lastReloadResult: success
+...
+# object-templates-raw: |
+#   {{ range $node := (lookup "frrk8s.metallb.io/v1beta1" "FRRNodeState" "" "").items }}
+#   - complianceType: musthave
+#     objectDefinition:
+#       apiVersion: frrk8s.metallb.io/v1beta1
+#       kind: FRRNodeState
+#       metadata:
+#         name: {{ $node.metadata.name }}
+#       spec: {}
+#       status:
+#         lastConversionResult: success
+#         lastReloadResult: success
+#     {{ end }}
+#   {{ end }}
+# ...

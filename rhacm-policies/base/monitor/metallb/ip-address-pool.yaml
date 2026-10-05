@@ -1,0 +1,36 @@
+# flag if any ip address pool ipv4/ipv6 usage is greater than or equal to 80%
+# using variable $usage_threshold to make update easier
+---
+object-templates-raw: |
+  {{- $usage_threshold := 80 }}
+  {{ range $ip_pool := (lookup "metallb.io/v1beta1" "IPAddressPool" "metallb-system" "").items }}
+    {{- $total_ipv4 := (add $ip_pool.status.availableIPv4 $ip_pool.status.assignedIPv4) }}
+    {{- $total_ipv6 := (add $ip_pool.status.availableIPv6 $ip_pool.status.assignedIPv6) }}
+    {{- $ipv4_usage := 0 }}
+    {{- $ipv6_usage := 0 }}
+    {{- if gt $total_ipv4 0 }}
+      {{- $ipv4_usage = mulf (divf $ip_pool.status.assignedIPv4 $total_ipv4) 100 }}
+    {{ end }}
+    {{- if gt $total_ipv6 0 }}
+      {{- $ipv6_usage = (divf (mulf 100 $ip_pool.status.assignedIPv6) $total_ipv6) }}
+    {{ end }}
+    {{- if or (ge (float64 $ipv4_usage) (float64 $usage_threshold)) (ge (float64 $ipv6_usage) (float64 $usage_threshold)) }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: metallb.io/v1beta1
+      kind: IPAddressPool
+      metadata:
+        name: {{ $ip_pool.metadata.name }}
+        namespace: metallb-system
+        annotations:
+          ipv4-usage-threshold: "{{ $usage_threshold }}%"
+          ipv4-usage: "{{ $ipv4_usage | printf "%3.2f" }}%"
+          ipv6-usage-threshold: "{{ $usage_threshold }}%"
+          ipv6-usage: "{{ $ipv4_usage | printf "%3.2f" }}%"
+      spec:
+        {{ toYaml $ip_pool.spec | indent 6}}
+      status:
+        {{ toYaml $ip_pool.status | indent 6}}
+    {{ end }}
+  {{ end }}
+...
