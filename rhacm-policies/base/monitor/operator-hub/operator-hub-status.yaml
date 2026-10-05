@@ -1,0 +1,16 @@
+---
+apiVersion: config.openshift.io/v1
+kind: OperatorHub
+metadata:
+  name: cluster
+status:
+  sources:
+    - name: redhat-operators
+      status: Success
+    - name: certified-operators
+      status: Success
+    - name: community-operators
+      status: Success
+    - name: redhat-marketplace
+      status: Success
+...

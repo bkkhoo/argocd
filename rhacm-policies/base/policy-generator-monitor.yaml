@@ -45,6 +45,12 @@ policies:
     manifests:
       - path: monitor/node-status.yaml
 
+  - name: monitor-operator-hub
+    description: monitor operator hub and catalog sources
+    manifests:
+      - path: monitor/operator-hub/catalog-source-status.yaml
+      - path: monitor/operator-hub/operator-hub-status.yaml
+
   - name: monitor-control-plane-node-schedulable
     description: monitor control plane nodes that are schedulable
     complianceType: mustnothave

@@ -48,6 +48,10 @@ These policies are common to both global hub and managed hubs.
 | Inform
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
 
+| monitor-operator-hub
+| Inform
+| Monitor OperatorHub and CatalogSources.
+
 | monitor-control-plane-node-schedulable
 | Inform
 | Monitor control plane nodes that are schedulable.
@@ -177,6 +181,14 @@ These policies are for global hub only.
 | Inform
 | Monitor managed hub with `local-cluster`, no managed hub should have `local-cluster`.
 
+| monitor-multi-cluster-observability-status
+| Inform
+| Monitor multi cluster observability on global hub and managed hubs.
+
+| monitor-search-status
+| Inform
+| Monitor search on managed hubs.
+
 | monitor-global-hub
 | Inform
 | Monitor MulticlusterGlobalHub components.
@@ -185,17 +197,9 @@ These policies are for global hub only.
 | Inform
 | Monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster.
 
-| monitor-multi-cluster-observability-status
-| Inform
-| Monitor multi cluster observability on global hub and managed hubs.
-
 | monitor-global-search-status
 | Inform
 | Monitor global search on global hub.
-
-| monitor-search-status
-| Inform
-| Monitor search on managed hubs.
 
 | monitor-openshift-gitops
 | Inform

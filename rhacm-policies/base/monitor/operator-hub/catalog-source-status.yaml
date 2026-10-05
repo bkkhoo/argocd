@@ -1,0 +1,22 @@
+# status.connectionState.lastObservedState must be READY
+---
+object-templates-raw: |
+  {{ range $catalog := (lookup "operators.coreos.com/v1alpha1" "CatalogSource" "openshift-marketplace" "").items }}
+  - complianceType: musthave
+    objectDefinition:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: CatalogSource
+      metadata:
+        name: {{ $catalog.metadata.name }}
+        namespace: openshift-marketplace
+      spec:
+        {{ toYaml $catalog.spec | indent 6 }}
+      status:
+        connectionState:
+          address: {{ $catalog.status.connectionState.address }}
+          lastConnect: {{ $catalog.status.connectionState.lastConnect }}
+          lastObservedState: READY
+        registryService:
+          {{ toYaml $catalog.status.registryService | indent 8 }}
+  {{ end }}
+...
