@@ -135,6 +135,10 @@ a| Monitor PersistentVolume (PV) state:
 | Inform
 | Monitor OpenShift routes that are not admitted, such as when `spec.host` is already claimed by another route in the cluster.
 
+| monitor-openshift-serverless
+| Inform
+| Monitor OpenShift Serverless components.
+
 | monitor-metallb-status
 | Inform
 | Monitor metallb status.
@@ -173,15 +177,11 @@ These policies are for global hub only.
 | Enforce
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: prod` labels) to managed hubs.
 
-| multi-cluster-hub-status
-| Inform
-| Monitor multi cluster hub on global hub and managed hubs
-
 | monitor-managed-clusters
 | Inform
 | Monitor ManagedCluster Availability on global hub and managed hubs.
 
-| monitor-multi-cluster-hub-status
+| monitor-multicluster-hub-status
 | Inform
 | Monitor MultiClusterHub on global hub and managed hubs.
 
@@ -189,7 +189,7 @@ These policies are for global hub only.
 | Inform
 | Monitor managed hub with `local-cluster`, no managed hub should have `local-cluster`.
 
-| monitor-multi-cluster-observability-status
+| monitor-multicluster-observability-status
 | Inform
 | Monitor multi cluster observability on global hub and managed hubs.
 
@@ -197,7 +197,7 @@ These policies are for global hub only.
 | Inform
 | Monitor search on managed hubs.
 
-| monitor-global-hub
+| monitor-multicluster-global-hub
 | Inform
 | Monitor MulticlusterGlobalHub components.
 

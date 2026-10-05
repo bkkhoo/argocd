@@ -1,0 +1,17 @@
+---
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeServing
+metadata:
+  name: knative-serving
+  namespace: knative-serving
+status:
+  conditions:
+    - type: DependenciesInstalled
+      status: "True"
+    - type: DeploymentsAvailable
+      status: "True"
+    - type: InstallSucceeded
+      status: "True"
+    - type: Ready
+      status: "True"
+...

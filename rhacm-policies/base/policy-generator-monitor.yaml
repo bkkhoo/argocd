@@ -36,6 +36,13 @@ policySets:
         matchExpressions:
           - key: metallb
             operator: Exists
+  - name: base-monitor-openshift-serverless
+    description: monitoring policies for clusters with openshift-serverless deployed
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: openshift-serverless
+            operator: Exists
 placementBindingDefaults:
   name: base-monitor-binding
 
@@ -218,6 +225,15 @@ policies:
         - "*"
     manifests:
       - path: monitor/route-status.yaml
+
+  - name: monitor-openshift-serverless
+    description: monitor openshift-serverless components
+    complianceType: musthave
+    policySets:         # override policyDefaults.policySets
+      - base-monitor-openshift-serverless
+    manifests:
+      - path: monitor/openshift-serverless/knative-serving.yaml
+      - path: monitor/openshift-serverless/knative-eventing.yaml
 
   - name: monitor-metallb-status
     description: monitor metallb status

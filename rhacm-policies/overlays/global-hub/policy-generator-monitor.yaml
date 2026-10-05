@@ -51,12 +51,12 @@ policies:
     manifests:
       - path: monitor/managed-cluster-status.yaml
 
-  - name: monitor-multi-cluster-hub-status
+  - name: monitor-multicluster-hub-status
     description: monitor multi cluster hub on global hub and managed hubs
     complianceType: musthave
     severity: high
     manifests:
-      - path: monitor/multi-cluster-hub-status.yaml
+      - path: monitor/multicluster-hub-status.yaml
 
   - name: monitor-managed-hubs-local-cluster
     description: monitor managed hub with local-cluster; no managed hub should have local-cluster
@@ -66,12 +66,12 @@ policies:
     manifests:
       - path: monitor/managed-hubs-local-cluster.yaml
 
-  - name: monitor-multi-cluster-observability-status
+  - name: monitor-multicluster-observability-status
     description: monitor multi cluster observability on global hub and managed hubs
     complianceType: musthave
     severity: high
     manifests:
-      - path: monitor/multi-cluster-observability-status.yaml
+      - path: monitor/multicluster-observability-status.yaml
 
   - name: monitor-search-status
     description: monitor search on managed hubs
@@ -81,7 +81,7 @@ policies:
     manifests:
       - path: monitor/search-status.yaml
 
-  - name: monitor-global-hub
+  - name: monitor-multicluster-global-hub
     description: monitor multicluster global hub components
     complianceType: musthave
     policySets:           # override policyDefaults.policySets

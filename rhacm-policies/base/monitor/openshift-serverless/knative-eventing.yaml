@@ -1,0 +1,15 @@
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeEventing
+metadata:
+  name: knative-eventing
+  namespace: knative-eventing
+status:
+  conditions:
+    - type: DependenciesInstalled
+      status: "True"
+    - type: DeploymentsAvailable
+      status: "True"
+    - type: InstallSucceeded
+      status: "True"
+    - type: Ready
+      status: "True"
