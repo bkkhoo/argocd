@@ -193,9 +193,9 @@ These policies are for global hub only.
 | Inform
 | Monitor multi cluster observability on global hub and managed hubs.
 
-| monitor-search-status
+| monitor-multicluster-search-status
 | Inform
-| Monitor search on managed hubs.
+| Monitor MultiCluster search on managed hubs.
 
 | monitor-multicluster-global-hub
 | Inform
@@ -203,11 +203,11 @@ These policies are for global hub only.
 
 | monitor-multicluster-global-hub-agent
 | Inform
-| Monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster.
+| Monitor MultiCluster global hub agent, the agent synchronizes data with a central MultiCluster global hub cluster.
 
-| monitor-global-search-status
+| monitor-multicluster-global-search-status
 | Inform
-| Monitor global search on global hub.
+| Monitor MultiCluster global search on global hub.
 
 | monitor-openshift-gitops
 | Inform

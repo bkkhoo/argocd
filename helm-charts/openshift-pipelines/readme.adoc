@@ -101,11 +101,9 @@ a| Controls whether Tekton's built-in credential initialization is active:
 | 7d
 | Defines the fallback retention period for results when no specific policy matches. It accepts a number (days) or a duration string (e.g., "30d", "24h").
 
-
 | result.retention.failed
 | 14d
 | Defines the fallback retention period for results when no specific policy matches. It accepts a number (days) or a duration string (e.g., "30d", "24h").
-
 
 | result.performance.replicas
 | 2

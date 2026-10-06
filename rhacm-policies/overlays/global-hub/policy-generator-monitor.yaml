@@ -73,13 +73,13 @@ policies:
     manifests:
       - path: monitor/multicluster-observability-status.yaml
 
-  - name: monitor-search-status
-    description: monitor search on managed hubs
+  - name: monitor-multicluster-search-status
+    description: monitor multicluster search on managed hubs
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
       - gh-monitor-managed-hubs
     manifests:
-      - path: monitor/search-status.yaml
+      - path: monitor/multicluster-search-status.yaml
 
   - name: monitor-multicluster-global-hub
     description: monitor multicluster global hub components
@@ -99,13 +99,13 @@ policies:
     manifests:
       - path: monitor/multicluster-global-hub-agent-status.yaml
 
-  - name: monitor-global-search-status
-    description: monitor global search on global hub
+  - name: monitor-multicluster-global-search-status
+    description: monitor multicluster global search on global hub
     complianceType: musthave
     policySets:           # override policyDefaults.policySets
       - gh-monitor-local-cluster
     manifests:
-      - path: monitor/global-search-status.yaml
+      - path: monitor/multicluster-global-search-status.yaml
 
   - name: monitor-openshift-gitops
     description: monitor openshift gitops deployments

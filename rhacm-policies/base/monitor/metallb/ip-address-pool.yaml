@@ -22,11 +22,6 @@ object-templates-raw: |
       metadata:
         name: {{ $ip_pool.metadata.name }}
         namespace: metallb-system
-        annotations:
-          ipv4-usage-threshold: "{{ $usage_threshold }}%"
-          ipv4-usage: "{{ $ipv4_usage | printf "%3.2f" }}%"
-          ipv6-usage-threshold: "{{ $usage_threshold }}%"
-          ipv6-usage: "{{ $ipv4_usage | printf "%3.2f" }}%"
       spec:
         {{ toYaml $ip_pool.spec | indent 6}}
       status:
