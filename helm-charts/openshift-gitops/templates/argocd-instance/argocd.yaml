@@ -159,9 +159,7 @@ spec:
     sharding:
       enabled: {{ .Values.controller.sharding.enabled }}
       replicas: {{ .Values.controller.sharding.replicas }}
-    env:
-      - name: ARGOCD_CONTROLLER_SHARDING_ALGORITHM
-        value: {{ .Values.controller.sharding.algorithm }}
+      algorithm: {{ .Values.controller.sharding.algorithm }}
     {{- end }}
     resources:
       limits:
