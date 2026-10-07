@@ -39,6 +39,12 @@ spec:
         path: helm-charts/openshift-pipelines
       destination:
         server: "{{ server }}"
+      ignoreDifferences:
+        - group: operator.tekton.dev       # the tektonConfig pruner schedule has random values
+          kind: TektonConfig
+          name: config
+          jsonPointers:
+            - /spec/result/options/configMaps/config-results-retention-policy/data/runAt
       syncPolicy:
         automated:
           prune: true
