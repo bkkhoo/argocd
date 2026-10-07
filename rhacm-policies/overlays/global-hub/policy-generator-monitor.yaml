@@ -46,7 +46,7 @@ placementBindingDefaults:
 
 policies:
   - name: monitor-managed-clusters
-    description: monitor managedCluster availability on global hub and managed hubs
+    description: monitor managed cluster availability on global hub and managed hubs
     complianceType: mustnothave
     manifests:
       - path: monitor/managed-cluster-status.yaml
@@ -126,7 +126,7 @@ policies:
       - path: monitor/application-set-status.yaml
 
   - name: monitor-rhacs-central
-    description: monitor rhacs central and securedClusters deployments
+    description: monitor rhacs central and secured clusters deployments
     complianceType: musthave
     manifests:
       - path: monitor/rhacs-central/operator-subscription-status.yaml

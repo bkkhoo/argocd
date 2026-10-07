@@ -68,6 +68,10 @@ These policies are common to both global hub and managed hubs.
 | Inform
 | Monitor RHACS SecuredCluster deployments.
 
+| monitor-failed-cluster-service-version
+| Inform
+| Monitor failed Cluster Service Versions
+
 | monitor-tekton-config-status
 | Inform
 | Monitor OpenShift Pipelines components status are ready

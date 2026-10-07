@@ -1,0 +1,16 @@
+---
+object-templates-raw: |
+  {{- range (lookup "operators.coreos.com/v1alpha1" "ClusterServiceVersion" "" "").items }}
+    {{- if eq .status.phase "Failed"}}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: ClusterServiceVersion
+      metadata:
+        name: {{ .metadata.name }}
+        namespace: {{ .metadata.namespace }}
+      status:
+        phase: {{ .status.phase }}
+    {{- end }}
+  {{- end }}
+...
