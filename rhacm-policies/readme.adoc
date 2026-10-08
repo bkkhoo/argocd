@@ -48,6 +48,10 @@ These policies are common to both global hub and managed hubs.
 | Inform
 | Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
 
+| monitor-machine-config-pool
+| Inform
+| Monitor MachineConfigPool with degraded or unavailable machines
+
 | monitor-operator-hub
 | Inform
 | Monitor OperatorHub and CatalogSources.
@@ -60,6 +64,14 @@ These policies are common to both global hub and managed hubs.
 | Inform
 | Verify that ETCD encryption has completed.
 
+| monitor-cluster-version
+| Inform
+| Monitor ClusterVersion.
+
+| monitor-failed-cluster-service-version
+| Inform
+| Monitor failed Cluster Service Versions
+
 | monitor-cluster-log-forwarder
 | Inform
 | Monitor cluster log forwarder status is ready.
@@ -67,10 +79,6 @@ These policies are common to both global hub and managed hubs.
 | monitor-rhacs-secured-clusters
 | Inform
 | Monitor RHACS SecuredCluster deployments.
-
-| monitor-failed-cluster-service-version
-| Inform
-| Monitor failed Cluster Service Versions
 
 | monitor-tekton-config-status
 | Inform
@@ -91,6 +99,10 @@ These policies are common to both global hub and managed hubs.
 | monitor-install-plans
 | Inform
 | Monitor InstallPlans that are pending approval.
+
+| monitor-pod-disruption-budget-with-insufficient-pods
+| Inform
+| Monitor PodDisruptionBudgets with insufficient pods.
 
 | monitor-pod-using-default-service-account
 | Inform

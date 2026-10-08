@@ -1,0 +1,9 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+status:
+  conditions:
+    - type: DisruptionAllowed
+      status: "False"
+  disruptionsAllowed: 0
+...

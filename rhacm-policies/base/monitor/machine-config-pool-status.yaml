@@ -1,0 +1,21 @@
+# the following counts must be 0
+#   .status.degradedMachineCount
+#   .status.unavailableMachineCount
+#   .status.poolSynchronizersStatus[0].unavailableMachineCount
+---
+object-templates-raw: |
+  {{ range $catalog := (lookup "machineconfiguration.openshift.io/v1" "MachineConfigPool" "" "").items }}
+    {{- if or (ne .status.degradedMachineCount 0) (ne .status.unavailableMachineCount 0) (ne (index .status.poolSynchronizersStatus 0).unavailableMachineCount 0) }}
+  - complianceType: mustnothave
+    objectDefinition:
+      apiVersion: machineconfiguration.openshift.io/v1
+      kind: MachineConfigPool
+      metadata:
+        name: {{ .metadata.name }}
+      spec:
+        {{ toYaml .spec | indent 6 }}
+      status:
+        {{ toYaml .status | indent 6 }}
+    {{- end }}
+  {{- end }}
+...

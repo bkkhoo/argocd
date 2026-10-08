@@ -59,6 +59,11 @@ policies:
     manifests:
       - path: monitor/node-status.yaml
 
+  - name: monitor-machine-config-pool
+    description: monitor machine config pool with degraded or unavailable machines
+    manifests:
+      - path: monitor/machine-config-pool-status.yaml
+
   - name: monitor-operator-hub
     description: monitor operator hub and catalog sources
     manifests:
@@ -77,20 +82,11 @@ policies:
     manifests:
       - path: monitor/etcd-encryption-status.yaml
 
-  - name: monitor-cluster-log-forwarder
-    description: monitor cluster log forwarder status is ready
+  - name: monitor-cluster-version
+    description: monitor cluster version
     complianceType: musthave
     manifests:
-      - path: monitor/cluster-log-forwarder.yaml
-
-  - name: monitor-rhacs-secured-clusters
-    description: monitor rhacs securedCluster deployments
-    complianceType: musthave
-    namespaceSelector:
-      include:
-        - stackrox
-    manifests:
-      - path: monitor/rhacs-secured-cluster-status.yaml
+      - path: monitor/cluster-version-status.yaml
 
   - name: monitor-failed-cluster-service-version
     description: monitor failed cluster service version
@@ -142,6 +138,21 @@ policies:
     manifests:
       - path: monitor/cluster-service-version-status.yaml
 
+  - name: monitor-cluster-log-forwarder
+    description: monitor cluster log forwarder status is ready
+    complianceType: musthave
+    manifests:
+      - path: monitor/cluster-log-forwarder.yaml
+
+  - name: monitor-rhacs-secured-clusters
+    description: monitor rhacs securedCluster deployments
+    complianceType: musthave
+    namespaceSelector:
+      include:
+        - stackrox
+    manifests:
+      - path: monitor/rhacs-secured-cluster-status.yaml
+
   - name: monitor-tekton-config-status
     description: monitor openshift pipelines components status are ready
     complianceType: musthave
@@ -183,6 +194,12 @@ policies:
         - "*"
     manifests:
       - path: monitor/install-plan-status.yaml
+
+  - name: monitor-pod-disruption-budget-with-insufficient-pods
+    description: monitor pod disruption budget with insufficient pods
+    complianceType: mustnothave
+    manifests:
+      - path: monitor/pod-disruption-budget-status.yaml
 
   - name: monitor-pod-using-default-service-account
     description: monitor pod using the default service account.
