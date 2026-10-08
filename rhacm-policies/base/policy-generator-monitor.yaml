@@ -92,7 +92,7 @@ policies:
     description: monitor failed cluster service version
     complianceType: mustnothave
     severity: low
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       exclude:
         - etcd-backup
         - disable-insights
@@ -147,9 +147,6 @@ policies:
   - name: monitor-rhacs-secured-clusters
     description: monitor rhacs securedCluster deployments
     complianceType: musthave
-    namespaceSelector:
-      include:
-        - stackrox
     manifests:
       - path: monitor/rhacs-secured-cluster-status.yaml
 
@@ -171,7 +168,7 @@ policies:
   - name: monitor-privileges-scc-binding
     description: monitor namespaced role granting access to privileged scc
     complianceType: mustnothave
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
       exclude:
@@ -189,7 +186,7 @@ policies:
   - name: monitor-install-plans
     description: monitor install plans pending approval
     complianceType: mustnothave
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
     manifests:
@@ -198,7 +195,7 @@ policies:
   - name: monitor-pod-disruption-budget
     description: monitor pod disruption budget with insufficient pods
     complianceType: mustnothave
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
     manifests:
@@ -207,7 +204,7 @@ policies:
   - name: monitor-pod-using-default-service-account
     description: monitor pod using the default service account.
     complianceType: mustnothave
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       exclude:
         - "kube-*"
         - "openshift*"
@@ -228,7 +225,7 @@ policies:
   - name: monitor-container-oom-killed
     description: monitor container oom-killed
     complianceType: mustnothave
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
     manifests:
@@ -238,7 +235,7 @@ policies:
     description: monitor pod/container CrashLoopBackOff
     complianceType: mustnothave
     severity: low
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
     manifests:
@@ -248,7 +245,7 @@ policies:
     description: monitor pod/container ImagePullBackOff
     complianceType: mustnothave
     severity: low
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
     manifests:
@@ -264,11 +261,9 @@ policies:
     description: monitor persistent volume claims that are not in Bound state
     complianceType: mustnothave
     severity: low
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
-      exclude:
-        - etcd-backup       # etcd backup cronjob run as privileged container
     manifests:
       - path: monitor/persistent-volume-claim-status.yaml
 
@@ -290,7 +285,7 @@ policies:
   - name: monitor-openshift-route
     description: monitor routes that are not admitted
     complianceType: mustnothave
-    namespaceSelector:
+    namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
         - "*"
     manifests:
@@ -299,7 +294,7 @@ policies:
   - name: monitor-openshift-serverless
     description: monitor openshift-serverless components
     complianceType: musthave
-    policySets:         # override policyDefaults.policySets
+    policySets:                 # override policyDefaults.policySets
       - base-monitor-openshift-serverless
     manifests:
       - path: monitor/openshift-serverless/knative-serving.yaml
@@ -308,7 +303,7 @@ policies:
   - name: monitor-metallb-status
     description: monitor metallb status
     complianceType: musthave
-    policySets:         # override policyDefaults.policySets
+    policySets:                 # override policyDefaults.policySets
       - base-monitor-metallb
     manifests:
       - path: monitor/metallb/metallb-status.yaml
@@ -316,7 +311,7 @@ policies:
 
   - name: monitor-metallb-nearly-depleted-ip-address-pool
     description: monitor metallb ip address pools that are 80% or more assigned
-    policySets:         # override policyDefaults.policySets
+    policySets:                 # override policyDefaults.policySets
       - base-monitor-metallb
     manifests:
       - path: monitor/metallb/ip-address-pool.yaml

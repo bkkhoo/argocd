@@ -137,7 +137,7 @@ policies:
   #   complianceType: "mustnothave"
   #   controls:
   #     - CA-02 Security Assessments
-  #   namespaceSelector:
+  #   namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
   #     include:
   #       - "*"
   #     exclude:
