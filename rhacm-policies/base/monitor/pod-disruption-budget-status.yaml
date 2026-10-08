@@ -5,5 +5,9 @@ status:
   conditions:
     - type: DisruptionAllowed
       status: "False"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+status:
   disruptionsAllowed: 0
 ...

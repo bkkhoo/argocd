@@ -100,7 +100,7 @@ These policies are common to both global hub and managed hubs.
 | Inform
 | Monitor InstallPlans that are pending approval.
 
-| monitor-pod-disruption-budget-with-insufficient-pods
+| monitor-pod-disruption-budget
 | Inform
 | Monitor PodDisruptionBudgets with insufficient pods.
 
@@ -247,3 +247,10 @@ These policies are for managed hubs only.
 | Policy | Remediation Action | Description
 
 |===
+
+== Misc
+
+[IMPORTANT]
+====
+The policy namespace and name (`<namespace-name>.<policy-name>`) cannot be more than 63 characters.
+====
