@@ -198,6 +198,9 @@ policies:
   - name: monitor-pod-disruption-budget
     description: monitor pod disruption budget with insufficient pods
     complianceType: mustnothave
+    namespaceSelector:
+      include:
+        - "*"
     manifests:
       - path: monitor/pod-disruption-budget-status.yaml
 
