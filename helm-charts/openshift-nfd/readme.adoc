@@ -1,0 +1,52 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= OpenShift Node Feature Discovery Operator
+
+This Helm chart deploys OpenShift Node Feature Discovery Operator (NFD). NFD detects hardware features and system configuration on cluster nodes, labeling them with attributes such as PCI cards, kernel version, and CPU capabilities. These labels enable workload scheduling based on hardware requirements.
+
+== Installing the Chart
+
+To install the chart:
+
+[source,bash]
+----
+helm install --name openshift-nfd helm-chart/openshift-nfd
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete openshift-nfd
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,1,4", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| sleepInterval
+| 60s
+| 60s scan interval works well for most operational environments. For large clusters (>100 nodes)m, increase to 300s to reduce CPU overhead on worker nodes and lessen API traffic to the nfd-master deployment.
+
+| enableTaints
+| false
+| Enable or disable node tainting based on discovered features.
+
+| prunerOnDelete
+| false
+| Controls whether the NFD Operator automatically removes NFD-managed assets from cluster nodes when the NodeFeatureDiscovery CR is deleted. In standard deployments, this is typically left as `false` to prevent accidental removal of hardware labels (such as those for NVIDIA GPUs) if the NFD instance is inadvertently deleted.
+|===

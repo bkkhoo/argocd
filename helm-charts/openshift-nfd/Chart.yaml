@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+appVersion: 4.20
+name: openshift-nfd
+description: OpenShift Node Feature Discovery Operator
+type: application
+version: 1.0
+...

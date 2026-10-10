@@ -1,0 +1,5 @@
+---
+sleepInterval: 60s
+enableTaints: false
+prunerOnDelete: false
+...

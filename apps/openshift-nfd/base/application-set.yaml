@@ -1,0 +1,50 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: openshift-nfd
+  namespace: openshift-gitops
+  labels:
+    applications: openshift-nfd
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true  # prevent child resources from being deleted, when the parent Application is deleted
+  generators:
+    - clusters:                        # on global-hub, deploy to all clusters except those with managed-hub label
+        selector:                      # on managed-hubs, no cluster should have the managed-hub label
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+            - key: managed-hub
+              operator: DoesNotExist
+            - key: openshift-nfd
+              operator: Exists
+  template:
+    metadata:
+      name: "{{ name }}-openshift-nfd"
+      labels:
+        applications: openshift-nfd
+    spec:
+      project: gitops
+      source:
+        repoURL: https://github.com/bkkhoo/argocd.git
+        targetRevision: main
+        path: helm-charts/openshift-nfd
+      destination:
+        server: "{{ server }}"
+      syncPolicy:
+        automated:
+          prune: false            # the config here modify pre-existing resources that are part of openshift
+          selfHeal: true          # do not delete the resources when they are no longer defined in git
+        syncOptions:
+          - CreateNamespace=true
+      info:
+        - name: env
+          value: any
+        - name: type
+          value: applicationSet
+        - name: target
+          value: in-cluster and clusters without managed-hub label
+...

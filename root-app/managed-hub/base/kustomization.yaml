@@ -14,6 +14,7 @@ resources:
   - ../../../apps/openshift-pipelines/base
   - ../../../apps/openshift-web-terminal/base
   - ../../../apps/loki-stack/base
+  - ../../../apps/openshift-nfd/base
   - ../../../apps/openshift-serverless/base
   - ../../../apps/openshift-service-mesh/base
   - ../../../apps/metallb/base

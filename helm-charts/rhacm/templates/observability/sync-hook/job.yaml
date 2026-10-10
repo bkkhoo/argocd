@@ -24,19 +24,19 @@ spec:
           env:
             - name: NAMESPACE
               value: {{ .Values.observability.namespace }}
-            - name: OBC_CONFIGMAP
+            - name: OBC_CONFIGMAP_NAME
               value: {{ .Values.observability.objectStorage.name }}-obc
-            - name: OBC_SECRET
+            - name: OBC_SECRET_NAME
               value: {{ .Values.observability.objectStorage.name }}-obc
-            - name: THANOS_OBJECT_STORAGE_SECRET
+            - name: THANOS_OBJECT_STORAGE_SECRET_NAME
               value: {{ .Values.observability.objectStorage.name }}
             - name: INSECURE_SKIP_VERIFY
               value: "{{ .Values.observability.objectStorage.insecureSkipVerify }}"
-            - name: CA_CONFIGMAP
+            - name: CA_CONFIGMAP_NAME
               value: openshift-service-ca.crt
             - name: CA_KEY
               value: service-ca.crt
-            - name: OBJECT_STORAGE_CA_SECRET
+            - name: OBJECT_STORAGE_CA_SECRET_NAME
               value: {{ .Values.observability.objectStorage.caSecret }}
           volumeMounts:
             - name: scripts

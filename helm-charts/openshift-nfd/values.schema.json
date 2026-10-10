@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "openshift-nfd helm chart values schema",
+  "description": "configuration values for openshift-nfd helm chart",
+  "type": "object",
+  "properties": {
+    "enableTaints": {
+      "type": "boolean"
+    },
+    "prunerOnDelete": {
+      "type": "boolean"
+    },
+    "sleepInterval": {
+      "type": "string",
+      "pattern": "^[0-9]+s$"
+    }
+  }
+}
