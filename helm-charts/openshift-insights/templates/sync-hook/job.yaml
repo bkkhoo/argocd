@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: disable-insights
-          image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+          image: "{{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -23,6 +23,12 @@ spec:
           env:
             - name: INSIGHTS_ENTRY
               value: {{ .Values.insightsEntry }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: script
               mountPath: /script

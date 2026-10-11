@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: create-s3-secret
-          image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+          image: "{{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -29,6 +29,12 @@ spec:
               value: {{ .Values.lokiStack.objectStorage.secret }}-obc
             - name: S3_BUCKET_SECRET
               value: {{ .Values.lokiStack.objectStorage.secret }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: scripts
               mountPath: /scripts

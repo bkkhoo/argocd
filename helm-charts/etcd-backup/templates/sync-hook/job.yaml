@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: etcd-backup
-          image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+          image: "{{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}"
           command:
             - /bin/sh
             - -c

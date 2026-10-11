@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: log-receiver
-          image: {{ $values.loggingImage }}
+          image: "{{ $values.loggingImage }}"
           env:
             - name: CERT_FILE
               value: /run/secrets/log-receiver/tls.crt
@@ -37,6 +37,9 @@ spec:
               value: /tmp/logs/error.log
             - name: WEBHOOK_ENDPOINT
               value: /log
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           livenessProbe:
             httpGet:
               scheme: HTTPS
@@ -71,7 +74,7 @@ spec:
             - mountPath: /tmp/logs
               name: error-logs
         - name: error-log
-          image: {{ $values.loggingImage }}
+          image: "{{ $values.loggingImage }}"
           env:
             - name: ERROR_LOG_FILE
               value: /tmp/logs/error.log
@@ -79,6 +82,9 @@ spec:
             - sh
             - -c
             - touch ${ERROR_LOG_FILE} && tail -f ${ERROR_LOG_FILE}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           resources:
             requests:
               cpu: 200m

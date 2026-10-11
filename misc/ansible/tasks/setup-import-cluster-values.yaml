@@ -28,5 +28,5 @@
   ansible.builtin.template:
     src: values.yaml.j2
     dest: "/tmp/values-{{ _cluster_name }}.yaml"
-    mode: "0644"
+    mode: "0600"
 ...

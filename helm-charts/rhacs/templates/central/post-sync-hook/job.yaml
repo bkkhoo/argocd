@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: create-crs
-          image: {{ .Values.postSyncHookImage.name }}:{{ .Values.postSyncHookImage.tag }}
+          image: "{{ .Values.postSyncHookImage.name }}:{{ .Values.postSyncHookImage.tag }}"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -26,6 +26,12 @@ spec:
               value: {{ .Values.namespace.central }}
             - name: RHACM_POLICIES_NAMESPACE
               value: {{ .Values.namespace.rhacmPolicies }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: scripts
               mountPath: /scripts

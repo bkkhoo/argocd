@@ -47,7 +47,7 @@ The following table lists the configurable parameters/values of this Helm chart 
 | ServiceAccount to use for the GoBGP pods.
 
 | bgpPeerImage
-| docker.io/jauderho/gobgp:latest
+| docker.io/jauderho/gobgp:v4.10.0
 | GoBGP container image.
 
 | myASN

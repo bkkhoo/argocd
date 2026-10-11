@@ -140,7 +140,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: list-backups
-      image: registry.redhat.io/openshift4/ose-tools-rhel9:v4.20
+      image: "registry.redhat.io/openshift4/ose-tools-rhel9:v4.20"
       imagePullPolicy: IfNotPresent
       env:
         - name: SNAPSHOT_DB_BACKUP_PATH

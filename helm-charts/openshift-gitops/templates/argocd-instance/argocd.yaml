@@ -112,7 +112,7 @@ spec:
         memory: {{ .Values.repo.resources.requests.memory }}
     initContainers:
       - name: policy-generator-install
-        image: {{ .Values.repo.rhacmPolicyGeneratorImage }}
+        image: "{{ .Values.repo.rhacmPolicyGeneratorImage }}"
         command:
           - /bin/bash
         args:

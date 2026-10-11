@@ -34,7 +34,7 @@ spec:
           preemptionPolicy: PreemptLowerPriority
           containers:
             - name: cluster-backup
-              image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+              image: "{{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}"
               imagePullPolicy: IfNotPresent
               env:
                 - name: SNAPSHOT_DB_BACKUP_PATH

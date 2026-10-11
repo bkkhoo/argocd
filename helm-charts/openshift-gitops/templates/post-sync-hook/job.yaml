@@ -15,12 +15,18 @@ spec:
     spec:
       containers:
         - name: create-crs
-          image: {{ .Values.postSyncHookImage.name }}:{{ .Values.postSyncHookImage.tag }}
+          image: "{{ .Values.postSyncHookImage.name }}:{{ .Values.postSyncHookImage.tag }}"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
             - /scripts/enable-gitops-console-plugin.sh
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: scripts
               mountPath: /scripts

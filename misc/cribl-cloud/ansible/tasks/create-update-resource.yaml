@@ -2,7 +2,7 @@
 - name: "get resource: {{ _resource_name }}"
   register: get_response
   ansible.builtin.uri:
-    url: "{{ _base_url }}{{ _endpoint }}/{{ _resource_name }}"
+    url: "https://{{ _hostname }}{{ _endpoint }}/{{ _resource_name }}"
     method: GET
     headers:
       Authorization: "Bearer {{ _api_token }}"
@@ -13,7 +13,7 @@
   register: post_response
   when: get_response.status == 404
   ansible.builtin.uri:
-    url: "{{ _base_url }}{{ _endpoint }}"
+    url: "https://{{ _hostname }}{{ _endpoint }}"
     method: POST
     headers:
       Authorization: "Bearer {{ _api_token }}"
@@ -26,7 +26,7 @@
   register: patch_response
   when: get_response.status == 200
   ansible.builtin.uri:
-    url: "{{ _base_url }}{{ _endpoint }}/{{ _resource_name }}"
+    url: "https://{{ _hostname }}{{ _endpoint }}/{{ _resource_name }}"
     method: PATCH
     headers:
       Authorization: "Bearer {{ _api_token }}"

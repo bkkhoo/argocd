@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: test-app-1
-        image: quay.io/bkhoo/python3-async:2.0
+        image: "quay.io/bkhoo/python3-async:2.0"
         command:
           - "python"
           - "-m"
@@ -34,5 +34,8 @@ spec:
             value: {{ .Values.env.HOME }}
           - name: CONFIG_FILE
             value: {{ .Values.env.CONFIG_FILE }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
       serviceAccountName: {{ .Values.serviceAccount }}
 ...

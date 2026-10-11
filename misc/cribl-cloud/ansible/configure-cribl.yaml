@@ -8,7 +8,7 @@
     - cribl-secrets-vault-encrypted.yaml                     # this file is encrypted with ansible-vault
     - openshift-logging-token-vault-encrypted.yaml           # this file is encrypted with ansible-vault
   vars:
-    cribl_cloud_base_url: "https://{{ cribl.workspace }}-{{ cribl.org_id }}.cribl.cloud"
+    cribl_cloud_hostname: "{{ cribl.workspace }}-{{ cribl.org_id }}.cribl.cloud"
 
   tasks:
     - name: get cribl api token
@@ -43,7 +43,7 @@
             value: "{{ prometheus_rw_token }}"
             description: prometheus remote write bearer token
       vars:
-        _base_url: "{{ cribl_cloud_base_url }}"
+        _hostname: "{{ cribl_cloud_hostname }}"
         _endpoint: "/api/v1/m/{{ cribl.worker_group }}/system/secrets"
         _api_token: "{{ cribl_api_token }}"
         _resource_name: "{{ item.payload.id }}"
@@ -65,7 +65,7 @@
         - id: unpack-bulk-events
           payload: "{{ lookup('file', 'files/pipeline/unpack-bulk-events.json') }}"
       vars:
-        _base_url: "{{ cribl_cloud_base_url }}"
+        _hostname: "{{ cribl_cloud_hostname }}"
         _endpoint: "/api/v1/m/{{ cribl.worker_group }}/pipelines"
         _api_token: "{{ cribl_api_token }}"
         _resource_name: "{{ item.id }}"
@@ -89,7 +89,7 @@
         - id: out-openshift-s3
           payload: "{{ lookup('template', 'templates/destination/openshift-s3.json.j2') }}"
       vars:
-        _base_url: "{{ cribl_cloud_base_url }}"
+        _hostname: "{{ cribl_cloud_hostname }}"
         _endpoint: "/api/v1/m/{{ cribl.worker_group }}/system/outputs"
         _api_token: "{{ cribl_api_token }}"
         _resource_name: "{{ item.id }}"
@@ -98,7 +98,7 @@
 
     - name: create/update event breaker ruleset
       vars:
-        _base_url: "{{ cribl_cloud_base_url }}"
+        _hostname: "{{ cribl_cloud_hostname }}"
         _endpoint: "/api/v1/m/{{ cribl.worker_group }}/lib/breakers"
         _api_token: "{{ cribl_api_token }}"
         _resource_name: break-json-array
@@ -116,7 +116,7 @@
         - id: in-prometheus-rw
           payload: "{{ lookup('template', 'templates/source/prometheus-remote-write.json.j2') }}"
       vars:
-        _base_url: "{{ cribl_cloud_base_url }}"
+        _hostname: "{{ cribl_cloud_hostname }}"
         _endpoint: "/api/v1/m/{{ cribl.worker_group }}/system/inputs"
         _api_token: "{{ cribl_api_token }}"
         _resource_name: "{{ item.id }}"
@@ -125,7 +125,7 @@
 
     - name: create/update data routes
       vars:
-        _base_url: "{{ cribl_cloud_base_url }}"
+        _hostname: "{{ cribl_cloud_hostname }}"
         _endpoint: "/api/v1/m/{{ cribl.worker_group }}/routes"
         _api_token: "{{ cribl_api_token }}"
         _resource_name: default
@@ -134,7 +134,7 @@
 
     - name: commit and deploy changes
       vars:
-        _base_url: "{{ cribl_cloud_base_url }}"
+        _hostname: "{{ cribl_cloud_hostname }}"
         _api_token: "{{ cribl_api_token }}"
       ansible.builtin.import_tasks: tasks/commit-deploy.yaml
 ...

@@ -35,7 +35,10 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - name: dummy-bgp-peer
-          image: {{ .Values.bgpPeerImage }}
+          image: "{{ .Values.bgpPeerImage }}"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           volumeMounts:
             - mountPath: /config
               name: bgp-config

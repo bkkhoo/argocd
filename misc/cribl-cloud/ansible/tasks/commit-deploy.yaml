@@ -2,7 +2,7 @@
 - name: commit changes
   register: commit_response
   ansible.builtin.uri:
-    url: "{{ _base_url }}/api/v1/version/commit"
+    url: "https://{{ _hostname }}/api/v1/version/commit"
     method: POST
     headers:
       Authorization: "Bearer {{ _api_token }}"
@@ -16,7 +16,7 @@
   when: commit_response.json['items'][0].commit
   register: deploy_response
   ansible.builtin.uri:
-    url: "{{ _base_url }}/api/v1/products/stream/groups/{{ cribl.worker_group }}/deploy"
+    url: "https://{{ _hostname }}/api/v1/products/stream/groups/{{ cribl.worker_group }}/deploy"
     method: PATCH
     headers:
       Authorization: "Bearer {{ _api_token }}"
@@ -28,7 +28,7 @@
 
 - name: version control commit
   ansible.builtin.uri:
-    url: "{{ _base_url }}/api/v1/version/commit"
+    url: "https://{{ _hostname }}/api/v1/version/commit"
     method: POST
     headers:
       Authorization: "Bearer {{ _api_token }}"

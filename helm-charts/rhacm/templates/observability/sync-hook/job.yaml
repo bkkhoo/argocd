@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: create-mco-secrets
-          image: {{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}
+          image: "{{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -38,6 +38,12 @@ spec:
               value: service-ca.crt
             - name: OBJECT_STORAGE_CA_SECRET_NAME
               value: {{ .Values.observability.objectStorage.caSecret }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: scripts
               mountPath: /scripts
