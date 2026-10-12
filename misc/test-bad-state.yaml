@@ -12,15 +12,15 @@ metadata:
   namespace: test-bad-status
 spec:
   containers:
-  - name: test-oom-kill
-    image: "docker.io/polinux/stress:latest"
-    resources:
-      requests:
-        memory: "100Mi"
-      limits:
-        memory: "200Mi"
-    command: ["stress"]
-    args: ["--vm", "1", "--vm-bytes", "250M", "--vm-hang", "1"]
+    - name: test-oom-kill
+      image: "docker.io/polinux/stress:1.0.4"
+      resources:
+        requests:
+          memory: "100Mi"
+        limits:
+          memory: "200Mi"
+      command: ["stress"]
+      args: ["--vm", "1", "--vm-bytes", "250M", "--vm-hang", "1"]
 ---
 apiVersion: v1
 kind: Pod
@@ -29,8 +29,8 @@ metadata:
   namespace: test-bad-status
 spec:
   containers:
-  - name: test-image-pull-backoff
-    image: dummy
+    - name: test-image-pull-backoff
+      image: not-exist:dummy
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -61,13 +61,13 @@ spec:
     spec:
       activeDeadlineSeconds: 3000
       containers:
-      - name: test-12345
-        command:
-        - /bin/bash
-        - -c
-        - exit 1
-        image: "registry.redhat.io/openshift4/ose-tools-rhel9:v4.20"
-        imagePullPolicy: IfNotPresent
+        - name: test-12345
+          command:
+            - /bin/bash
+            - -c
+            - exit 1
+          image: "registry.redhat.io/openshift4/ose-tools-rhel9:v4.20"
+          imagePullPolicy: IfNotPresent
       dnsPolicy: ClusterFirst
       restartPolicy: Never
 ---
@@ -90,13 +90,13 @@ spec:
         spec:
           activeDeadlineSeconds: 120
           containers:
-          - command:
-            - /bin/bash
-            - -c
-            - exit 1
-            image: "registry.redhat.io/openshift4/ose-tools-rhel9:v4.20"
-            imagePullPolicy: IfNotPresent
-            name: cluster-backup
+            - command:
+                - /bin/bash
+                - -c
+                - exit 1
+              image: "registry.redhat.io/openshift4/ose-tools-rhel9:v4.20"
+              imagePullPolicy: IfNotPresent
+              name: cluster-backup
           dnsPolicy: ClusterFirst
           enableServiceLinks: true
           restartPolicy: Never
@@ -111,7 +111,7 @@ metadata:
   namespace: test-bad-status
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -132,7 +132,7 @@ spec:
     resourceVersion: "125405"
     uid: 66d5c34c-5277-4eb8-81f8-9d0480789b32
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   capacity:
     storage: 1Gi
   csi:
@@ -142,11 +142,11 @@ spec:
   nodeAffinity:
     required:
       nodeSelectorTerms:
-      - matchExpressions:
-        - key: topology.kubernetes.io/zone
-          operator: In
-          values:
-          - us-east-2b
+        - matchExpressions:
+            - key: topology.kubernetes.io/zone
+              operator: In
+              values:
+                - us-east-2b
   persistentVolumeReclaimPolicy: Retain
   # storageClassName: gp3-csi
   volumeMode: Filesystem
