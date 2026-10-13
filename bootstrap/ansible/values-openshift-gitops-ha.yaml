@@ -6,7 +6,7 @@ server:
     maxReplicas: 5
 
 rbac:
-  defaultPolicy: "role:admin"
+  defaultPolicy: ""        # example: role:admin, role:readonly
 
 repo:
   replicas: 3

@@ -101,6 +101,9 @@ spec:
           helm:
             valuesObject:
               projectTemplateOverride: '{{ if index .metadata.labels "project-template-override" }}true{{ else }}false{{ end }}'
+        - repoURL: https://github.com/bkkhoo/argocd.git      # ensure cluster-admins group exist
+          targetRevision: main
+          path: kustomize-deployments/cluster-admins-group/base
       destination:
         server: "{{ .server }}"
       ignoreDifferences:

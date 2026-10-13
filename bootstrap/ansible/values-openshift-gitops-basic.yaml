@@ -6,7 +6,7 @@ server:
     maxReplicas: 5      # not use when server.autoscale.enabled=false
 
 rbac:
-  defaultPolicy: "role:admin"
+  defaultPolicy: ""        # example: role:admin, role:readonly
 
 repo:
   replicas: 1
