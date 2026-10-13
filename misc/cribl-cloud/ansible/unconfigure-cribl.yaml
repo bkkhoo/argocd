@@ -17,6 +17,7 @@
       ansible.builtin.import_tasks: tasks/get-cribl-api-token.yaml
 
     - name: delete data routes
+      no_log: true
       ansible.builtin.uri:
         url: "https://{{ cribl_cloud_hostname }}/api/v1/m/{{ cribl.worker_group }}/routes/default"
         method: PATCH

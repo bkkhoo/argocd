@@ -61,6 +61,7 @@
         cmd: oc label managedclusters.cluster.open-cluster-management.io local-cluster --overwrite env={{ env }}
 
     - name: ensure global hub secret manifests are deployed
+      no_log: true
       loop:      # the templates made used of variables from the vars_files
         - openshift-logging-token
         - argocd-repo-secret

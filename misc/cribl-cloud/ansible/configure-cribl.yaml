@@ -18,11 +18,13 @@
       ansible.builtin.import_tasks: tasks/get-cribl-api-token.yaml
 
     - name: get openshift loki log writer token
+      no_log: true
       register: loki_token
       ansible.builtin.command:
         cmd: oc -n openshift-logging create token external-logs-writer --duration=8760h
 
     - name: create/update secrets
+      no_log: true
       loop_control:
         label: "{{ item.payload.id }}"
       loop:

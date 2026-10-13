@@ -1,5 +1,6 @@
 ---
 - name: "get resource: {{ _resource_name }}"
+  no_log: true
   register: get_response
   ansible.builtin.uri:
     url: "https://{{ _hostname }}{{ _endpoint }}/{{ _resource_name }}"
@@ -10,6 +11,7 @@
     status_code: 200, 404
 
 - name: "delete resource: {{ _resource_name }}"
+  no_log: true
   when: get_response.status == 200
   ansible.builtin.uri:
     url: "https://{{ _hostname }}{{ _endpoint }}/{{ _resource_name }}"

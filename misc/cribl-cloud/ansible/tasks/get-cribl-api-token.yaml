@@ -1,5 +1,6 @@
 ---
 - name: authenticate with cribl
+  no_log: true
   register: api_response
   ansible.builtin.uri:
     url: https://login.cribl.cloud/oauth/token
@@ -14,6 +15,7 @@
       client_secret: "{{ _client_secret }}"
 
 - name: retrieve cribl api token
+  no_log: true
   ansible.builtin.set_fact:
     cribl_api_token: "{{ api_response.json.access_token }}"
 ...

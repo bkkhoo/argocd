@@ -1,5 +1,6 @@
 ---
 - name: commit changes
+  no_log: true
   register: commit_response
   ansible.builtin.uri:
     url: "https://{{ _hostname }}/api/v1/version/commit"
@@ -13,6 +14,7 @@
     status_code: 200, 201
 
 - name: deploy changes
+  no_log: true
   when: commit_response.json['items'][0].commit
   register: deploy_response
   ansible.builtin.uri:
@@ -27,6 +29,7 @@
     status_code: 200
 
 - name: version control commit
+  no_log: true
   ansible.builtin.uri:
     url: "https://{{ _hostname }}/api/v1/version/commit"
     method: POST
