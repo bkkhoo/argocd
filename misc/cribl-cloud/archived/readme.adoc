@@ -104,8 +104,8 @@ curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER
 {
   \"id\": \"openshift-loki-log-collector-token\",
   \"secretType\": \"text\",
-  \"value\": \"$(oc -n openshift-logging create token external-logs-writer --duration=8760h)\",
-  \"description\": \"oc -n openshift-logging create token external-logs-writer --duration=8760h\"
+  \"value\": \"$(oc --namespace openshift-logging create token external-logs-writer --duration=8760h)\",
+  \"description\": \"oc --namespace openshift-logging create token external-logs-writer --duration=8760h\"
 }"
 
 curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/system/secrets \

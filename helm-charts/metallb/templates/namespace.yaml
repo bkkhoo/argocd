@@ -4,6 +4,6 @@ kind: Namespace
 metadata:
   name: metallb-system
   labels:
-     argocd.argoproj.io/managed-by: openshift-gitops
+    argocd.argoproj.io/managed-by: openshift-gitops
 spec: {}
 ...

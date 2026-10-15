@@ -16,8 +16,9 @@
   delay: 5
   retries: 68
   ansible.builtin.command:
-    cmd: |-
-      oc -n openshift-gitops-operator get csv --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
+    cmd: >-
+      oc --namespace openshift-gitops-operator get csv
+      --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
 - name: ensure argoCD service is deployed
   ansible.builtin.shell: >-
@@ -33,6 +34,6 @@
   retries: 108
   ansible.builtin.command:
     cmd: >-
-      oc -n openshift-gitops get argocds.argoproj.io openshift-gitops
+      oc --namespace openshift-gitops get argocds.argoproj.io openshift-gitops
       --output jsonpath="{.status.phase}"
 ...

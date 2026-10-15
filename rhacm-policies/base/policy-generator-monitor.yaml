@@ -48,50 +48,51 @@ placementBindingDefaults:
 
 policies:
   - name: monitor-cluster-operators
-    description: monitor cluster operators
+    description: Monitor cluster operators; status should be Available=true, Degraded=false
     complianceType: mustnothave
     manifests:
       - path: monitor/cluster-operator-status.yaml
 
   - name: monitor-nodes
-    description: monitor nodes with memory, disk or pid pressure, or not ready
+    description: Monitor nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state
     complianceType: mustnothave
     manifests:
       - path: monitor/node-status.yaml
 
   - name: monitor-machine-config-pool
-    description: monitor machine config pool with degraded or unavailable machines
+    description: Monitor MachineConfigPool with degraded or unavailable machines.
     manifests:
       - path: monitor/machine-config-pool-status.yaml
 
   - name: monitor-operator-hub
-    description: monitor operator hub and catalog sources
+    description: Monitor OperatorHub and CatalogSources
     manifests:
       - path: monitor/operator-hub/catalog-source-status.yaml
       - path: monitor/operator-hub/operator-hub-status.yaml
 
   - name: monitor-control-plane-node-schedulable
-    description: monitor control plane nodes that are schedulable
+    description: Monitor control plane nodes that are schedulable
     complianceType: mustnothave
     manifests:
       - path: monitor/control-plane-node-schedulable.yaml
 
   - name: monitor-etcd-encryption
-    description: verify that etcd encryption has completed
+    description: Verify that ETCD encryption has completed
     complianceType: musthave
     manifests:
       - path: monitor/etcd-encryption-status.yaml
 
   - name: monitor-cluster-version
-    description: monitor cluster version
+    description: Monitor ClusterVersion; status should be Available=True, Failing=False, Progressing=False
     complianceType: musthave
     manifests:
       - path: monitor/cluster-version-status.yaml
 
   - name: monitor-failed-cluster-service-version
-    description: monitor failed cluster service version
+    description: Monitor failed ClusterServiceVersions
     complianceType: mustnothave
     severity: low
+    # exclude some namespaces, otherwise too many csv
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       exclude:
         - etcd-backup
@@ -139,25 +140,25 @@ policies:
       - path: monitor/cluster-service-version-status.yaml
 
   - name: monitor-cluster-log-forwarder
-    description: monitor cluster log forwarder status is ready
+    description: Monitor ClusterLogForwarder; status should be ClusterRolesExist=True, ValidationSuccess=True, ReconciliationComplete=True
     complianceType: musthave
     manifests:
       - path: monitor/cluster-log-forwarder.yaml
 
   - name: monitor-rhacs-secured-clusters
-    description: monitor rhacs securedCluster deployments
+    description: Monitor RHACS SecuredCluster Deployments and DaemonSets
     complianceType: musthave
     manifests:
       - path: monitor/rhacs-secured-cluster-status.yaml
 
   - name: monitor-tekton-config-status
-    description: monitor openshift pipelines components status are ready
+    description: Monitor OpenShift Pipelines; status should be ComponentsReady=True, Ready=True
     complianceType: musthave
     manifests:
       - path: monitor/tekton-config-status.yaml
 
   - name: monitor-role-with-wildcard-permissions
-    description: detect namespaced Role with wildcard permissions
+    description: Detect namespaced Role with wildcard permissions (apiGroups: ["*"], resources: ["*"], verbs: ["*"])
     complianceType: mustnothave
     namespaceSelector:
       include:
@@ -166,7 +167,7 @@ policies:
       - path: monitor/role-with-wildcard-permissions.yaml
 
   - name: monitor-privileges-scc-binding
-    description: monitor namespaced role granting access to privileged scc
+    description: Detect namespaces RoleBindings that grant access to privileged Security Context Constraint
     complianceType: mustnothave
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
@@ -178,13 +179,13 @@ policies:
       - path: monitor/privileged-scc-role-binding.yaml
 
   - name: monitor-terminating-namespaces
-    description: monitor namespaces stuck in the Terminating state
+    description: Monitor for namespaces stuck in the Terminating state
     complianceType: mustnothave
     manifests:
       - path: monitor/namespace-status.yaml
 
   - name: monitor-install-plans
-    description: monitor install plans pending approval
+    description: Monitor InstallPlans that are pending approval
     complianceType: mustnothave
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
@@ -193,7 +194,7 @@ policies:
       - path: monitor/install-plan-status.yaml
 
   - name: monitor-pod-disruption-budget
-    description: monitor pod disruption budget with insufficient pods
+    description: Monitor PodDisruptionBudgets with insufficient pods
     complianceType: mustnothave
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
@@ -202,7 +203,7 @@ policies:
       - path: monitor/pod-disruption-budget-status.yaml
 
   - name: monitor-pod-using-default-service-account
-    description: monitor pod using the default service account.
+    description: Monitor pods using the default ServiceAccount
     complianceType: mustnothave
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       exclude:
@@ -218,12 +219,12 @@ policies:
       - path: monitor/pod-using-default-service-account.yaml
 
   - name: monitor-pod-with-more-than-200-restarts
-    description: monitor pods with more than 200 restarts
+    description: Monitor pods with more than 200 restarts
     manifests:
       - path: monitor/pod-restarts.yaml
 
   - name: monitor-container-oom-killed
-    description: monitor container oom-killed
+    description: Monitor for containers that exceed the memory limit and are killed by the Linux kernel's OOM killer
     complianceType: mustnothave
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
@@ -232,7 +233,7 @@ policies:
       - path: monitor/container-oom-killed.yaml
 
   - name: monitor-container-crash-loop-backoff
-    description: monitor pod/container CrashLoopBackOff
+    description: Monitor for containers that are repeatedly crashing and restarting (CrashLoopBackOff)
     complianceType: mustnothave
     severity: low
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
@@ -242,7 +243,7 @@ policies:
       - path: monitor/container-crash-loop-backoff.yaml
 
   - name: monitor-container-image-pull-backoff
-    description: monitor pod/container ImagePullBackOff
+    description: Monitor for pods stuck in ImagePullBackOff state (repeated image pull failures)
     complianceType: mustnothave
     severity: low
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
@@ -252,13 +253,13 @@ policies:
       - path: monitor/container-image-pull-backoff.yaml
 
   - name: monitor-persistent-volume
-    description: monitor persistent volume in failed/released state
+    description: Monitor PersistentVolume in Failed state or not properly released
     complianceType: mustnothave
     manifests:
       - path: monitor/persistent-volume-status.yaml
 
   - name: monitor-persistent-volume-claim
-    description: monitor persistent volume claims that are not in Bound state
+    description: Monitor PersistentVolumeClaims that are not in Bound state
     complianceType: mustnothave
     severity: low
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
@@ -268,22 +269,22 @@ policies:
       - path: monitor/persistent-volume-claim-status.yaml
 
   - name: monitor-default-storage-class
-    description: monitor to ensure only one default storage class
+    description: Monitor to ensure only one default StorageClass
     manifests:
       - path: monitor/default-storage-class.yaml
 
   - name: monitor-operator-group
-    description: monitor namespaces that have more than one operatorGroup
+    description: Monitor namespaces that have more than one OperatorGroup configured
     manifests:
       - path: monitor/operator-group-status.yaml
 
   - name: monitor-failed-cronjob
-    description: monitor cronJobs that failed their last scheduled run
+    description: Monitor CronJobs  that failed their last scheduled run
     manifests:
       - path: monitor/failed-cronjob-status.yaml
 
   - name: monitor-openshift-route
-    description: monitor routes that are not admitted
+    description: Monitor OpenShift routes that are not admitted because their FQDN is already claimed by another route in the cluster
     complianceType: mustnothave
     namespaceSelector:          # required when the templates/manifests does not have metadata.namespace
       include:
@@ -292,7 +293,7 @@ policies:
       - path: monitor/route-status.yaml
 
   - name: monitor-openshift-serverless
-    description: monitor openshift-serverless components
+    description: Monitor the status of OpenShift Serverless components
     complianceType: musthave
     policySets:                 # override policyDefaults.policySets
       - base-monitor-openshift-serverless
@@ -301,7 +302,7 @@ policies:
       - path: monitor/openshift-serverless/knative-eventing.yaml
 
   - name: monitor-metallb-status
-    description: monitor metallb status
+    description: Monitor MetalLB and FRRNodeState status
     complianceType: musthave
     policySets:                 # override policyDefaults.policySets
       - base-monitor-metallb
@@ -310,7 +311,7 @@ policies:
       - path: monitor/metallb/frr-node-state.yaml
 
   - name: monitor-metallb-nearly-depleted-ip-address-pool
-    description: monitor metallb ip address pools that are 80% or more assigned
+    description: Monitor MetalLB IpAddressPools that are 80% or more assigned
     policySets:                 # override policyDefaults.policySets
       - base-monitor-metallb
     manifests:

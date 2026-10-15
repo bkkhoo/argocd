@@ -21,7 +21,7 @@
       no_log: true
       register: loki_token
       ansible.builtin.command:
-        cmd: oc -n openshift-logging create token external-logs-writer --duration=8760h
+        cmd: oc --namespace openshift-logging create token external-logs-writer --duration=8760h
 
     - name: create/update secrets
       no_log: true
@@ -32,7 +32,7 @@
             id: openshift-loki-log-collector-token
             secretType: text
             value: "{{ loki_token.stdout }}"
-            description: oc -n openshift-logging create token external-logs-writer --duration=8760h
+            description: oc --namespace openshift-logging create token external-logs-writer --duration=8760h
         - payload:
             id: openshift-s3-auth
             secretType: keypair

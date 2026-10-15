@@ -45,95 +45,8 @@ placementBindingDefaults:
   name: gh-monitor-binding
 
 policies:
-  - name: monitor-managed-clusters
-    description: monitor managed cluster availability on global hub and managed hubs
-    complianceType: mustnothave
-    manifests:
-      - path: monitor/managed-cluster-status.yaml
-
-  - name: monitor-multicluster-hub-status
-    description: monitor multi cluster hub on global hub and managed hubs
-    complianceType: musthave
-    severity: high
-    manifests:
-      - path: monitor/multicluster-hub-status.yaml
-
-  - name: monitor-managed-hubs-local-cluster
-    description: monitor managed hub with local-cluster; no managed hub should have local-cluster
-    complianceType: mustnothave
-    policySets:           # override policyDefaults.policySets
-      - gh-monitor-managed-hubs
-    manifests:
-      - path: monitor/managed-hubs-local-cluster.yaml
-
-  - name: monitor-multicluster-observability-status
-    description: monitor multi cluster observability on global hub and managed hubs
-    complianceType: musthave
-    severity: high
-    manifests:
-      - path: monitor/multicluster-observability-status.yaml
-
-  - name: monitor-multicluster-search-status
-    description: monitor multicluster search on managed hubs
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - gh-monitor-managed-hubs
-    manifests:
-      - path: monitor/multicluster-search-status.yaml
-
-  - name: monitor-multicluster-global-hub
-    description: monitor multicluster global hub components
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - gh-monitor-local-cluster
-    manifests:
-      - path: monitor/multicluster-global-hub/multicluster-global-hub-status.yaml
-      - path: monitor/multicluster-global-hub/kafka-status.yaml
-      - path: monitor/multicluster-global-hub/postgresql-stateful-set-status.yaml
-
-  - name: monitor-multicluster-global-hub-agent
-    description: monitor multicluster global hub agent, the agent synchronizes data with a central multicluster global hub cluster
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - gh-monitor-managed-hubs
-    manifests:
-      - path: monitor/multicluster-global-hub-agent-status.yaml
-
-  - name: monitor-multicluster-global-search-status
-    description: monitor multicluster global search on global hub
-    complianceType: musthave
-    policySets:           # override policyDefaults.policySets
-      - gh-monitor-local-cluster
-    manifests:
-      - path: monitor/multicluster-global-search-status.yaml
-
-  - name: monitor-openshift-gitops
-    description: monitor openshift gitops deployments
-    complianceType: musthave       # object-templates-raw sets its own complianceType
-    manifests:
-      - path: monitor/openshift-gitops/operator-subscription-status.yaml
-      - path: monitor/openshift-gitops/deployment-status.yaml
-      - path: monitor/openshift-gitops/object-templates-raw-status.yaml
-      - path: monitor/openshift-gitops/argocd-status.yaml
-
-  - name: monitor-argocd-application-set
-    description: monitor argocd applicationSets
-    complianceType: mustnothave
-    namespaceSelector:
-      include:
-        - openshift-gitops
-    manifests:
-      - path: monitor/application-set-status.yaml
-
-  - name: monitor-rhacs-central
-    description: monitor rhacs central and secured clusters deployments
-    complianceType: musthave
-    manifests:
-      - path: monitor/rhacs-central/operator-subscription-status.yaml
-      - path: monitor/rhacs-central/deployment-status.yaml
-
   # - name: 00-monitor-policy-report      # 00- prefix for the policy name for sorting use
-  #   description: monitor policy report with failed results
+  #   description: Monitor RHACM PolicyReport with failed results
   #   complianceType: "mustnothave"
   #   controls:
   #     - CA-02 Security Assessments
@@ -159,4 +72,91 @@ policies:
   #       - stackrox
   #   manifests:
   #     - path: monitor/policy-report.yaml
+
+  - name: monitor-multicluster-global-hub
+    description: Monitor the status of MulticlusterGlobalHub components
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-local-cluster
+    manifests:
+      - path: monitor/multicluster-global-hub/multicluster-global-hub-status.yaml
+      - path: monitor/multicluster-global-hub/kafka-status.yaml
+      - path: monitor/multicluster-global-hub/postgresql-stateful-set-status.yaml
+
+  - name: monitor-multicluster-global-hub-agent
+    description: Monitor MultiCluster global hub agent, the agent synchronizes data with a central MultiCluster global hub cluster
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-managed-hubs
+    manifests:
+      - path: monitor/multicluster-global-hub-agent-status.yaml
+
+  - name: monitor-multicluster-global-search-status
+    description: Monitor the status of MultiCluster global search on global hub.
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-local-cluster
+    manifests:
+      - path: monitor/multicluster-global-search-status.yaml
+
+  - name: monitor-multicluster-hub-status
+    description: Monitor MultiClusterHub on global hub and managed hubs
+    complianceType: musthave
+    severity: high
+    manifests:
+      - path: monitor/multicluster-hub-status.yaml
+
+  - name: monitor-managed-hubs-local-cluster
+    description: Monitor managed hub with `local-cluster`; no managed hub should have `local-cluster`
+    complianceType: mustnothave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-managed-hubs
+    manifests:
+      - path: monitor/managed-hubs-local-cluster.yaml
+
+  - name: monitor-multicluster-observability-status
+    description: Monitor MultiClusterObservability on global hub and managed hubs
+    complianceType: musthave
+    severity: high
+    manifests:
+      - path: monitor/multicluster-observability-status.yaml
+
+  - name: monitor-multicluster-search-status
+    description: Monitor MultiCluster search on managed hubs
+    complianceType: musthave
+    policySets:           # override policyDefaults.policySets
+      - gh-monitor-managed-hubs
+    manifests:
+      - path: monitor/multicluster-search-status.yaml
+
+  - name: monitor-managed-clusters
+    description: Monitor ManagedCluster Availability on global hub and managed hubs.
+    complianceType: mustnothave
+    manifests:
+      - path: monitor/managed-cluster-status.yaml
+
+  - name: monitor-openshift-gitops
+    description: Monitor the status of OpenShift GitOps components
+    complianceType: musthave       # object-templates-raw sets its own complianceType
+    manifests:
+      - path: monitor/openshift-gitops/operator-subscription-status.yaml
+      - path: monitor/openshift-gitops/deployment-status.yaml
+      - path: monitor/openshift-gitops/object-templates-raw-status.yaml
+      - path: monitor/openshift-gitops/argocd-status.yaml
+
+  - name: monitor-argocd-application-set
+    description: Monitor the status of OpenShift GitOps ApplicationSets
+    complianceType: mustnothave
+    namespaceSelector:
+      include:
+        - openshift-gitops
+    manifests:
+      - path: monitor/application-set-status.yaml
+
+  - name: monitor-rhacs-central
+    description: Monitor the status of RHACS components
+    complianceType: musthave
+    manifests:
+      - path: monitor/rhacs-central/operator-subscription-status.yaml
+      - path: monitor/rhacs-central/deployment-status.yaml
 ...

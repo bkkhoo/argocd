@@ -5,10 +5,10 @@ metadata:
   name: version
 status:
   conditions:
-  - type: Available
-    status: "True"
-  - type: Failing
-    status: "False"
-  - type: Progressing
-    status: "False"
+    - type: Available
+      status: "True"
+    - type: Failing
+      status: "False"
+    - type: Progressing
+      status: "False"
 ...

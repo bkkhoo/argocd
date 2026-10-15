@@ -70,13 +70,13 @@ Some useful GoBGP commands:
 [source,bash]
 ----
 # view list of bgp peers
-oc -n bgp-peer rsh <pod-name> gobgp neighbor
+oc --namespace bgp-peer rsh <pod-name> gobgp neighbor
 
 # view details of specific bgp peer
-oc -n bgp-peer rsh <pod-name> gobgp neighbor <neighbor-ip>
+oc --namespace bgp-peer rsh <pod-name> gobgp neighbor <neighbor-ip>
 
 # view networks (those received from bgp peers and statically added)
-oc -n bgp-peer rsh <pod-name> gobgp global rib
+oc --namespace bgp-peer rsh <pod-name> gobgp global rib
 ----
 
 == References

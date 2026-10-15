@@ -34,7 +34,7 @@ placementBindingDefaults:
 
 policies:
   - name: certificate-status
-    description: monitor certificates expiring in 15 or fewer days
+    description: Monitor TLS certificates expiring in 15 days or fewer
     manifests:
       - path: cert/certificate-policy.yaml
 ...

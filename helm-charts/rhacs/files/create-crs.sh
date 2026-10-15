@@ -13,7 +13,7 @@ MAX_ATTEMPTS=60
 
 rm -f ${CRS_LIST} ${CRS_JSON_FILE}
 
-# if oc -n ${RHACS_CENTRAL_NAMESPACE} get secret/cluster-registration-secret &> /dev/null; then
+# if oc --namespace ${RHACS_CENTRAL_NAMESPACE} get secret/cluster-registration-secret &> /dev/null; then
 #   echo "rhacs crs has already been configured"
 #   exit 0
 # fi
@@ -51,8 +51,8 @@ _status=$(curl --insecure --silent --request POST --user "admin:${_password}" \
   --data "{\"name\": \"${CRS_NAME}\", \"validFor\": \"31536000s\"}" \
   https://${ROX_CENTRAL_ADDRESS}/v1/cluster-init/crs-extended)
 if [ "${_status}" -eq "200" ]; then
-  cat ${CRS_JSON_FILE} | python3 -c "import sys, json; print(json.load(sys.stdin)['crs'])" | base64 -d | \
-  oc -n ${RHACS_CENTRAL_NAMESPACE} apply -f -
+  cat ${CRS_JSON_FILE} | python3 -c "import sys, json; print(json.load(sys.stdin)['crs'])" | base64 --decode | \
+  oc --namespace ${RHACS_CENTRAL_NAMESPACE} apply --filename -
   echo "rhacs crs (${CRS_NAME}) created and applied"
 else
   echo "failed to create crs"
@@ -60,13 +60,13 @@ else
 fi
 
 echo "get rhacs crs"
-_crs=$(oc -n ${RHACS_CENTRAL_NAMESPACE} get secret cluster-registration-secret -o jsonpath="{.data.crs}" | base64 -d)
+_crs=$(oc --namespace ${RHACS_CENTRAL_NAMESPACE} get secret cluster-registration-secret --output jsonpath="{.data.crs}" | base64 --decode)
 echo "get rhacs central hostname"
-_central_endpoint=$(oc -n ${RHACS_CENTRAL_NAMESPACE} get routes.route.openshift.io central -o jsonpath="{.spec.host}")
+_central_endpoint=$(oc --namespace ${RHACS_CENTRAL_NAMESPACE} get routes.route.openshift.io central --output jsonpath="{.spec.host}")
 
 _attempt_counter=0
 echo "waiting for ${RHACM_POLICIES_NAMESPACE} namespace to be Active..."
-until [ "$(oc get ns ${RHACM_POLICIES_NAMESPACE} -o jsonpath='{.status.phase}' 2>/dev/null)" == "Active" ]; do
+until [ "$(oc get ns ${RHACM_POLICIES_NAMESPACE} --output jsonpath='{.status.phase}' 2>/dev/null)" == "Active" ]; do
   if [ ${_attempt_counter} -eq ${MAX_ATTEMPTS} ]; then
     echo "max attempts reached; ${RHACM_POLICIES_NAMESPACE} namespace did not reach Active state"
     exit 1
@@ -78,9 +78,9 @@ until [ "$(oc get ns ${RHACM_POLICIES_NAMESPACE} -o jsonpath='{.status.phase}' 2
 done
 
 echo "create ${RHACM_POLICIES_NAMESPACE}/rhacs-crs"
-oc -n ${RHACM_POLICIES_NAMESPACE} create secret generic rhacs-crs\
-  --from-literal=crs="${_crs}" --dry-run=client -o yaml | oc apply -f -
+oc --namespace ${RHACM_POLICIES_NAMESPACE} create secret generic rhacs-crs \
+  --from-literal=crs="${_crs}" --dry-run=client --output yaml | oc apply --filename -
 
 echo "create ${RHACM_POLICIES_NAMESPACE}/rrhacs-central-endpoint"
-oc -n ${RHACM_POLICIES_NAMESPACE} create configmap rhacs-central-endpoint \
-  --from-literal=centralEndpoint="${_central_endpoint}:443" --dry-run=client -o yaml | oc apply -f -
+oc --namespace ${RHACM_POLICIES_NAMESPACE} create configmap rhacs-central-endpoint \
+  --from-literal=centralEndpoint="${_central_endpoint}:443" --dry-run=client --output yaml | oc apply --filename -

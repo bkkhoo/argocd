@@ -8,7 +8,12 @@ ifdef::env-github[]
 endif::[]
 = About this Kustomize Deployment
 
-RHACM governance policies, the polices are deployed to **global hub** and **managed hubs** only.
+This Kustomize deployment deploys RHACM governance policies to **global hub** and **managed hubs** only.
+
+[NOTE]
+====
+The deployment uses RHACM Policy Generator plugin that automatically creates RHACM policies from standard Kubernetes manifest YAML files.  It is implemented as a PolicyGenerator Custom Resource and is the preferred standard for policy generation since OpenShift 4.16, replacing the deprecated PolicyGenTemplate.
+====
 
 == RHACM Policies
 
@@ -30,7 +35,7 @@ These policies are common to both global hub and managed hubs.
 
 | config-openshift-logging-http-secret
 | Enforce
-| Copy OpenShift logging HTTP endpoint authentication secrets to all clusters.
+| Copy OpenShift logging HTTP endpoint authentication secrets to all clusters, except managed hub clusters.
 
 | config-metallb-bgp-password-secret
 | Enforce
@@ -38,7 +43,7 @@ These policies are common to both global hub and managed hubs.
 
 | config-loki-stack-secret
 | Enforce
-| Configure Loki stack secret, if ODF ObjectBucketClaim Secret and ConfigMap exist.
+| Configure LokiStack secret, if ODF ObjectBucketClaim Secret and ConfigMap exist.
 
 | monitor-cluster-operators
 | Inform
@@ -46,11 +51,11 @@ These policies are common to both global hub and managed hubs.
 
 | monitor-nodes
 | Inform
-| Monitor for nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
+| Monitor nodes that exhibit MemoryPressure, DiskPressure, PIDPressure, or a NotReady state.
 
 | monitor-machine-config-pool
 | Inform
-| Monitor MachineConfigPool with degraded or unavailable machines
+| Monitor MachineConfigPool with degraded or unavailable machines.
 
 | monitor-operator-hub
 | Inform
@@ -66,23 +71,23 @@ These policies are common to both global hub and managed hubs.
 
 | monitor-cluster-version
 | Inform
-| Monitor ClusterVersion.
+| Monitor ClusterVersion; status should be `Available=True`, `Failing=False`, `Progressing=False`.
 
 | monitor-failed-cluster-service-version
 | Inform
-| Monitor failed Cluster Service Versions
+| Monitor failed ClusterServiceVersions.
 
 | monitor-cluster-log-forwarder
 | Inform
-| Monitor cluster log forwarder status is ready.
+| Monitor ClusterLogForwarder; status should be `ClusterRolesExist=True`, `ValidationSuccess=True`, `ReconciliationComplete=True`.
 
 | monitor-rhacs-secured-clusters
 | Inform
-| Monitor RHACS SecuredCluster deployments.
+| Monitor RHACS SecuredCluster Deployments and DaemonSets.
 
 | monitor-tekton-config-status
 | Inform
-| Monitor OpenShift Pipelines components status are ready
+| Monitor OpenShift Pipelines; status should be `ComponentsReady=True`, `Ready=True`.
 
 | monitor-role-with-wildcard-permissions
 | Inform
@@ -90,7 +95,7 @@ These policies are common to both global hub and managed hubs.
 
 | monitor-privileges-scc-binding
 | Inform
-| Monitor for namespaces with RoleBindings that grant access to `privileged` Security Context Constraint.
+| Detect namespaces RoleBindings that grant access to `privileged` Security Context Constraint.
 
 | monitor-terminating-namespaces
 | Inform
@@ -106,7 +111,7 @@ These policies are common to both global hub and managed hubs.
 
 | monitor-pod-using-default-service-account
 | Inform
-| Monitor pods using the default service account.
+| Monitor pods using the `default` ServiceAccount.
 
 | monitor-pod-with-more-than-200-restarts
 | Inform
@@ -114,7 +119,7 @@ These policies are common to both global hub and managed hubs.
 
 | monitor-container-oom-killed
 | Inform
-| Monitor for containers that exceed their defined memory limit and are killed by the Linux kernel's Out-Of-Memory killer (`OOMKilled`).
+| Monitor for containers that exceed the memory limit and are killed by the Linux kernel's OOM killer.
 
 | monitor-container-crash-loop-backoff
 | Inform
@@ -122,7 +127,7 @@ These policies are common to both global hub and managed hubs.
 
 | monitor-container-image-pull-backoff
 | Inform
-| Monitor for pods where the kubelet repeatedly fails to pull the required container image from a registry (`ImagePullBackOff`).
+| Monitor for pods stuck in `ImagePullBackOff` state (repeated image pull failures).
 
 | monitor-persistent-volume
 | Inform
@@ -141,7 +146,7 @@ a| Monitor PersistentVolume (PV) state:
 
 | monitor-operator-group
 | Inform
-| Monitor namespaces that have more than one OperatorGroup.
+| Monitor namespaces that have more than one OperatorGroup configured.
 
 | monitor-failed-cronjob
 | Inform
@@ -149,23 +154,23 @@ a| Monitor PersistentVolume (PV) state:
 
 | monitor-openshift-route
 | Inform
-| Monitor OpenShift routes that are not admitted, such as when `spec.host` is already claimed by another route in the cluster.
+| Monitor OpenShift routes that are not admitted because their FQDN is already claimed by another route in the cluster.
 
 | monitor-openshift-serverless
 | Inform
-| Monitor OpenShift Serverless components.
+| Monitor the status of OpenShift Serverless components.
 
 | monitor-metallb-status
 | Inform
-| Monitor metallb status.
+| Monitor MetalLB and FRRNodeState status.
 
 | monitor-metallb-nearly-depleted-ip-address-pool
 | Inform
-| Monitor metallb IpAddressPools that are 80% or more assigned.
+| Monitor MetalLB IpAddressPools that are 80% or more assigned.
 
 | certificate-status
 | Inform
-| Monitor TLS certificates of namespaces (openshift-gitops, openshift-ingress, openshift-ingress-operator, openshift-pipelines, stackrox); triggers a violation if a certificate expires in 15 days or fewer.
+| Monitor TLS certificates expiring in 15 days or fewer.
 |===
 
 === Global Hub Policies
@@ -178,8 +183,7 @@ These policies are for global hub only.
 
 // | 00-monitor-policy-report
 // | Inform
-// | `local-cluster` and all OpenShift clusters with `managed-hub` label.
-// | Monitor PolicyReports that aggregate and display governance and security violations across managed clusters.
+// | Monitor RHACM PolicyReport with failed results.
 
 | config-sync-secrets-dev-hub
 | Enforce
@@ -193,29 +197,9 @@ These policies are for global hub only.
 | Enforce
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: prod` labels) to managed hubs.
 
-| monitor-managed-clusters
-| Inform
-| Monitor ManagedCluster Availability on global hub and managed hubs.
-
-| monitor-multicluster-hub-status
-| Inform
-| Monitor MultiClusterHub on global hub and managed hubs.
-
-| monitor-managed-hubs-local-cluster
-| Inform
-| Monitor managed hub with `local-cluster`, no managed hub should have `local-cluster`.
-
-| monitor-multicluster-observability-status
-| Inform
-| Monitor multi cluster observability on global hub and managed hubs.
-
-| monitor-multicluster-search-status
-| Inform
-| Monitor MultiCluster search on managed hubs.
-
 | monitor-multicluster-global-hub
 | Inform
-| Monitor MulticlusterGlobalHub components.
+| Monitor the status of MulticlusterGlobalHub components.
 
 | monitor-multicluster-global-hub-agent
 | Inform
@@ -223,19 +207,39 @@ These policies are for global hub only.
 
 | monitor-multicluster-global-search-status
 | Inform
-| Monitor MultiCluster global search on global hub.
+| Monitor the status of MultiCluster global search on global hub.
+
+| monitor-multicluster-hub-status
+| Inform
+| Monitor MultiClusterHub on global hub and managed hubs.
+
+| monitor-managed-hubs-local-cluster
+| Inform
+| Monitor managed hub with `local-cluster`; no managed hub should have `local-cluster`.
+
+| monitor-multicluster-observability-status
+| Inform
+| Monitor MultiClusterObservability on global hub and managed hubs.
+
+| monitor-multicluster-search-status
+| Inform
+| Monitor MultiCluster search on managed hubs.
+
+| monitor-managed-clusters
+| Inform
+| Monitor ManagedCluster Availability on global hub and managed hubs.
 
 | monitor-openshift-gitops
 | Inform
-| Monitor OpenShift GitOps deployments.
+| Monitor the status of OpenShift GitOps components.
 
 | monitor-argocd-application-set
 | Inform
-| Monitor ArgoCD ApplicationSets.
+| Monitor the status of OpenShift GitOps ApplicationSets.
 
 | monitor-rhacs-central
 | Inform
-| Monitor RHACS Central and SecuredClusters deployments.
+| Monitor the status of RHACS components.
 |===
 
 === Managed Hubs Policies
@@ -252,5 +256,5 @@ These policies are for managed hubs only.
 
 [IMPORTANT]
 ====
-The policy namespace and name (`<namespace-name>.<policy-name>`) cannot be more than 63 characters.
+The RHACM policy namespace and name (`<namespace-name>.<policy-name>`) cannot be more than 63 characters.
 ====

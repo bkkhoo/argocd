@@ -5,7 +5,7 @@ kind: Namespace
 metadata:
   name: {{ .Values.namespace.central }}
   labels:
-     argocd.argoproj.io/managed-by: openshift-gitops
+    argocd.argoproj.io/managed-by: openshift-gitops
 spec: {}
 ...
 {{- end }}

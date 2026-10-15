@@ -7,9 +7,9 @@ set -euo pipefail
 # use environment variable instead
 # INSIGHTS_ENTRY="cloud.openshift.com"
 
-updated_pull_secret=$(oc -n openshift-config extract secret/pull-secret --to=- | jq "del(.auths[\"${INSIGHTS_ENTRY}\"])" | base64 -w0)
+updated_pull_secret=$(oc --namespace openshift-config extract secret/pull-secret --to=- | jq "del(.auths[\"${INSIGHTS_ENTRY}\"])" | base64 --wrap=0)
 
-oc -n openshift-config patch secret/pull-secret -p "{
+oc --namespace openshift-config patch secret/pull-secret --patch "{
   \"data\": {
     \".dockerconfigjson\": \"${updated_pull_secret}\"
   }
@@ -17,4 +17,4 @@ oc -n openshift-config patch secret/pull-secret -p "{
 
 # no insights operator pod restart required; might take a few minutes for the change to take effect
 # uncomment the line below to force the change to take effect immediately
-# oc -n openshift-insights delete pod --selector app=insights-operator
+# oc --namespace openshift-insights delete pod --selector app=insights-operator

@@ -66,21 +66,21 @@ placementBindingDefaults:
 
 policies:
   - name: config-sync-secrets-dev-hub
-    description: sync global hub secrets to dev hubs
+    description: Sync global hub secrets to dev managed hubs
     policySets:         # override policyDefaults.policySets
       - gh-config-dev-hubs
     manifests:
       - path: config/sync-secret/dev-hub-sync-secret.yaml
 
   - name: config-sync-secrets-uat-hub
-    description: sync global hub secrets to uat hubs
+    description: Sync global hub secrets to uat managed hubs
     policySets:         # override policyDefaults.policySets
       - gh-config-uat-hubs
     manifests:
       - path: config/sync-secret/uat-hub-sync-secret.yaml
 
   - name: config-sync-secrets-prod-hub
-    description: sync global hub secrets to prod hubs
+    description: Sync global hub secrets to prod managed hubs
     policySets:         # override policyDefaults.policySets
       - gh-config-prod-hubs
       # the entire multi cluster setup should only have one local-cluster (which is the global-hub), which is a prod hub cluster

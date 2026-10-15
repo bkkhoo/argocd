@@ -72,7 +72,7 @@ placementBindingDefaults:
 
 policies:
   - name: config-remove-kubeadmin
-    description: remove kube-system/kubeadmin secret
+    description: Ensure kubeadmin user is removed
     complianceType: mustnothave
     categories:
       - AC Access Control
@@ -82,7 +82,7 @@ policies:
       - path: config/kubeadmin-secret.yaml
 
   - name: config-rhacs-secured-cluster
-    description: deploy rhacs operator, securedCluster and cluster registration secret
+    description: Deploy RHACS operator, SecuredCluster and cluster registration secret
     complianceType: musthave
     policySets:         # override policyDefaults.policySets
       - base-config-no-local-cluster-no-managed-hub
@@ -91,7 +91,7 @@ policies:
       - path: config/rhacs/secret.yaml
 
   - name: config-openshift-logging-http-secret
-    description: copy openshift logging http endpoint authentication secrets to all clusters, except hub clusters
+    description: Copy OpenShift logging HTTP endpoint authentication secrets to all clusters, except managed hub clusters
     complianceType: musthave
     policySets:         # override policyDefaults.policySets
       - base-config-no-local-cluster-no-managed-hub    # exclude all hub clusters
@@ -99,14 +99,14 @@ policies:
       - path: config/sync-secret/openshift-logging-secret.yaml
 
   - name: config-metallb-bgp-password-secret
-    description: copy metallb bgp password secret from managed hub to managed clusters
+    description: Copy MetalLB BGP password secret from managed hub to managed clusters
     policySets:         # override policyDefaults.policySets
       - base-config-metallb
     manifests:
       - path: config/sync-secret/metallb-bgp-password-secret.yaml
 
   - name: config-loki-stack-secret
-    description: configure loki stack secret (ODF ObjectBucketClaim)
+    description: Configure LokiStack secret, if ODF ObjectBucketClaim Secret and ConfigMap exist
     policySets:         # override policyDefaults.policySets
       - base-config-loki-stack
     manifests:

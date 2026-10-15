@@ -9,9 +9,9 @@ attempt=0
 echo  "Waiting for etcd encryption and cluster operators update/reconciliation to complete..."
 while [ ${attempt} -lt ${MAX_ATTEMPTS} ]; do
   # looking for output full of False, i.e. Progressing=False for each cluster operator
-  output1="$(oc get co -o=jsonpath='{range .items[*].status.conditions[?(@.type=="Progressing")]}{.status}{","}')"
+  output1="$(oc get clusteroperator --output=jsonpath='{range .items[*].status.conditions[?(@.type=="Progressing")]}{.status}{","}')"
   # looking for output EncryptionCompleted
-  output2="$(oc get openshiftapiserver cluster -o=jsonpath='{range .status.conditions[?(@.type=="Encrypted")]}{.reason}' | grep $ENCRYPTION_PATTERN)"
+  output2="$(oc get openshiftapiserver cluster --output=jsonpath='{range .status.conditions[?(@.type=="Encrypted")]}{.reason}' | grep $ENCRYPTION_PATTERN)"
   if [[ ! "${output1}" =~ "${CLUSTER_OPERATOR_PATTERN}" ]] && [[ "${output2}" == "${ENCRYPTION_PATTERN}" ]]; then
     break
   fi
@@ -37,7 +37,7 @@ find ${SNAPSHOT_DB_BACKUP_PATH} -type f -mtime "+${BACKUP_RETENTION_DAYS}" | xar
 find ${STATIC_RESOURCES_BACKUP_PATH} -type f -mtime "+${BACKUP_RETENTION_DAYS}" | xargs rm -rf
 
 echo -e "\nlist snapshot db backups"
-ls -lh ${SNAPSHOT_DB_BACKUP_PATH} | grep snapsho
+ls -lh ${SNAPSHOT_DB_BACKUP_PATH} | grep snapshot
 
 echo -e "\nlist static resources backups"
 ls -lh ${STATIC_RESOURCES_BACKUP_PATH} | grep static_kuberesources

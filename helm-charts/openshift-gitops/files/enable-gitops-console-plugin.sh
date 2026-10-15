@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 
-_plugins="$(oc get consoles.operator.openshift.io cluster -o jsonpath='{.spec.plugins}')"
+_plugins="$(oc get consoles.operator.openshift.io cluster --output jsonpath='{.spec.plugins}')"
 
 if [[ ! "gitops-plugin" =~ ${_plugins} ]]; then
   oc patch consoles.operator.openshift.io cluster --type=json \

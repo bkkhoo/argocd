@@ -5,7 +5,7 @@ kind: Namespace
 metadata:
   name: {{ .Values.observability.namespace }}
   labels:
-     argocd.argoproj.io/managed-by: openshift-gitops
+    argocd.argoproj.io/managed-by: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "200"
 spec: {}

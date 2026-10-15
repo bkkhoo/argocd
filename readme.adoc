@@ -14,6 +14,86 @@ This diagram illustrates how different components (MultiCluster Global Hub, Red 
 
 image::./images/multicluster-global-hub.png[MultiCluster Global Hub]
 
+== Repository Contents
+
+- link:apps/[ArgoCD Application and ApplicationSets]
+- link:helm-charts/[Helm Charts]
+- link:kustomize-deployments/[Kustomize Deployments]
+- link:rhacm-policies/[RHACM Policies (policy generator)]
+
+== Usage
+
+This is a use case where a MultiCluster Global Hub manages a number of RHACM managed hub clusters, and each managed hub cluster manages a number of manageClusters.
+
+[source,bash]
+----
+ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml --extra-vars config=basic --ask-vault-password
+----
+
+The ansible playbook performs the following on the global Hub cluster:
+
+- Deploys RHACM.
+- DeploysOpenShift GitOps.
+- Enable RHACM integration with OpenShift GitOps.
+- Deploys global hub app-of-apps (`root-app/global-hub/base`); the app-of-apps, in turn deploys:
+  ** MultiCluster Global Hub.
+  ** MultiCluster Observability.
+  ** app-of-apps for managed hub (`root-app/managed-hub/overlays/<dev|uat|prod>`) to dev/uat/prod managed hubs:
+     *** `dev` managed hubs labels: `managed-hub=yes`, `env=dev`.
+     *** `uat` managed hubs labels: `managed-hub=yes`, `env=uat`.
+     *** `prod` managed hubs labels: `managed-hub=yes`, `env=prod`.
+  ** RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`.
+  ** cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc, to `local-cluster`.
+  ** other ArgoCD applications to `local-cluster`.
+
+[NOTE]
+====
+- Make sure to run playbook from host with `oc` and `helm` command line tools.
+- Make sure to `oc login` to the OpenShift cluster with `cluster-admin` privileges before running the Ansible playbook.
+====
+
+== Implementation Considerations
+
+. The RHACM PolicyGenerator plugin is not preinstalled in the OpenShift GitOps container image. To resolve this, an InitContainer is added to the repo server pod to copy the PolicyGenerator binary from link:https://catalog.redhat.com/en/software/containers/rhacm2/multicluster-observability-rhel9-operator/65a6ebeb202d91251cb0e712?image=69fa2e7a14ce65b274e8c446&architecture=amd64[RHACM Application Subscription container image] to the correct Kustomize plugin directory within the ArgoCD repo server. See https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html-single/gitops/index#integrate-pol-gen-ocp-gitops for more details.
+
+. ArgoCD disabled external plugins by default for security reasons, preventing external plugins from loading:
+** To use Helm charts within an ArgoCD Application that utilizes Kustomize, the `--enable-helm` flag must be enabled. For OpenShift GitOps, this is configured via by adding `kustomizeBuildOptions: --enable-helm` to `argocds.argoproj.io/openshift-gitops` resource.
+** To use RHACM PolicyGenerator within an ArgoCD Application that utilizes Kustomize, the `--enable-alpha-plugins` flag must be enabled. For OpenShift GitOps, this is configured via by adding `kustomizeBuildOptions: --enable-helm` to `argocds.argoproj.io/openshift-gitops` resource.
+
+. The default configuration of the ArgoCD server does not grant any privileges to user login via external identity provider (such as OpenShift); RBAC is configured by changing the `rbac` of `argocds.argoproj.io/openshift-gitops` resource. See https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/ for more details.
+
+. The `argocd.argoproj.io/managed-by: openshift-gitops` label is used to grant ArgoCD namespace Admin privileges to manage resources in other target namespaces.
+
+. ArgoCD generates Helm manifests by running the `helm template` command rather than using `helm install`. The resulting manifests are then applied to the cluster using `kubectl apply`. This approach has two key implications:
+** No Helm release metadata is stored in the cluster.
+** Templates cannot query live Kubernetes resources during rendering. Specifically, the Helm `lookup` function is not supported when using ArgoCD. For more details, see: https://github.com/argoproj/argo-cd/issues/21745.
+
+. For Application/ApplicationSet that deploys Custom Resource (CR) alongside or before their operator (which deploys Custom Resource Definitions, CRDs) are deployed/registered in the cluster, the `argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true` annotation should be added to the instance/operand/CR manifest. The `SkipDryRunOnMissingResource=true` sync option allows ArgoCD to bypass dry-run validation.
+
+. When managing CPU resource requests and limits with ArgoCD, specify whole CPU cores as `1` or `2` instead of `1000m` or `2000m`. Kubernetes automatically normalizes these values (e.g., converting `1000m` to `1`), but ArgoCD often compares the raw Git manifest against the normalized live cluster state. This mismatch can cause a perpetual `OutOfSync` status and result in sync loops.
+
+. On ArgoCd `in-cluster`, the ServiceAccount `openshift-gitops-argocd-application-controller` in `openshift-gitops` namespace does not have enough privileges to get/list/watch/create/update/delete some resources (such as `configs.samples.operator.openshift.io`), the link:helm-charts/openshift-gitops/templates/argocd-instance/rbac.yaml[ClusterRole/ClusterRoleBinding and Role/RoleBinding] grant supplementary privileges to the ServiceAccount. Without the supplementary privileges, ArgoCD will failed to sync with the following error:
++
+[source,text]
+----
+Failed last sync attempt to [df95491967903498aea9898a72c5cb202650222c df95491967903498aea9898a72c5cb202650222c df95491967903498aea9898a72c5cb202650222c]: one or more objects failed to apply, reason: error when patching "/dev/shm/4227123794": configs.samples.operator.openshift.io "cluster" is forbidden: User "system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller" cannot patch resource "configs" in API group "samples.operator.openshift.io" at the cluster scope (retried 5 times).
+----
++
+[NOTE]
+====
+For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` ServiceAccount in `kube-system` namespace) when appliying resources on those clusters, the token has `cluster-admin` privileges.
+====
+
+. All RHACM ManagedClusters, except the `local-cluster`, should be added to the `gitops-clusters` ClusterSet.
+
+== Issues
+
+See link:readme-issues.adoc[document].
+
+== To-dos
+
+RHACM and OpenShift GitOps are deployed on the global hub by an link:bootstrap/ansible/bootstrap.yaml[Ansible playbook]. Any changes to RHACM or OpenShift GitOps configurations requires manual execution of the Ansible playbook. It is recommended to let OpenShift GitOps manages its own (and RHACM) configuration and updates, in a **peak GitOps** approach that ensures consistent audit trails, drift detection, and automated upgrades for the entire cluster.
+
 == Terminology
 
 [cols="1,6"]
@@ -115,84 +195,6 @@ The managed hub's `local-cluster` is disabled when the managed hub is imported t
             ├── prod
             └── uat
 ----
-
-== Repository Contents
-
-- link:apps/[ArgoCD Application and ApplicationSets]
-- link:helm-charts/[Helm Charts]
-- link:kustomize-deployments/[Kustomize Deployments]
-- link:rhacm-policies/[RHACM Policies (policy generator)]
-
-== Usage
-
-This is a use case where a MultiCluster Global Hub manages a number of RHACM managed hub clusters, and each managed hub cluster manages a number of manageClusters.
-
-[source,bash]
-----
-ansible-playbook -i localhost, bootstrap/ansible/bootstrap.yaml --extra-vars config=basic --ask-vault-password
-----
-
-The ansible playbook performs the following on the global Hub cluster:
-
-- Deploys RHACM.
-- DeploysOpenShift GitOps.
-- Enable RHACM integration with OpenShift GitOps.
-- Deploys global hub app-of-apps (`root-app/global-hub/base`); the app-of-apps, in turn deploys:
-  ** MultiCluster Global Hub.
-  ** MultiCluster Observability.
-  ** app-of-apps for managed hub (`root-app/managed-hub/overlays/<dev|uat|prod>`) to dev/uat/prod managed hubs:
-     *** `dev` managed hubs labels: `managed-hub=yes`, `env=dev`.
-     *** `uat` managed hubs labels: `managed-hub=yes`, `env=uat`.
-     *** `prod` managed hubs labels: `managed-hub=yes`, `env=prod`.
-  ** RHACM policies (`apps/rhacm-policies/base`) to `local-cluster`.
-  ** cluster config (`apps/cluster-config/base`) such as disable self provisioner, disable insights/telemetry services, etc, to `local-cluster`.
-  ** other ArgoCD applications to `local-cluster`.
-
-[NOTE]
-====
-- Make sure to run playbook from host with `oc` and `helm` command line tools.
-- Make sure to `oc login` to the OpenShift cluster with `cluster-admin` privileges before running the Ansible playbook.
-====
-
-== Implementation Considerations
-
-. The RHACM PolicyGenerator plugin is not preinstalled in the OpenShift GitOps container image. To resolve this, an InitContainer is added to the repo server pod to copy the PolicyGenerator binary from link:https://catalog.redhat.com/en/software/containers/rhacm2/multicluster-observability-rhel9-operator/65a6ebeb202d91251cb0e712?image=69fa2e7a14ce65b274e8c446&architecture=amd64[RHACM Application Subscription container image] to the correct Kustomize plugin directory within the ArgoCD repo server. See https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html-single/gitops/index#integrate-pol-gen-ocp-gitops for more details.
-
-. ArgoCD disabled external plugins by default for security reasons, preventing external plugins from loading:
-** To use Helm charts within an ArgoCD Application that utilizes Kustomize, the `--enable-helm` flag must be enabled. For OpenShift GitOps, this is configured via by adding `kustomizeBuildOptions: --enable-helm` to `argocds.argoproj.io/openshift-gitops` resource.
-** To use RHACM PolicyGenerator within an ArgoCD Application that utilizes Kustomize, the `--enable-alpha-plugins` flag must be enabled. For OpenShift GitOps, this is configured via by adding `kustomizeBuildOptions: --enable-helm` to `argocds.argoproj.io/openshift-gitops` resource.
-
-. The default configuration of the ArgoCD server does not grant any privileges to user login via external identity provider (such as OpenShift); RBAC is configured by changing the `rbac` of `argocds.argoproj.io/openshift-gitops` resource. See https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/ for more details.
-
-. The `argocd.argoproj.io/managed-by: openshift-gitops` label is used to grant ArgoCD namespace Admin privileges to manage resources in other target namespaces.
-
-. ArgoCD generates Helm manifests by running the `helm template` command rather than using `helm install`. The resulting manifests are then applied to the cluster using `kubectl apply`. This approach has two key implications:
-** No Helm release metadata is stored in the cluster.
-** Templates cannot query live Kubernetes resources during rendering. Specifically, the Helm `lookup` function is not supported when using ArgoCD. For more details, see: https://github.com/argoproj/argo-cd/issues/21745.
-
-. For Application/ApplicationSet that deploys Custom Resource (CR) alongside or before their operator (which deploys Custom Resource Definitions, CRDs) are deployed/registered in the cluster, the `argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true` annotation should be added to the instance/operand/CR manifest. The `SkipDryRunOnMissingResource=true` sync option allows ArgoCD to bypass dry-run validation.
-
-. When managing CPU resource requests and limits with ArgoCD, specify whole CPU cores as `1` or `2` instead of `1000m` or `2000m`. Kubernetes automatically normalizes these values (e.g., converting `1000m` to `1`), but ArgoCD often compares the raw Git manifest against the normalized live cluster state. This mismatch can cause a perpetual `OutOfSync` status and result in sync loops.
-
-. On ArgoCd `in-cluster`, the ServiceAccount `openshift-gitops-argocd-application-controller` in `openshift-gitops` namespace does not have enough privileges to get/list/watch/create/update/delete some resources (such as `configs.samples.operator.openshift.io`), the link:helm-charts/openshift-gitops/templates/argocd-instance/rbac.yaml[ClusterRole/ClusterRoleBinding and Role/RoleBinding] grant supplementary privileges to the ServiceAccount. Without the supplementary privileges, ArgoCD will failed to sync with the following error:
-+
-[source,text]
-----
-Failed last sync attempt to [df95491967903498aea9898a72c5cb202650222c df95491967903498aea9898a72c5cb202650222c df95491967903498aea9898a72c5cb202650222c]: one or more objects failed to apply, reason: error when patching "/dev/shm/4227123794": configs.samples.operator.openshift.io "cluster" is forbidden: User "system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller" cannot patch resource "configs" in API group "samples.operator.openshift.io" at the cluster scope (retried 5 times).
-----
-+
-[NOTE]
-====
-For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` ServiceAccount in `kube-system` namespace) when appliying resources on those clusters, the token has `cluster-admin` privileges.
-====
-
-. All RHACM ManagedClusters, except the `local-cluster`, should be added to the `gitops-clusters` ClusterSet.
-
-== Issues
-
-See link:readme-issues.adoc[document].
-
-== To-dos
 
 == References
 

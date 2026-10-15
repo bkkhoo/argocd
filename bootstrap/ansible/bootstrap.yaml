@@ -71,5 +71,5 @@
         stdin: "{{ lookup('template', 'templates/'+item+'.yaml.j2') }}"
 
     - name: ensure managed-hub app-of-apps is deployed
-      ansible.builtin.command: oc apply -k {{ playbook_dir }}/../../apps/00-global-hub-app-of-apps/base
+      ansible.builtin.command: oc apply --kustomize {{ playbook_dir }}/../../apps/00-global-hub-app-of-apps/base
 ...

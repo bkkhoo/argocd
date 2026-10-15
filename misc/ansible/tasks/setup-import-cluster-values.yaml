@@ -1,7 +1,7 @@
 ---
 - name: "login to openshift cluster {{ _cluster_name }}"
   ansible.builtin.command:
-    cmd: oc login --insecure-skip-tls-verify -u admin -p {{ _password }} {{ _url }}
+    cmd: oc login --insecure-skip-tls-verify --username admin --password {{ _password }} {{ _url }}
 
 - name: get current context
   register: context

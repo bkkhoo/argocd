@@ -116,26 +116,26 @@ Use the following command to check status of BGP sessions; each BGP speaker's ou
 
 [source,bash]
 ----
-oc -n openshift-frr-k8s get bgpsessionstates.frrk8s.metallb.io -o yaml
+oc --namespace openshift-frr-k8s get bgpsessionstates.frrk8s.metallb.io -o yaml
 ----
 
 Displays the status of all BGP peers:
 
 [source,bash]
 ----
-oc -n openshift-frr-k8s rsh -c frr <pod-name> vtysh -c "show bgp summary"
+oc --namespace openshift-frr-k8s rsh --container frr <pod-name> vtysh -c "show bgp summary"
 ----
 
 Shows detailed information about BGP peers:
 
 [source,bash]
 ----
-oc -n openshift-frr-k8s rsh -c frr <pod-name> vtysh -c "show bgp neighbors"
+oc --namespace openshift-frr-k8s rsh --container frr <pod-name> vtysh -c "show bgp neighbors"
 ----
 
 Verifies the status of Bidirectional Forwarding Detection sessions:
 
 [source,bash]
 ----
-oc -n openshift-frr-k8s rsh -c frr <pod-name> vtysh -c "show bfd peers"
+oc --namespace openshift-frr-k8s rsh --container frr <pod-name> vtysh -c "show bfd peers"
 ----
