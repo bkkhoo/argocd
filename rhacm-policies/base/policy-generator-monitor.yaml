@@ -158,7 +158,7 @@ policies:
       - path: monitor/tekton-config-status.yaml
 
   - name: monitor-role-with-wildcard-permissions
-    description: Detect namespaced Role with wildcard permissions (apiGroups: ["*"], resources: ["*"], verbs: ["*"])
+    description: 'Detect namespaced Role with wildcard permissions (apiGroups: ["*"], resources: ["*"], verbs: ["*"])'
     complianceType: mustnothave
     namespaceSelector:
       include:
