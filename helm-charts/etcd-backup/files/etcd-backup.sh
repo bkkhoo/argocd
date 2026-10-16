@@ -23,14 +23,14 @@ done
 set -euo pipefail    # fail script if any command or pipeline failed
 
 echo -e "\nstarting backup at $(date '+%F %T %Z') ..."
-chroot /host sudo -E /usr/local/bin/cluster-backup.sh "${BACKUP_PATH}"
+chroot /host sudo --preserve-env /usr/local/bin/cluster-backup.sh "${BACKUP_PATH}"
 
 echo -e "\ncompressing snapshot db..."
-gzip -9 /host/${BACKUP_PATH}/*.db
+gzip --best /host/${BACKUP_PATH}/*.db
 
 echo -e "\ntransferring backup files..."
-mv -v /host/${BACKUP_PATH}/*.db.gz ${SNAPSHOT_DB_BACKUP_PATH}
-mv -v /host/${BACKUP_PATH}/*.tar.gz ${STATIC_RESOURCES_BACKUP_PATH}
+mv --verbose /host/${BACKUP_PATH}/*.db.gz ${SNAPSHOT_DB_BACKUP_PATH}
+mv --verbose /host/${BACKUP_PATH}/*.tar.gz ${STATIC_RESOURCES_BACKUP_PATH}
 
 echo -e "\nremoving old backup files..."
 find ${SNAPSHOT_DB_BACKUP_PATH} -type f -mtime "+${BACKUP_RETENTION_DAYS}" | xargs rm -rf

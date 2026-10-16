@@ -45,7 +45,7 @@ Error from server (Invalid): error when creating "STDIN": KlusterletAddonConfig.
 +
 [source,bash]
 ----
-helm template helm-charts/rhacm-import-cluster/ --values /tmp/values.yaml | oc apply -f -
+helm template helm-charts/rhacm-import-cluster/ --values /tmp/values.yaml | oc apply --filename -
 ----
 +
 [NOTE]

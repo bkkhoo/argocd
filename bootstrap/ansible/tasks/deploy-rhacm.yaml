@@ -8,7 +8,7 @@
       --set deploymentType=operator
       | oc apply --filename -
 
-- name: ensure advanced-cluster-management csv status is Succeeded
+- name: ensure advanced-cluster-management ClusterServiceVersions status is Succeeded
   register: csv_result
   until:
     - "'advanced-cluster-management' in csv_result.stdout"
@@ -17,7 +17,7 @@
   retries: 68
   ansible.builtin.command:
     cmd: >-
-      oc --namespace open-cluster-management get csv
+      oc --namespace open-cluster-management get clusterserviceversion
       --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
 - name: ensure validation webhook pods for advanced-cluster-management are in Running state

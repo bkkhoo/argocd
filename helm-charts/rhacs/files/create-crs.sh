@@ -66,7 +66,7 @@ _central_endpoint=$(oc --namespace ${RHACS_CENTRAL_NAMESPACE} get routes.route.o
 
 _attempt_counter=0
 echo "waiting for ${RHACM_POLICIES_NAMESPACE} namespace to be Active..."
-until [ "$(oc get ns ${RHACM_POLICIES_NAMESPACE} --output jsonpath='{.status.phase}' 2>/dev/null)" == "Active" ]; do
+until [ "$(oc get namespace ${RHACM_POLICIES_NAMESPACE} --output jsonpath='{.status.phase}' 2>/dev/null)" == "Active" ]; do
   if [ ${_attempt_counter} -eq ${MAX_ATTEMPTS} ]; then
     echo "max attempts reached; ${RHACM_POLICIES_NAMESPACE} namespace did not reach Active state"
     exit 1

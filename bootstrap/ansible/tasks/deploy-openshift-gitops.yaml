@@ -8,7 +8,7 @@
       --set deploymentType=operator
       | oc apply --filename -
 
-- name: ensure openshift-gitops-operator csv status is Succeeded
+- name: ensure openshift-gitops-operator ClusterServiceVersion status is Succeeded
   register: csv_result
   until:
     - "'openshift-gitops-operator' in csv_result.stdout"
@@ -17,7 +17,7 @@
   retries: 68
   ansible.builtin.command:
     cmd: >-
-      oc --namespace openshift-gitops-operator get csv
+      oc --namespace openshift-gitops-operator get clusterserviceversion
       --output jsonpath='{range .items[*]}{.metadata.name} {.status.phase}{"\n"}{end}'
 
 - name: ensure argoCD service is deployed
