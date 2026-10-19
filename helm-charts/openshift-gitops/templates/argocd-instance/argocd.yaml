@@ -95,7 +95,10 @@ spec:
   rbac:
     defaultPolicy: "{{ .Values.rbac.defaultPolicy }}"
     policy: |
-      {{- .Values.rbac.policy | nindent 6 }}
+      {{- .Values.rbac.policy | nindent 6 -}}
+      {{- range .Values.localUsers -}}
+      g, {{ .username }}, {{ .role }}
+      {{ end }}
     scopes: "[groups]"
   repo:
     enabled: true

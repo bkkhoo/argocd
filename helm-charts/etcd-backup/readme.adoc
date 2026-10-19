@@ -17,7 +17,7 @@ The `cluster-backup.sh` script produces two artifacts:
 - `snapshot_<datetimestamp>.db`: This file is the etcd snapshot. The link:templates/cronjob.yaml[cronjob] compresses the file with `gzip`.
 - `static_kuberesources_<datetimestamp>.tar.gz`: This file contains the resources for the static pods. If etcd encryption is enabled, it also contains the encryption keys for the etcd snapshot.
 
-[NOTE]
+[IMPORTANT]
 ====
 - If etcd encryption is enabled, it is recommended to store the `static_kuberesources` file separately from the etcd snapshot for security reasons.
 - The `CronJob` that backs up etcd data runs as a privileged container.

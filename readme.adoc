@@ -90,9 +90,40 @@ For remote clusters, ArgoCD uses the ServiceAccount token (`argocd-manager` Serv
 
 See link:readme-issues.adoc[document].
 
-== To-dos
+== To-Dos
 
-RHACM and OpenShift GitOps are deployed on the global hub by an link:bootstrap/ansible/bootstrap.yaml[Ansible playbook]. Any changes to RHACM or OpenShift GitOps configurations requires manual execution of the Ansible playbook. It is recommended to let OpenShift GitOps manages its own (and RHACM) configuration and updates, in a **peak GitOps** approach that ensures consistent audit trails, drift detection, and automated upgrades for the entire cluster.
+[cols="8,1", options="header"]
+|===
+| Description
+| Status
+
+| RHACM and OpenShift GitOps are deployed on the global hub by an link:bootstrap/ansible/bootstrap.yaml[Ansible playbook]. Any changes to RHACM or OpenShift GitOps configurations requires manual execution of the Ansible playbook. It is recommended to let OpenShift GitOps manages its own (and RHACM) configuration and updates, in a **peak GitOps** approach that ensures consistent audit trails, drift detection, and automated upgrades for the entire cluster.
+|
+
+| Remove `vendor=OpenShift` label selector for ArgoCD applications and applicationSets. The applications and applicationSets configurations might cause more than one application trying to control a particular resource when the `vendor=OpenShift` label selector is removed.
+|
+
+| Use Global Hub to migrate managed clusters.
+|
+
+a| Disaster recovery:
+
+** backup and restore for managed hub.
+** backup and restore for managed cluster.
+|
+
+| Forwarding metrics (prometheus remote write) to external sync.
+|
+
+a| Reorg/Refactor:
+
+** Ansible playbooks and tasks located in various folders; consolidate the folders into one location.
+** Placement of Cribl related configuration.
+|
+
+| Configure RHACS to use OpenID Connect (OIDC) integration for authentication, instead of using the legacy OpenShift Auth Identity Provider.
+|
+|===
 
 == Terminology
 
@@ -154,6 +185,8 @@ The managed hub's `local-cluster` is disabled when the managed hub is imported t
 │       ├── tasks
 │       ├── templates
 │       └── vars
+├── docker                              # container images
+│   └── webhook-backend
 ├── helm-charts                         # helm charts; the charts are used by argocd
 │   ├── multicluster-global-hub         # applications/applicationSets in the apps folder
 │   │   └── templates
@@ -178,12 +211,22 @@ The managed hub's `local-cluster` is disabled when the managed hub is imported t
 ├── misc
 ├── rhacm-policies                      # rhacm policies
 │   ├── base
+│   │   ├── cert
 │   │   ├── config                      # manifests for rhacm configuration policies
-│   │   │   ├── argocd
-│   │   │   └── rhacs
+│   │   │   ├── rhacs
+│   │   │   └── sync-secret
 │   │   └── monitor                     # manifests for rhacm monitoring policies
+│   │       ├── metallb
+│   │       ├── openshift-serverless
+│   │       └── operator-hub
 │   └── overlays
 │       ├── global-hub
+│       │   ├── config
+│       │   │   └── sync-secret
+│       │   └── monitor
+│       │       ├── multicluster-global-hub
+│       │       ├── openshift-gitops
+│       │       └── rhacs-central
 │       └── managed-hub
 └── root-app                            # root apps; app of apps deploys apps defined here
     ├── global-hub                      # for multicluster global hub

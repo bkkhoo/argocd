@@ -1,5 +1,5 @@
-{{- $startHour := substr 0 1 (seq 0 (int (sub .Values.frequency 1)) | nospace | shuffle) }}
-{{- $randomMinute := mod (randNumeric 2 | atoi) 59 }}
+{{- $startHour := substr 0 1 (seq 0 (int (sub .Values.frequency 1)) | nospace | shuffle) -}}
+{{- $randomMinute := mod (randNumeric 2 | atoi) 59 -}}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -28,7 +28,7 @@ spec:
           priorityClassName: system-node-critical
           priority: 2000001000
           schedulerName: default-scheduler
-          hostNetwork: true
+          # hostNetwork: true
           enableServiceLinks: true
           terminationGracePeriodSeconds: 30
           preemptionPolicy: PreemptLowerPriority

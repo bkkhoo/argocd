@@ -85,7 +85,7 @@ curl --request POST 'https://login.cribl.cloud/oauth/token' \
   \"client_id\": \"$(cat secrets/cribl-client-id)\",
   \"client_secret\": \"$(cat secrets/cribl-client-secret)\",
   \"audience\": \"https://api.cribl.cloud\"
-}" | jq -r .access_token)
+}" | jq --raw-output .access_token)
 ----
 +
 [NOTE]
@@ -115,8 +115,8 @@ curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER
 {
   \"id\": \"openshift-s3-auth\",
   \"secretType\": \"keypair\",
-  \"apiKey\": \"$(cat secrets/openshift-s3-auth.json | jq -r .awsApiKey)\",
-  \"secretKey\": \"$(cat secrets/openshift-s3-auth.json | jq -r .awsSecretKey)\",
+  \"apiKey\": \"$(cat secrets/openshift-s3-auth.json | jq --raw-output .awsApiKey)\",
+  \"secretKey\": \"$(cat secrets/openshift-s3-auth.json | jq --raw-output .awsSecretKey)\",
   \"description\": \"api key and secret key for openshift s3 bucket\"
 }"
 
@@ -212,7 +212,7 @@ COMMIT_ID=$(
 curl --request POST https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/version/commit \
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
   --header "Content-Type: application/json" \
-  --data '{ "message": "automation@cribl:commit" }' | jq -r .items[0].commit)
+  --data '{ "message": "automation@cribl:commit" }' | jq --raw-output .items[0].commit)
 
 curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/products/stream/groups/${WORKER_GROUP}/deploy \
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
@@ -242,7 +242,7 @@ curl --request POST 'https://login.cribl.cloud/oauth/token' \
   \"client_id\": \"$(cat secrets/cribl-client-id)\",
   \"client_secret\": \"$(cat secrets/cribl-client-secret)\",
   \"audience\": \"https://api.cribl.cloud\"
-}" | jq -r .access_token)
+}" | jq --raw-output .access_token)
 
 curl --request PATCH https://${WORKSPACE}-${ORG_ID}.cribl.cloud/api/v1/m/${WORKER_GROUP}/routes/default \
   --header "Authorization: Bearer ${CRIBL_API_TOKEN}" \
