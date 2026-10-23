@@ -82,8 +82,9 @@ policies:
       - path: config/kubeadmin-secret.yaml
 
   - name: config-rhacs-secured-cluster
-    description: Deploy RHACS operator, SecuredCluster and cluster registration secret
+    description: Copy cluster registration secret and set SecuredCluster centralEndpoint
     complianceType: musthave
+    severity: high
     policySets:         # override policyDefaults.policySets
       - base-config-no-local-cluster-no-managed-hub
     manifests:

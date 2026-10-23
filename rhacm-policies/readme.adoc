@@ -31,7 +31,7 @@ These policies are common to both global hub and managed hubs.
 
 | config-rhacs-secured-cluster
 | Enforce
-| Deploy RHACS operator, SecuredCluster and cluster registration secret.
+| Copy cluster registration secret and set SecuredCluster centralEndpoint.
 
 | config-openshift-logging-http-secret
 | Enforce
