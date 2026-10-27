@@ -19,5 +19,15 @@ spec:
   clusterLabels:
     {{- include "rhacs.setLabels" .Values.clusterLabels | indent 4 }}
   {{- end }}
+  {{- $files := .Files.Glob "files/ca-certs/*.crt" }}
+  {{- if $files }}
+  tls:
+    additionalCAs:
+      {{- range $path, $bytes := $files }}
+      - name: {{ base $path }}
+        content: |
+{{ $bytes | toString | indent 10 }}
+      {{- end }}
+  {{- end }}
 ...
 {{- end }}
