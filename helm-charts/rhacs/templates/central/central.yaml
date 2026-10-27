@@ -34,12 +34,15 @@ spec:
         - name: declarative-auth-provider
   scannerV4:
     scannerComponent: Enabled
+  {{- $files := .Files.Glob "files/ca-certs/*.crt" }}
+  {{- if $files }}
   tls:
     additionalCAs:
-      {{- range $path, $bytes := .Files.Glob "files/ca-certs/*.crt" }}
+      {{- range $path, $bytes := $files }}
       - name: {{ base $path }}
         content: |
 {{ $bytes | toString | indent 10 }}
       {{- end }}
+  {{- end }}
 ...
 {{- end }}
