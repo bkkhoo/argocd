@@ -118,7 +118,7 @@ a| Deployment type:
 
 [NOTE]
 ====
-The Helm chart also add any CA certificate bundles (files with `.crt` extension located in the link:./files/ca-certs/[ca-certs folder]) to Central's `spec.tls.additionalCAs` property.
+The Helm chart also adds CA certificate bundles (files with a `.crt` extension located in link:./files/ca-certs/[ca-certs folder]) to Central's and SecuredClusters `spec.tls.additionalCAs` property.
 ====
 
 == Additional Note
