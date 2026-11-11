@@ -86,6 +86,11 @@ spec:
             - '.spec.overrides.components[] | select(.name != "insights")'
             - '.spec.overrides.components[] | select(.name != "search")'
             - '.spec.overrides.components[] | select(.name != "cluster-backup")'
+        - group: multicluster.openshift.io
+          kind: MultiClusterEngine
+          name: multiclusterengine
+          jqPathExpressions:     # ignore sync status of all components except the following
+            - '.spec.overrides.components[] | select(.name != "managedserviceaccount")'
       syncPolicy:
         automated:
           prune: true

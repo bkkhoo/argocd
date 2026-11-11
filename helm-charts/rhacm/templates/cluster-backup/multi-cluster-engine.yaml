@@ -12,5 +12,6 @@ spec:
     components:
       - name: managedserviceaccount
         enabled: true
+        configOverrides: {}
 ...
 {{- end }}
