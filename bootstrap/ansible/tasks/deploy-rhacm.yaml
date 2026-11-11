@@ -6,7 +6,7 @@
     cmd: >-
       helm template {{ playbook_dir }}/../../helm-charts/rhacm
       --set deploymentType=operator
-      --set clusterBackup.enabled=false
+      --set clusterBackup.enabled="no"
       | oc apply --filename -
 
 - name: ensure advanced-cluster-management ClusterServiceVersions status is Succeeded
@@ -54,6 +54,7 @@
     --set deploymentType=mch
     --set disableHubSelfManagement=false
     --set availabilityConfig={{ _ha_environ["availabilityConfig"] }}
+    --set clusterBackup.enabled="no"
     | oc apply --filename -
 
 - name: ensure MultiClusterHub service reach Running phase

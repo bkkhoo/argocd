@@ -1,4 +1,4 @@
-{{- if .Values.clusterBackup.enabled }}
+{{- if eq .Values.clusterBackup.enabled "yes" }}
 ---
 apiVersion: oadp.openshift.io/v1alpha1
 kind: DataProtectionApplication

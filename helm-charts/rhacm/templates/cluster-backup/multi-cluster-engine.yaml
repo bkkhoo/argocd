@@ -1,4 +1,4 @@
-{{- if .Values.clusterBackup.enabled }}
+{{- if eq .Values.clusterBackup.enabled "yes" }}
 ---
 apiVersion: multicluster.openshift.io/v1
 kind: MultiClusterEngine

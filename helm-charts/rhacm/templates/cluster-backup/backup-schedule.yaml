@@ -1,4 +1,4 @@
-{{- if .Values.clusterBackup.enabled }}
+{{- if eq .Values.clusterBackup.enabled "yes" }}
   {{- $randomMinute := mod (randNumeric 2 | atoi) 59 -}}
 ---
 apiVersion: cluster.open-cluster-management.io/v1beta1

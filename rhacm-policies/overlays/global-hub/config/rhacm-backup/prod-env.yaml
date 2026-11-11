@@ -18,8 +18,8 @@ spec:
     - name: default
       velero:
         objectStorage:
-          bucket: '{{hub fromSecret "rhacm-policies" "prod-rhacm-backup" "s3_bucket" hub}}'
+          bucket: '{{hub fromConfigMap "rhacm-policies" "prod-rhacm-backup" "s3_bucket" hub}}'
         config:
-          s3Url: '{{hub fromSecret "rhacm-policies" "prod-rhacm-backup" "s3_url" hub}}'
-          region: '{{hub fromSecret "rhacm-policies" "prod-rhacm-backup" "s3_region" hub}}'
+          s3Url: '{{hub fromConfigMap "rhacm-policies" "prod-rhacm-backup" "s3_url" hub}}'
+          region: '{{hub fromConfigMap "rhacm-policies" "prod-rhacm-backup" "s3_region" hub}}'
 ...
