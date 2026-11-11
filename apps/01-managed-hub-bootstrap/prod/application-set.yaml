@@ -43,7 +43,7 @@ spec:
               availabilityConfig: High
               disableHubSelfManagement: true
               clusterBackup:
-                enabled: false       # templatePatch will change to true if cluster has rhacm-backup label
+                enabled: '{{ if index .metadata.labels "rhacm-backup" }}yes{{ else }}no{{ end }}'
                 s3:
                   bucketPrefix: "{{ .name }}"
         - repoURL: https://github.com/bkkhoo/argocd.git
@@ -99,14 +99,4 @@ spec:
           value: applicationSet
         - name: target
           value: clusters with managed-hub and env=prod labels
-  templateJSONPatch: |
-    {{- if index .metadata.labels "rhacm-backup" }}
-    [
-      {
-        "op": "replace",
-        "path": "/spec/sources/0/helm/valuesObject/clusterBackup/enabled",
-        "value": true
-      }
-    ]
-    {{- end }}
 ...

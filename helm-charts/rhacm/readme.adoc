@@ -103,8 +103,12 @@ a| Deployment type:
 | The name of the Secret containing TLS certificates contains the CA certificate that signed the certificate used by the object storage endpoint.
 
 | clusterBackup.enabled
-| false
-| Enable or disable cluster backup functionality,
+| no
+a| Enable or disable cluster backup functionality.
+[NOTE]
+====
+The supported value for this parameter is `yes` or `no`. A string is used instead of a boolean because of limitations with the ArgoCD template.
+====
 
 | clusterBackup.namespace
 | open-cluster-management-backup
@@ -119,7 +123,7 @@ a| Deployment type:
 | This value sets the time to live (TTL) for backup copies, defining how long they remain available for restoration; expired copies are automatically deleted from storage. The value supports units like hours (h), minutes (m), and seconds (s), such as `72h` or `720h0m0s`.
 
 | clusterBackup.s3.url
-| https://dummy
+| https://s3.example.com
 | The endpoint URL for the S3 service.
 
 | clusterBackup.s3.region
@@ -127,7 +131,7 @@ a| Deployment type:
 | The region of the S3 bucket. Some S3-compatible services, such as ODF, do not strictly require a region setting. However, OADP requires a valid region value in the configuration YAML even for non-AWS S3 stores.
 
 | clusterBackup.s3.bucket
-| cluster-backup
+| rhacm-backup-bucket
 | The name of the S3 bucket where backup data is stored.
 
 | clusterBackup.s3.bucketPrefix

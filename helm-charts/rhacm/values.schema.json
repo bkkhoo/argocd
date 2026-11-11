@@ -60,7 +60,8 @@
       "type": "object",
       "properties": {
         "enabled": {
-          "type": "boolean"
+          "type": "string",
+          "enum": ["yes", "no"]
         },
         "namespace": {
           "type": "string"

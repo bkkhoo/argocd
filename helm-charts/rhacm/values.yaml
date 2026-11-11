@@ -15,14 +15,14 @@ observability:
     insecureSkipVerify: false
     caSecret: object-storage-ca
 clusterBackup:
-  enabled: false
+  enabled: no
   namespace: open-cluster-management-backup
   hourInterval: 2
   ttl: 72h
   s3:
-    url: https://s3-openshift-storage.apps.cluster-s8w85.dyn.redhatworkshops.io
+    url: https://s3.example.com
     region: us-east-1
-    bucket: rhacm-backup-4078e19f-607d-4875-b123-fa3c0ec536cb
+    bucket: rhacm-backup-bucket
     bucketPrefix: hub01
     forcePathStyle: true
     insecureSkipTLSVerify: false
