@@ -73,6 +73,19 @@ spec:
             - /spec/backupLocations/0/velero/config/s3Url
             - /spec/backupLocations/0/velero/config/region
             - /spec/backupLocations/0/velero/objectStorage/bucket
+        - group: operator.open-cluster-management.io
+          kind: MultiClusterHub
+          name: multiclusterhub
+          namespace: open-cluster-management
+          jqPathExpressions:     # ignore sync status of all components except the following
+            - '.spec.overrides.components[] | select(.name != "cluster-lifecycle")'
+            - '.spec.overrides.components[] | select(.name != "app-lifecycle")'
+            - '.spec.overrides.components[] | select(.name != "multicluster-engine")'
+            - '.spec.overrides.components[] | select(.name != "grc")'
+            - '.spec.overrides.components[] | select(.name != "console")'
+            - '.spec.overrides.components[] | select(.name != "insights")'
+            - '.spec.overrides.components[] | select(.name != "search")'
+            - '.spec.overrides.components[] | select(.name != "cluster-backup")'
       syncPolicy:
         automated:
           prune: true
