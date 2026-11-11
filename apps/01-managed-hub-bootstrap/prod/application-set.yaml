@@ -99,7 +99,7 @@ spec:
           value: applicationSet
         - name: target
           value: clusters with managed-hub and env=prod labels
-  templatePatch: |
+  templateJSONPatch: |
     {{- if index .metadata.labels "rhacm-backup" }}
     [
       {
