@@ -21,19 +21,27 @@ spec:
     components:
       - name: cluster-lifecycle
         enabled: true
+        configOverrides: {}
       - name: app-lifecycle
         enabled: true
+        configOverrides: {}
       - name: multicluster-engine
         enabled: true
+        configOverrides: {}
       - name: grc                    # governance and risk
         enabled: true
+        configOverrides: {}
       - name: console
         enabled: true
+        configOverrides: {}
       - name: insights
         enabled: true
+        configOverrides: {}
       - name: search
         enabled: true
+        configOverrides: {}
       - name: cluster-backup
         enabled: {{ .Values.clusterBackup.enabled }}
+        configOverrides: {}
 ...
 {{- end }}

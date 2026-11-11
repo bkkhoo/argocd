@@ -43,7 +43,7 @@ spec:
               availabilityConfig: Basic
               disableHubSelfManagement: true
               clusterBackup:
-                enabled: false
+                enabled: false       # templatePatch will change to true if cluster has rhacm-backup label
                 s3:
                   bucketPrefix: "{{ .name }}"
         - repoURL: https://github.com/bkkhoo/helm-values.git
