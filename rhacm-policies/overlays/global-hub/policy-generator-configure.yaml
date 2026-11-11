@@ -61,6 +61,45 @@ policySets:
             operator: In
             values:
               - prod
+  - name: gh-config-dev-rhacm-backup-secret
+    description: global hub config policies for all dev hubs with rhacm-backup label
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: managed-hub
+            operator: Exists
+          - key: env
+            operator: In
+            values:
+              - dev
+          - key: rhacm-backup
+            operator: Exists
+  - name: gh-config-uat-rhacm-backup-secret
+    description: global hub config policies for all uat hubs with rhacm-backup label
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: managed-hub
+            operator: Exists
+          - key: env
+            operator: In
+            values:
+              - uat
+          - key: rhacm-backup
+            operator: Exists
+  - name: gh-config-prod-rhacm-backup-secret
+    description: global hub config policies for all prod hubs with rhacm-backup label
+    placement:
+      labelSelector:
+        matchExpressions:
+          - key: managed-hub
+            operator: Exists
+          - key: env
+            operator: In
+            values:
+              - prod
+          - key: rhacm-backup
+            operator: Exists
 placementBindingDefaults:
   name: gh-config-binding
 
@@ -87,4 +126,25 @@ policies:
       - gh-config-local-cluster
     manifests:
       - path: config/sync-secret/prod-hub-sync-secret.yaml
+
+  - name: config-rhacm-backup-secret-dev-hub
+    description: Sync global hub rhacm backup secret to dev managed hubs with rhacm-backup label
+    policySets:         # override policyDefaults.policySets
+      - gh-config-dev-rhacm-backup-secret
+    manifests:
+      - path: config/rhacm-backup/dev-env.yaml
+
+  - name: config-rhacm-backup-secret-uat-hub
+    description: Sync global hub rhacm backup secret to uat managed hubs with rhacm-backup label
+    policySets:         # override policyDefaults.policySets
+      - gh-config-uat-rhacm-backup-secret
+    manifests:
+      - path: config/rhacm-backup/uat-env.yaml
+
+  - name: config-rhacm-backup-secret-prod-hub
+    description: Sync global hub rhacm backup secret to prod managed hubs with rhacm-backup label
+    policySets:         # override policyDefaults.policySets
+      - gh-config-prod-rhacm-backup-secret
+    manifests:
+      - path: config/rhacm-backup/prod-env.yaml
 ...

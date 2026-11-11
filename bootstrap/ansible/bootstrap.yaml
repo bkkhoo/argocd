@@ -18,9 +18,11 @@
         availabilityConfig: High
         gitOpsValuesFile: "values-openshift-gitops-ha.yaml"
   vars_files:
-    - argocd-repo-vault-encrypted.yaml                # this file is encrypted with ansible-vault
-    - openshift-logging-token-vault-encrypted.yaml    # this file is encrypted with ansible-vault
-    - metallb-bgp-password-vault-encrypted.yaml       # this file is encrypted with ansible-vault
+    # these files are ansible-vault encrypted
+    - argocd-repo-vault-encrypted.yaml
+    - openshift-logging-token-vault-encrypted.yaml
+    - metallb-bgp-password-vault-encrypted.yaml
+    - rhacm-backup-secret-vault-encrypted.yaml
 
   tasks:
     - name: fail if invalid config
@@ -66,6 +68,7 @@
         - openshift-logging-token
         - argocd-repo-secret
         - metallb-bgp-password
+        - rhacm-backup-secret
       ansible.builtin.command:
         cmd: "oc apply --filename -"
         stdin: "{{ lookup('template', 'templates/'+item+'.yaml.j2') }}"

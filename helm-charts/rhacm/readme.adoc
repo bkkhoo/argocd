@@ -8,9 +8,13 @@ ifdef::env-github[]
 endif::[]
 = Advanced Cluster Management for Kubernetes
 
-This Helm chart deploys Red Hat Advanced Cluster Management for Kubernetes (RHACM). RHACM provides a MultiCluster hub, a central management console for administering multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. Administrators can use the hub to manage the lifecycle of these clusters.
+This Helm chart deploys Red Hat Advanced Cluster Management for Kubernetes (RHACM).
 
-The Helm chart installs the RHACM operator, a MultiClusterHub service, and a MultiClusterObservability service. Note that this configuration requires OpenShift Data Foundation to provide S3 object storage.
+RHACM is a centralized platform that provides end-to-end management, visibility, and control of entire fleets of OpenShift clusters from a single console. It enables organizations to consistently manage, observe, and operate hybrid, multicloud, and edge environments by extending the value of Red Hat OpenShift.
+
+The Helm chart installs the RHACM operator, a MultiClusterHub service, and a MultiClusterObservability service. Note that this configuration requires OpenShift Data Foundation (ODF) to provide S3 object storage.
+
+Optionally, this Helm chart can configure RHACM cluster backup to provide disaster recovery solutions for RHACM hub cluster failures.
 
 == Installing the Chart
 
@@ -34,7 +38,7 @@ helm delete rhacm
 
 The following table lists the configurable parameters/values of this Helm chart and their default values.
 
-[cols="2,2,4", options="header"]
+[cols="2,2,3", options="header"]
 |===
 | Parameter
 | Default
@@ -68,7 +72,7 @@ a| Deployment type:
 
 | observability.namespace
 | open-cluster-management-observability
-| Dedicated namespace for MultiCluster Observability components.
+| Dedicated namespace for MultiClusterObservability components.
 
 | observability.instanceSize
 | default
@@ -98,6 +102,78 @@ a| Deployment type:
 | object-storage-ca
 | The name of the Secret containing TLS certificates contains the CA certificate that signed the certificate used by the object storage endpoint.
 
+| clusterBackup.enabled
+| false
+| Enable or disable cluster backup functionality,
+
+| clusterBackup.namespace
+| open-cluster-management-backup
+| The namespace where the cluster-backup operator and its underlying OpenShift APIs for Data Protection (OADP) operator are installed.
+
+| clusterBackup.hourInterval
+| 2
+| Set the backup interval to the specified hours.
+
+| clusterBackup.ttl
+| 72h
+| This value sets the time to live (TTL) for backup copies, defining how long they remain available for restoration; expired copies are automatically deleted from storage. The value supports units like hours (h), minutes (m), and seconds (s), such as `72h` or `720h0m0s`.
+
+| clusterBackup.s3.url
+| https://dummy
+| The endpoint URL for the S3 service.
+
+| clusterBackup.s3.region
+| us-east-1
+| The region of the S3 bucket. Some S3-compatible services, such as ODF, do not strictly require a region setting. However, OADP requires a valid region value in the configuration YAML even for non-AWS S3 stores.
+
+| clusterBackup.s3.bucket
+| cluster-backup
+| The name of the S3 bucket where backup data is stored.
+
+| clusterBackup.s3.bucketPrefix
+| ""
+| Defines a folder path within the S3 bucket to isolate backups, often used to distinguish between different clusters or hubs (e.g., `hub1` or `hub2`).
+
+| clusterBackup.s3.forcePathStyle
+| true
+| Parameter used in AWS SDKs and S3-compatible storage to force path-style addressing (e.g., http://s3-endpoint/bucket-name) for S3 objects, rather than the virtual-hosted-style addressing (e.g., http://bucket-name.s3-endpoint). This setting is critical for connecting to S3-compatible services like ODF or MinIO.
+
+| clusterBackup.s3.insecureSkipTLSVerify
+| false
+| Enable or disable TLS certificate verification to the S3 service.
+
+| clusterBackup.oadpSubscription.source
+| redhat-operators
+| The name of the `CatalogSource` providing the OADP operator.
+
+| clusterBackup.oadpSubscription.sourceNamespace
+| openshift-marketplace
+| The namespace where the `CatalogSource` resides.
+
+| clusterBackup.oadpSubscription.channel
+| stable
+| The update channel the OADP operator tracks for installation and upgrades.
+
+| clusterBackup.oadpSubscription.installPlanApproval
+| Automatic
+| Control whether updates are applied automatically or require manual intervention. Acceptable value: `Automatic` or `Manual`.
+
+| clusterBackup.resources.limits.cpu
+| 2
+| Optional. The maximum CPU resource the velero pod is allowed to consume; exceeding this limit results in throttling.
+
+| clusterBackup.resources.limits.memory
+| 1Gi
+| Optional. The maximum memory resource the velero server pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| clusterBackup.resources.requests.cpu
+| 500m
+| The minimum CPU resource the velero pod needs to run.
+
+| clusterBackup.resources.requests.memory
+| 128Mi
+| The minimum memory resource the velero pod needs to run.
+
 | syncHookImage.name
 | registry.redhat.io/openshift4/ose-tools-rhel9
 | The container image name to use for ArgoCD Sync Hook job.
@@ -109,6 +185,12 @@ a| Deployment type:
 
 [NOTE]
 ====
-- This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
-- The other `DeploymentType` options are for automated tasks (such as Ansible or bash scripts), where the operator must be deployed first, and the service can only be deployed after the operator's CSV reaches the Succeeded phase.
+* This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
+* The other `DeploymentType` options are for automated tasks (such as Ansible or bash scripts), where the operator must be deployed first, and the service can only be deployed after the operator's CSV reaches the Succeeded phase.
+* The `clusterBackup.oadpSubscription` settings are required in disconnected environment:
+  ** The settings allow administrator to customize the OADP version installed by the backup and restore operator.
+  ** The chart adds these settings as annotation to the `MultiClusterHub` custom resource.
+* The `clusterBackup.s3.url`, `clusterBackup.s3.region` and `clusterBackup.s3.bucket` values are used in the `DataProtectionApplication` custom resource; these values are placeholders, RHACM policies override them using a secret from global hub.
+* The `clusterBackup.s3.bucketPrefix` value is used in the `DataProtectionApplication` custom resource; this value is a placeholder, with the actual value (cluster name) supplied by the ArgoCD application.
+* The `DataProtectionApplication` custom resource refers to the `cloud-credentials` secret, which is created by an RHACM policy using a secret from the global hub.
 ====

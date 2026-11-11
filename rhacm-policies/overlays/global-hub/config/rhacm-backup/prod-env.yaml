@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: cloud-credentials
+  namespace: open-cluster-management-backup
+data:
+  cloud: '{{hub fromSecret "rhacm-policies" "prod-rhacm-backup" "cloud" hub}}'
+---
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: rhacm-backup
+  namespace: open-cluster-management-backup
+spec:
+  backupLocations:
+    - name: default
+      velero:
+        objectStorage:
+          bucket: '{{hub fromSecret "rhacm-policies" "prod-rhacm-backup" "s3_bucket" hub}}'
+        config:
+          s3Url: '{{hub fromSecret "rhacm-policies" "prod-rhacm-backup" "s3_url" hub}}'
+          region: '{{hub fromSecret "rhacm-policies" "prod-rhacm-backup" "s3_region" hub}}'
+...

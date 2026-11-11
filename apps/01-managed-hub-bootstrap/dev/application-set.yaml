@@ -42,6 +42,10 @@ spec:
               deploymentType: all    # deploy rhacm with observability
               availabilityConfig: Basic
               disableHubSelfManagement: true
+              clusterBackup:
+                enabled: '{{ if index .metadata.labels "rhacm-backup" }}true{{ else }}false{{ end }}'
+                s3:
+                  bucketPrefix: "{{ .name }}"
         - repoURL: https://github.com/bkkhoo/helm-values.git
           targetRevision: main
           path: openshift-gitops/dev
@@ -66,6 +70,15 @@ spec:
           path: apps/00-managed-hub-app-of-apps/overlays/dev
       destination:
         server: "{{ .server }}"
+      ignoreDifferences:
+        - group: oadp.openshift.io
+          kind: DataProtectionApplication
+          name: rhacm-backup
+          namespace: open-cluster-management-backup
+          jsonPointers:       # these values will be set by RHACM policy
+            - /spec/backupLocations/0/velero/config/s3Url
+            - /spec/backupLocations/0/velero/config/region
+            - /spec/backupLocations/0/velero/objectStorage/bucket
       syncPolicy:
         automated:
           prune: true

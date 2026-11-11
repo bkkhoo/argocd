@@ -1,0 +1,54 @@
+{{- if .Values.clusterBackup.enabled }}
+---
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: rhacm-backup
+  namespace: {{ .Values.clusterBackup.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "300"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  configuration:
+    velero:
+      defaultPlugins:
+        - openshift
+        - aws
+      podConfig:
+        resourceAllocations:
+          {{- if hasKey .Values.clusterBackup.resources "limits" }}
+          limits:
+            {{- if hasKey .Values.clusterBackup.resources.limits "cpu" }}
+            cpu: "{{ .Values.clusterBackup.resources.limits.cpu }}"
+            {{- end }}
+            {{- if hasKey .Values.clusterBackup.resources.limits "memory" }}
+            memory: "{{ .Values.clusterBackup.resources.limits.memory }}"
+            {{- end }}
+          {{- end }}
+          requests:
+            cpu: "{{ .Values.clusterBackup.resources.requests.cpu }}"
+            memory: "{{ .Values.clusterBackup.resources.requests.memory }}"
+  backupLocations:
+    - name: default
+      velero:
+        provider: aws
+        default: true
+        objectStorage:
+          bucket: {{ .Values.clusterBackup.s3.bucket }}
+          {{- if and (hasKey .Values.clusterBackup.s3 "bucketPrefix") .Values.clusterBackup.s3.bucketPrefix }}
+          prefix: {{ .Values.clusterBackup.s3.bucketPrefix }}
+          {{- end }}
+          {{- if .Files.Glob "files/custom-ca.crt" }}
+          caCert: {{ .Files.Get "files/custom-ca.crt" | b64enc }}
+          {{- end }}
+        config:
+          s3Url: {{ .Values.clusterBackup.s3.url }}
+          region: "{{ .Values.clusterBackup.s3.region }}"
+          s3ForcePathStyle: "{{ .Values.clusterBackup.s3.forcePathStyle }}"
+          insecureSkipTLSVerify: "{{ .Values.clusterBackup.s3.insecureSkipTLSVerify }}"
+          profile: backupStorage
+        credential:
+          name: cloud-credentials
+          key: cloud
+...
+{{- end }}

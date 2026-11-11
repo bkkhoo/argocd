@@ -56,6 +56,98 @@
         }
       }
     },
+    "clusterBackup": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "hourInterval": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 23
+        },
+        "ttl": {
+          "type": "string"
+        },
+        "s3": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "pattern": "^https://"
+            },
+            "region": {
+              "type": "string"
+            },
+            "bucket": {
+              "type": "string"
+            },
+            "bucketPrefix": {
+              "type": "string"
+            },
+            "forcePathStyle": {
+              "type": "boolean"
+            },
+            "insecureSkipTLSVerify": {
+              "type": "boolean"
+            }
+          }
+        },
+        "oadpSubscription": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "sourceNamespace": {
+              "type": "string"
+            },
+            "channel": {
+              "type": "string"
+            },
+            "installPlanApproval": {
+              "type": "string",
+              "enum": ["Automatic", "Manual"]
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "limits": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                }
+              }
+            },
+            "requests": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([em]*[-+]?[0-9]*)$"
+                },
+                "memory": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "syncHookImage": {
       "type": "object",
       "properties": {

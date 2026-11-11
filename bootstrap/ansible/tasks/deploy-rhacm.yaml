@@ -6,6 +6,7 @@
     cmd: >-
       helm template {{ playbook_dir }}/../../helm-charts/rhacm
       --set deploymentType=operator
+      --set clusterBackup.enabled=false
       | oc apply --filename -
 
 - name: ensure advanced-cluster-management ClusterServiceVersions status is Succeeded

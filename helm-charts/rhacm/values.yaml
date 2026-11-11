@@ -14,6 +14,30 @@ observability:
     storageClassName: openshift-storage.noobaa.io
     insecureSkipVerify: false
     caSecret: object-storage-ca
+clusterBackup:
+  enabled: false
+  namespace: open-cluster-management-backup
+  hourInterval: 2
+  ttl: 72h
+  s3:
+    url: https://s3-openshift-storage.apps.cluster-s8w85.dyn.redhatworkshops.io
+    region: us-east-1
+    bucket: rhacm-backup-4078e19f-607d-4875-b123-fa3c0ec536cb
+    bucketPrefix: hub01
+    forcePathStyle: true
+    insecureSkipTLSVerify: false
+  oadpSubscription:
+    source: redhat-operators
+    sourceNamespace: openshift-marketplace
+    channel: stable
+    installPlanApproval: Automatic
+  resources:
+    # limits:
+    #   cpu: "2"
+    #   memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 128Mi
 syncHookImage:
   name: registry.redhat.io/openshift4/ose-tools-rhel9
   tag: v4.20

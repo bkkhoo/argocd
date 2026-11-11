@@ -1,0 +1,16 @@
+{{- if .Values.clusterBackup.enabled }}
+---
+apiVersion: multicluster.openshift.io/v1
+kind: MultiClusterEngine
+metadata:
+  name: multiclusterengine
+  annotations:
+    argocd.argoproj.io/sync-wave: "305"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  overrides:
+    components:
+      - name: managedserviceaccount
+        enabled: true
+...
+{{- end }}

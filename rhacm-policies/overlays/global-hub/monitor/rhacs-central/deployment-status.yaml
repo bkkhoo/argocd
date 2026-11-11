@@ -32,26 +32,6 @@ status:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: scanner
-  namespace: stackrox
-status:
-  conditions:
-    - type: Available
-      status: "True"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: scanner-db
-  namespace: stackrox
-status:
-  conditions:
-    - type: Available
-      status: "True"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: scanner-v4-db
   namespace: stackrox
 status:

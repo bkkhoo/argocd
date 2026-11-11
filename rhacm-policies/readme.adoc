@@ -197,6 +197,18 @@ These policies are for global hub only.
 | Enforce
 | Sync global hub secrets (in `rhacm-policies` namespace with `sync-secret/type: global-hub` and `sync-secret/env: prod` labels) to managed hubs.
 
+| config-rhacm-backup-secret-dev-hub
+| Enforce
+| Sync global hub rhacm backup secret to dev managed hubs with rhacm-backup label.
+
+| config-rhacm-backup-secret-uat-hub
+| Enforce
+| Sync global hub rhacm backup secret to uat managed hubs with rhacm-backup label.
+
+| config-rhacm-backup-secret-prod-hub
+| Enforce
+| Sync global hub rhacm backup secret to prod managed hubs with rhacm-backup label.
+
 | monitor-multicluster-global-hub
 | Inform
 | Monitor the status of MulticlusterGlobalHub components.

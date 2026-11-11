@@ -8,11 +8,32 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "100"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    {{- if .Values.clusterBackup.enabled }}
+    installer.open-cluster-management.io/oadp-subscription-spec: '{"source": "{{ .Values.clusterBackup.oadpSubscription.source }}","sourceNamespace": "{{ .Values.clusterBackup.oadpSubscription.sourceNamespace }}","channel": "{{ .Values.clusterBackup.oadpSubscription.channel }}","installPlanApproval": "{{ .Values.clusterBackup.oadpSubscription.installPlanApproval }}"}'
+    {{- end }}
 spec:
   localClusterName: local-cluster
   availabilityConfig: {{ .Values.availabilityConfig }}
   {{- if .Values.disableHubSelfManagement }}
   disableHubSelfManagement: {{ .Values.disableHubSelfManagement }}
   {{- end }}
+  overrides:
+    components:
+      - name: cluster-lifecycle
+        enabled: true
+      - name: app-lifecycle
+        enabled: true
+      - name: multicluster-engine
+        enabled: true
+      - name: grc                    # governance and risk
+        enabled: true
+      - name: console
+        enabled: true
+      - name: insights
+        enabled: true
+      - name: search
+        enabled: true
+      - name: cluster-backup
+        enabled: {{ .Values.clusterBackup.enabled }}
 ...
 {{- end }}

@@ -104,13 +104,13 @@ See link:readme-issues.adoc[document].
 |
 
 | Use Global Hub to migrate managed clusters.
-|
+| In progress
 
 a| Disaster recovery:
 
 ** backup and restore for managed hub.
 ** backup and restore for managed cluster.
-|
+| In progress
 
 | Forwarding metrics (prometheus remote write) to external sync.
 |
