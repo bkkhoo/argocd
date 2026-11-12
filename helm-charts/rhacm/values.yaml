@@ -15,7 +15,7 @@ observability:
     insecureSkipVerify: false
     caSecret: object-storage-ca
 clusterBackup:
-  enabled: no
+  enabled: "no"
   namespace: open-cluster-management-backup
   hourInterval: 2
   ttl: 72h
