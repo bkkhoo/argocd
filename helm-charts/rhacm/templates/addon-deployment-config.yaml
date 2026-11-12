@@ -1,3 +1,4 @@
+{{- if eq .Values.deploymentType "all" }}
 ---
 apiVersion: addon.open-cluster-management.io/v1alpha1
 kind: AddOnDeploymentConfig
@@ -9,8 +10,11 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   resourceRequirements:
-    - containerID: "deployment:config-policy-controller:config-policy-controller"
+    - containerID: "deployments:config-policy-controller:config-policy-controller"
       resources:
         limits:
           memory: {{ .Values.resourceRequirements.configPolicyController.limits.memory }}
+        requests:
+          memory: 128Mi     # this is default; setting limits without requests will result in requests == limits
 ...
+{{- end }}

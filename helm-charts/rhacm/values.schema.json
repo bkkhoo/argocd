@@ -6,7 +6,7 @@
   "properties": {
     "deploymentType": {
       "type": "string",
-      "enum": ["operator", "mch", "mco", "operator+mch", "all"]
+      "enum": ["operator", "mch", "all"]
     },
     "rhacmNamespace": {
       "type": "string"

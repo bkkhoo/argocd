@@ -1,3 +1,4 @@
+{{- if eq .Values.deploymentType "all" }}
 ---
 apiVersion: addon.open-cluster-management.io/v1alpha1
 kind: ClusterManagementAddOn
@@ -14,3 +15,4 @@ spec:
         name: config-policy-controller
         namespace: open-cluster-management
 ...
+{{- end }}

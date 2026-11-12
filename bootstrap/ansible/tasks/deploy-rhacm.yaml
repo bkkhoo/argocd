@@ -66,4 +66,13 @@
     cmd: >-
       oc --namespace open-cluster-management get multiclusterhubs.operator.open-cluster-management.io multiclusterhub
       --output jsonpath="{.status.phase}"
+
+- name: ensure other configurations of MultiClusterHub service are deployed
+  ansible.builtin.shell: >-
+    helm template {{ playbook_dir }}/../../helm-charts/rhacm
+    --set deploymentType=all
+    --set disableHubSelfManagement=false
+    --set availabilityConfig={{ _ha_environ["availabilityConfig"] }}
+    --set clusterBackup.enabled="no"
+    | oc apply --filename -
 ...
