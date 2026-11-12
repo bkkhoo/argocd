@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   # apps that target in-cluster/global-hub only
   - ../../../apps/00-multicluster-global-hub/base
-  # - ../../../apps/00-multicluster-observability/base
+  - ../../../apps/00-multicluster-observability/base
   - ../../../apps/00-rhacm-policies/overlays/global-hub
   - ../../../apps/rhacs-central/overlays/prod
 
