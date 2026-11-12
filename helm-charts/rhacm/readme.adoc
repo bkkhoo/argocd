@@ -50,6 +50,7 @@ a| Deployment type:
 
 - `operator`: deploy RHACM operator only.
 - `mch`: deploy `MultiClusterHub` service only.
+- `mco`: deploy `MultiClusterObservability` service only.
 - `all`: deploy RHACM operator, `MultiClusterHub` service, `MultiClusterObservability` service, and other configurations.
 
 | rhacmNamespace

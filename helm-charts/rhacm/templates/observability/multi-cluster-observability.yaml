@@ -1,4 +1,4 @@
-{{- if eq .Values.deploymentType "all" }}
+{{- if has .Values.deploymentType (list "mco" "all") }}
 ---
 apiVersion: observability.open-cluster-management.io/v1beta2
 kind: MultiClusterObservability

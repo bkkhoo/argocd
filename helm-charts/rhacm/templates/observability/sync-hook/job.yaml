@@ -1,4 +1,4 @@
-{{- if eq .Values.deploymentType "all" }}
+{{- if has .Values.deploymentType (list "mco" "all") }}
 ---
 apiVersion: batch/v1
 kind: Job
