@@ -102,6 +102,10 @@ a| Deployment type:
 | object-storage-ca
 | The name of the Secret containing TLS certificates contains the CA certificate that signed the certificate used by the object storage endpoint.
 
+| resourceRequirements.configPolicyController.limits.memory
+| 1Gi
+| The maximum memory resource the RHACM Configuration Policy Controller pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container. The default memory limits is 512Mi, which might not be enough for deployment with many resources to manage. The controller is the primary policy engine responsible for configuring Kubernetes resources and applying security policies across managed clusters.
+
 | clusterBackup.enabled
 | no
 a| Enable or disable cluster backup functionality.

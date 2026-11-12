@@ -1,0 +1,16 @@
+---
+apiVersion: addon.open-cluster-management.io/v1alpha1
+kind: AddOnDeploymentConfig
+metadata:
+  name: config-policy-controller
+  namespace: open-cluster-management
+  annotations:
+    argocd.argoproj.io/sync-wave: "300"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  resourceRequirements:
+    - containerID: "deployment:config-policy-controller:config-policy-controller"
+      resources:
+        limits:
+          memory: {{ .Values.resourceRequirements.configPolicyController.limits.memory }}
+...

@@ -14,6 +14,10 @@ observability:
     storageClassName: openshift-storage.noobaa.io
     insecureSkipVerify: false
     caSecret: object-storage-ca
+resourceRequirements:
+  configPolicyController:
+    limits:
+      memory: 1Gi
 clusterBackup:
   enabled: "no"
   namespace: open-cluster-management-backup

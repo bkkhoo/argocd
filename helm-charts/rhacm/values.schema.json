@@ -56,6 +56,25 @@
         }
       }
     },
+    "resourceRequirements": {
+      "type": "object",
+      "properties": {
+        "configPolicyController": {
+          "type": "object",
+          "properties": {
+            "limits": {
+              "type": "object",
+              "properties": {
+                "memory": {
+                  "type": "string",
+                  "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "clusterBackup": {
       "type": "object",
       "properties": {
