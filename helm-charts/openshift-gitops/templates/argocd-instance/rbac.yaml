@@ -30,6 +30,16 @@ rules:
     verbs:
       - create
   - apiGroups:
+      - multicluster.openshift.io
+    resources:
+      - multiclusterengines
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  - apiGroups:
       - observability.openshift.io
     resources:
       - uiplugins
