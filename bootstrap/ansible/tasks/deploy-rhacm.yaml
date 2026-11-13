@@ -30,7 +30,7 @@
   delay: 3
   retries: 13
   ansible.builtin.command:
-    cmd: |-
+    cmd: >-
       oc --namespace open-cluster-management get pod --selector name=multiclusterhub-operator --no-headers
 
 - name: ensure validation webhook endpoints for advanced-cluster-management in serving state
@@ -43,7 +43,7 @@
   delay: 3
   retries: 13
   ansible.builtin.command:
-    cmd: |-
+    cmd: >-
       oc --namespace open-cluster-management get endpointslices.discovery.k8s.io
       --selector kubernetes.io/service-name=multiclusterhub-operator-webhook
       --no-headers --output custom-columns=":endpoints[*].conditions.serving"
@@ -67,6 +67,7 @@
       oc --namespace open-cluster-management get multiclusterhubs.operator.open-cluster-management.io multiclusterhub
       --output jsonpath="{.status.phase}"
 
+# resources such as AddOnDeploymentConfig and ClusterManagementAddOn are only deployable after MultiClusterHub is deployed
 - name: ensure other configurations of MultiClusterHub service are deployed
   ansible.builtin.shell: >-
     helm template {{ playbook_dir }}/../../helm-charts/rhacm

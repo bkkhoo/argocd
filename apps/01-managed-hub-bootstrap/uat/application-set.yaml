@@ -39,7 +39,7 @@ spec:
           path: helm-charts/rhacm
           helm:
             valuesObject:
-              deploymentType: all    # deploy rhacm with observability
+              deploymentType: all   # deploy rhacm with observability
               availabilityConfig: High
               disableHubSelfManagement: true
               clusterBackup:
@@ -49,7 +49,7 @@ spec:
         - repoURL: https://github.com/bkkhoo/helm-values.git
           targetRevision: main
           path: openshift-gitops/uat
-          ref: helmValues       # for referencing value files from git source
+          ref: helmValues           # for referencing value files from git source
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-gitops
@@ -75,7 +75,7 @@ spec:
           kind: DataProtectionApplication
           name: rhacm-backup
           namespace: open-cluster-management-backup
-          jsonPointers:       # these values will be set by RHACM policy
+          jsonPointers:             # these values will be set by RHACM policy
             - /spec/backupLocations/0/velero/config/s3Url
             - /spec/backupLocations/0/velero/config/region
             - /spec/backupLocations/0/velero/objectStorage/bucket
@@ -83,7 +83,7 @@ spec:
           kind: MultiClusterHub
           name: multiclusterhub
           namespace: open-cluster-management
-          jqPathExpressions:     # ignore sync status of all components except the following
+          jqPathExpressions:        # to avoid OutOfSync, only sync what helm chart configured
             - '.spec.overrides.components[] | select(.name != "cluster-lifecycle")'
             - '.spec.overrides.components[] | select(.name != "app-lifecycle")'
             - '.spec.overrides.components[] | select(.name != "multicluster-engine")'
@@ -95,7 +95,7 @@ spec:
         - group: multicluster.openshift.io
           kind: MultiClusterEngine
           name: multiclusterengine
-          jqPathExpressions:     # ignore sync status of all components except the following
+          jqPathExpressions:     # to avoid OutOfSync, only sync what helm chart configured
             - '.spec.overrides.components[] | select(.name != "managedserviceaccount")'
       syncPolicy:
         automated:

@@ -1,5 +1,6 @@
 {{- if and (eq .Values.deploymentType "all") (eq .Values.clusterBackup.enabled "yes") }}
-  {{- $randomMinute := mod (randNumeric 2 | atoi) 59 -}}
+  {{- $minute := mod (randNumeric 2 | atoi) 59 }}
+  {{- $hour := index (list "1-23" "*") (mod (randNumeric 3) 2) }}
 ---
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: BackupSchedule
@@ -10,7 +11,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "305"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  veleroSchedule: "{{ $randomMinute }} */{{ .Values.clusterBackup.hourInterval }} * * *"
+  veleroSchedule: '{{ printf "%d %s/%d * * *" $minute $hour (.Values.clusterBackup.hourInterval | int) }}'
   veleroTtl: {{ .Values.clusterBackup.ttl }}
   useManagedServiceAccount: true
   paused: false
