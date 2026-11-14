@@ -1,11 +1,11 @@
-{{- if and (eq .Values.deploymentType "all") (eq .Values.clusterBackup.enabled "yes") }}
+{{- if eq .Values.deploymentType "all" }}
 ---
 apiVersion: multicluster.openshift.io/v1
 kind: MultiClusterEngine
 metadata:
   name: multiclusterengine
   annotations:
-    argocd.argoproj.io/sync-wave: "305"
+    argocd.argoproj.io/sync-wave: "300"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Prune=false
 spec:
   overrides:

@@ -67,7 +67,8 @@
       oc --namespace open-cluster-management get multiclusterhubs.operator.open-cluster-management.io multiclusterhub
       --output jsonpath="{.status.phase}"
 
-# resources such as AddOnDeploymentConfig and ClusterManagementAddOn are only deployable after MultiClusterHub is deployed
+# Resources such as MultiClusterHub, AddOnDeploymentConfig, and ClusterManagementAddOn
+# become available only after MultiClusterHub is deployed
 - name: ensure other configurations of MultiClusterHub service are deployed
   ansible.builtin.shell: >-
     helm template {{ playbook_dir }}/../../helm-charts/rhacm
