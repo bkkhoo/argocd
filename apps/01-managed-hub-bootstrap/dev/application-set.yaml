@@ -92,11 +92,6 @@ spec:
             - '.spec.overrides.components[] | select(.name != "insights")'
             - '.spec.overrides.components[] | select(.name != "search")'
             - '.spec.overrides.components[] | select(.name != "cluster-backup")'
-        - group: multicluster.openshift.io
-          kind: MultiClusterEngine
-          name: multiclusterengine
-          jqPathExpressions:        # to avoid OutOfSync, only sync what helm chart configured
-            - '.spec.overrides.components[] | select(.name != "managedserviceaccount")'
       syncPolicy:
         automated:
           prune: true
