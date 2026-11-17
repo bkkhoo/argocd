@@ -42,10 +42,6 @@ spec:
               deploymentType: all   # deploy rhacm with observability
               availabilityConfig: High
               disableHubSelfManagement: true
-              clusterBackup:
-                enabled: '{{ if index .metadata.labels "rhacm-backup" }}yes{{ else }}no{{ end }}'
-                s3:
-                  bucketPrefix: "{{ .name }}"
         - repoURL: https://github.com/bkkhoo/argocd.git
           targetRevision: main
           path: helm-charts/openshift-gitops
@@ -85,7 +81,6 @@ spec:
             - '.spec.overrides.components[] | select(.name != "console")'
             - '.spec.overrides.components[] | select(.name != "insights")'
             - '.spec.overrides.components[] | select(.name != "search")'
-            - '.spec.overrides.components[] | select(.name != "cluster-backup")'
       syncPolicy:
         automated:
           prune: true

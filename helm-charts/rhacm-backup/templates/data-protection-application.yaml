@@ -1,0 +1,52 @@
+---
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: rhacm-backup
+  namespace: {{ .Values.rhacmBackup.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  configuration:
+    velero:
+      defaultPlugins:
+        - openshift
+        - aws
+      podConfig:
+        resourceAllocations:
+          {{- if hasKey .Values.rhacmBackup.resources "limits" }}
+          limits:
+            {{- if hasKey .Values.rhacmBackup.resources.limits "cpu" }}
+            cpu: "{{ .Values.rhacmBackup.resources.limits.cpu }}"
+            {{- end }}
+            {{- if hasKey .Values.rhacmBackup.resources.limits "memory" }}
+            memory: "{{ .Values.rhacmBackup.resources.limits.memory }}"
+            {{- end }}
+          {{- end }}
+          requests:
+            cpu: "{{ .Values.rhacmBackup.resources.requests.cpu }}"
+            memory: "{{ .Values.rhacmBackup.resources.requests.memory }}"
+  backupLocations:
+    - name: default
+      velero:
+        provider: aws
+        default: true
+        objectStorage:
+          bucket: {{ .Values.rhacmBackup.s3.bucket }}
+          {{- if and (hasKey .Values.rhacmBackup.s3 "bucketPrefix") .Values.rhacmBackup.s3.bucketPrefix }}
+          prefix: {{ .Values.rhacmBackup.s3.bucketPrefix }}
+          {{- end }}
+          {{- if .Files.Glob "files/custom-ca.crt" }}
+          caCert: {{ .Files.Get "files/custom-ca.crt" | b64enc }}
+          {{- end }}
+        config:
+          s3Url: {{ .Values.rhacmBackup.s3.url }}
+          region: "{{ .Values.rhacmBackup.s3.region }}"
+          s3ForcePathStyle: "{{ .Values.rhacmBackup.s3.forcePathStyle }}"
+          insecureSkipTLSVerify: "{{ .Values.rhacmBackup.s3.insecureSkipTLSVerify }}"
+          profile: backupStorage
+        credential:
+          name: cloud-credentials
+          key: cloud
+...

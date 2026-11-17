@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rhacm-backup-sync-hook
+  namespace: open-cluster-management
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
+data:
+  update-multi-cluster-hub.sh: |
+{{ .Files.Get "files/update-multi-cluster-hub.sh" | indent 4 }}
+...

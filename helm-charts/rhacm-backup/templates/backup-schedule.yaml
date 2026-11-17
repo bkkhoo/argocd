@@ -1,0 +1,17 @@
+{{- $minute := mod (randNumeric 2 | atoi) 59 }}
+{{- $hour := index (list "1-23" "*") (mod (randNumeric 3) 2) }}
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: BackupSchedule
+metadata:
+  name: rhacm-backup-schedule
+  namespace: {{ .Values.rhacmBackup.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "110"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  veleroSchedule: '{{ printf "%d %s/%d * * *" $minute $hour (.Values.rhacmBackup.hourInterval | int) }}'
+  veleroTtl: {{ .Values.rhacmBackup.ttl }}
+  useManagedServiceAccount: true
+  paused: false
+...

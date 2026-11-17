@@ -1,0 +1,50 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: enable-cluster-backup
+  namespace: open-cluster-management
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded, BeforeHookCreation
+spec:
+  activeDeadlineSeconds: 600      # max duration the job is allowed to run
+  template:
+    spec:
+      containers:
+        - name: sync-hook
+          image: "{{ .Values.syncHookImage.name }}:{{ .Values.syncHookImage.tag }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: SUBSCRIPTION_SOURCE
+              value: {{ .Values.rhacmBackup.oadpSubscription.source }}
+            - name: SUBSCRIPTION_SOURCE_NAMESPACE
+              value: {{ .Values.rhacmBackup.oadpSubscription.sourceNamespace }}
+            - name: SUBSCRIPTION_CHANNEL
+              value: {{ .Values.rhacmBackup.oadpSubscription.channel }}
+            - name: INSTALL_PLAN_APPROVAL
+              value: {{ .Values.rhacmBackup.oadpSubscription.installPlanApproval }}
+          command:
+            - /bin/sh
+            - -c
+            - /scripts/update-multi-cluster-hub.sh
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: rhacm-backup-sync-hook
+            defaultMode: 0755
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: rhacm-backup-sync-hook
+      terminationGracePeriodSeconds: 30
+...

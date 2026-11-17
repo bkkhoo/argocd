@@ -62,6 +62,11 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Configure OpenShift Monitoring components.
 
+| rhacm-backup
+| ApplicationSet
+| All OpenShift clusters with `managed-hub` label and the `rhacm-backup` label.
+| Deploy RHACM backup.
+
 | openshift-compliance
 | ApplicationSet
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
@@ -71,6 +76,11 @@ a| Managed hubs app-of-apps, which manages and deploys child applications for de
 | ApplicationSet
 | All OpenShift clusters without `managed-hub` label and the `in-cluster`.
 | Deploy OpenShift Pipelines operator.
+
+| openshift-nfd
+| ApplicationSet
+| All OpenShift clusters without `managed-hub` label and the `openshift-nfd` label.
+| Deploy OpenShift Node Feature Discovery operator.
 
 | openshift-web-terminal
 | ApplicationSet

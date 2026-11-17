@@ -1,0 +1,134 @@
+:icons: font
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+= Advanced Cluster Management for Kubernetes Backup and Restore
+
+This Helm chart enables the Red Hat Advanced Cluster Management for Kubernetes (RHACM) `cluster-backup` component to provide disaster recovery solutions for RHACM hub cluster failures.
+
+The RHACM cluster backup and restore operator relies on the OpenShift APIs for Data Protection (OADP) operator to establish the connection to the backup storage location and to install Velero, the component that executes the backup and restore operations.
+
+[IMPORTANT]
+====
+Make sure to deploy the RHACM operator and the `MultiClusterHub` resource before deploying this chart.
+====
+
+== Installing the Chart
+
+To install the chart:
+
+[source,bash]
+----
+helm install --name rhacm helm-chart/rhacm-backup
+----
+
+== Uninstalling the Chart
+
+To uninstall/delete the chart deployment:
+
+[source,bash]
+----
+helm delete rhacm-backup
+----
+
+== Configuration
+
+The following table lists the configurable parameters/values of this Helm chart and their default values.
+
+[cols="2,2,3", options="header"]
+|===
+| Parameter
+| Default
+| Description
+
+| rhacmBackup.namespace
+| open-cluster-management-backup
+| The namespace where the cluster-backup operator and its underlying OADP operator are installed.
+
+| rhacmBackup.hourInterval
+| 2
+| Set the backup interval to the specified hours.
+
+| rhacmBackup.ttl
+| 72h
+| This value sets the time to live (TTL) for backup copies, defining how long they remain available for restoration; expired copies are automatically deleted from storage. The value supports units like hours (h), minutes (m), and seconds (s), such as `72h` or `720h0m0s`.
+
+| rhacmBackup.s3.url
+| https://s3.example.com
+| The endpoint URL for the S3 service.
+
+| rhacmBackup.s3.region
+| us-east-1
+| The region of the S3 bucket. Some S3-compatible services, such as ODF, do not strictly require a region setting. However, OADP requires a valid region value in the configuration YAML even for non-AWS S3 stores.
+
+| rhacmBackup.s3.bucket
+| rhacm-backup-bucket
+| The name of the S3 bucket where backup data is stored.
+
+| rhacmBackup.s3.bucketPrefix
+| ""
+| Defines a folder path within the S3 bucket to isolate backups, often used to distinguish between different clusters or hubs (e.g., `hub1` or `hub2`).
+
+| rhacmBackup.s3.forcePathStyle
+| true
+| Parameter used in AWS SDKs and S3-compatible storage to force path-style addressing (e.g., http://s3-endpoint/bucket-name) for S3 objects, rather than the virtual-hosted-style addressing (e.g., http://bucket-name.s3-endpoint). This setting is critical for connecting to S3-compatible services like ODF or MinIO.
+
+| rhacmBackup.s3.insecureSkipTLSVerify
+| false
+| Enable or disable TLS certificate verification to the S3 service.
+
+| rhacmBackup.oadpSubscription.source
+| redhat-operators
+| The name of the `CatalogSource` providing the OADP operator.
+
+| rhacmBackup.oadpSubscription.sourceNamespace
+| openshift-marketplace
+| The namespace where the `CatalogSource` resides.
+
+| rhacmBackup.oadpSubscription.channel
+| stable
+| The update channel the OADP operator tracks for installation and upgrades.
+
+| rhacmBackup.oadpSubscription.installPlanApproval
+| Automatic
+| Control whether updates are applied automatically or require manual intervention. Acceptable value: `Automatic` or `Manual`.
+
+| rhacmBackup.resources.limits.cpu
+| 2
+| Optional. The maximum CPU resource the velero pod is allowed to consume; exceeding this limit results in throttling.
+
+| rhacmBackup.resources.limits.memory
+| 1Gi
+| Optional. The maximum memory resource the velero server pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container.
+
+| rhacmBackup.resources.requests.cpu
+| 500m
+| The minimum CPU resource the velero pod needs to run.
+
+| rhacmBackup.resources.requests.memory
+| 128Mi
+| The minimum memory resource the velero pod needs to run.
+
+| syncHookImage.name
+| registry.redhat.io/openshift4/ose-tools-rhel9
+| The container image name to use for ArgoCD Sync Hook job.
+
+| syncHookImage.tag
+| v4.20
+| The container image tag to use for ArgoCD Sync Hook job.
+|===
+
+[NOTE]
+====
+* The Helm chart is designed with ArgoCD in mind. The chart uses a sync hook to enable the cluster-backup component on the `MultiClusterHub` resource, instead of a regular template; this is because the `MultiClusterHub` resource is created/managed by the link:../../apps/01-managed-hub-bootstrap[01-managed-hub-bootstrap] ArgoCD application. ArgoCD does not natively support shared ownership, meaning a single Kubernetes resource can only belong to one Application.
+* The `rhacmBackup.oadpSubscription` settings are required in disconnected environment:
+  ** The settings allow administrator to customize the OADP version installed by the backup and restore operator.
+  ** The chart adds these settings as annotation to the `MultiClusterHub` custom resource.
+* The `rhacmBackup.s3.url`, `rhacmBackup.s3.region` and `rhacmBackup.s3.bucket` values are used in the `DataProtectionApplication` custom resource; these values are placeholders, RHACM policies override them using a secret from global hub.
+* The `rhacmBackup.s3.bucketPrefix` value is used in the `DataProtectionApplication` custom resource; this value is a placeholder, with the actual value (cluster name) supplied by the ArgoCD application.
+* The `DataProtectionApplication` custom resource refers to the `cloud-credentials` secret, which is created by an RHACM policy using a secret from the global hub.
+====
