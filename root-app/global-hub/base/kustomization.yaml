@@ -6,6 +6,7 @@ resources:
   - ../../../apps/00-multicluster-global-hub/base
   - ../../../apps/00-multicluster-observability/base
   - ../../../apps/00-rhacm-policies/overlays/global-hub
+  - ../../../apps/rhacm-backup/base
   - ../../../apps/rhacs-central/overlays/prod
 
   # the following are for managed hubs
