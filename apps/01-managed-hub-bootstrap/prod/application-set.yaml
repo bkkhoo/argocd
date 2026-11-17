@@ -61,14 +61,6 @@ spec:
       destination:
         server: "{{ .server }}"
       ignoreDifferences:
-        - group: oadp.openshift.io
-          kind: DataProtectionApplication
-          name: rhacm-backup
-          namespace: open-cluster-management-backup
-          jsonPointers:             # these values will be set by RHACM policy
-            - /spec/backupLocations/0/velero/config/s3Url
-            - /spec/backupLocations/0/velero/config/region
-            - /spec/backupLocations/0/velero/objectStorage/bucket
         - group: operator.open-cluster-management.io
           kind: MultiClusterHub
           name: multiclusterhub
@@ -81,6 +73,7 @@ spec:
             - '.spec.overrides.components[] | select(.name != "console")'
             - '.spec.overrides.components[] | select(.name != "insights")'
             - '.spec.overrides.components[] | select(.name != "search")'
+            - '.spec.overrides.components[] | select(.name != "cluster-backup")'
       syncPolicy:
         automated:
           prune: true
