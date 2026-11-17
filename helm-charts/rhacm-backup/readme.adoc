@@ -6,15 +6,21 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
-= Advanced Cluster Management for Kubernetes Backup and Restore
+= Advanced Cluster Management for Kubernetes Backup
 
-This Helm chart enables the Red Hat Advanced Cluster Management for Kubernetes (RHACM) `cluster-backup` component to provide disaster recovery solutions for RHACM hub cluster failures.
+This Helm chart uses the RHACM backup and restore operator (`cluster-backup` component of the `MultiClusterHub` service) to provide disaster recovery solutions for RHACM hub cluster failures.
 
-The RHACM cluster backup and restore operator relies on the OpenShift APIs for Data Protection (OADP) operator to establish the connection to the backup storage location and to install Velero, the component that executes the backup and restore operations.
+The chart configures:
+
+- the `DataProtectionApplication` resource that specifies the S3 object storage provider and credentials for storing backup data.
+- the `BackupSchedule` resource that sets up cron-based backup schedules.
 
 [IMPORTANT]
 ====
-Make sure to deploy the RHACM operator and the `MultiClusterHub` resource before deploying this chart.
+Before deploying this chart, ensure that:
+
+- the RHACM operator and the `MultiClusterHub` are deployed.
+- the `cluster-backup` component of the `MultiClusterHub` is enabled.
 ====
 
 == Installing the Chart
@@ -81,22 +87,6 @@ The following table lists the configurable parameters/values of this Helm chart 
 | false
 | Enable or disable TLS certificate verification to the S3 service.
 
-| rhacmBackup.oadpSubscription.source
-| redhat-operators
-| The name of the `CatalogSource` providing the OADP operator.
-
-| rhacmBackup.oadpSubscription.sourceNamespace
-| openshift-marketplace
-| The namespace where the `CatalogSource` resides.
-
-| rhacmBackup.oadpSubscription.channel
-| stable
-| The update channel the OADP operator tracks for installation and upgrades.
-
-| rhacmBackup.oadpSubscription.installPlanApproval
-| Automatic
-| Control whether updates are applied automatically or require manual intervention. Acceptable value: `Automatic` or `Manual`.
-
 | rhacmBackup.resources.limits.cpu
 | 2
 | Optional. The maximum CPU resource the velero pod is allowed to consume; exceeding this limit results in throttling.
@@ -125,9 +115,6 @@ The following table lists the configurable parameters/values of this Helm chart 
 [NOTE]
 ====
 * The Helm chart is designed with ArgoCD in mind. The chart uses a sync hook to enable the cluster-backup component on the `MultiClusterHub` resource, instead of a regular template; this is because the `MultiClusterHub` resource is created/managed by the link:../../apps/01-managed-hub-bootstrap[01-managed-hub-bootstrap] ArgoCD application. ArgoCD does not natively support shared ownership, meaning a single Kubernetes resource can only belong to one Application.
-* The `rhacmBackup.oadpSubscription` settings are required in disconnected environment:
-  ** The settings allow administrator to customize the OADP version installed by the backup and restore operator.
-  ** The chart adds these settings as annotation to the `MultiClusterHub` custom resource.
 * The `rhacmBackup.s3.url`, `rhacmBackup.s3.region` and `rhacmBackup.s3.bucket` values are used in the `DataProtectionApplication` custom resource; these values are placeholders, RHACM policies override them using a secret from global hub.
 * The `rhacmBackup.s3.bucketPrefix` value is used in the `DataProtectionApplication` custom resource; this value is a placeholder, with the actual value (cluster name) supplied by the ArgoCD application.
 * The `DataProtectionApplication` custom resource refers to the `cloud-credentials` secret, which is created by an RHACM policy using a secret from the global hub.

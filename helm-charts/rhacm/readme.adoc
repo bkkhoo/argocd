@@ -12,7 +12,9 @@ This Helm chart deploys Red Hat Advanced Cluster Management for Kubernetes (RHAC
 
 RHACM is a centralized platform that provides end-to-end management, visibility, and control of entire fleets of OpenShift clusters from a single console. It enables organizations to consistently manage, observe, and operate hybrid, multicloud, and edge environments by extending the value of Red Hat OpenShift.
 
-The Helm chart installs the RHACM operator, a MultiClusterHub service, and a MultiClusterObservability service. Note that this configuration requires OpenShift Data Foundation (ODF) to provide S3 object storage.
+The chart installs the RHACM operator, a MultiClusterHub service, and a MultiClusterObservability service. Note that this configuration requires OpenShift Data Foundation (ODF) to provide S3 object storage for observability.
+
+The chart also enables the RHACM cluster backup and restore operator (`cluster-backup` component of the `MultiClusterHub` service). The operator installs the OpenShift APIs for Data Protection (OADP) operator to establish a connection to the backup storage location and to install Velero (the component that runs the backup and restore operations).
 
 == Installing the Chart
 
@@ -103,6 +105,25 @@ a| Deployment type:
 | 1Gi
 | The maximum memory resource the RHACM Configuration Policy Controller pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container. The default memory limits is 512Mi, which might not be enough for deployment with many resources to manage. The controller is the primary policy engine responsible for configuring Kubernetes resources and applying security policies across managed clusters.
 
+
+| oadpSubscription.source
+| redhat-operators
+| The name of the `CatalogSource` providing the OADP operator.
+
+| oadpSubscription.sourceNamespace
+| openshift-marketplace
+| The namespace where the `CatalogSource` resides.
+
+| oadpSubscription.channel
+| stable
+| The update channel the OADP operator tracks for installation and upgrades.
+
+| oadpSubscription.installPlanApproval
+| Automatic
+| Control whether updates are applied automatically or require manual intervention. Acceptable value: `Automatic` or `Manual`.
+
+
+
 | syncHookImage.name
 | registry.redhat.io/openshift4/ose-tools-rhel9
 | The container image name to use for ArgoCD Sync Hook job.
@@ -114,6 +135,13 @@ a| Deployment type:
 
 [NOTE]
 ====
+
+
+* The `oadpSubscription` settings are required in disconnected environment:
+  ** The settings allow administrator to customize the OADP version installed by the backup and restore operator.
+  ** The chart adds these settings as annotation to the `MultiClusterHub` custom resource.
+
+
 * This chart is designed to work with ArgoCD. The sync-wave annotation in the YAML templates ensures resources are deployed in an orderly manner. Use `DeploymentType: all` when deploying with ArgoCD.
 * The other `DeploymentType` options are for automated tasks (such as Ansible or bash scripts), where the operator must be deployed first, and the service can only be deployed after the operator's CSV reaches the Succeeded phase.
 ====

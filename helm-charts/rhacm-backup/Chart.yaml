@@ -2,7 +2,7 @@
 apiVersion: v2
 appVersion: 2.17      # the version depends on openshift catalog source, need not necessary match what is specified here
 name: rhacm-backup
-description: Advanced Cluster Management for Kubernetes Backup and Restore
+description: Advanced Cluster Management for Kubernetes Backup
 type: application
 version: 1.0
 ...

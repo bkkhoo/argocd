@@ -46,24 +46,6 @@
             }
           }
         },
-        "oadpSubscription": {
-          "type": "object",
-          "properties": {
-            "source": {
-              "type": "string"
-            },
-            "sourceNamespace": {
-              "type": "string"
-            },
-            "channel": {
-              "type": "string"
-            },
-            "installPlanApproval": {
-              "type": "string",
-              "enum": ["Automatic", "Manual"]
-            }
-          }
-        },
         "resources": {
           "type": "object",
           "properties": {

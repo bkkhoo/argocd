@@ -10,11 +10,6 @@ rhacmBackup:
     bucketPrefix: hub01
     forcePathStyle: true
     insecureSkipTLSVerify: false
-  oadpSubscription:
-    source: redhat-operators
-    sourceNamespace: openshift-marketplace
-    channel: stable
-    installPlanApproval: Automatic
   resources:
     # limits:
     #   cpu: "2"
