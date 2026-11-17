@@ -105,6 +105,9 @@ a| Deployment type:
 | 1Gi
 | The maximum memory resource the RHACM Configuration Policy Controller pod is allowed to consume; exceeding this limit results in an Out-Of-Memory (OOM) kill, terminating the container. The default memory limits is 512Mi, which might not be enough for deployment with many resources to manage. The controller is the primary policy engine responsible for configuring Kubernetes resources and applying security policies across managed clusters.
 
+| enableClusterBackup
+| true
+| Enable/Disable RHACM backup and restore operator (`cluster-backup`). `cluster-backup` is meant for managed hubs, set this value to `false` when deploying RHACM n global hub.
 
 | oadpSubscription.source
 | redhat-operators
@@ -121,8 +124,6 @@ a| Deployment type:
 | oadpSubscription.installPlanApproval
 | Automatic
 | Control whether updates are applied automatically or require manual intervention. Acceptable value: `Automatic` or `Manual`.
-
-
 
 | syncHookImage.name
 | registry.redhat.io/openshift4/ose-tools-rhel9

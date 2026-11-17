@@ -72,5 +72,6 @@
     --set deploymentType=all
     --set disableHubSelfManagement=false
     --set availabilityConfig={{ _ha_environ["availabilityConfig"] }}
+    --set enableClusterBackup=false
     | oc apply --filename -
 ...

@@ -75,6 +75,9 @@
         }
       }
     },
+    "enableClusterBackup": {
+      "type": "boolean"
+    },
     "oadpSubscription": {
       "type": "object",
       "properties": {

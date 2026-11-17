@@ -18,6 +18,7 @@ resourceRequirements:
   configPolicyController:
     limits:
       memory: 1Gi
+enableClusterBackup: true
 oadpSubscription:
   source: redhat-operators
   sourceNamespace: openshift-marketplace

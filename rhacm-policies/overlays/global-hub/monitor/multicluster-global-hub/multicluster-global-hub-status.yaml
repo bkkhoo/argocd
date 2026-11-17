@@ -21,9 +21,5 @@ status:
   conditions:
     - type: Ready
       status: "True"
-    - type: ACMResourceReady
-      status: "True"
-    - type: Database
-      status: "True"
   phase: Running
 ...
